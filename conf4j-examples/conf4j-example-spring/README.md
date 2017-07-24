@@ -1,0 +1,1 @@
+This example demonstrates _conf4j_ and _Spring Framework_ integration.

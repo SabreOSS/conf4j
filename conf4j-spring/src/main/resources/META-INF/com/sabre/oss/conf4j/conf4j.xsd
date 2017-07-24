@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.sabre.com/schema/oss/conf4j" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.sabre.com/schema/oss/conf4j"
+            xmlns:tool="http://www.springframework.org/schema/tool"
+            xmlns:context="http://www.springframework.org/schema/context"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            version="1.0.0"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.springframework.org/schema/context"
+                schemaLocation="http://www.springframework.org/schema/context/spring-context.xsd"/>
+    <xsd:import namespace="http://www.springframework.org/schema/beans"
+                schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd"/>
+    <xsd:import namespace="http://www.springframework.org/schema/tool"
+                schemaLocation="http://www.springframework.org/schema/tool/spring-tool.xsd"/>
+
+    <xsd:element name="configure">
+        <xsd:annotation>
+            <xsd:documentation>
+                Configure conf4j beans in the SpringFramework context. It registers appropriate conf4j
+                configuration factory, type converters, configuration values sources etc. under
+                appropriate names.
+                If the beans are registered already, they are reused. It is also possible to override the beans
+                latter to change the configuration.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="configuration-factory" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        The fully qualified name of the configuration factory class.
+                    </xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation>
+                            <tool:expected-type type="java.lang.Class"/>
+                            <tool:assignable-to type="com.sabre.oss.conf4j.factory.ConfigurationFactory"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="configuration-scan">
+        <xsd:annotation>
+            <xsd:documentation>
+                Scans the classpath for annotated configurations that will be auto-registered as
+                SpringFramework beans. It works the same way as regular &lt;component-scan ...&gt; from
+                http://www.springframework.org/schema/context namespace with exception it applied only for
+                the conf4j configuration classes and some attributes which doesn't apply for configuration
+                are removed.
+
+                Note: You may use placeholders in package paths, but only resolved against system
+                properties (analogous to resource paths). A configuration scan results in new bean definitions
+                being registered; SpringFramework's PropertySourcesPlaceholderConfigurer will apply to those bean
+                definitions just like to regular bean definitions, but it won't apply to the configuration
+                scan settings themselves.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="include-filter" type="context:filterType" minOccurs="0" maxOccurs="unbounded">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Controls which eligible types to include for configuration scanning.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="exclude-filter" type="context:filterType" minOccurs="0" maxOccurs="unbounded">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Controls which eligible types to exclude for configuration scanning.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="base-package" type="xsd:string" use="required">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        The comma/semicolon/space/tab/linefeed-separated list of packages to scan for annotated
+                        configurations.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="configuration-annotations" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        List of fully-qualified configuration annotation class names
+                        which are used for finding configuration classes.
+                    </xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation>
+                            <tool:expected-type
+                                    type="java.lang.Class&lt;? extends java.lang.annotation.Annotation&gt;"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="resource-pattern" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Controls the class files eligible for configuration detection. Defaults to "**/*.class",
+                        the recommended value.
+                        Consider use of the include-filter and exclude-filter elements for a more fine-grained approach.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="name-generator" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        The fully-qualified class name of the BeanNameGenerator to be used for naming detected
+                        configurations.
+                    </xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation>
+                            <tool:expected-type type="java.lang.Class"/>
+                            <tool:assignable-to type="org.springframework.beans.factory.support.BeanNameGenerator"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="configuration">
+        <xsd:annotation>
+            <xsd:documentation>
+                Registers a configuration type to the context.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="class" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                The fully qualified name of the configuration type class.
+                            </xsd:documentation>
+                            <xsd:appinfo>
+                                <tool:annotation>
+                                    <tool:expected-type type="java.lang.Class"/>
+                                    <tool:exports type="com.sabre.oss.conf4j.spring.ConfigurationFactoryBean"/>
+                                </tool:annotation>
+                            </xsd:appinfo>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

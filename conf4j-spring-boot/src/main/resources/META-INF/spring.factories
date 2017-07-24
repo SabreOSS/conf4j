@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.sabre.oss.conf4j.spring.boot.Conf4jAutoConfiguration
