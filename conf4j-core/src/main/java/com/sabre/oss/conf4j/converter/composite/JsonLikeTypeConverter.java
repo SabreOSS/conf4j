@@ -340,17 +340,23 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
 
     int consumeNull(CharSequence value, int current, ObjectBuilder builder) {
         int found = value.length();
-        boolean consumed = compactMode
-                ? value.charAt(current) == COMPACT_JSON_NULL.charAt(0)
-                && ((found == COMPACT_JSON_NULL.length() + current)
-                || (found = notEscapedIndexOf(value, current, COMMA, COLON, RIGHT_CURLY_BRACE, RIGHT_SQUARE_BRACKET)) == COMPACT_JSON_NULL.length() + current)
-                && COMPACT_JSON_NULL.equals(value.subSequence(current, found).toString())
-                : value.charAt(current) == JSON_NULL.charAt(0)
-                && ((found == JSON_NULL.length() + current)
-                || ((found = notEscapedIndexOf(value, current, COMMA, COLON, RIGHT_CURLY_BRACE, RIGHT_SQUARE_BRACKET)) == JSON_NULL.length() + current))
-                && JSON_NULL.equals(value.subSequence(current, found).toString());
-
-        if (consumed) {
+        boolean consume = false;
+        if (compactMode) {
+            if (value.charAt(current) == COMPACT_JSON_NULL.charAt(0)) {
+                if (found != COMPACT_JSON_NULL.length() + current) {
+                    found = notEscapedIndexOf(value, current, COMMA, COLON, RIGHT_CURLY_BRACE, RIGHT_SQUARE_BRACKET);
+                }
+                consume = found == COMPACT_JSON_NULL.length() + current && COMPACT_JSON_NULL.equals(value.subSequence(current, found).toString());
+            }
+        } else {
+            if (value.charAt(current) == JSON_NULL.charAt(0)) {
+                if (found != JSON_NULL.length() + current) {
+                    found = notEscapedIndexOf(value, current, COMMA, COLON, RIGHT_CURLY_BRACE, RIGHT_SQUARE_BRACKET);
+                }
+                consume = found == JSON_NULL.length() + current && JSON_NULL.equals(value.subSequence(current, found).toString());
+            }
+        }
+        if (consume) {
             builder.addValue(null);
             return found - current;
         }

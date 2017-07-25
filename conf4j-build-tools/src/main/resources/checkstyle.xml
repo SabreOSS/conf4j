@@ -78,7 +78,7 @@
         <module name="EqualsHashCode"/>
         <module name="FallThrough"/>
         <module name="IllegalThrows"/>
-        <!--<module name="InnerAssignment"/>-->
+        <module name="InnerAssignment"/>
         <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
         <module name="MultipleVariableDeclarations"/>
