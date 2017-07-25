@@ -134,7 +134,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         if (value == null) {
             return null;
         }
-        ObjectBuilder builder = ObjectBuilder.newBuilder();
+        ObjectBuilder builder = new ObjectBuilder();
         char[] array = value.toCharArray();
         CharSequence charSequence = new Segment(array, 0, array.length);
         if (consumeItem(type, charSequence, 0, builder) != value.length()) {
@@ -258,7 +258,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
                 return current + 1;
             }
             // Consume Key
-            ObjectBuilder keyBuilder = ObjectBuilder.newBuilder();
+            ObjectBuilder keyBuilder = new ObjectBuilder();
             current += consumeItem(keyType, value, current, keyBuilder);
             builder.addKey(keyBuilder.build());
 

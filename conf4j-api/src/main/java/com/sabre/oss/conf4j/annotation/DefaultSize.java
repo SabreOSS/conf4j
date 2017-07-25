@@ -34,8 +34,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * a value for the list size key.
  * <p>
  * {@code @DefaultSize} is usually used when there are default values defined for the list (using annotation
- * declared by &#064;{@link DefaultsAnnotation}). It defines the size of the list (in absence of the value in configuration source)
- * and allows sub-configuration elements to be populated in the list from default values.
+ * declared by &#064;{@link DefaultsAnnotation}). It defines the size of the list
+ * (in absence of the value in configuration source) and allows sub-configuration elements to be populated in the list
+ * from default values.
  * </p>
  * <p><b>Example usage:</b></p>
  * <pre>
@@ -68,9 +69,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * public interface TimeoutsConfiguration {
  *    // Default values for the list of sub-configurations. &#064;DefaultSize(2) indicates the size of the list
- *    // will be <i>2</i> if the configuration value source does not provide a value for the list size. The elements in the list
- *    // will be populated from values provided by value source or, if not available, from defaults.
- *    // When value source provides the value for the list size &#064;DefaultSize(2) is ignored.
+ *    // will be <i>2</i> if the configuration value source does not provide a value for the list size.
+ *    // The elements in the list will be populated from values provided by value source or, if not available,
+ *    // from defaults. When value source provides the value for the list size &#064;DefaultSize(2) is ignored.
  *    &#064;DefaultSize(2)
  *    &#064;Key("otherTimeouts")
  *    &#064;DefaultTimeout(connectTimeout = "100", readTimeout = "200")

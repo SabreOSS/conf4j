@@ -82,7 +82,9 @@ public class JavassistDynamicConfigurationFactoryTest extends AbstractDynamicCon
         try {
             Field declaredField = object.getClass().getDeclaredField(fieldName);
             declaredField.setAccessible(true);
-            return (T) declaredField.get(object);
+            @SuppressWarnings("unchecked")
+            T value = (T) declaredField.get(object);
+            return value;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

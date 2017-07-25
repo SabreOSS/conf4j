@@ -101,9 +101,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * The custom annotation is annotated with exactly one {@code @Meta}. Attribute's name is provided by {@code @Meta},
  * the value must be left unspecified (for example {@code @Meta(name="attribute-name")}).
  * The value is defined by the custom annotation attribute.
- * The custom annotation must define exactly one attribute and its type cannot be <em>Class</em>, <em>array</em> nor <em>another annotation</em>.
- * In most cases the type is {@code String}, but enumerations and primitive types like {@code boolean} or {@code integer} are supported. {@code toString()}
- * method is used to convert annotation's attribute value to {@code String}.
+ * The custom annotation must define exactly one attribute and its type cannot be <em>Class</em>, <em>array</em>
+ * nor <em>another annotation</em>. In most cases the type is {@code String}, but enumerations and primitive types
+ * like {@code boolean} or {@code integer} are supported. {@code toString()} method is used to convert annotation's
+ * attribute value to {@code String}.
  * </p>
  * <pre>
  * &#064;Meta(name="file")

@@ -49,8 +49,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *    String getUrl();
  *
  *    // &#064;IgnorePrefix disables prefixes defined in the parent configuration ConnectionConfiguration -
- *    // 'connection' prefix is ignored. Only prefix 'timeout' is used so connectionConfiguration.getTimeout().getConnectTimeout()
- *    // resolves to key 'timeout.read'.
+ *    // 'connection' prefix is ignored. Only prefix 'timeout' is used
+ *    // so connectionConfiguration.getTimeout().getConnectTimeout() resolves to key 'timeout.read'.
  *    // If &#064;IgnorePrefix is removed, the configuration key will resolve to 'connection.timeout.read'.
  *    &#064;IgnorePrefix
  *    &#064;Key("timeout")

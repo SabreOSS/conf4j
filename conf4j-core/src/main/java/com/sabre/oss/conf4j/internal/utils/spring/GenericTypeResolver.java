@@ -106,9 +106,10 @@ public abstract class GenericTypeResolver {
     }
 
     private static Class<?>[] doResolveTypeArguments(Class<?> ownerClass, Class<?> classToIntrospect, Class<?> genericIfc) {
-        while (classToIntrospect != null) {
+        Class<?> currentClass = classToIntrospect;
+        while (currentClass != null) {
             if (genericIfc.isInterface()) {
-                Type[] ifcs = classToIntrospect.getGenericInterfaces();
+                Type[] ifcs = currentClass.getGenericInterfaces();
                 for (Type ifc : ifcs) {
                     Class<?>[] result = doResolveTypeArguments(ownerClass, ifc, genericIfc);
                     if (result != null) {
@@ -117,12 +118,12 @@ public abstract class GenericTypeResolver {
                 }
             } else {
                 Class<?>[] result = doResolveTypeArguments(
-                        ownerClass, classToIntrospect.getGenericSuperclass(), genericIfc);
+                        ownerClass, currentClass.getGenericSuperclass(), genericIfc);
                 if (result != null) {
                     return result;
                 }
             }
-            classToIntrospect = classToIntrospect.getSuperclass();
+            currentClass = currentClass.getSuperclass();
         }
         return null;
     }
@@ -152,23 +153,24 @@ public abstract class GenericTypeResolver {
      * Extract a class instance from given Type.
      */
     private static Class<?> extractClass(Class<?> ownerClass, Type arg) {
-        if (arg instanceof ParameterizedType) {
-            return extractClass(ownerClass, ((ParameterizedType) arg).getRawType());
-        } else if (arg instanceof GenericArrayType) {
-            GenericArrayType gat = (GenericArrayType) arg;
+        Type type = arg;
+        if (type instanceof ParameterizedType) {
+            return extractClass(ownerClass, ((ParameterizedType) type).getRawType());
+        } else if (type instanceof GenericArrayType) {
+            GenericArrayType gat = (GenericArrayType) type;
             Type gt = gat.getGenericComponentType();
             Class<?> componentClass = extractClass(ownerClass, gt);
             return Array.newInstance(componentClass, 0).getClass();
-        } else if (arg instanceof TypeVariable) {
-            TypeVariable<?> tv = (TypeVariable<?>) arg;
-            arg = getTypeVariableMap(ownerClass).get(tv);
-            if (arg == null) {
-                arg = extractBoundForTypeVariable(tv);
+        } else if (type instanceof TypeVariable) {
+            TypeVariable<?> tv = (TypeVariable<?>) type;
+            type = getTypeVariableMap(ownerClass).get(tv);
+            if (type == null) {
+                type = extractBoundForTypeVariable(tv);
             } else {
-                arg = extractClass(ownerClass, arg);
+                type = extractClass(ownerClass, type);
             }
         }
-        return (arg instanceof Class ? (Class<?>) arg : Object.class);
+        return (type instanceof Class ? (Class<?>) type : Object.class);
     }
 
 

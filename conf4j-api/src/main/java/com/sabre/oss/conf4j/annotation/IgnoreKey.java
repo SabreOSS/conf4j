@@ -29,10 +29,11 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * This annotation allows you to ignore a key associated with the configuration property in which the return type is a sub-configuration
- * or a list of sub-configurations. For such properties, even if it is not explicitly annotated with {@link Key},
- * the property name is appended to the key prefix. {@code @IgnoreKey} is used when there is a need to remove
- * the property name from the middle of a key.
+ * This annotation allows you to ignore a key associated with the configuration property in which the return type
+ * is a sub-configuration or a list of sub-configurations.
+ * For such properties, even if it is not explicitly annotated with {@link Key}, the property name is appended
+ * to the key prefix. {@code @IgnoreKey} is used when there is a need to remove the property name from the middle
+ * of a key.
  * <p>
  * If the property is annotated with {@link Key @Key}, {@code @IgnoreKey} should not be used.
  * {@code @Key} explicitly associates the key with the property,

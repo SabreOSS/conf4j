@@ -94,7 +94,7 @@ public class PropertiesConfigurationValuesSource implements IterableConfiguratio
         }
     }
 
-    private static class PropertiesIterable implements Iterable<ConfigurationEntry> {
+    private static final class PropertiesIterable implements Iterable<ConfigurationEntry> {
         private final Properties properties;
 
         private PropertiesIterable(Properties properties) {

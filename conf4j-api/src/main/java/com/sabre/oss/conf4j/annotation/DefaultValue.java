@@ -31,8 +31,8 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Specifies the default value for a value property in a configuration class. A value property is defined as a standard Java type or any
- * other type that is not a sub-configuration or a list of sub-configurations.
+ * Specifies the default value for a value property in a configuration class. A value property is defined
+ * as a standard Java type or any other type that is not a sub-configuration or a list of sub-configurations.
  * <p>
  * <i>Note:</i> Default value is encoded as a string. It is converted to the value of the property type, which
  * depends on the {@link TypeConverter}. Converters are configurable and it is the developer's responsibility

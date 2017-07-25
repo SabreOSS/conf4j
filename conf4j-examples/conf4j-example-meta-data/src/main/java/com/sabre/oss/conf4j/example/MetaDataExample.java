@@ -37,9 +37,6 @@ public class MetaDataExample {
         new MetaDataExample().run();
     }
 
-    private MetaDataExample() {
-    }
-
     private void run() {
         // Create a configuration values source which is aware of custom meta-data.
         ConfigurationValuesSource source = new SourceFileAwareConfigurationValuesSource();

@@ -25,14 +25,14 @@ package com.sabre.oss.conf4j.internal.model.provider;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModelProvider;
 import com.sabre.oss.conf4j.internal.model.PropertyModel;
-import com.sabre.oss.conf4j.internal.utils.ConcurrentReferenceHashMap;
+import com.sabre.oss.conf4j.internal.utils.spring.ConcurrentReferenceHashMap;
 
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-import static com.sabre.oss.conf4j.internal.utils.ConcurrentReferenceHashMap.ReferenceType.SOFT;
+import static com.sabre.oss.conf4j.internal.utils.spring.ConcurrentReferenceHashMap.ReferenceType.SOFT;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
@@ -172,7 +172,7 @@ public abstract class AbstractConfigurationModelProvider implements Configuratio
             }
         }
 
-        private static class Holder {
+        private static final class Holder {
             private final Class<?> configurationType;
             private Method currentMethod;
 

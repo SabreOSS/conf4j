@@ -28,14 +28,14 @@
 
     <groupId>com.sabre.oss</groupId>
     <artifactId>conf4j</artifactId>
-    <version>0.1-rc11-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <organization>
         <name>Sabre Corporation</name>
         <url>http://www.sabre.com/</url>
     </organization>
-    <inceptionYear>2016</inceptionYear>
+    <inceptionYear>2017</inceptionYear>
 
     <licenses>
         <license>
@@ -48,11 +48,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jackson.version>2.7.1</jackson.version>
-        <spring.boot.version>1.2.7.RELEASE</spring.boot.version>
-        <spring.version>4.2.4.RELEASE</spring.version>
-        <slf4j.version>1.6.6</slf4j.version>
-        <log4j.version>2.3</log4j.version>
+        <jackson.version>2.8.0</jackson.version>
+        <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
+        <spring.version>4.3.9.RELEASE</spring.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <log4j.version>2.8.2</log4j.version>
     </properties>
 
     <url>http://git.sabre.com/scm/oss/conf4j.git</url>
@@ -99,6 +99,7 @@
         <module>conf4j-ck</module>
         <module>conf4j-jmh</module>
         <module>conf4j-examples</module>
+        <module>conf4j-build-tools</module>
     </modules>
 
     <dependencyManagement>
@@ -106,7 +107,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.4</version>
+                <version>3.5</version>
             </dependency>
 
             <dependency>
@@ -118,7 +119,7 @@
             <dependency>
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
-                <version>3.20.0-GA</version>
+                <version>3.21.0-GA</version>
             </dependency>
 
             <dependency>
@@ -188,14 +189,14 @@
             <dependency>
                 <groupId>org.openjdk.jmh</groupId>
                 <artifactId>jmh-core</artifactId>
-                <version>1.11.3</version>
+                <version>1.19</version>
                 <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.openjdk.jmh</groupId>
                 <artifactId>jmh-generator-annprocess</artifactId>
-                <version>1.11.3</version>
+                <version>1.19</version>
                 <scope>test</scope>
             </dependency>
 
@@ -338,7 +339,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.10.3</version>
+                    <version>2.10.4</version>
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
@@ -397,6 +398,34 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>2.17</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>8.0</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.sabre.oss</groupId>
+                            <artifactId>conf4j-build-tools</artifactId>
+                            <version>${project.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <configLocation>checkstyle.xml</configLocation>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -413,8 +442,11 @@
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
         </plugins>
-
     </build>
 
 </project>

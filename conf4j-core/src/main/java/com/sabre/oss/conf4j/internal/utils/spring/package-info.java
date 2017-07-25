@@ -20,8 +20,9 @@
  * SOFTWARE.
  */
 /**
- * The classes in this package are copied from springframework 3.0.5.  All unused code was removed and some slight
- * changes were applied. In the future this package will be replaced by dedicated implementation.
+ * The classes in this package are copied from springframework (mainly 3.0.5).
+ * All unused code was removed and some slight changes were applied.
+ * In the future this package will be replaced by dedicated implementation.
  */
 package com.sabre.oss.conf4j.internal.utils.spring;
 

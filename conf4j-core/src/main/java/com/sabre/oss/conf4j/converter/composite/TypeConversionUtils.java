@@ -42,7 +42,10 @@ final class TypeConversionUtils {
             if (current == character) {
                 if (prev == ESCAPE_CHAR) {
                     int m = 1;
-                    for (int l = i - 2; l >= 0 && value.charAt(l) == ESCAPE_CHAR; l--, m++) {
+                    int l = i - 2;
+                    while (l >= 0 && value.charAt(l) == ESCAPE_CHAR) {
+                        l--;
+                        m++;
                     }
                     if (m % 2 == 0) {
                         return i;
@@ -63,13 +66,16 @@ final class TypeConversionUtils {
         char prev = 0xffff;
         for (int i = max(startPos, 0), len = value.length(); i < len; i++) {
             char current = value.charAt(i);
-            for (int k = 0; k < charsLen; k++) {
-                if (current == characters[k]) {
+            for (char character : characters) {
+                if (current == character) {
                     if (prev != ESCAPE_CHAR) {
                         return i;
                     } else {
                         int m = 1;
-                        for (int l = i - 2; l >= 0 && value.charAt(l) == ESCAPE_CHAR; l--, m++) {
+                        int l = i - 2;
+                        while (l >= 0 && value.charAt(l) == ESCAPE_CHAR) {
+                            l--;
+                            m++;
                         }
                         if (m % 2 == 0) {
                             return i;

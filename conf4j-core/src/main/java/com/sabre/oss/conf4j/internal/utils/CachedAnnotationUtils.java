@@ -186,7 +186,7 @@ public final class CachedAnnotationUtils {
         }
     }
 
-    private static class MultiKey {
+    private static final class MultiKey {
         private final Object[] keys;
         private final int hashCode;
 

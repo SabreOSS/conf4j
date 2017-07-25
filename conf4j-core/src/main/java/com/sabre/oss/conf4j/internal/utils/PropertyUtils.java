@@ -21,6 +21,8 @@
  */
 package com.sabre.oss.conf4j.internal.utils;
 
+import com.sabre.oss.conf4j.internal.utils.spring.ConcurrentReferenceHashMap;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -168,7 +170,7 @@ public final class PropertyUtils {
         return propertyDescriptor;
     }
 
-    private static class ClassNameKey {
+    private static final class ClassNameKey {
         private final Class<?> clazz;
         private final String name;
         private final int hashCode;

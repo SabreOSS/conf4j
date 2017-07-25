@@ -43,12 +43,13 @@ abstract class ClassUtils {
             return Collections.singleton(clazz);
         }
         Set<Class<?>> interfaces = new LinkedHashSet<>();
-        while (clazz != null) {
-            Class<?>[] ifcs = clazz.getInterfaces();
+        Class<?> currentClass = clazz;
+        while (currentClass != null) {
+            Class<?>[] ifcs = currentClass.getInterfaces();
             for (Class<?> ifc : ifcs) {
                 interfaces.addAll(getAllInterfacesForClassAsSet(ifc, classLoader));
             }
-            clazz = clazz.getSuperclass();
+            currentClass = currentClass.getSuperclass();
         }
         return interfaces;
     }

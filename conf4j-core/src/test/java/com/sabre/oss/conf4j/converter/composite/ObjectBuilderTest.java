@@ -36,7 +36,7 @@ public class ObjectBuilderTest {
     public void shouldProperlyBuildMap() {
         // given / when
         @SuppressWarnings("unchecked")
-        Map<String, Object> map = (Map<String, Object>) ObjectBuilder.newBuilder()
+        Map<String, Object> map = (Map<String, Object>) new ObjectBuilder()
                 .beginMap()
                 .addKey("string").addValue("string value")
                 .addKey("boolean").addValue(true)
@@ -57,7 +57,7 @@ public class ObjectBuilderTest {
     public void shouldProperlyBuildList() {
         // given / when
         @SuppressWarnings("unchecked")
-        List<String> list = (List<String>) ObjectBuilder.newBuilder()
+        List<String> list = (List<String>) new ObjectBuilder()
                 .beginList()
                 .addValue("string value")
                 .addValue(true)
@@ -73,7 +73,7 @@ public class ObjectBuilderTest {
     @SuppressWarnings("unchecked")
     public void shouldProperlyCreateMapOfListsWithOverwrittenKey() {
         // given / when
-        Map<String, List<String>> map = (Map<String, List<String>>) ObjectBuilder.newBuilder()
+        Map<String, List<String>> map = (Map<String, List<String>>) new ObjectBuilder()
                 .beginMap()
                 .addKey("values").beginList().addValue("value1").addValue("value2").endList()
                 .addKey("values").beginList().addValue("value3").addValue("value4").endList()
@@ -88,7 +88,7 @@ public class ObjectBuilderTest {
     @SuppressWarnings("unchecked")
     public void shouldProperlyCreateNestedMap() {
         // given / when
-        Map<String, Map<String, String>> map = (Map<String, Map<String, String>>) ObjectBuilder.newBuilder()
+        Map<String, Map<String, String>> map = (Map<String, Map<String, String>>) new ObjectBuilder()
                 .beginMap()
                 .addKey("object").beginMap().addKey("property").addValue("property value").endMap()
                 .endMap()
@@ -103,7 +103,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseClosingMapOnEmptyBuilder() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> ObjectBuilder.newBuilder().endMap(),
+                () -> new ObjectBuilder().endMap(),
                 // then
                 IllegalStateException.class);
     }
@@ -112,7 +112,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseClosingListOnEmptyBuilder() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> ObjectBuilder.newBuilder().endList(),
+                () -> new ObjectBuilder().endList(),
                 // then
                 IllegalStateException.class);
     }
@@ -121,7 +121,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseClosingTopLevelMap() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> ObjectBuilder.newBuilder().beginMap().endMap().endMap(),
+                () -> new ObjectBuilder().beginMap().endMap().endMap(),
                 // then
                 IllegalStateException.class);
     }
@@ -130,7 +130,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseClosingTopLevelList() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> ObjectBuilder.newBuilder().beginList().endList().endList(),
+                () -> new ObjectBuilder().beginList().endList().endList(),
                 // then
                 IllegalStateException.class);
     }
@@ -139,7 +139,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseEndingObjectWhenArrayWasBegun() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> ObjectBuilder.newBuilder().beginList().endMap(),
+                () -> new ObjectBuilder().beginList().endMap(),
                 // then
                 IllegalStateException.class);
     }
@@ -148,7 +148,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseEndingArrayWhenObjectWasBegun() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> ObjectBuilder.newBuilder().beginMap().endList(),
+                () -> new ObjectBuilder().beginMap().endList(),
                 // then
                 IllegalStateException.class);
     }

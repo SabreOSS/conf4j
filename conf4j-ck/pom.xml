@@ -29,7 +29,7 @@
     <parent>
         <groupId>com.sabre.oss</groupId>
         <artifactId>conf4j</artifactId>
-        <version>0.1-rc11-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>conf4j-ck</artifactId>

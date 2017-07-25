@@ -39,9 +39,6 @@ public class CoreExample {
         new CoreExample().run();
     }
 
-    private CoreExample() {
-    }
-
     private void run() {
         // Create a configuration values source from the property files.
         ConfigurationValuesSource source = new PropertiesConfigurationValuesSource(getClass().getResource("/application.properties").getFile());

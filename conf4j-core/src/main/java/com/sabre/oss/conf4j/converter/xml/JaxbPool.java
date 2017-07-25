@@ -45,7 +45,7 @@ import static javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.Validate.notNull;
 
-class JaxbPool {
+final class JaxbPool {
     public interface Handle<T> extends AutoCloseable {
 
         T get();
@@ -92,7 +92,7 @@ class JaxbPool {
         return new HandleImpl<>(unmarshallers);
     }
 
-    private static class HandleImpl<E> implements Handle<E> {
+    private static final class HandleImpl<E> implements Handle<E> {
 
         private final Pool<E> pool;
         private final AtomicReference<E> element = new AtomicReference<>();
@@ -117,7 +117,7 @@ class JaxbPool {
         }
     }
 
-    private static class Pool<E> {
+    private static final class Pool<E> {
         private final Supplier<E> supplier;
         private final Deque<WeakReference<E>> elements = new ArrayDeque<>();
 
@@ -151,7 +151,7 @@ class JaxbPool {
         }
     }
 
-    private class MarshallerSupplier implements Supplier<Marshaller> {
+    private final class MarshallerSupplier implements Supplier<Marshaller> {
         @Override
         public Marshaller get() {
             try {
@@ -165,7 +165,7 @@ class JaxbPool {
         }
     }
 
-    private class UnmarshallerSupplier implements Supplier<Unmarshaller> {
+    private final class UnmarshallerSupplier implements Supplier<Unmarshaller> {
         @Override
         public Unmarshaller get() {
             try {

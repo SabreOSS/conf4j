@@ -31,8 +31,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Specifies a configuration key for a configuration property in a configuration class.
- * For hierarchical configurations the final property key is a concatenation of keys from all configuration levels and above,
- * starting with the root configuration.
+ * For hierarchical configurations the final property key is a concatenation of keys from all configuration
+ * levels and above, starting with the root configuration.
  * <p>
  * {@code @Key} annotation is applied to the configuration type or the property method. When it is applied in the type
  * or on the property which returns sub-configurations or a list of sub-configurations, it specifies a key prefix
@@ -45,8 +45,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * the property name (when the annotation is applied on the getter) or uncapitalized short class name is used.
  * </p>
  * <p>
- * <i>Note</i>: Specifying {@code @Key} (without any keys) on the value property (which type is not another configuration
- * nor list of configurations) is optional in default <i>non-strict</i> configuration model provider.
+ * <i>Note</i>: Specifying {@code @Key} (without any keys) on the value property (which type is not another
+ * configuration nor list of configurations) is optional in default <i>non-strict</i> configuration model provider.
  * If <i>strict</i> provider is used, every value configuration property must be annotated.
  * </p>
  * <b>Example usage:</b>
@@ -55,7 +55,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * &#064;Key("connection")
  * public interface ConnectionConfiguration {
  *    // When key doesn't specify value explicitly, property name is used.
- *    // Full key associated with the property is 'connection.url', 'connection' prefix is from the &#064;Key annotation type.
+ *    // Full key associated with the property is 'connection.url',
+ *    // 'connection' prefix is from the &#064;Key annotation type.
  *    &#064;Key
  *    String getUrl();
  *
@@ -63,7 +64,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *    &#064;Key("timeout")
  *    int getConnectionTimeout();
  *
- *    // Multiple keys are specified, the key set of the property is 'connection.defaultTimeout' and 'connection.standardTimeout'.
+ *    // Multiple keys are specified, the key set of the property is 'connection.defaultTimeout'
+ *    // and 'connection.standardTimeout'.
  *    &#064;Key({"defaultTimeout", "standardTimeout"})
  *    int getDefaultTimeout();
  * }

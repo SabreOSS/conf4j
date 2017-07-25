@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sabre.oss.conf4j.internal.utils;
+package com.sabre.oss.conf4j.internal.utils.spring;
 
 import org.apache.commons.lang3.Validate;
 
@@ -598,17 +598,18 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         }
 
         private Reference<K, V> findInChain(Reference<K, V> reference, Object key, int hash) {
-            while (reference != null) {
-                if (reference.getHash() == hash) {
-                    Entry<K, V> entry = reference.get();
+            Reference<K, V> current = reference;
+            while (current != null) {
+                if (current.getHash() == hash) {
+                    Entry<K, V> entry = current.get();
                     if (entry != null) {
                         K entryKey = entry.getKey();
                         if (entryKey == key || entryKey.equals(key)) {
-                            return reference;
+                            return current;
                         }
                     }
                 }
-                reference = reference.getNext();
+                current = current.getNext();
             }
             return null;
         }
@@ -853,7 +854,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
     /**
      * Internal entry iterator implementation.
      */
-    private class EntryIterator implements Iterator<Map.Entry<K, V>> {
+    private final class EntryIterator implements Iterator<Map.Entry<K, V>> {
 
         private int segmentIndex;
 

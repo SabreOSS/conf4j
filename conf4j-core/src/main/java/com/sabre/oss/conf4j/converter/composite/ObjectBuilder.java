@@ -33,13 +33,6 @@ class ObjectBuilder {
 
     private final Deque<Object> stack = new LinkedList<>();
 
-    private ObjectBuilder() {
-    }
-
-    static ObjectBuilder newBuilder() {
-        return new ObjectBuilder();
-    }
-
     Object build() {
         if (stack.size() != 1) {
             throw new IllegalStateException("Current pointer does not point to the top level object.");

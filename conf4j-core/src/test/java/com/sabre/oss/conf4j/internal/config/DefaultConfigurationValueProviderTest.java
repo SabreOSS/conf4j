@@ -27,11 +27,14 @@ import com.sabre.oss.conf4j.internal.factory.KeySetUtils;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
 import com.sabre.oss.conf4j.processor.ConfigurationValue;
 import com.sabre.oss.conf4j.processor.ConfigurationValueProcessor;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
 import com.sabre.oss.conf4j.source.TestConfigurationValuesSource;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
@@ -47,6 +50,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DefaultConfigurationValueProviderTest {
     private final KeyGenerator keyGenerator = keyGenerator("fallback", "fallback.p1", "fallback.p1.p2");
     private final List<String> configurationKeys = asList("key", "alternateKey");
@@ -54,9 +58,10 @@ public class DefaultConfigurationValueProviderTest {
     private String fallbackKey = "fallbackKey";
     private final String defaultValue = "methodDefaultValue";
     private final String notEncrypted = null;
-
-    private ConfigurationValuesSource source = spy(TestConfigurationValuesSource.class);
-    private final TypeConverter<String> typeConverter = mock(TypeConverter.class);
+    @Spy
+    private TestConfigurationValuesSource source;
+    @Mock
+    private TypeConverter<String> typeConverter;
 
     private ConfigurationValueProvider provider = new DefaultConfigurationValueProvider(emptyList());
 

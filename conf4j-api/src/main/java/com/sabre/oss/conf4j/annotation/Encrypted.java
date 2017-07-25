@@ -68,7 +68,8 @@ public @interface Encrypted {
 
     /**
      * The encryption provider name is used when the configuration value is being decrypted.
-     * If the encryption provider name is not specified, then the encryption provider, with a name defined by {@link #DEFAULT}, is used.
+     * If the encryption provider name is not specified, then the encryption provider,
+     * with a name defined by {@link #DEFAULT}, is used.
      * <p>
      * If there is no suitable encryption provider, an exception is thrown for the configuration implementation
      * at build-time, or when the configuration property is accessed.

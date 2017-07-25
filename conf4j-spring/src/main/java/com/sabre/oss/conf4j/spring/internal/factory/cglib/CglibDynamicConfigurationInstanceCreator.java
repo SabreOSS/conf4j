@@ -50,6 +50,8 @@ public class CglibDynamicConfigurationInstanceCreator implements ConfigurationIn
                 new SerializableNoOp()
         });
 
-        return (T) enhancer.create();
+        @SuppressWarnings("unchecked")
+        T instance = (T) enhancer.create();
+        return instance;
     }
 }

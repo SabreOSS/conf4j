@@ -51,9 +51,6 @@ public class GenericsExample {
         new GenericsExample().run();
     }
 
-    private GenericsExample() {
-    }
-
     private void run() {
         // Creates a configuration values source from the property files.
         ConfigurationValuesSource source = new PropertiesConfigurationValuesSource(getClass().getResource("/application.properties").getFile());

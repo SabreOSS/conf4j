@@ -22,7 +22,7 @@
 
 package com.sabre.oss.conf4j.source;
 
-import com.sabre.oss.conf4j.internal.utils.ConcurrentReferenceHashMap;
+import com.sabre.oss.conf4j.internal.utils.spring.ConcurrentReferenceHashMap;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;

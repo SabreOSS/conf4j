@@ -197,7 +197,7 @@ abstract class AbstractUnmodifiableList<E> implements List<E>, RandomAccess {
         return target.hashCode();
     }
 
-    private static class UnmodifiableIterator<E> implements Iterator<E> {
+    private static final class UnmodifiableIterator<E> implements Iterator<E> {
         private final Iterator<E> iterator;
 
         private UnmodifiableIterator(Iterator<E> iterator) {
@@ -215,7 +215,7 @@ abstract class AbstractUnmodifiableList<E> implements List<E>, RandomAccess {
         }
     }
 
-    private static class UnmodifiableListIterator<E> implements ListIterator<E> {
+    private static final class UnmodifiableListIterator<E> implements ListIterator<E> {
         private final ListIterator<E> iterator;
 
         private UnmodifiableListIterator(ListIterator<E> iterator) {

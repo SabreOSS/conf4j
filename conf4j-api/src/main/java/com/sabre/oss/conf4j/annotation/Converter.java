@@ -32,13 +32,14 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Specifies a class that implements {@link TypeConverter} interface. This interface is used to convert a configuration property value to a property type.
- * It is applicable only for value configuration properties (which doesn't return sub-configuration nor a sub-configuration list).
+ * Specifies a class that implements {@link TypeConverter} interface. This interface is used to convert a configuration
+ * property value to a property type. It is applicable only for value configuration properties
+ * (which doesn't return sub-configuration nor a sub-configuration list).
  * <p>
  * {@code TypeConverter} specified by this annotation must provide a public, parameter-less constructor, because
  * it is instantiated on runtime via reflection. It must be <i>thread-safe</i> and <i>stateless</i>.
- * Many instances of the converter are created; therefore, be sure that creating a new instance is fast and the created object doesn't
- * occupy too much memory.
+ * Many instances of the converter are created; therefore, be sure that creating a new instance is fast and the created
+ * object doesn't occupy too much memory.
  * </p>
  * <p>
  * <b>Note:</b> Configuration factory is usually pre-configured with a wide range of converters. {@code @Converter}

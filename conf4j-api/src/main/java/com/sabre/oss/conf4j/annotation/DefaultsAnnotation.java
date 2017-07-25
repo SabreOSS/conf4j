@@ -25,16 +25,16 @@ import java.lang.annotation.*;
 
 
 /**
- * This annotation allows you to define default values for the configuration when the configuration is used as a sub-configuration.
- * {@code @DefaultsAnnotation} does not define the defaults directly, it simply specifies which annotation should be
- * used for that purpose.
+ * This annotation allows you to define default values for the configuration when the configuration is used
+ * as a sub-configuration. {@code @DefaultsAnnotation} does not define the defaults directly, it simply specifies
+ * which annotation should be used for that purpose.
  * <p>Usage of this annotation requires the following steps:</p>
  * <ol>
  * <li>Create an auxiliary annotation which holds the default values for the configuration.
  * The target must be {@code @Target(METHOD)} and the retention policy {@code @Retention(RUNTIME)}.
  * It is also advised to specify {@code @Documented} the default values as visible in the generated javadoc.
- * The annotation must define the list of attributes that match the properties defined by the configuration, but the type
- * of each attribute must be {@code String}.
+ * The annotation must define the list of attributes that match the properties defined by the configuration,
+ * but the type of each attribute must be {@code String}.
  * <i>Note:</i> Currently there is no validation that ensures the annotation attributes and configuration
  * properties match, but this may change in the future.
  * </li>
@@ -65,14 +65,15 @@ import java.lang.annotation.*;
  * // An auxiliary annotation which holds default values.
  * &#064;Target(METHOD)
  * &#064;Retention(RUNTIME)
- * // &#064;Repeatable annotation (introduced in java 8) allows repeating &#064;DefaultTimeouts without the wrapper list annotation.
+ * // &#064;Repeatable annotation (introduced in java 8) allows repeating &#064;DefaultTimeouts without
+ * // the wrapper list annotation.
  * &#064;Repeatable(DefaultTimeouts.class)
  * &#064;Documented
  * public &#064;interface DefaultTimeout {
  *     // Annotation must declare only attributes which correspond to the properties of the configuration class.
  *     // Please note the type of the property is a string.
  *     String connectTimeout();
- *     // A default value can be assigned and it will be used in the instance the value for an attribute is not provided.
+ *     // A default value can be assigned and it will be used in the instance the value for an attribute is not provided
  *     String readTimeout() default "3000";
  * }
  *
@@ -103,8 +104,8 @@ import java.lang.annotation.*;
  *    // the minimum size of the list is 3. You can also use &#064;DefaultSize to specify the default of the list size
  *    // to reduce or enhance the number of elements in the list. In the latter case, default values are fetched from
  *    // the sub-configuration.
- *    // SKIP in the second &#064;DefaultTimeout annotation indicates the default value is fetched from the &#064;DefaultValue
- *    // applied on TimeoutConfiguration.getReadTimeout.
+ *    // SKIP in the second &#064;DefaultTimeout annotation indicates the default value is fetched from
+ *    // the &#064;DefaultValue applied on TimeoutConfiguration.getReadTimeout.
  *    &#064;Key("otherTimeouts")
  *    &#064;DefaultTimeout(connectTimeout = "100", readTimeout = "200")
  *    &#064;DefaultTimeout(connectTimeout = "1000", readTimeout = SKIP)

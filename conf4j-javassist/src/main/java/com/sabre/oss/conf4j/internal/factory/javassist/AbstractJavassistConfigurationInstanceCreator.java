@@ -90,7 +90,9 @@ abstract class AbstractJavassistConfigurationInstanceCreator implements Configur
 
         public synchronized <T> Class<T> generateClass() {
             try {
-                return (Class<T>) classLoader.loadClass(className);
+                @SuppressWarnings("unchecked")
+                Class<T> clazz = (Class<T>) classLoader.loadClass(className);
+                return clazz;
             } catch (ClassNotFoundException ignore) {
             }
 

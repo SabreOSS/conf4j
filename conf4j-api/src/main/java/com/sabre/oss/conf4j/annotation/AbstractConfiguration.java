@@ -29,9 +29,9 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Marks a configuration interface or an configuration class as <i>abstract</i> which disallows instantiation of a configuration.
- * Abstract configurations are designed for inheritance and should be used as a base for other configurations.
- * An attempt to instantiate the configuration will cause {@link IllegalArgumentException}.
+ * Marks a configuration interface or an configuration class as <i>abstract</i> which disallows instantiation
+ * of a configuration. Abstract configurations are designed for inheritance and should be used as a base
+ * for other configurations. An attempt to instantiate the configuration will cause {@link IllegalArgumentException}.
  */
 @Retention(RUNTIME)
 @Target(TYPE)

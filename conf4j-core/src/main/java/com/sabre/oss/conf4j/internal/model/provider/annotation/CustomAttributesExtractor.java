@@ -25,7 +25,7 @@ package com.sabre.oss.conf4j.internal.model.provider.annotation;
 import com.sabre.oss.conf4j.annotation.Meta;
 import com.sabre.oss.conf4j.annotation.Meta.Metas;
 import com.sabre.oss.conf4j.internal.utils.CachedAnnotationUtils;
-import com.sabre.oss.conf4j.internal.utils.ConcurrentReferenceHashMap;
+import com.sabre.oss.conf4j.internal.utils.spring.ConcurrentReferenceHashMap;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -255,7 +255,7 @@ final class CustomAttributesExtractor {
         collectAnnotations(superClass, annotationsList);
     }
 
-    private static class MetaProxy implements Meta {
+    private static final class MetaProxy implements Meta {
         private final String name;
         private final String value;
 

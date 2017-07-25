@@ -45,6 +45,8 @@ public class JdkProxyStaticConfigurationInstanceCreator implements Configuration
 
     private <T> Class<T> generateClass(ConfigurationModel configurationModel, ClassLoader classLoader) {
         Class<?> configurationType = configurationModel.getConfigurationType();
-        return (Class<T>) Proxy.getProxyClass(classLoader, configurationType, Serializable.class);
+        @SuppressWarnings("unchecked")
+        Class<T> proxyClass = (Class<T>) Proxy.getProxyClass(classLoader, configurationType, Serializable.class);
+        return proxyClass;
     }
 }

@@ -24,7 +24,7 @@ package com.sabre.oss.conf4j.annotation;
 /**
  * A set of global constants used by annotations.
  */
-abstract class Constants {
+final class Constants {
     static final String NULL = "--------Annotation.NULL--------";
     static final String SKIP = "--------Annotation.SKIP--------";
 
