@@ -52,6 +52,7 @@ public class MethodsProviderTest {
         abstract class AbstractClass {
             public abstract int propertyA();
         }
+
         abstract class TestClass extends AbstractClass {
             public abstract int propertyB();
         }
@@ -87,13 +88,16 @@ public class MethodsProviderTest {
         abstract class BaseConf {
             public abstract Integer propertyA();
         }
+
         abstract class SpecificConf extends BaseConf {
             @Override
             public abstract Integer propertyA();
         }
+
         abstract class AbstractClass {
             public abstract BaseConf propertyB();
         }
+
         abstract class TestClass extends AbstractClass {
             @Override
             public abstract SpecificConf propertyB();

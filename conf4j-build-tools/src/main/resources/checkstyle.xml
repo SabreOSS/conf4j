@@ -45,7 +45,11 @@
         <module name="AnnotationLocation">
             <property name="allowSamelineSingleParameterlessAnnotation" value="false"/>
         </module>
-        <module name="AnnotationUseStyle"/>
+        <module name="AnnotationUseStyle">
+            <!-- It looks there is a bug - 'always' reports issue for valid
+            @SpringItemsConfigurationSource(@SpringItemConfigurationSource) -->
+            <property name="closingParens" value="ignore"/>
+        </module>
         <module name="MissingDeprecated"/>
         <module name="MissingOverride"/>
         <module name="PackageAnnotation"/>
@@ -85,7 +89,7 @@
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
         <module name="StringLiteralEquality"/>
-        
+
         <!-- Imports -->
         <module name="IllegalImport"/>
         <module name="RedundantImport"/>
@@ -129,7 +133,7 @@
         <module name="EmptyForIteratorPad"/>
         <module name="EmptyLineSeparator">
             <property name="tokens"
-                      value="IMPORT, CLASS_DEF, INTERFACE_DEF, ENUM_DEF, STATIC_INIT, INSTANCE_INIT, METHOD_DEF, CTOR_DEF"/>
+                      value="PACKAGE_DEF, IMPORT, CLASS_DEF, INTERFACE_DEF, ENUM_DEF, STATIC_INIT, INSTANCE_INIT, METHOD_DEF, CTOR_DEF"/>
         </module>
         <module name="GenericWhitespace"/>
         <module name="MethodParamPad"/>

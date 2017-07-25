@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.sabre.oss.conf4j.converter.standard;
 
 import org.junit.Test;
@@ -49,8 +50,8 @@ public class BigDecimalTypeConverterTest {
         try {
             bigDecimalTypeAdapter.fromString(BigDecimal.class, stringValue);
             fail("Expected exception");
-        } // then
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
+            // then
             assertThat(e).hasMessage("Unable to convert to a BigDecimal: " + stringValue);
         }
     }

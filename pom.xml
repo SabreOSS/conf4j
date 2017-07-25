@@ -422,6 +422,8 @@
                             </goals>
                             <configuration>
                                 <configLocation>checkstyle.xml</configLocation>
+                                <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                                <excludes>**/generated/**/*</excludes>
                             </configuration>
                         </execution>
                     </executions>

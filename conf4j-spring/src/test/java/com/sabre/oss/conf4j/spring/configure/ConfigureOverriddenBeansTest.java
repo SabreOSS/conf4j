@@ -37,9 +37,7 @@ import javax.annotation.Resource;
 import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.*;
 
 @ContextConfiguration(classes = ConfigureOverriddenBeansTest.class)
-@ImportResource({
-        "classpath:configure/configure-overridden-beans.spring.test.xml"
-})
+@ImportResource("classpath:configure/configure-overridden-beans.spring.test.xml")
 public class ConfigureOverriddenBeansTest extends AbstractContextTest {
     @Resource
     protected RootConfiguration rootConfiguration;

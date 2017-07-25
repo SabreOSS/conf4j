@@ -71,5 +71,4 @@ public class PatternTypeConverterTest {
         // then
         assertThat(isApplicable).isFalse();
     }
-
 }

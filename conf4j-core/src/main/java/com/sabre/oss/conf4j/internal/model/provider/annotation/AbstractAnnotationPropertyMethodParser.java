@@ -40,6 +40,7 @@ import static org.apache.commons.lang3.StringUtils.join;
 
 abstract class AbstractAnnotationPropertyMethodParser<T extends PropertyModel> implements PropertyMethodParser<T> {
     private static final Package conf4jPackage = Configuration.class.getPackage();
+
     protected final MetadataExtractor metadataExtractor;
 
     AbstractAnnotationPropertyMethodParser(MetadataExtractor metadataExtractor) {

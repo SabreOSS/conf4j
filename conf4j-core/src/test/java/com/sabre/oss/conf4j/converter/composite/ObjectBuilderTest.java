@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.sabre.oss.conf4j.converter.composite;
 
 import org.junit.Test;
@@ -103,7 +104,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseClosingMapOnEmptyBuilder() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> new ObjectBuilder().endMap(),
+                new ObjectBuilder()::endMap,
                 // then
                 IllegalStateException.class);
     }
@@ -112,7 +113,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseClosingListOnEmptyBuilder() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> new ObjectBuilder().endList(),
+                new ObjectBuilder()::endList,
                 // then
                 IllegalStateException.class);
     }
@@ -121,7 +122,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseClosingTopLevelMap() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> new ObjectBuilder().beginMap().endMap().endMap(),
+                new ObjectBuilder().beginMap().endMap()::endMap,
                 // then
                 IllegalStateException.class);
     }
@@ -130,7 +131,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseClosingTopLevelList() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> new ObjectBuilder().beginList().endList().endList(),
+                new ObjectBuilder().beginList().endList()::endList,
                 // then
                 IllegalStateException.class);
     }
@@ -139,7 +140,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseEndingObjectWhenArrayWasBegun() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> new ObjectBuilder().beginList().endMap(),
+                new ObjectBuilder().beginList()::endMap,
                 // then
                 IllegalStateException.class);
     }
@@ -148,7 +149,7 @@ public class ObjectBuilderTest {
     public void shouldFailInCaseEndingArrayWhenObjectWasBegun() {
         assertThatThrowExceptionOfType(
                 // when
-                () -> new ObjectBuilder().beginMap().endList(),
+                new ObjectBuilder().beginMap()::endList,
                 // then
                 IllegalStateException.class);
     }

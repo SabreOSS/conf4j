@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.sabre.oss.conf4j.converter.xml.model;
 
 import javax.xml.bind.annotation.*;

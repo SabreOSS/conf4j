@@ -112,11 +112,11 @@ public class CachingTypeConverterTest {
 
         converter.afterPropertiesSet();
 
-        Long val10_1 = converter.fromString(Long.class, "10");
-        Long val10_2 = converter.fromString(Long.class, "10");
+        Long val10a = converter.fromString(Long.class, "10");
+        Long val10b = converter.fromString(Long.class, "10");
 
-        assertThat(val10_1).isEqualTo(10L);
-        assertThat(val10_2).isSameAs(val10_1);
+        assertThat(val10a).isEqualTo(10L);
+        assertThat(val10b).isSameAs(val10a);
 
         assertThat(converter.fromString(Long.class, "20")).isEqualTo(20L);
 

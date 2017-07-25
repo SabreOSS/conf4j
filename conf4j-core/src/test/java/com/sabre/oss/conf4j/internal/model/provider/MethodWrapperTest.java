@@ -39,12 +39,14 @@ public class MethodWrapperTest {
                 return 0;
             }
         }
+
         class B extends A {
             @Override
             public int x() {
                 return 1;
             }
         }
+
         MethodWrapper m1 = new MethodWrapper(findMethod(A.class, "x"));
         MethodWrapper m2 = new MethodWrapper(findMethod(B.class, "x"));
 
@@ -63,12 +65,14 @@ public class MethodWrapperTest {
                 return this;
             }
         }
+
         class B extends A {
             @Override
             public B x() {
                 return this;
             }
         }
+
         MethodWrapper m1 = new MethodWrapper(findMethod(A.class, "x"));
         MethodWrapper m2 = new MethodWrapper(findMethod(B.class, "x"));
 
@@ -86,11 +90,13 @@ public class MethodWrapperTest {
             public void x() {
             }
         }
+
         class B extends A {
             @Override
             public void x() {
             }
         }
+
         MethodWrapper m1 = new MethodWrapper(findMethod(A.class, "x"));
         MethodWrapper m2 = new MethodWrapper(findMethod(B.class, "x"));
 
@@ -108,10 +114,12 @@ public class MethodWrapperTest {
             public void a() {
             }
         }
+
         class B extends A {
             public void b() {
             }
         }
+
         MethodWrapper m1 = new MethodWrapper(findMethod(A.class, "a"));
         MethodWrapper m2 = new MethodWrapper(findMethod(B.class, "b"));
 
@@ -129,10 +137,12 @@ public class MethodWrapperTest {
             public void x() {
             }
         }
+
         class B extends A {
             public void x(int x) {
             }
         }
+
         MethodWrapper m1 = new MethodWrapper(findMethod(A.class, "x"));
         MethodWrapper m2 = new MethodWrapper(findMethod(B.class, "x", int.class));
 

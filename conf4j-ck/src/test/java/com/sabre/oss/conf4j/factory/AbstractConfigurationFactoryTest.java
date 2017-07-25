@@ -266,12 +266,12 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
         assertThat(configInstance.getName()).isEqualTo("defaultName");
         assertThat(configInstance.getDescription()).isNull();
         assertThat(configInstance.getSubComponents()).hasSize(3);
-        assertThat(configInstance.getSubComponents().get(0).getPropertyA()).isEqualTo("A0"); // default from the list
-        assertThat(configInstance.getSubComponents().get(0).getPropertyB()).isEqualTo("B0"); // default from the list
-        assertThat(configInstance.getSubComponents().get(1).getPropertyA()).isEqualTo("A");  // default for property
-        assertThat(configInstance.getSubComponents().get(1).getPropertyB()).isEqualTo("B1"); // default from the list
-        assertThat(configInstance.getSubComponents().get(2).getPropertyA()).isEqualTo("A2+");// value from source
-        assertThat(configInstance.getSubComponents().get(2).getPropertyB()).isEqualTo("B");  // default for property
+        assertThat(configInstance.getSubComponents().get(0).getPropertyA()).isEqualTo("A0");  // default from the list
+        assertThat(configInstance.getSubComponents().get(0).getPropertyB()).isEqualTo("B0");  // default from the list
+        assertThat(configInstance.getSubComponents().get(1).getPropertyA()).isEqualTo("A");   // default for property
+        assertThat(configInstance.getSubComponents().get(1).getPropertyB()).isEqualTo("B1");  // default from the list
+        assertThat(configInstance.getSubComponents().get(2).getPropertyA()).isEqualTo("A2+"); // value from source
+        assertThat(configInstance.getSubComponents().get(2).getPropertyB()).isEqualTo("B");   // default for property
     }
 
     @Test
@@ -323,46 +323,46 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
         assertThat(defaultComponent.getName()).isEqualTo("N+");                                // value from source (prefix: overridden)
         assertThat(defaultComponent.getDescription()).isEqualTo("D+");                         // value from source (prefix: default)
         assertThat(defaultComponent.getSubComponents().size()).isEqualTo(3);
-        assertThat(defaultComponent.getSubComponents().get(0).getPropertyA()).isEqualTo("A0+");// value from source
-        assertThat(defaultComponent.getSubComponents().get(0).getPropertyB()).isEqualTo("B0"); // value from source
-        assertThat(defaultComponent.getSubComponents().get(1).getPropertyA()).isEqualTo("A");  // default for property
-        assertThat(defaultComponent.getSubComponents().get(1).getPropertyB()).isEqualTo("B1"); // default from the list
-        assertThat(defaultComponent.getSubComponents().get(2).getPropertyA()).isEqualTo("A2+");// value from source
-        assertThat(defaultComponent.getSubComponents().get(2).getPropertyB()).isEqualTo("B2+");// value from source
+        assertThat(defaultComponent.getSubComponents().get(0).getPropertyA()).isEqualTo("A0+"); // value from source
+        assertThat(defaultComponent.getSubComponents().get(0).getPropertyB()).isEqualTo("B0");  // value from source
+        assertThat(defaultComponent.getSubComponents().get(1).getPropertyA()).isEqualTo("A");   // default for property
+        assertThat(defaultComponent.getSubComponents().get(1).getPropertyB()).isEqualTo("B1");  // default from the list
+        assertThat(defaultComponent.getSubComponents().get(2).getPropertyA()).isEqualTo("A2+"); // value from source
+        assertThat(defaultComponent.getSubComponents().get(2).getPropertyB()).isEqualTo("B2+"); // value from source
 
         Component overriddenComponent = configInstance.getOverriddenComponent();
         assertThat(overriddenComponent.getName()).isEqualTo("N-");                               // value from source (prefix: overridden)
         assertThat(overriddenComponent.getDescription()).isEqualTo("D-");                        // value from source (prefix: overridden)
         assertThat(overriddenComponent.getSubComponents().size()).isEqualTo(4);
-        assertThat(overriddenComponent.getSubComponents().get(0).getPropertyA()).isEqualTo("A0+");// value from source (prefix: default)
-        assertThat(overriddenComponent.getSubComponents().get(0).getPropertyB()).isEqualTo("B0"); // value from source (prefix: default)
-        assertThat(overriddenComponent.getSubComponents().get(1).getPropertyA()).isEqualTo("A");  // default for property
-        assertThat(overriddenComponent.getSubComponents().get(1).getPropertyB()).isEqualTo("B1"); // default from the list
-        assertThat(overriddenComponent.getSubComponents().get(2).getPropertyA()).isEqualTo("A2+");// value from source (prefix: default)
-        assertThat(overriddenComponent.getSubComponents().get(2).getPropertyB()).isEqualTo("B2-");// value from source (prefix: overridden)
-        assertThat(overriddenComponent.getSubComponents().get(3).getPropertyA()).isEqualTo("A3-");// value from source (prefix: overridden)
-        assertThat(overriddenComponent.getSubComponents().get(3).getPropertyB()).isEqualTo("B");  // default for property
+        assertThat(overriddenComponent.getSubComponents().get(0).getPropertyA()).isEqualTo("A0+"); // value from source (prefix: default)
+        assertThat(overriddenComponent.getSubComponents().get(0).getPropertyB()).isEqualTo("B0");  // value from source (prefix: default)
+        assertThat(overriddenComponent.getSubComponents().get(1).getPropertyA()).isEqualTo("A");   // default for property
+        assertThat(overriddenComponent.getSubComponents().get(1).getPropertyB()).isEqualTo("B1");  // default from the list
+        assertThat(overriddenComponent.getSubComponents().get(2).getPropertyA()).isEqualTo("A2+"); // value from source (prefix: default)
+        assertThat(overriddenComponent.getSubComponents().get(2).getPropertyB()).isEqualTo("B2-"); // value from source (prefix: overridden)
+        assertThat(overriddenComponent.getSubComponents().get(3).getPropertyA()).isEqualTo("A3-"); // value from source (prefix: overridden)
+        assertThat(overriddenComponent.getSubComponents().get(3).getPropertyB()).isEqualTo("B");   // default for property
 
         List<Component> overriddenListOfComponents = configInstance.getOverriddenListOfComponents();
         assertThat(overriddenListOfComponents.size()).isEqualTo(2);
 
         Component giveConfigurationA = overriddenListOfComponents.get(0); // the same as default component
         assertThat(giveConfigurationA.getSubComponents().size()).isEqualTo(3);
-        assertThat(giveConfigurationA.getSubComponents().get(0).getPropertyA()).isEqualTo("A0+");// value from source
-        assertThat(giveConfigurationA.getSubComponents().get(0).getPropertyB()).isEqualTo("B0"); // value from source
-        assertThat(giveConfigurationA.getSubComponents().get(1).getPropertyA()).isEqualTo("A");  // default for property
-        assertThat(giveConfigurationA.getSubComponents().get(1).getPropertyB()).isEqualTo("B1"); // default from the list
-        assertThat(giveConfigurationA.getSubComponents().get(2).getPropertyA()).isEqualTo("A2+");// value from source
-        assertThat(giveConfigurationA.getSubComponents().get(2).getPropertyB()).isEqualTo("B2+");// value from source
+        assertThat(giveConfigurationA.getSubComponents().get(0).getPropertyA()).isEqualTo("A0+"); // value from source
+        assertThat(giveConfigurationA.getSubComponents().get(0).getPropertyB()).isEqualTo("B0");  // value from source
+        assertThat(giveConfigurationA.getSubComponents().get(1).getPropertyA()).isEqualTo("A");   // default for property
+        assertThat(giveConfigurationA.getSubComponents().get(1).getPropertyB()).isEqualTo("B1");  // default from the list
+        assertThat(giveConfigurationA.getSubComponents().get(2).getPropertyA()).isEqualTo("A2+"); // value from source
+        assertThat(giveConfigurationA.getSubComponents().get(2).getPropertyB()).isEqualTo("B2+"); // value from source
 
         Component giveConfigurationB = overriddenListOfComponents.get(1); // a simple change in component to the default component
         assertThat(giveConfigurationB.getSubComponents().size()).isEqualTo(3);
-        assertThat(giveConfigurationB.getSubComponents().get(0).getPropertyA()).isEqualTo("A0+");// value from source
-        assertThat(giveConfigurationB.getSubComponents().get(0).getPropertyB()).isEqualTo("B0"); // value from source
-        assertThat(giveConfigurationB.getSubComponents().get(1).getPropertyA()).isEqualTo("A");  // default for property
-        assertThat(giveConfigurationB.getSubComponents().get(1).getPropertyB()).isEqualTo("B1"); // default from the list
-        assertThat(giveConfigurationB.getSubComponents().get(2).getPropertyA()).isEqualTo("A2+");// value from source
-        assertThat(giveConfigurationB.getSubComponents().get(2).getPropertyB()).isEqualTo("B2+-");// value from source - the difference
+        assertThat(giveConfigurationB.getSubComponents().get(0).getPropertyA()).isEqualTo("A0+"); // value from source
+        assertThat(giveConfigurationB.getSubComponents().get(0).getPropertyB()).isEqualTo("B0");  // value from source
+        assertThat(giveConfigurationB.getSubComponents().get(1).getPropertyA()).isEqualTo("A");   // default for property
+        assertThat(giveConfigurationB.getSubComponents().get(1).getPropertyB()).isEqualTo("B1");  // default from the list
+        assertThat(giveConfigurationB.getSubComponents().get(2).getPropertyA()).isEqualTo("A2+"); // value from source
+        assertThat(giveConfigurationB.getSubComponents().get(2).getPropertyB()).isEqualTo("B2+-"); // value from source - the difference
     }
 
     @Test
