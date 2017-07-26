@@ -33,65 +33,42 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>conf4j</name>
+    <description>conf4j is a library that simplify configuration access via object to configuration mapping</description>
+    <url>https://github.com/SabreOSS/conf4j</url>
+    <inceptionYear>2017</inceptionYear>
     <organization>
-        <name>Sabre Corporation</name>
+        <name>Sabre GLBL Inc.</name>
         <url>http://www.sabre.com/</url>
     </organization>
-
-    <inceptionYear>2017</inceptionYear>
-
     <licenses>
         <license>
-            <name>MIT</name>
+            <name>MIT License</name>
             <url>https://opensource.org/licenses/MIT</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jackson.version>2.8.0</jackson.version>
-        <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
-        <spring.version>4.3.9.RELEASE</spring.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <log4j.version>2.8.2</log4j.version>
-    </properties>
-
-    <url>http://git.sabre.com/scm/oss/conf4j.git</url>
-
-    <scm>
-        <url>http://git.sabre.com/scm/oss/conf4j.git</url>
-        <developerConnection>scm:git:ssh://git@git.sabre.com/oss/conf4j.git</developerConnection>
-        <connection>scm:git:ssh://git@git.sabre.com/oss/conf4j.git</connection>
-        <tag>HEAD</tag>
-    </scm>
-
-    <ciManagement>
-        <url>
-            http://teamcity.dev.sabre.com/viewType.html?buildTypeId=CtoSadEre_EnterpriseRulesEngineCpOssConf4jPrecommit
-        </url>
-        <system>teamcity</system>
-    </ciManagement>
-
-    <issueManagement>
-        <url>https://jira.sabre.com/browse/conf4j</url>
-        <system>jira</system>
-    </issueManagement>
-
-    <distributionManagement>
-        <repository>
-            <id>upload</id>
-            <url>http://maven.sabre.com/content/repositories/releases</url>
-            <layout>default</layout>
-        </repository>
-        <snapshotRepository>
-            <id>upload</id>
-            <url>http://maven.sabre.com/content/repositories/snapshots</url>
-            <layout>default</layout>
-            <uniqueVersion>true</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
+    <developers>
+        <developer>
+            <name>Grzegorz Trybala</name>
+            <email>Grzegorz.Trybala at sabre.com</email>
+            <organization>Sabre GLBL Inc.</organization>
+            <organizationUrl>http://www.sabre.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Norbert Wnuk</name>
+            <email>Norbert.Wnuk at sabre.com</email>
+            <organization>Sabre GLBL Inc.</organization>
+            <organizationUrl>http://www.sabre.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Krzysztof Kucap</name>
+            <email>Krzysztof.Kucap at sabre.com</email>
+            <organization>Sabre GLBL Inc.</organization>
+            <organizationUrl>http://www.sabre.com</organizationUrl>
+        </developer>
+    </developers>
 
     <modules>
         <module>conf4j-build-tools</module>
@@ -104,6 +81,32 @@
         <module>conf4j-jmh</module>
         <module>conf4j-examples</module>
     </modules>
+
+    <scm>
+        <connection>scm:git:ssh://git@github.com/SabreOSS/conf4j.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/SabreOSS/conf4j.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://github.com/SabreOSS/conf4j/tree/master</url>
+    </scm>
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/SabreOSS/conf4j/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/SabreOSS/conf4j</url>
+    </ciManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <jackson.version>2.8.0</jackson.version>
+        <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
+        <spring.version>4.3.9.RELEASE</spring.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <log4j.version>2.8.2</log4j.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -277,13 +280,13 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
+                <scope>test</scope>
                 <exclusions>
                     <exclusion>
                         <groupId>com.fasterxml.jackson.core</groupId>
                         <artifactId>jackson-annotations</artifactId>
                     </exclusion>
                 </exclusions>
-                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -297,10 +300,10 @@
                     <executions>
                         <execution>
                             <id>enforce-dependencies</id>
-                            <phase>validate</phase>
                             <goals>
                                 <goal>enforce</goal>
                             </goals>
+                            <phase>validate</phase>
                             <configuration>
                                 <rules>
                                     <dependencyConvergence/>
@@ -391,10 +394,10 @@
                     </configuration>
                     <executions>
                         <execution>
-                            <phase>validate</phase>
                             <goals>
                                 <goal>check</goal>
                             </goals>
+                            <phase>validate</phase>
                         </execution>
                     </executions>
                 </plugin>
@@ -415,15 +418,38 @@
                     </dependencies>
                     <executions>
                         <execution>
-                            <phase>verify</phase>
                             <goals>
                                 <goal>check</goal>
                             </goals>
+                            <phase>verify</phase>
                             <configuration>
                                 <configLocation>checkstyle.xml</configLocation>
                                 <includeTestSourceDirectory>true</includeTestSourceDirectory>
                                 <excludes>**/generated/**/*</excludes>
                             </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.ekryd.sortpom</groupId>
+                    <artifactId>sortpom-maven-plugin</artifactId>
+                    <version>2.8.0</version>
+                    <configuration>
+                        <createBackupFile>false</createBackupFile>
+                        <expandEmptyElements>false</expandEmptyElements>
+                        <lineSeparator>\n</lineSeparator>
+                        <nrOfIndentSpace>4</nrOfIndentSpace>
+                        <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
+                        <sortPlugins>none</sortPlugins>
+                        <sortDependencies>none</sortDependencies>
+                        <verifyFail>Stop</verifyFail>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                            <phase>validate</phase>
                         </execution>
                     </executions>
                 </plugin>
@@ -443,6 +469,10 @@
             </plugin>
             <plugin>
                 <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.github.ekryd.sortpom</groupId>
+                <artifactId>sortpom-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
