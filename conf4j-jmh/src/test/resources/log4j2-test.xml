@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
+  MIT License
+
   Copyright 2017 Sabre GLBL Inc.
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,7 +22,7 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
--->
+  -->
 
 <Configuration status="WARN">
     <Appenders>
@@ -28,4 +30,10 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
     </Appenders>
+    <Loggers>
+        <Logger name="com.sabre.oss.conf4j" level="debug"/>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
 </Configuration>

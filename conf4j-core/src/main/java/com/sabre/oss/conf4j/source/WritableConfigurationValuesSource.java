@@ -1,4 +1,6 @@
 /*
+ * MIT License
+ *
  * Copyright 2017 Sabre GLBL Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
