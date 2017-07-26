@@ -56,7 +56,7 @@ or _com.sabre.oss:conf4j-spring_ (if you wish to integrate the library with _Spr
 _Maven_
 ```xml
 <dependency>
-  <groupId>com.sabre.oss</groupId>
+  <groupId>com.sabre.oss.conf4j</groupId>
   <artifactId>conf4j-core</artifactId>
   <version>${conf4j.version}</version>
 </dependency>
@@ -156,7 +156,7 @@ First of all add dependency to `com.sabre.oss::conf4j-spring` module to your pro
 
 ```xml
 <dependency>
-  <groupId>com.sabre.oss</groupId>
+  <groupId>com.sabre.oss.conf4j</groupId>
   <artifactId>conf4j-spring</artifactId>
   <version>${conf4j.version}</version>
 </dependency>
@@ -516,7 +516,7 @@ First of all add dependency to `com.sabre.oss::conf4j-spring` module to your pro
 _Maven_
 ```xml
 <dependency>
-  <groupId>com.sabre.oss</groupId>
+  <groupId>com.sabre.oss.conf4j</groupId>
   <artifactId>conf4j-spring</artifactId>
   <version>${conf4j.version}</version>
 </dependency>
@@ -620,7 +620,7 @@ is provided in the `com.sabre.oss::conf4j-javassist` module. If you would like t
 _Maven_
 ```xml
 <dependency>
-  <groupId>com.sabre.oss</groupId>
+  <groupId>com.sabre.oss.conf4j</groupId>
   <artifactId>conf4j-javassist</artifactId>
   <version>${conf4j.version}</version>
 </dependency>
@@ -695,7 +695,7 @@ To activate it, just add dependency to `com.sabre.oss:conf4j-spring-boot` module
 _Maven_
 ```xml
 <dependency>
-  <groupId>com.sabre.oss</groupId>
+  <groupId>com.sabre.oss.conf4j</groupId>
   <artifactId>conf4j-spring-boot</artifactId>
   <version>${conf4j.version}</version>
 </dependency>
