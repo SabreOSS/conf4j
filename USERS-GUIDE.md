@@ -704,7 +704,7 @@ _Maven_
 _Gradle_
 ```groovy
 dependencies {
-  compile "com.sabre.oss:conf4j-javassist:$conf4jVersion"
+  compile "com.sabre.oss:conf4j-spring-boot:$conf4jVersion"
 }
 ```
 

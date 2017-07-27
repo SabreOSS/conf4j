@@ -26,57 +26,58 @@
 
 [![Build Status](https://travis-ci.org/SabreOSS/conf4j.svg?branch=master)](https://travis-ci.org/SabreOSS/conf4j)
 
-__conf4j__ is a library that allows building object-oriented, type safe configurations.
+__conf4j__ is a library which allows access to configuration data in object-oriented, type-safe manner.
 
-_Configuration_ is represented as an interface or abstract class optionally annotated with _conf4j_ annotations.
+In _conf4j_ configuration is represented as an interface or abstract class optionally annotated with _conf4j_ annotations.
 
 ```java
+@Key("connection")
 public interface ConnectionConfiguration {
-   @Key
    String getUrl();
 
-   TimeoutConfiguration getTimeouts();
-}
+   @DefaultValue("60")
+   int getConnectionTimeout();
 
-public interface TimeoutConfiguration {
-    @Key
-    @DefaultValue("60")
-    int getConnectionTimeout();
-
-    @Key
-    @DefaultValue("30")
-    int getReadTimeout();
+   @DefaultValue("30")
+   int getReadTimeout();
 }
 ```
 
-Then a configuration type instance must be created and attached to a _value source_ using a _configuration factory_.
+Then a configuration instance is created and bound to the _value source_ by the _configuration factory_.
 
 ```java
-ConfigurationValuesSource valuesSource = new PropertiesConfigurationValuesSource("configuration.properties");
-ConfigurationFactory configurationFactory = new JdkProxyStaticConfigurationFactory();
-ConnectionConfiguration configuration = configurationFactory.createConfiguration(ConnectionConfiguration.class, valuesSource);
+ConfigurationValuesSource source = new PropertiesConfigurationValuesSource("configuration.properties");
+ConfigurationFactory factory = new JdkProxyStaticConfigurationFactory();
+ConnectionConfiguration configuration = factory.createConfiguration(ConnectionConfiguration.class, source);
 ```
 
 Once the configuration instance is created you can access the configuration values via getters:
 
 ```java
-String url = configuration.getUrl();
-int connectionTimeout = configuration.getTimeouts().getConnectionTimeout();
+String url =  configuration.getUrl();
+int connectionTimeout = configuration.getConnectionTimeout();
 ```
 
-For more details how to use _conf4j_ please read [Conf4j User's Guide](USERS-GUIDE.md)
-and check [cmm-examples](conf4j-examples) directory.
+Example _configuration.properties_ is as follows:
+
+```properties
+connection.url=https://github.com/SabreOss/conf4j
+connection.connectionTimeout=45
+```
+
+For more information how to use _conf4j_ please read [Conf4j User's Guide](USERS-GUIDE.md)
+and check [conf4j-examples](conf4j-examples) directory.
 
 ## Contributing
 
-We accept pull request via _GitHub_. There are some guidelines which will make applying PRs easier for us:
+We accept pull request via _GitHub_. Here are some guidelines which will make applying PRs easier for us:
 
 * No tabs. Please use spaces for indentation.
 * Respect the code style.
 * Create minimal diffs - disable on save actions like reformat source code or organize imports.
   If you feel the source code should be reformatted create a separate PR for this change.
-* Provide _JUnit_ tests for your changes and make sure your changes don't break any existing tests by running
-  `mvn clean test`.
+* Provide _JUnit_ tests for your changes and make sure they don't break anything by running
+  `mvn clean verify`.
 
 See [CONTRIBUTING](CONTRIBUTING.md) document for more details.
 
