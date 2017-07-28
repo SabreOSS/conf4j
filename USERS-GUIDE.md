@@ -34,7 +34,7 @@
 
 ## Overview
 
-__conf4j__ is a library that allows building object-oriented, type safe configurations.
+__conf4j__ is a library which allows accessing configuration data in object-oriented, type-safe manner.
 
 _Configuration_ is represented as an interface or abstract class optionally annotated with _conf4j_ annotations.
 
@@ -173,7 +173,7 @@ public interface ConnectionConfiguration {
 }
 ```
 
-Assuming you would like to use annotation-based configuration, use `@EnableConf4` in your configuration class
+Assuming you would like to use annotation-based configuration, use `@EnableConf4j` in your configuration class
 and search for configurations with `@ConfigurationsScan` as shown below.
 
 ```java
@@ -243,7 +243,7 @@ _conf4j_ provides three configuration factory families:
   [Javassist](http://jboss-javassist.github.io/javassist) to generate configuration implementations on the fly.
 * `CglibStaticConfigurationFactory` and `CglibDynamicConfigurationFactory` use [CGLIB](https://github.com/cglib/cglib/wiki)
   (to be precise - CGLIB repackaged version provided by _Spring Framework_). These factories are available only
-  whey you use _conf4j_ integration with _Spring Framework_.
+  when you use _conf4j_ integration with _Spring Framework_.
 
 ## Configuration Keys
 
@@ -533,7 +533,7 @@ used simultaneously.
 
 ### XML Schema-based Configuration
 
-_conf4j_ provides custom configuration schema `http://www.sabre.com/schema/oss/conf4j` which exposes two custom tags:
+_conf4j_ provides custom configuration schema `http://www.sabre.com/schema/oss/conf4j` which exposes three custom tags:
 `<conf4j:configure/>`, `<conf4j:configuration/>` and `<conf4j:configuration-scan/>`.
 
 `<conf4j:configure/>` is used for activating _conf4j_ integration with _Spring Framework_. It registers several infrastructure
@@ -605,7 +605,7 @@ from the database) just declare own bean or an alias with `com.sabre.oss.conf4j.
 
 In general, all _conf4j_ specific bean can be overridden this way.
 
-The bean `com.sabre.oss.conf4j.typeConverter` is uses for converting string representation of the values to appropriate type.
+The bean `com.sabre.oss.conf4j.typeConverter` is used for converting string representation of the values to appropriate type.
 By default _conf4j_ registers converter provided by `DefaultTypeConverters.getDefaultTypeConverter()`. This converter
 is able to convert all primitive types (and they object counterparts), enumerations any combination of List and Map
 e.g. `Map<String, List<Integer>>`.
@@ -638,7 +638,7 @@ dependencies {
 
 ### Annotation-based Configuration
 
-_conf4_ provides following annotations which can be used with _Spring Framework_ and _Spring Boot_:
+_conf4_ provides the following annotations which can be used with _Spring Framework_ and _Spring Boot_:
 `@EnableConf4j`, `@ConfigurationScan`, `@ConfigurationType`.
 
 The `@EnableConf4j` enables _conf4j_ integration and works as `<conf4j:configure/>` tag.
@@ -647,9 +647,9 @@ The `@ConfigurationScan` scans for the configuration types and its functionality
 
 The `@ConfigurationType` registers in the context a bean for the configuration type and its functionality is very similar to `<conf4j:configuration>` tag.
 
-_conf4j_ annotations can be used in _Spring Framework_ configurations classes - classes annotated, or meta-annotated with `@Configuration`.
+_conf4j_ annotations can be used in _Spring Framework_ configurations classes, i.e. classes annotated or meta-annotated with `@Configuration`.
 
-Following example shows how to use `@ConfigurationScan` to find all configuration classes in the package (and sub-packages).
+The following example shows how to use `@ConfigurationScan` to find all configuration classes in the package (and sub-packages).
 
 ```java
 @Configuration

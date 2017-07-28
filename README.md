@@ -26,7 +26,7 @@
 
 [![Build Status](https://travis-ci.org/SabreOSS/conf4j.svg?branch=master)](https://travis-ci.org/SabreOSS/conf4j)
 
-__conf4j__ is a library which allows access to configuration data in object-oriented, type-safe manner.
+__conf4j__ is a library which allows accessing configuration data in object-oriented, type-safe manner.
 
 In _conf4j_ configuration is represented as an interface or abstract class optionally annotated with _conf4j_ annotations.
 
