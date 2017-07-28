@@ -50,8 +50,8 @@ _Configuration_ is represented as an interface or abstract class optionally anno
 
 ## Getting Started
 
-To start playing with _conf4j_ just add the dependency to _com.sabre.oss:conf4j-core_
-or _com.sabre.oss:conf4j-spring_ (if you wish to integrate the library with _Spring Framework_).
+To start playing with _conf4j_ just add the dependency to _com.sabre.oss.conf4j:conf4j-core_
+or _com.sabre.oss.conf4j:conf4j-spring_ (if you wish to integrate the library with _Spring Framework_).
 
 _Maven_
 ```xml
@@ -65,7 +65,7 @@ _Maven_
 _Gradle_
 ```groovy
 dependencies {
-  compile "com.sabre.oss:conf4j-core:$conf4jVersion"
+  compile "com.sabre.oss.conf4j:conf4j-core:$conf4jVersion"
 }
 ```
 
@@ -76,7 +76,6 @@ In _conf4j_, a configuration is expressed as a public interface or public abstra
 
 ```java
 public interface ConnectionConfiguration {
-   @Key
    String getUrl();
 
    TimeoutConfiguration getTimeouts();
@@ -114,13 +113,13 @@ as shown below.
 
 ```java
 // Create values source from the property file.
-ConfigurationValuesSource valuesSource = new PropertiesConfigurationValuesSource("configuration.properties");
+ConfigurationValuesSource source = new PropertiesConfigurationValuesSource("configuration.properties");
 
 // Create configuration factory - it is thread safe.
-ConfigurationFactory configurationFactory = new JdkProxyStaticConfigurationFactory();
+ConfigurationFactory factory = new JdkProxyStaticConfigurationFactory();
 
 // Create configuration instance and bind it to the values source.
-ConnectionConfiguration configuration = configurationFactory.createConfiguration(ConnectionConfiguration.class, valuesSource);
+ConnectionConfiguration configuration = factory.createConfiguration(ConnectionConfiguration.class, source);
 
 // Now you can access configuration properties via configuration object.
 String url = configuration.getUrl();
@@ -152,7 +151,7 @@ For details, see the [Type Converters](#type-converters) section.
 _conf4j_ provides out of the box integration with [Spring Framework](https://projects.spring.io/spring-framework)
 and [Spring Boot](http://projects.spring.io/spring-boot) application frameworks.
 
-First of all add dependency to `com.sabre.oss::conf4j-spring` module to your project.
+First of all add dependency to `com.sabre.oss.conf4j:conf4j-spring` module to your project.
 
 ```xml
 <dependency>
@@ -185,7 +184,7 @@ public class Application {
     private ConnectionConfiguration connectionConfiguration;
 
     public static void main(String[] args) {
-        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class)) {
+        try (ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(Application.class)) {
             Application application = context.getBean(Application.class);
             application.run();
         }
@@ -215,7 +214,7 @@ The `ConfigurationFactory` interface specifies how the configuration type is ins
 to the `ConfigurationValuesSource`. It takes a configuration type and _values source_ and creates a configuration instance.
 
 ```java
-ConnectionConfiguration configuration = factory.createConfiguration(ConnectionConfiguration.class, valuesSource);
+ConnectionConfiguration configuration = factory.createConfiguration(ConnectionConfiguration.class, source);
 ```
 
 How a configuration instance is generated depends on the configuration factory implementation.
@@ -511,7 +510,7 @@ public interface SomeConfiguration extends AbstractExoticConfiguration<String, I
 ## Spring Framework Integration
 
 _conf4j_ provides out of the box integration with [Spring Framework](https://projects.spring.io/spring-framework)
-First of all add dependency to `com.sabre.oss::conf4j-spring` module to your project.
+First of all add dependency to `com.sabre.oss.conf4j:conf4j-spring` module to your project.
 
 _Maven_
 ```xml
@@ -525,7 +524,7 @@ _Maven_
 _Gradle_
 ```groovy
 dependencies {
-  compile "com.sabre.oss:conf4j-spring:$conf4jVersion"
+  compile "com.sabre.oss.conf4j:conf4j-spring:$conf4jVersion"
 }
 ```
 
@@ -546,7 +545,8 @@ This tag expects one attribute `class` which specifies fully qualified name of t
 possible to specify the bean name using `id` attribute (by default fully qualified class name is used).
 
 ```xml
-<conf4j:configuration class="com.your.organization.configuration.package.ConnectionConfiguration"/>
+<conf4j:configuration
+    class="com.your.organization.configuration.package.ConnectionConfiguration"/>
 ```
 
 `<conf4:configuration-scan>` is very similar to `<context:component-scan/>` provided by _Spring Framework_.
@@ -556,8 +556,9 @@ annotated (or meta-annotated) by `@Component` annotation provided by _Spring Fra
 use your own annotation (or annotations), just specify it by `configuration-annotations` attribute.
 
 ```xml
-<conf4j:configuration-scan base-package="com.your.organization.configuration.package"
-                        configuration-annotations="com.your.organization.ConfigurationAnnotation"/>
+<conf4j:configuration-scan
+    base-package="com.your.organization.configuration.package"
+    configuration-annotations="com.your.organization.ConfigurationAnnotation"/>
 ```
 
 `<conf4:configuration-scan>` supports filtering via `include-filter` and `exclude-filter` elements exactly the same way
@@ -567,7 +568,8 @@ The example below shows how to use `<conf4j:configure/>` and `<conf4:configurati
 and register all configuration types from _com.your.organization.configuration.package_ in the the context.
 
 ```xml
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:conf4j="http://www.sabre.com/schema/oss/conf4j"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -595,7 +597,8 @@ If you would like to provide your own implementation of `ConfigurationValuesSour
 from the database) just declare own bean or an alias with `com.sabre.oss.conf4j.configurationValuesSource` name.
 
 ```xml
-<bean id="com.sabre.oss.conf4j.configurationValuesSource" class="com.your.organization.CustomConfigurationValuesSource">
+<bean id="com.sabre.oss.conf4j.configurationValuesSource"
+      class="com.your.organization.CustomConfigurationValuesSource">
   <!-- ... -->
 </bean>
 ```
@@ -614,7 +617,7 @@ an additional dependency on the classpath, CGLIB based implementation is used (t
 available with _Spring Framework_ is used).
 
 `JavassistDynamicConfigurationFactory` (and its static counterpart `JavassistStaticConfigurationFactory`) implementation
-is provided in the `com.sabre.oss::conf4j-javassist` module. If you would like to use it instead of
+is provided in the `com.sabre.oss.conf4j:conf4j-javassist` module. If you would like to use it instead of
 `CglibDynamicConfigurationFactory`, make this dependency is included in your project.
 
 _Maven_
@@ -629,7 +632,7 @@ _Maven_
 _Gradle_
 ```groovy
 dependencies {
-  compile "com.sabre.oss:conf4j-javassist:$conf4jVersion"
+  compile "com.sabre.oss.conf4j:conf4j-javassist:$conf4jVersion"
 }
 ```
 
@@ -690,7 +693,7 @@ public interface UserConfiguration {
 ## Spring Boot Integration
 
 _conf4j_ integrates with _Spring Boot_ via auto-configuration mechanism based on `org.springframework.boot.autoconfigure.EnableAutoConfiguration`.
-To activate it, just add dependency to `com.sabre.oss:conf4j-spring-boot` module:
+To activate it, just add dependency to `com.sabre.oss.conf4j:conf4j-spring-boot` module:
 
 _Maven_
 ```xml
@@ -704,7 +707,7 @@ _Maven_
 _Gradle_
 ```groovy
 dependencies {
-  compile "com.sabre.oss:conf4j-spring-boot:$conf4jVersion"
+  compile "com.sabre.oss.conf4j:conf4j-spring-boot:$conf4jVersion"
 }
 ```
 
@@ -739,4 +742,4 @@ public class SimpleBootApplication implements CommandLineRunner {
 }
 ```
 
-If you want to use _javassist_ based configuration factories, don't forget to add dependency to `com.sabre.oss:conf4j-javassist`.
+If you want to use _javassist_ based configuration factories, don't forget to add dependency to `com.sabre.oss.conf4j:conf4j-javassist`.
