@@ -85,4 +85,4 @@ See [CONTRIBUTING](CONTRIBUTING.md) document for more details.
 
 Copyright 2017 Sabre GLBL Inc.
 
-Code is under the [MIT license](LICENSE.txt).
+Code is under the [MIT license](LICENSE).
