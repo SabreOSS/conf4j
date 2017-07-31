@@ -25,6 +25,7 @@
 package com.sabre.oss.conf4j.source;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Provides read-only abstraction layer over the configuration source(s). Value source is a set
@@ -39,15 +40,6 @@ import java.util.Collection;
  * @see WritableConfigurationValuesSource
  */
 public interface ConfigurationValuesSource {
-    /**
-     * Return a value associated with a given key.
-     *
-     * @param key configuration key
-     * @return (non null) {@link OptionalValue} which holds configuration value. Use {@link OptionalValue#isPresent()}
-     * for checking if the {@code key} is present in the source.
-     * @throws NullPointerException when key is {@code null}.
-     */
-    OptionalValue<String> getValue(String key);
 
     /**
      * Return a value associated with a given key.
@@ -58,22 +50,7 @@ public interface ConfigurationValuesSource {
      * for checking if the {@code key} is present in the source.
      * @throws NullPointerException when key is {@code null}.
      */
-    default OptionalValue<String> getValue(String key, Attributes attributes) {
-        return this.getValue(key);
-    }
-
-    /**
-     * Returns first configuration value associated with the {@code keys}.
-     *
-     * @param keys collection of configuration keys which will be examined in order. It must be not {@code null}
-     *             nor contains {@code null} elements.
-     * @return configuration entry for the first key on the {@code keys} collection or {@code null}
-     * when value is not found.
-     * @throws NullPointerException when {@code keys} or any key in {@code keys} is {@code null}.
-     */
-    default ConfigurationEntry findEntry(Collection<String> keys) {
-        return ConfigurationValuesSourceUtils.findEntry(this, keys, null);
-    }
+    OptionalValue<String> getValue(String key, Map<String, String> attributes);
 
     /**
      * Returns first configuration value associated with the {@code keys}.
@@ -85,7 +62,7 @@ public interface ConfigurationValuesSource {
      * when value is not found.
      * @throws NullPointerException when {@code keys} or any key in {@code keys} is {@code null}.
      */
-    default ConfigurationEntry findEntry(Collection<String> keys, Attributes attributes) {
+    default ConfigurationEntry findEntry(Collection<String> keys, Map<String, String> attributes) {
         return ConfigurationValuesSourceUtils.findEntry(this, keys, attributes);
     }
 }

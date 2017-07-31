@@ -107,7 +107,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
     }
 
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         if (type instanceof ParameterizedType) {
@@ -117,12 +117,12 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
                 Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                 if (List.class.isAssignableFrom(rawType) && actualTypeArguments.length == 1) {
                     Type itemType = actualTypeArguments[0];
-                    return isApplicable(itemType) || innerTypeConverter.isApplicable(itemType);
+                    return isApplicable(itemType, attributes) || innerTypeConverter.isApplicable(itemType, null);
                 } else if (Map.class.isAssignableFrom(rawType) && actualTypeArguments.length == 2) {
                     Type keyType = actualTypeArguments[0];
                     Type valueType = actualTypeArguments[1];
-                    return (isApplicable(keyType) || innerTypeConverter.isApplicable(keyType))
-                            && (isApplicable(valueType) || innerTypeConverter.isApplicable(valueType));
+                    return (isApplicable(keyType, attributes) || innerTypeConverter.isApplicable(keyType, null))
+                            && (isApplicable(valueType, attributes) || innerTypeConverter.isApplicable(valueType, null));
                 }
             }
         }
@@ -131,7 +131,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Object fromString(Type type, String value) {
+    public Object fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         if (value == null) {
@@ -148,7 +148,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public String toString(Type type, Object value) {
+    public String toString(Type type, Object value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         if (value == null) {
@@ -318,7 +318,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
                     && COMPACT_JSON_EMPTY.equals(foundString.toString());
             builder.addValue(nullFound
                     ? null
-                    : innerTypeConverter.fromString(type, COMPACT_JSON_ESCAPER.unescape(emptyFound ? EMPTY_STRING : foundString)));
+                    : innerTypeConverter.fromString(type, COMPACT_JSON_ESCAPER.unescape(emptyFound ? EMPTY_STRING : foundString), null));
             return found - current;
         }
 
@@ -336,7 +336,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
                     "closing '\"'", current, value));
         }
         CharSequence foundString = value.subSequence(current + 1, found);
-        builder.addValue(innerTypeConverter.fromString(type, JSON_ESCAPER.unescape(foundString)));
+        builder.addValue(innerTypeConverter.fromString(type, JSON_ESCAPER.unescape(foundString), null));
         return found - current + 1;
     }
 
@@ -435,14 +435,14 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
 
         // Not a List/Map, treated as a string literal
         if (compactMode) {
-            String valueStr = innerTypeConverter.toString(type, value);
+            String valueStr = innerTypeConverter.toString(type, value, null);
             return out.append(encodeCompactEmptyString && EMPTY_STRING.equals(valueStr)
                     ? COMPACT_JSON_EMPTY
                     : COMPACT_JSON_ESCAPER.escape(valueStr));
         }
         return out
                 .append(DOUBLE_QUOTE)
-                .append(JSON_ESCAPER.escape(innerTypeConverter.toString(type, value)))
+                .append(JSON_ESCAPER.escape(innerTypeConverter.toString(type, value, null)))
                 .append(DOUBLE_QUOTE);
     }
 }

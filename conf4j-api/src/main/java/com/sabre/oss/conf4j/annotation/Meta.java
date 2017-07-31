@@ -106,7 +106,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * The value is defined by the custom annotation attribute.
  * The custom annotation must define exactly one attribute and its type cannot be <em>Class</em>, <em>array</em>
  * nor <em>another annotation</em>. In most cases the type is {@code String}, but enumerations and primitive types
- * like {@code boolean} or {@code integer} are supported. {@code toString()} method is used to convert annotation's
+ * like {@code boolean} or {@code integer} are supported. {@code oString()} method is used to convert annotation's
  * attribute value to {@code String}.
  * </p>
  * <pre>

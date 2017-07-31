@@ -46,8 +46,8 @@ public class PropertySourceConfigurationValuesSourceTest extends AbstractJUnit4S
     @Test
     public void shouldResolvePropertyPlaceholdersSetWithCorrectOrder() {
         // then
-        assertThat(source.getValue("property.only.in.A")).isEqualTo(present("A"));
-        assertThat(source.getValue("property.only.in.B")).isEqualTo(present("B"));
-        assertThat(source.getValue("property.in.A.and.B")).isEqualTo(present("B"));
+        assertThat(source.getValue("property.only.in.A", null)).isEqualTo(present("A"));
+        assertThat(source.getValue("property.only.in.B", null)).isEqualTo(present("B"));
+        assertThat(source.getValue("property.in.A.and.B", null)).isEqualTo(present("B"));
     }
 }

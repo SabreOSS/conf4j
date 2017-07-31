@@ -29,7 +29,6 @@ import com.sabre.oss.conf4j.internal.config.ConfigurationValueProvider;
 import com.sabre.oss.conf4j.internal.config.PropertyMetadata;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.Attributes;
 import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
 
 import java.util.Map;
@@ -44,10 +43,10 @@ public abstract class AbstractStaticConfigurationInitializer extends AbstractCon
             KeyGenerator keyGenerator,
             String fallbackKeyPrefix,
             Map<String, String> defaultValues,
-            Attributes customAttributes,
+            Map<String, String> attributes,
             ConfigurationValueProvider configurationValueProvider) {
         super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
-                keyGenerator, fallbackKeyPrefix, defaultValues, customAttributes, configurationValueProvider);
+                keyGenerator, fallbackKeyPrefix, defaultValues, attributes, configurationValueProvider);
     }
 
     @Override

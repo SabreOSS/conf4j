@@ -27,6 +27,7 @@ package com.sabre.oss.conf4j.converter;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Arrays.asList;
@@ -39,7 +40,7 @@ import static org.apache.commons.lang3.Validate.noNullElements;
  */
 public class ChainedTypeConverter implements TypeConverter<Object> {
     private final List<TypeConverter<?>> converters;
-    private final Map<Type, TypeConverter<Object>> typeToConverter;
+    private final Map<Key, TypeConverter<Object>> typeToConverter;
 
     /**
      * Create a converter using {@code converters}.
@@ -67,35 +68,35 @@ public class ChainedTypeConverter implements TypeConverter<Object> {
     }
 
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return converterFor(type, false) != null;
+        return converterFor(type, attributes, false) != null;
     }
 
     @Override
-    public Object fromString(Type type, String value) {
+    public Object fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return converterFor(type).fromString(type, value);
+        return converterFor(type, attributes).fromString(type, value, attributes);
     }
 
     @Override
-    public String toString(Type type, Object value) {
+    public String toString(Type type, Object value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return converterFor(type).toString(type, value);
+        return converterFor(type, attributes).toString(type, value, attributes);
     }
 
-    private TypeConverter<Object> converterFor(Type type) {
-        return converterFor(type, true);
+    private TypeConverter<Object> converterFor(Type type, Map<String, String> attributes) {
+        return converterFor(type, attributes, true);
     }
 
     @SuppressWarnings("unchecked")
-    private TypeConverter<Object> converterFor(Type type, boolean exceptionIfNotFound) {
-        TypeConverter<Object> typeConverter = typeToConverter.computeIfAbsent(type, (t) -> {
+    private TypeConverter<Object> converterFor(Type type, Map<String, String> attributes, boolean exceptionIfNotFound) {
+        TypeConverter<Object> typeConverter = typeToConverter.computeIfAbsent(new Key(type, attributes), (k) -> {
             for (TypeConverter<?> converter : converters) {
-                if (converter.isApplicable(type)) {
+                if (converter.isApplicable(k.type, k.attributes)) {
                     return (TypeConverter<Object>) converter;
                 }
             }
@@ -107,5 +108,47 @@ public class ChainedTypeConverter implements TypeConverter<Object> {
         }
 
         throw new IllegalArgumentException("Don't know how to convert " + type);
+    }
+
+    private static final class Key {
+        private final Type type;
+        private final Map<String, String> attributes;
+
+        private Key(Type type, Map<String, String> attributes) {
+            this.type = type;
+            this.attributes = attributes;
+        }
+
+        public Type getType() {
+            return type;
+        }
+
+        public Map<String, String> getAttributes() {
+            return attributes;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Key key = (Key) o;
+
+            return Objects.equals(type, key.type) &&
+                    Objects.equals(attributes, key.attributes);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(type, attributes);
+        }
+
+        @Override
+        public String toString() {
+            return type + ": " + attributes;
+        }
     }
 }

@@ -40,7 +40,7 @@ public class PeriodTypeConverterTest {
         // given
         Period period = Period.ofDays(123);
         // when
-        Period readPeriod = converter.fromString(Period.class, "P123D");
+        Period readPeriod = converter.fromString(Period.class, "P123D", null);
         // then
         assertThat(readPeriod).isEqualTo(period);
     }
@@ -50,7 +50,7 @@ public class PeriodTypeConverterTest {
         // given
         Period period = Period.ofDays(123);
         // when
-        String asString = converter.toString(Period.class, period);
+        String asString = converter.toString(Period.class, period, null);
         // then
         assertThat(asString).isEqualTo("P123D");
     }
@@ -60,7 +60,7 @@ public class PeriodTypeConverterTest {
         // given
         Type type = Period.class;
         // when
-        boolean isApplicable = converter.isApplicable(type);
+        boolean isApplicable = converter.isApplicable(type, null);
         // then
         assertThat(isApplicable).isTrue();
     }
@@ -68,7 +68,7 @@ public class PeriodTypeConverterTest {
     @Test
     public void shouldNotAcceptUnknownType() {
         // when
-        boolean isApplicable = converter.isApplicable(mock(Type.class));
+        boolean isApplicable = converter.isApplicable(mock(Type.class), null);
         // then
         assertThat(isApplicable).isFalse();
     }

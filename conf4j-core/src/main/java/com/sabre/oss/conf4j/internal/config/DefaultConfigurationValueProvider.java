@@ -32,6 +32,7 @@ import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
@@ -53,8 +54,9 @@ public class DefaultConfigurationValueProvider implements ConfigurationValueProv
         OptionalValue<String> value = absent();
         String resolvedKey = null;
 
+        Map<String, String> attributes = metadata.getAttributes();
         if (valuesSource != null) {
-            ConfigurationEntry configurationEntry = valuesSource.findEntry(metadata.getKeySet(), metadata.getCustomAttributes());
+            ConfigurationEntry configurationEntry = valuesSource.findEntry(metadata.getKeySet(), attributes);
             if (configurationEntry != null) {
                 resolvedKey = configurationEntry.getKey();
                 value = present(configurationEntry.getValue());
@@ -70,10 +72,10 @@ public class DefaultConfigurationValueProvider implements ConfigurationValueProv
             return absent();
         }
         String resolvedValue = value.get();
-        String val = applyProcessors(new ConfigurationValue(resolvedKey, resolvedValue, fromDefaultValue, metadata.getEncryptionProvider(), metadata.getCustomAttributes()));
+        String val = applyProcessors(new ConfigurationValue(resolvedKey, resolvedValue, fromDefaultValue, metadata.getEncryptionProvider(), attributes));
 
         TypeConverter<T> currentTypeConverter = defaultIfNull((TypeConverter<T>) metadata.getTypeConverter(), typeConverter);
-        return present(currentTypeConverter.fromString(metadata.getType(), val));
+        return present(currentTypeConverter.fromString(metadata.getType(), val, attributes));
     }
 
     private String applyProcessors(ConfigurationValue configurationValue) {

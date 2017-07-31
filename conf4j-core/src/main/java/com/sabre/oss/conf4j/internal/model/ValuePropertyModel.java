@@ -25,12 +25,12 @@
 package com.sabre.oss.conf4j.internal.model;
 
 import com.sabre.oss.conf4j.converter.TypeConverter;
-import com.sabre.oss.conf4j.source.Attributes;
 import com.sabre.oss.conf4j.source.OptionalValue;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
@@ -47,9 +47,9 @@ public class ValuePropertyModel extends PropertyModel {
             String propertyName, Type type, Class<?> declaredType, Method method, String description,
             List<String> keys, String fallbackKey, boolean resetPrefix, OptionalValue<String> defaultValue,
             String encryptionProviderName, Class<TypeConverter<?>> typeConverterClass,
-            Attributes customAttributes) {
+            Map<String, String> attributes) {
 
-        super(propertyName, type, method, description, customAttributes);
+        super(propertyName, type, method, description, attributes);
         this.declaredType = requireNonNull(declaredType, "declaredType cannot be null");
         this.typeConverterClass = typeConverterClass;
         this.keys = requireNonNull(keys, "keys cannot be null");

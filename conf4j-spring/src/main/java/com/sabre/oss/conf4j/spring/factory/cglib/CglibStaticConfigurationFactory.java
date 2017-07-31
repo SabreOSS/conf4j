@@ -79,7 +79,7 @@ public class CglibStaticConfigurationFactory extends AbstractConfigurationFactor
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),
-                configurationModel.getCustomAttributes(),
+                configurationModel.getAttributes(),
                 new DefaultConfigurationValueProvider(configurationValueProcessors)
         ).initializeConfiguration();
     }

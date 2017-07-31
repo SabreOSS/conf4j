@@ -78,10 +78,10 @@ public class JsonLikeTypeConverterTest {
     @Test
     public void shouldProperlyIndicateSupportedTypes() throws NoSuchFieldException {
         // when / then
-        assertThat(typeConverter.isApplicable(SUPPORTED_LIST_TYPE)).isTrue();
-        assertThat(typeConverter.isApplicable(SUPPORTED_MAP_TYPE)).isTrue();
-        assertThat(typeConverter.isApplicable(SUPPORTED_COMPLEX_TYPE)).isTrue();
-        assertThat(typeConverter.isApplicable(NOT_SUPPORTED_COMPLEX_TYPE)).isFalse();
+        assertThat(typeConverter.isApplicable(SUPPORTED_LIST_TYPE, null)).isTrue();
+        assertThat(typeConverter.isApplicable(SUPPORTED_MAP_TYPE, null)).isTrue();
+        assertThat(typeConverter.isApplicable(SUPPORTED_COMPLEX_TYPE, null)).isTrue();
+        assertThat(typeConverter.isApplicable(NOT_SUPPORTED_COMPLEX_TYPE, null)).isFalse();
     }
 
     @Test
@@ -189,8 +189,8 @@ public class JsonLikeTypeConverterTest {
                         "sub22", null),
                 null, null);
         // when
-        String out = typeConverter.toString(SUPPORTED_COMPLEX_TYPE, in);
-        Object outObj = typeConverter.fromString(SUPPORTED_COMPLEX_TYPE, out);
+        String out = typeConverter.toString(SUPPORTED_COMPLEX_TYPE, in, null);
+        Object outObj = typeConverter.fromString(SUPPORTED_COMPLEX_TYPE, out, null);
         // then
         assertThat(outObj).isEqualTo(in);
     }
@@ -248,8 +248,8 @@ public class JsonLikeTypeConverterTest {
         // given
         typeConverter.setCompactMode(compactMode);
         // when
-        String out = typeConverter.toString(type, in);
-        Object outObj = typeConverter.fromString(type, out);
+        String out = typeConverter.toString(type, in, null);
+        Object outObj = typeConverter.fromString(type, out, null);
         // then
         assertThat(out).isEqualTo(expectedOut);
         assertThat(outObj).isEqualTo(in);
@@ -259,8 +259,8 @@ public class JsonLikeTypeConverterTest {
         // given
         typeConverter.setCompactMode(compactMode);
         // when
-        Object out = typeConverter.fromString(type, in);
-        String outStr = typeConverter.toString(type, out);
+        Object out = typeConverter.fromString(type, in, null);
+        String outStr = typeConverter.toString(type, out, null);
         // then
         assertThat(out).isEqualTo(expectedOut);
         assertThat(outStr).isEqualTo(in);

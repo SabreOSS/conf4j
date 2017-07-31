@@ -25,12 +25,12 @@
 package com.sabre.oss.conf4j.internal.config;
 
 import com.sabre.oss.conf4j.converter.TypeConverter;
-import com.sabre.oss.conf4j.source.Attributes;
 import com.sabre.oss.conf4j.source.OptionalValue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
@@ -45,11 +45,11 @@ public class PropertyMetadata {
     private final boolean defaultValuePresent;
     private final String encryptionProvider;
     private TypeConverter<?> typeConverter;
-    private final Attributes customAttributes;
+    private final Map<String, String> attributes;
 
     public PropertyMetadata(String propertyName, Type type, Class<? extends TypeConverter<?>> typeConverterClass,
                             List<String> keySet, OptionalValue<String> defaultValue, String encryptionProvider,
-                            Attributes customAttributes) {
+                            Map<String, String> attributes) {
 
         this.propertyName = requireNonNull(propertyName, "propertyName cannot be null");
         this.type = type;
@@ -58,7 +58,7 @@ public class PropertyMetadata {
         this.defaultValue = defaultValue.getOrNull();
         this.defaultValuePresent = defaultValue.isPresent();
         this.encryptionProvider = encryptionProvider;
-        this.customAttributes = customAttributes;
+        this.attributes = attributes;
     }
 
     public String getPropertyName() {
@@ -96,8 +96,8 @@ public class PropertyMetadata {
         return encryptionProvider;
     }
 
-    public Attributes getCustomAttributes() {
-        return customAttributes;
+    public Map<String, String> getAttributes() {
+        return attributes;
     }
 
     private TypeConverter<?> getTypeConverterInstance() {

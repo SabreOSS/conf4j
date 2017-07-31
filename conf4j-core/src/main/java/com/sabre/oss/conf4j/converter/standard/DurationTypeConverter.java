@@ -29,6 +29,7 @@ import com.sabre.oss.conf4j.converter.TypeConverter;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -39,14 +40,14 @@ import static java.util.Objects.requireNonNull;
 public class DurationTypeConverter implements TypeConverter<Duration> {
 
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return type instanceof Class<?> && Duration.class.isAssignableFrom((Class<?>) type);
     }
 
     @Override
-    public Duration fromString(Type type, String value) {
+    public Duration fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         try {
@@ -57,7 +58,7 @@ public class DurationTypeConverter implements TypeConverter<Duration> {
     }
 
     @Override
-    public String toString(Type type, Duration value) {
+    public String toString(Type type, Duration value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return Objects.toString(value, null);

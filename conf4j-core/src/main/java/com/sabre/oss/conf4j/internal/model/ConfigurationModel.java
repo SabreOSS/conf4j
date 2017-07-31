@@ -24,9 +24,8 @@
 
 package com.sabre.oss.conf4j.internal.model;
 
-import com.sabre.oss.conf4j.source.Attributes;
-
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
@@ -35,17 +34,17 @@ public class ConfigurationModel {
     private final String description;
     private final boolean abstractConfiguration;
     private final List<String> prefixes;
-    private final Attributes customAttributes;
+    private final Map<String, String> attributes;
     private final List<PropertyModel> properties;
 
     public ConfigurationModel(Class<?> configurationType, String description, boolean abstractConfiguration,
-                              List<String> prefixes, Attributes customAttributes, List<PropertyModel> properties) {
+                              List<String> prefixes, Map<String, String> attributes, List<PropertyModel> properties) {
         this.configurationType = requireNonNull(configurationType, "configurationType cannot be null");
         this.description = description;
         this.abstractConfiguration = abstractConfiguration;
         this.prefixes = requireNonNull(prefixes, "prefixes cannot be null");
         this.properties = requireNonNull(properties, "properties cannot be null");
-        this.customAttributes = customAttributes;
+        this.attributes = attributes;
         this.properties.forEach(p -> p.setOwner(this));
     }
 
@@ -65,8 +64,8 @@ public class ConfigurationModel {
         return prefixes;
     }
 
-    public Attributes getCustomAttributes() {
-        return customAttributes;
+    public Map<String, String> getAttributes() {
+        return attributes;
     }
 
     public List<PropertyModel> getProperties() {

@@ -35,6 +35,7 @@ import java.util.Arrays;
 import static com.sabre.oss.conf4j.internal.Constants.METADATA_SUFFIX;
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -46,7 +47,7 @@ public abstract class AbstractStaticConfigurationFactoryTest<F extends AbstractC
     @Test
     public void shouldGenerateSerializableConfiguration() throws Exception {
         // given
-        when(source.getValue(anyString())).thenReturn(absent());
+        when(source.getValue(anyString(), any())).thenReturn(absent());
 
         // when
         ValidConfiguration config = factory.createConfiguration(ValidConfiguration.class, source);

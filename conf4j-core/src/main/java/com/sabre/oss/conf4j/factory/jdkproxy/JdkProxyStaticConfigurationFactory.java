@@ -79,7 +79,7 @@ public class JdkProxyStaticConfigurationFactory extends AbstractJdkProxyConfigur
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),
-                configurationModel.getCustomAttributes(),
+                configurationModel.getAttributes(),
                 new DefaultConfigurationValueProvider(configurationValueProcessors)
         ).initializeConfiguration();
     }

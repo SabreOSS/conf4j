@@ -67,7 +67,7 @@ public class JavassistDynamicConfigurationFactory extends AbstractConfigurationF
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),
-                configurationModel.getCustomAttributes(),
+                configurationModel.getAttributes(),
                 new DefaultConfigurationValueProvider(configurationValueProcessors)
         ).initializeConfiguration();
     }

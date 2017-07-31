@@ -48,13 +48,13 @@ public class JaxbTypeConverterTest {
 
     @Test
     public void shouldBeApplicableForMultipleXmlTypes() {
-        assertThat(jaxbTypeConverter.isApplicable(XmlRootConfiguration01.class)).isTrue();
-        assertThat(jaxbTypeConverter.isApplicable(XmlRootConfiguration02.class)).isTrue();
+        assertThat(jaxbTypeConverter.isApplicable(XmlRootConfiguration01.class, null)).isTrue();
+        assertThat(jaxbTypeConverter.isApplicable(XmlRootConfiguration02.class, null)).isTrue();
     }
 
     @Test
     public void shouldNotBeApplicableForNonXmlTypes() {
-        assertThat(jaxbTypeConverter.isApplicable(NonXmlConfiguration.class)).isFalse();
+        assertThat(jaxbTypeConverter.isApplicable(NonXmlConfiguration.class, null)).isFalse();
     }
 
     @Test
@@ -62,7 +62,7 @@ public class JaxbTypeConverterTest {
         // given
         String resource = " ";
         // when
-        XmlRootConfiguration01 xmlRootConfiguration01 = (XmlRootConfiguration01) jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource);
+        XmlRootConfiguration01 xmlRootConfiguration01 = (XmlRootConfiguration01) jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource, null);
         // then
         assertNull(xmlRootConfiguration01);
     }
@@ -72,7 +72,7 @@ public class JaxbTypeConverterTest {
         // given
         String resource = null;
         // when
-        XmlRootConfiguration01 xmlRootConfiguration01 = (XmlRootConfiguration01) jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource);
+        XmlRootConfiguration01 xmlRootConfiguration01 = (XmlRootConfiguration01) jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource, null);
         // then
         assertNull(xmlRootConfiguration01);
     }
@@ -82,7 +82,7 @@ public class JaxbTypeConverterTest {
         // given - "ConfigurationVer" element is inconsistent with the schema
         String resource = lodXml("/JaxbTypeAdapterTest/XmlRootConfiguration01.invalid.xml");
         // when
-        jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource);
+        jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource, null);
         // then expect exception
     }
 
@@ -91,7 +91,7 @@ public class JaxbTypeConverterTest {
         // given
         String resource = lodXml("/JaxbTypeAdapterTest/XmlRootConfiguration01.xml");
         // when
-        XmlRootConfiguration01 config01 = (XmlRootConfiguration01) jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource);
+        XmlRootConfiguration01 config01 = (XmlRootConfiguration01) jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource, null);
         // then
         assertThat(config01.getConfigurationName()).isEqualTo("ROOT01");
         assertThat(config01.getXmlSubConfigurations()).hasSize(2);
@@ -104,7 +104,7 @@ public class JaxbTypeConverterTest {
         // given
         String resource = lodXml("/JaxbTypeAdapterTest/XmlRootConfiguration02.xml");
         // when
-        XmlRootConfiguration02 config01 = (XmlRootConfiguration02) jaxbTypeConverter.fromString(XmlRootConfiguration02.class, resource);
+        XmlRootConfiguration02 config01 = (XmlRootConfiguration02) jaxbTypeConverter.fromString(XmlRootConfiguration02.class, resource, null);
         // then
         assertThat(config01.getConfigurationName()).isEqualTo("ROOT02");
         assertThat(config01.getXmlSubConfigurations()).hasSize(2);
@@ -120,8 +120,8 @@ public class JaxbTypeConverterTest {
                 .withConfigurationVersion(new XmlSubConfiguration().withVersion(1))
                 .withConfigurationVersion(new XmlSubConfiguration().withVersion(2));
         // when
-        String configurationString = remove(jaxbTypeConverter.toString(XmlRootConfiguration01.class, before), System.lineSeparator());
-        XmlRootConfiguration01 after = (XmlRootConfiguration01) jaxbTypeConverter.fromString(XmlRootConfiguration01.class, configurationString);
+        String configurationString = remove(jaxbTypeConverter.toString(XmlRootConfiguration01.class, before, null), System.lineSeparator());
+        XmlRootConfiguration01 after = (XmlRootConfiguration01) jaxbTypeConverter.fromString(XmlRootConfiguration01.class, configurationString, null);
         // then
         assertThat(before).isEqualTo(after);
     }

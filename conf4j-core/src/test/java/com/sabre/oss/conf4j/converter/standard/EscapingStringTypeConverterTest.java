@@ -38,7 +38,7 @@ public class EscapingStringTypeConverterTest {
         String in = "One\\\\Two";
         String expected = "One\\Two";
         // when
-        String out = converter.fromString(String.class, in);
+        String out = converter.fromString(String.class, in, null);
         // then
         assertThat(out).isEqualTo(expected);
     }
@@ -49,7 +49,7 @@ public class EscapingStringTypeConverterTest {
         String in = "One\\Two";
         String expected = "One\\\\Two";
         // when
-        String out = converter.toString(String.class, in);
+        String out = converter.toString(String.class, in, null);
         // then
         assertThat(out).isEqualTo(expected);
     }

@@ -27,6 +27,7 @@ package com.sabre.oss.conf4j.converter.standard;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -37,7 +38,7 @@ import static java.util.Objects.requireNonNull;
 public class DoubleTypeConverter implements TypeConverter<Double> {
 
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return type instanceof Class<?> &&
@@ -45,7 +46,7 @@ public class DoubleTypeConverter implements TypeConverter<Double> {
     }
 
     @Override
-    public Double fromString(Type type, String value) {
+    public Double fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         try {
@@ -56,7 +57,7 @@ public class DoubleTypeConverter implements TypeConverter<Double> {
     }
 
     @Override
-    public String toString(Type type, Double value) {
+    public String toString(Type type, Double value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return Objects.toString(value, null);

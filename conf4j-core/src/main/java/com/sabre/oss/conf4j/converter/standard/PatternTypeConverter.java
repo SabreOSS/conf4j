@@ -27,6 +27,7 @@ package com.sabre.oss.conf4j.converter.standard;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -39,14 +40,14 @@ import static java.util.Objects.requireNonNull;
 public class PatternTypeConverter implements TypeConverter<Pattern> {
 
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return type instanceof Class<?> && Pattern.class.isAssignableFrom((Class<?>) type);
     }
 
     @Override
-    public Pattern fromString(Type type, String value) {
+    public Pattern fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         try {
@@ -57,7 +58,7 @@ public class PatternTypeConverter implements TypeConverter<Pattern> {
     }
 
     @Override
-    public String toString(Type type, Pattern value) {
+    public String toString(Type type, Pattern value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return Objects.toString(value, null);

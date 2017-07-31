@@ -29,7 +29,6 @@ import com.sabre.oss.conf4j.annotation.IgnoreKey;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.annotation.Meta;
 import com.sabre.oss.conf4j.internal.model.provider.MetadataExtractor;
-import com.sabre.oss.conf4j.source.Attributes;
 import org.junit.Test;
 
 import java.lang.annotation.*;
@@ -100,63 +99,63 @@ public class AnnotationMetadataExtractorTest {
     }
 
     @Test
-    public void shouldProvideCustomAttributesForValueProperty() {
+    public void shouldProvideAttributesForValueProperty() {
         //given
 
         //when
-        Attributes attributes = extractor.getCustomAttributes(TestConfiguration.class, getMethod(TestConfiguration.class, "getUrl"));
+        Map<String, String> attributes = extractor.attributes(TestConfiguration.class, getMethod(TestConfiguration.class, "getUrl"));
 
         // then
-        assertThat(attributes.getAttributes()).containsExactly(
+        assertThat(attributes).containsExactly(
                 entry("custom", "url"));
     }
 
     @Test
-    public void shouldProvideCustomAttributesForSubConfigurationProperty() {
+    public void shouldProvideAttributesForSubConfigurationProperty() {
         //given
 
         //when
-        Attributes attributes = extractor.getCustomAttributes(TestConfiguration.class, getMethod(TestConfiguration.class, "getSubConfiguration"));
+        Map<String, String> attributes = extractor.attributes(TestConfiguration.class, getMethod(TestConfiguration.class, "getSubConfiguration"));
 
         // then
-        assertThat(attributes.getAttributes()).containsExactly(
+        assertThat(attributes).containsExactly(
                 entry("custom", "sub-configuration"));
     }
 
     @Test
-    public void shouldProvideCustomAttributesForSubConfigurationListProperty() {
+    public void shouldProvideAttributesForSubConfigurationListProperty() {
         //given
 
         //when
-        Attributes attributes = extractor.getCustomAttributes(TestConfiguration.class, getMethod(TestConfiguration.class, "getSubConfigurations"));
+        Map<String, String> attributes = extractor.attributes(TestConfiguration.class, getMethod(TestConfiguration.class, "getSubConfigurations"));
 
         // then
-        assertThat(attributes.getAttributes()).containsExactly(
+        assertThat(attributes).containsExactly(
                 entry("custom", "sub-configuration-list"));
     }
 
     @Test
-    public void shouldProvideCustomAttributesForType() {
+    public void shouldProvideAttributesForType() {
         //given
 
         //when
-        Attributes attributes = extractor.getCustomAttributes(TestConfiguration.class);
+        Map<String, String> attributes = extractor.attributes(TestConfiguration.class);
 
         // then
-        assertThat(attributes.getAttributes()).containsExactly(
+        assertThat(attributes).containsExactly(
                 entry("type1", "value1"),
                 entry("type2", "value2"));
     }
 
     @Test
-    public void shouldProvideCustomAttributesForCustomMetaAnnotations() {
+    public void shouldProvideAttributesForCustomMetaAnnotations() {
         //given
 
         //when
-        Attributes attributes = extractor.getCustomAttributes(TestConfiguration.class, getMethod(TestConfiguration.class, "getCustomMetaAnnotations"));
+        Map<String, String> attributes = extractor.attributes(TestConfiguration.class, getMethod(TestConfiguration.class, "getCustomMetaAnnotations"));
 
         // then
-        assertThat(attributes.getAttributes()).containsOnly(
+        assertThat(attributes).containsOnly(
                 entry("fixed-one", "one"),
                 entry("fixed-two", "two"),
                 entry("custom", "custom-meta"),

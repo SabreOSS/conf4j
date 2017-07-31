@@ -24,8 +24,6 @@
 
 package com.sabre.oss.conf4j.internal.model;
 
-import com.sabre.oss.conf4j.source.Attributes;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +48,9 @@ public class SubConfigurationListPropertyModel extends PropertyModel {
     public SubConfigurationListPropertyModel(
             String propertyName, Class<?> type, Method method, ConfigurationModel itemTypeModel, String description,
             List<String> prefixes, boolean resetPrefix, int defaultSize, List<Map<String, String>> defaultValues,
-            Attributes customAttributes) {
+            Map<String, String> attributes) {
 
-        super(propertyName, type, method, description, customAttributes);
+        super(propertyName, type, method, description, attributes);
         this.itemTypeModel = requireNonNull(itemTypeModel, "itemTypeModel cannot be null");
         this.prefixes = requireNonNull(prefixes, "prefixes cannot be null");
         this.resetPrefix = resetPrefix;
@@ -112,7 +110,7 @@ public class SubConfigurationListPropertyModel extends PropertyModel {
                 propertyName + COLLECTION_SIZE_SUFFIX, Integer.TYPE, Integer.TYPE,
                 method, // todo - this is wrong, the method for the size doesn't exist, but null is not allowed
                 null, sizeKeys, null, resetPrefix, present(Integer.toString(defaultSize)),
-                null, null, customAttributes);
+                null, null, attributes);
     }
 
 }

@@ -41,7 +41,7 @@ public class CharacterTypeConverterTest {
         // given
         String stringValue = "A";
         // when
-        Character value = converter.fromString(Character.class, stringValue);
+        Character value = converter.fromString(Character.class, stringValue, null);
         // then
         assertThat(value).isEqualTo('A');
     }
@@ -56,7 +56,7 @@ public class CharacterTypeConverterTest {
         exception.expectMessage("Unable to convert to a Character: " + stringValue);
 
         // when
-        converter.fromString(Character.class, stringValue);
+        converter.fromString(Character.class, stringValue, null);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class CharacterTypeConverterTest {
         // given
         Character value = 'A';
         // when
-        String asString = converter.toString(Character.class, value);
+        String asString = converter.toString(Character.class, value, null);
         // then
         assertThat(asString).isEqualTo("A");
     }
@@ -74,7 +74,7 @@ public class CharacterTypeConverterTest {
         // given
         Character value = null;
         // when
-        String asString = converter.toString(Character.class, value);
+        String asString = converter.toString(Character.class, value, null);
         // then
         assertThat(asString).isNull();
     }
@@ -84,7 +84,7 @@ public class CharacterTypeConverterTest {
         // given
         String stringValue = "";
         // when
-        Character value = converter.fromString(Character.class, stringValue);
+        Character value = converter.fromString(Character.class, stringValue, null);
         // then
         assertThat(value).isNull();
     }
@@ -94,7 +94,7 @@ public class CharacterTypeConverterTest {
         // given
         Character value = '\u0080';
         // when
-        String asString = converter.toString(Character.class, value);
+        String asString = converter.toString(Character.class, value, null);
         // then
         assertThat(asString).isEqualTo("\\u0080");
     }
@@ -109,13 +109,13 @@ public class CharacterTypeConverterTest {
         exception.expectMessage("Unable to convert to a Character: " + invalidEncodedCharacter);
 
         // when
-        converter.fromString(Character.class, invalidEncodedCharacter);
+        converter.fromString(Character.class, invalidEncodedCharacter, null);
     }
 
     @Test
     public void shouldBeApplicableToCharacter() {
         // when
-        boolean applicable = converter.isApplicable(Character.class);
+        boolean applicable = converter.isApplicable(Character.class, null);
         // then
         assertThat(applicable).isTrue();
     }
@@ -123,7 +123,7 @@ public class CharacterTypeConverterTest {
     @Test
     public void shouldNotBeApplicableToNonCharacter() {
         // when
-        boolean applicable = converter.isApplicable(Object.class);
+        boolean applicable = converter.isApplicable(Object.class, null);
         // then
         assertThat(applicable).isFalse();
     }

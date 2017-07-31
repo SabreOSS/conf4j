@@ -28,6 +28,7 @@ import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Map;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -35,14 +36,14 @@ import static java.util.Objects.requireNonNull;
 /**
  * This class converts {@link Enum} of any type to/from string.
  * <p>
- * {@link Enum#name()} method is used for converting an enumeration value to a string in {@link #toString(Type, Enum)}.
- * This method is also used by {@link #fromString(Type, String)} to find matching enumeration values.
+ * {@link Enum#name()} method is used for converting an enumeration value to a string in {@link #toString(Type, Enum, Map)}.
+ * This method is also used by {@link #fromString(Type, String, Map)} to find matching enumeration values.
  * </p>
  */
 public class EnumTypeConverter implements TypeConverter<Enum<?>> {
 
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return type instanceof Class<?> && Enum.class.isAssignableFrom((Class<?>) type);
@@ -50,14 +51,14 @@ public class EnumTypeConverter implements TypeConverter<Enum<?>> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Enum<?> fromString(Type type, String value) {
+    public Enum<?> fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return value == null ? null : toEnumValue((Class<Enum<?>>) type, value);
     }
 
     @Override
-    public String toString(Type type, Enum<?> value) {
+    public String toString(Type type, Enum<?> value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return value == null ? null : value.name();

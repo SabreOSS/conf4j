@@ -25,7 +25,8 @@
 package com.sabre.oss.conf4j.processor;
 
 import com.sabre.oss.conf4j.annotation.DefaultValue;
-import com.sabre.oss.conf4j.source.Attributes;
+
+import java.util.Map;
 
 /**
  * This class represents configuration value retrieved from the configuration value source.
@@ -38,7 +39,7 @@ public class ConfigurationValue {
     private String value;
     private boolean defaultValue;
     private String encryptionProvider;
-    private Attributes customAttributes;
+    private Map<String, String> attributes;
 
     /**
      * Constructs configuration value.
@@ -48,14 +49,14 @@ public class ConfigurationValue {
      * @param value              configuration value.
      * @param defaultValue       indicates the value is default value assigned with configuration key.
      * @param encryptionProvider encryption provider name, or {@code null} when value is not encrypted.
-     * @param customAttributes   custom meta-data associated with property or {@code null}.
+     * @param attributes         custom meta-data associated with property or {@code null}.
      */
-    public ConfigurationValue(String configurationKey, String value, boolean defaultValue, String encryptionProvider, Attributes customAttributes) {
+    public ConfigurationValue(String configurationKey, String value, boolean defaultValue, String encryptionProvider, Map<String, String> attributes) {
         this.configurationKey = configurationKey;
         this.value = value;
         this.defaultValue = defaultValue;
         this.encryptionProvider = encryptionProvider;
-        this.customAttributes = customAttributes;
+        this.attributes = attributes;
     }
 
     /**
@@ -142,16 +143,16 @@ public class ConfigurationValue {
      *
      * @return custom meta-data associated with property or {@code null}.
      */
-    public Attributes getCustomAttributes() {
-        return customAttributes;
+    public Map<String, String> getAttributes() {
+        return attributes;
     }
 
     /**
      * Sets custom meta-data associated with property.
      *
-     * @param customAttributes custom meta-data associated with property or {@code null}.
+     * @param attributes custom meta-data associated with property or {@code null}.
      */
-    public void setCustomAttributes(Attributes customAttributes) {
-        this.customAttributes = customAttributes;
+    public void setAttributes(Map<String, String> attributes) {
+        this.attributes = attributes;
     }
 }

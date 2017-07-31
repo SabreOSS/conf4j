@@ -33,6 +33,7 @@ import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.util.Assert.hasText;
@@ -40,9 +41,9 @@ import static org.springframework.util.Assert.hasText;
 /**
  * Caching type converter which uses SpringFramework cache abstraction for caching values converted from string.
  * <p>
- * <b>Note:</b>Caching is enabled only for {@link #fromString(Type, String)} method. Converting a value to String
- * by {@link #toString(Type, Object)} (which in most cases is not used frequently) doesn't take advantage of caching
- * (but it may change in the future). The same applied to {@link #isApplicable(Type)} which is usually very fast
+ * <b>Note:</b>Caching is enabled only for {@link #fromString(Type, String, Map)} method. Converting a value to String
+ * by {@link #toString(Type, Object, Map)} (which in most cases is not used frequently) doesn't take advantage of caching
+ * (but it may change in the future). The same applies to {@link #isApplicable(Type, Map)} which is usually very fast
  * and caching it won't provide any performance improvement.
  * </p>
  * <p>
@@ -145,21 +146,22 @@ public class CachingTypeConverter<T> implements TypeConverter<T>, InitializingBe
     /**
      * Check if the type converter is applicable for type {@code type}.
      * This method delegates to {@link #typeConverter} without caching because
-     * {@link TypeConverter#isApplicable(Type)} is usually much faster than accessing the cache.
+     * {@link TypeConverter#isApplicable(Type, Map)} is usually much faster than accessing the cache.
      *
      * @param type actual type definition.
+     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
      * @return {@code true} when this type converter is applicable for a given type definition.
      * @throws NullPointerException when {@code type} is {@code null}.
      */
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        /**
-         * This method is not cached because {@link TypeConverter#isApplicable(Type)} is usually much faster
-         * than accessing the cache.
+        /*
+         * This method is not cached because {@link TypeConverter#isApplicable(Type, Map<String, String>)}
+         * is usually much faster than accessing the cache.
          */
-        return typeConverter.isApplicable(type);
+        return typeConverter.isApplicable(type, attributes);
     }
 
     /**
@@ -172,20 +174,21 @@ public class CachingTypeConverter<T> implements TypeConverter<T>, InitializingBe
      *              In case it is {@code null}, converter should return either {@code null} or a value
      *              that is equivalent e.g. an empty list.
      * @return value converted to type {@code T}.
+     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
      * @throws IllegalArgumentException when {@code value} cannot be converted to {@code T}.
      * @throws NullPointerException     when {@code type} is {@code null}.
      */
     @Override
-    public T fromString(Type type, String value) {
+    public T fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        SimpleKey key = new SimpleKey(type, value);
+        SimpleKey key = new SimpleKey(type, attributes, value);
         ValueWrapper valueWrapper = cache.get(key);
 
         if (valueWrapper != null) {
             return (T) valueWrapper.get();
         } else {
-            T val = typeConverter.fromString(type, value);
+            T val = typeConverter.fromString(type, value, attributes);
             valueWrapper = cache.putIfAbsent(key, val);
             if (valueWrapper == null) {
                 return val;
@@ -198,22 +201,23 @@ public class CachingTypeConverter<T> implements TypeConverter<T>, InitializingBe
     /**
      * Converts value from target type to String.
      * This method delegates to {@link #typeConverter} without caching because
-     * {@link TypeConverter#toString(Type, Object)} )} is usually much faster than accessing the cache.
+     * {@link TypeConverter#toString(Type, Object, Map)} )} is usually much faster than accessing the cache.
      *
      * @param type  actual type definition.
      * @param value value that needs to be converted to string.
+     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
      * @return string representation of the {@code value}.
      * @throws IllegalArgumentException {@code value} cannot be converted to string.
      * @throws NullPointerException     when {@code type} is {@code null}.
      */
     @Override
-    public String toString(Type type, T value) {
+    public String toString(Type type, T value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         /*
-         * This method is not cached because {@link TypeConverter#isApplicable(Type)} is usually much faster
-         * than accessing the cache.
+         * This method is not cached because {@link TypeConverter#isApplicable(Type, Map<String, String>)}
+         * is usually much faster than accessing the cache.
          */
-        return typeConverter.toString(type, value);
+        return typeConverter.toString(type, value, attributes);
     }
 }

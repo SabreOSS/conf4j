@@ -70,8 +70,8 @@ public class DefaultConfigurationValueProviderTest {
     @Before
     public void before() {
         reset(source);
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(typeConverter.fromString(any(), anyString())).thenAnswer(invocation -> invocation.getArguments()[1]);
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(typeConverter.fromString(any(), anyString(), any())).thenAnswer(invocation -> invocation.getArguments()[1]);
     }
 
     private PropertyMetadata metadata(List<String> keySet, String defaultValue, String encryptionProvider) {
@@ -85,7 +85,7 @@ public class DefaultConfigurationValueProviderTest {
     @Test
     public void shouldReturnFromFallbackKey() {
         // given exact match
-        when(source.getValue("fallback.p1.p2.key")).thenReturn(present("value"));
+        when(source.getValue("fallback.p1.p2.key", null)).thenReturn(present("value"));
 
         // when
         OptionalValue<String> result = provider.getConfigurationValue(typeConverter, source, metadata(getKeySet(), defaultValue, notEncrypted));
@@ -97,7 +97,7 @@ public class DefaultConfigurationValueProviderTest {
     @Test
     public void shouldReturnFromFallbackAlternateKey() {
         // given exact match
-        when(source.getValue("fallback.p1.p2.alternateKey")).thenReturn(present("value"));
+        when(source.getValue("fallback.p1.p2.alternateKey", null)).thenReturn(present("value"));
 
         // when
         OptionalValue<String> result = provider.getConfigurationValue(typeConverter, source, metadata(getKeySet(), defaultValue, notEncrypted));
@@ -109,7 +109,7 @@ public class DefaultConfigurationValueProviderTest {
     @Test
     public void shouldReturnFromFallbackPrefix() {
         // given
-        when(source.getValue("fallback.key")).thenReturn(present("value"));
+        when(source.getValue("fallback.key", null)).thenReturn(present("value"));
 
         // when
         OptionalValue<String> result = provider.getConfigurationValue(typeConverter, source, metadata(getKeySet(), defaultValue, notEncrypted));
@@ -122,7 +122,7 @@ public class DefaultConfigurationValueProviderTest {
     @Test
     public void shouldReturnFromFallbackKeyPrefix() {
         // given
-        when(source.getValue("fallbackKeyPrefix.key")).thenReturn(present("value"));
+        when(source.getValue("fallbackKeyPrefix.key", null)).thenReturn(present("value"));
 
         // when
         OptionalValue<String> result = provider.getConfigurationValue(typeConverter, source, metadata(getKeySet(), defaultValue, notEncrypted));
@@ -134,7 +134,7 @@ public class DefaultConfigurationValueProviderTest {
     @Test
     public void shouldNotReturnFallbackKeyPrefixValueWhenFallbackKeyPrefixIsEmpty() {
         // given
-        when(source.getValue(".key")).thenReturn(present("value"));
+        when(source.getValue(".key", null)).thenReturn(present("value"));
         fallbackKeyPrefixGenerator = emptyKeyGenerator();
 
         // when
@@ -147,7 +147,7 @@ public class DefaultConfigurationValueProviderTest {
     @Test
     public void shouldReturnFallbackKeyValue() {
         // given
-        when(source.getValue("fallbackKey")).thenReturn(present("value"));
+        when(source.getValue("fallbackKey", null)).thenReturn(present("value"));
 
         // when
         OptionalValue<String> result = provider.getConfigurationValue(typeConverter, source, metadata(getKeySet(), defaultValue, notEncrypted));
@@ -159,7 +159,7 @@ public class DefaultConfigurationValueProviderTest {
     @Test
     public void shouldNotReturnFallbackKeyValueWhenFallbackKeyIsEmpty() {
         // given
-        when(source.getValue("")).thenReturn(present("value"));
+        when(source.getValue("", null)).thenReturn(present("value"));
         fallbackKey = null;
 
         // when
@@ -183,7 +183,7 @@ public class DefaultConfigurationValueProviderTest {
         // given
         ConfigurationValueProcessor configurationValueProcessor = mock(ConfigurationValueProcessor.class);
         when(configurationValueProcessor.process(any(ConfigurationValue.class))).thenAnswer(invocation -> invocation.getArguments()[0]);
-        when(source.getValue("fallback.key")).thenReturn(present("fallback.key"));
+        when(source.getValue("fallback.key", null)).thenReturn(present("fallback.key"));
 
         provider = new DefaultConfigurationValueProvider(singletonList(configurationValueProcessor));
         // when

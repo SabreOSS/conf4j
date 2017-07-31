@@ -29,6 +29,7 @@ import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
+import org.springframework.beans.factory.config.PropertyResourceConfigurer;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.convert.ConversionService;
@@ -40,9 +41,9 @@ import java.util.*;
 
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
-import static java.lang.Integer.valueOf;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static java.util.Comparator.comparingInt;
 import static java.util.Objects.requireNonNull;
 import static org.springframework.context.ConfigurableApplicationContext.CONVERSION_SERVICE_BEAN_NAME;
 
@@ -103,7 +104,7 @@ public class PropertySourceConfigurationValuesSource implements ConfigurationVal
     }
 
     @Override
-    public OptionalValue<String> getValue(String key) {
+    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
         requireNonNull(key, "key cannot be null");
 
         for (PropertySource<?> propertySource : flattenedPropertySources) {
@@ -116,8 +117,9 @@ public class PropertySourceConfigurationValuesSource implements ConfigurationVal
     }
 
     @Override
-    public ConfigurationEntry findEntry(Collection<String> keys) {
+    public ConfigurationEntry findEntry(Collection<String> keys, Map<String, String> attributes) {
         requireNonNull(keys, "keys cannot be null");
+
         for (PropertySource<?> propertySource : flattenedPropertySources) {
             for (String key : keys) {
                 OptionalValue<String> value = getProperty(propertySource, key);
@@ -202,7 +204,7 @@ public class PropertySourceConfigurationValuesSource implements ConfigurationVal
         Map<String, PropertySourcesPlaceholderConfigurer> beans = listableBeanFactory
                 .getBeansOfType(PropertySourcesPlaceholderConfigurer.class, false, false);
         List<PropertySourcesPlaceholderConfigurer> configurers = new ArrayList<>(beans.values());
-        configurers.sort((a, b) -> valueOf(a.getOrder()).compareTo(b.getOrder()));
+        configurers.sort(comparingInt(PropertyResourceConfigurer::getOrder));
 
         return configurers;
     }

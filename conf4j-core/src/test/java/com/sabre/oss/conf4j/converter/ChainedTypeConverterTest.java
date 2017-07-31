@@ -42,20 +42,20 @@ public class ChainedTypeConverterTest {
     public void shouldSupportConvertersFromTheChain() {
         TypeConverter<?> converter = new ChainedTypeConverter(new StringTypeConverter(), new IntegerTypeConverter());
 
-        assertThat(converter.isApplicable(String.class)).isTrue();
-        assertThat(converter.isApplicable(Integer.class)).isTrue();
-        assertThat(converter.isApplicable(Long.class)).isFalse();
+        assertThat(converter.isApplicable(String.class, null)).isTrue();
+        assertThat(converter.isApplicable(Integer.class, null)).isTrue();
+        assertThat(converter.isApplicable(Long.class, null)).isFalse();
     }
 
     @Test
     public void shouldDelegateToTheConvertersInTheChain() {
         TypeConverter<Object> converter = new ChainedTypeConverter(new StringTypeConverter(), new IntegerTypeConverter());
 
-        assertThat(converter.fromString(String.class, "string")).isEqualTo("string");
-        assertThat(converter.fromString(Integer.class, "10")).isEqualTo(10);
+        assertThat(converter.fromString(String.class, "string", null)).isEqualTo("string");
+        assertThat(converter.fromString(Integer.class, "10", null)).isEqualTo(10);
 
-        assertThat(converter.toString(String.class, "string")).isEqualTo("string");
-        assertThat(converter.toString(Integer.class, 10)).isEqualTo("10");
+        assertThat(converter.toString(String.class, "string", null)).isEqualTo("string");
+        assertThat(converter.toString(Integer.class, 10, null)).isEqualTo("10");
     }
 
     @Test
@@ -63,7 +63,7 @@ public class ChainedTypeConverterTest {
         TypeConverter<Object> converter = new ChainedTypeConverter(new StringTypeConverter());
 
         exception.expect(IllegalArgumentException.class);
-        converter.fromString(Long.class, "10");
+        converter.fromString(Long.class, "10", null);
     }
 
 

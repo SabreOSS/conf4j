@@ -28,10 +28,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.join;
 
 /**
@@ -51,38 +51,19 @@ public class LoggingConfigurationValuesSource implements ConfigurationValuesSour
         this.source = requireNonNull(source, "source cannot be null");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public OptionalValue<String> getValue(String key) {
-        OptionalValue<String> value = source.getValue(key);
-        log.info("{}={}", key, value);
-        return value;
-    }
-
-    @Override
-    public OptionalValue<String> getValue(String key, Attributes attributes) {
+    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
         OptionalValue<String> value = source.getValue(key, attributes);
 
-        log.info("{}={} {}", new Object[]{key, value, attributes});
+        log.info("{}={} {}", key, value, Objects.toString(attributes, "(no attributes)"));
         return value;
     }
 
     @Override
-    public ConfigurationEntry findEntry(Collection<String> keys) {
-        ConfigurationEntry entry = source.findEntry(keys);
-        if (log.isInfoEnabled()) {
-            log.info("{}=[{}]", join(keys, ", "), entry);
-        }
-        return entry;
-    }
-
-    @Override
-    public ConfigurationEntry findEntry(Collection<String> keys, Attributes attributes) {
+    public ConfigurationEntry findEntry(Collection<String> keys, Map<String, String> attributes) {
         ConfigurationEntry entry = source.findEntry(keys, attributes);
         if (log.isInfoEnabled()) {
-            log.info("{}=[{}] {}", new Object[]{join(keys, ", "), entry, Objects.toString(attributes, EMPTY)});
+            log.info("{}=[{}] {}", join(keys, ", "), entry, Objects.toString(attributes, "(no attributes)"));
         }
         return entry;
     }

@@ -52,7 +52,7 @@ public class MapConfigurationValuesSource implements IterableConfigurationValues
      * {@inheritDoc}
      */
     @Override
-    public OptionalValue<String> getValue(String key) {
+    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
         requireNonNull(key, "key cannot be null");
 
         String value = source.get(key);

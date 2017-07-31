@@ -22,9 +22,8 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.source;
+package com.sabre.oss.conf4j.internal.utils;
 
-import com.sabre.oss.conf4j.internal.utils.MapUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -32,11 +31,12 @@ import org.junit.rules.ExpectedException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.sabre.oss.conf4j.source.Attributes.attributes;
+import static com.sabre.oss.conf4j.internal.utils.AttributesUtils.attributes;
+import static com.sabre.oss.conf4j.internal.utils.AttributesUtils.mergeAttributes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 
-public class AttributesTest {
+public class AttributesUtilsTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -46,7 +46,7 @@ public class AttributesTest {
         Map<String, String> properties = null;
 
         // when
-        Attributes attributes = attributes(properties);
+        Map<String, String> attributes = attributes(properties);
 
         // then
         assertThat(attributes).isNull();
@@ -58,11 +58,11 @@ public class AttributesTest {
         Map<String, String> properties = MapUtils.of("key1", "val1", "key2", "val2");
 
         // when
-        Attributes attributes = attributes(properties);
+        Map<String, String> attributes = attributes(properties);
 
         // then
         assertThat(attributes).isNotNull();
-        assertThat(attributes.getAttributes()).contains(entry("key1", "val1"), entry("key2", "val2"));
+        assertThat(attributes).contains(entry("key1", "val1"), entry("key2", "val2"));
     }
 
     @Test
@@ -71,13 +71,13 @@ public class AttributesTest {
         exception.expect(UnsupportedOperationException.class);
 
         // when
-        attributes(MapUtils.of("key", "value")).getAttributes().put("anything", "value");
+        attributes(MapUtils.of("key", "value")).put("anything", "value");
     }
 
     @Test
     public void shouldMergeToNullWhenBothAreNull() {
         // when
-        Attributes merged = Attributes.merge(null, null);
+        Map<String, String> merged = mergeAttributes(null, null);
 
         // then
         assertThat(merged).isNull();
@@ -86,16 +86,16 @@ public class AttributesTest {
     @Test
     public void shouldMergeToNonNullWhenOneIsNonNull() {
         // given
-        Attributes notNullAttributes = attributes(MapUtils.of("key1", "value1"));
+        Map<String, String> notNullAttributes = attributes(MapUtils.of("key1", "value1"));
 
         // when
-        Attributes merged = Attributes.merge(notNullAttributes, null);
+        Map<String, String> merged = mergeAttributes(notNullAttributes, null);
 
         // then
         assertThat(merged).isSameAs(notNullAttributes);
 
         // when
-        merged = Attributes.merge(null, notNullAttributes);
+        merged = mergeAttributes(null, notNullAttributes);
 
         // then
         assertThat(merged).isSameAs(notNullAttributes);
@@ -108,10 +108,10 @@ public class AttributesTest {
         Map<String, String> child = MapUtils.of("key2", "value2", "key3", "value3");
 
         // when
-        Attributes merged = Attributes.merge(attributes(parent), attributes(child));
+        Map<String, String> merged = mergeAttributes(attributes(parent), attributes(child));
 
         // then
-        assertThat(merged.getAttributes()).containsExactly(entry("key1", "value1"), entry("key2", "value2"), entry("key3", "value3"));
+        assertThat(merged).containsExactly(entry("key1", "value1"), entry("key2", "value2"), entry("key3", "value3"));
     }
 
     @Test
@@ -122,8 +122,8 @@ public class AttributesTest {
 
 
         // when
-        Attributes attributes = attributes(properties);
-        Attributes attributesForSameProperties = attributes(sameProperties);
+        Map<String, String> attributes = attributes(properties);
+        Map<String, String> attributesForSameProperties = attributes(sameProperties);
 
         // then
         assertThat(attributesForSameProperties).isSameAs(attributes);

@@ -43,7 +43,7 @@ public class EnumTypeConverterTest {
         // given
         Type type = TestEnum.class;
         // when
-        boolean isApplicable = enumTypeAdapter.isApplicable(type);
+        boolean isApplicable = enumTypeAdapter.isApplicable(type, null);
         // then
         assertThat(isApplicable).isTrue();
     }
@@ -52,7 +52,7 @@ public class EnumTypeConverterTest {
     public void shouldConvertFromString() {
         // given enumTypeAdapter
         // when
-        Enum<?> testEnum = enumTypeAdapter.fromString(TestEnum.class, "FIRST");
+        Enum<?> testEnum = enumTypeAdapter.fromString(TestEnum.class, "FIRST", null);
         // then
         assertThat(testEnum).isEqualTo(TestEnum.FIRST);
     }
@@ -61,7 +61,7 @@ public class EnumTypeConverterTest {
     public void shouldConvertToString() {
         // given enumTypeAdapter
         // when
-        String value = enumTypeAdapter.toString(TestEnum.class, TestEnum.SECOND_VALUE);
+        String value = enumTypeAdapter.toString(TestEnum.class, TestEnum.SECOND_VALUE, null);
         // then
         assertThat(value).isEqualTo(TestEnum.SECOND_VALUE.name());
     }

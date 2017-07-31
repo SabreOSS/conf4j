@@ -35,37 +35,38 @@ import java.util.List;
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public abstract class AbstractIgnorePrefixTest<F extends AbstractConfigurationFactory> extends AbstractBaseConfigurationFactoryTest<F> {
     @Test
     public void shouldResetPrefixes() {
-        when(source.getValue(anyString())).thenReturn(absent());
+        when(source.getValue(anyString(), any())).thenReturn(absent());
 
-        when(source.getValue("root.connection.url")).thenReturn(present("url"));
+        when(source.getValue("root.connection.url", null)).thenReturn(present("url"));
         // plain properties with @IgnorePrefix
-        when(source.getValue("urlWithoutPrefix")).thenReturn(present("withoutPrefix"));
+        when(source.getValue("urlWithoutPrefix", null)).thenReturn(present("withoutPrefix"));
         // sub-configuration getTimeout()
-        when(source.getValue("timeout.timeouts.connect")).thenReturn(present("2"));
-        when(source.getValue("timeout.timeouts.read")).thenReturn(present("3"));
+        when(source.getValue("timeout.timeouts.connect", null)).thenReturn(present("2"));
+        when(source.getValue("timeout.timeouts.read", null)).thenReturn(present("3"));
         // getTimeouts()
-        when(source.getValue("size")).thenReturn(present("3"));
-        when(source.getValue("[0].timeouts.connect")).thenReturn(present("100"));
-        when(source.getValue("[0].timeouts.read")).thenReturn(present("110"));
-        when(source.getValue("[1].timeouts.connect")).thenReturn(present("200"));
-        when(source.getValue("[1].timeouts.read")).thenReturn(present("210"));
+        when(source.getValue("size", null)).thenReturn(present("3"));
+        when(source.getValue("[0].timeouts.connect", null)).thenReturn(present("100"));
+        when(source.getValue("[0].timeouts.read", null)).thenReturn(present("110"));
+        when(source.getValue("[1].timeouts.connect", null)).thenReturn(present("200"));
+        when(source.getValue("[1].timeouts.read", null)).thenReturn(present("210"));
         // getTimeoutsWithPrefix()
-        when(source.getValue("withPrefix.size")).thenReturn(present("3"));
-        when(source.getValue("withPrefix[0].timeouts.connect")).thenReturn(present("1000"));
-        when(source.getValue("withPrefix[0].timeouts.read")).thenReturn(present("1100"));
-        when(source.getValue("withPrefix[1].timeouts.connect")).thenReturn(present("2000"));
-        when(source.getValue("withPrefix[1].timeouts.read")).thenReturn(present("2100"));
+        when(source.getValue("withPrefix.size", null)).thenReturn(present("3"));
+        when(source.getValue("withPrefix[0].timeouts.connect", null)).thenReturn(present("1000"));
+        when(source.getValue("withPrefix[0].timeouts.read", null)).thenReturn(present("1100"));
+        when(source.getValue("withPrefix[1].timeouts.connect", null)).thenReturn(present("2000"));
+        when(source.getValue("withPrefix[1].timeouts.read", null)).thenReturn(present("2100"));
         // when value for the third element is missing, it will be derived from fallback key for list which is a key without []
-        when(source.getValue("withPrefix[2].timeouts.connect")).thenReturn(absent());
-        when(source.getValue("withPrefix[2].timeouts.read")).thenReturn(absent());
-        when(source.getValue("withPrefix.timeouts.connect")).thenReturn(present("99"));
-        when(source.getValue("withPrefix.timeouts.read")).thenReturn(present("999"));
+        when(source.getValue("withPrefix[2].timeouts.connect", null)).thenReturn(absent());
+        when(source.getValue("withPrefix[2].timeouts.read", null)).thenReturn(absent());
+        when(source.getValue("withPrefix.timeouts.connect", null)).thenReturn(present("99"));
+        when(source.getValue("withPrefix.timeouts.read", null)).thenReturn(present("999"));
 
         RootConfiguration config = factory.createConfiguration(RootConfiguration.class, source);
 

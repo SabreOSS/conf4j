@@ -25,7 +25,6 @@
 package com.sabre.oss.conf4j.internal.model.provider;
 
 import com.sabre.oss.conf4j.converter.TypeConverter;
-import com.sabre.oss.conf4j.source.Attributes;
 import com.sabre.oss.conf4j.source.OptionalValue;
 
 import java.lang.reflect.Method;
@@ -73,7 +72,7 @@ public interface MetadataExtractor {
 
     List<Map<String, String>> getSubConfigurationListDefaultValues(Class<?> configurationType, Method method);
 
-    Attributes getCustomAttributes(Class<?> configurationType);
+    Map<String, String> attributes(Class<?> configurationType);
 
-    Attributes getCustomAttributes(Class<?> configurationType, Method method);
+    Map<String, String> attributes(Class<?> configurationType, Method method);
 }

@@ -26,7 +26,6 @@ package com.sabre.oss.conf4j.internal.factory;
 
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.Attributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +45,12 @@ public class SubConfigurationList extends AbstractUnmodifiableList<Object> {
     private final List<String> defaultPrefixes;
     private final ConfigurationInitializer configurationInitializer;
     private final List<Map<String, String>> defaultValues;
-    private final Attributes attributes;
+    private final Map<String, String> attributes;
 
     SubConfigurationList(ConfigurationModel configurationModel,
                          ConfigurationInitializer configurationInitializer, KeyGenerator keyGenerator,
                          List<String> defaultPrefixes, int size, List<Map<String, String>> defaultValues,
-                         Attributes customAttributes) {
+                         Map<String, String> attributes) {
 
         super(new ArrayList<>(size));
 
@@ -60,7 +59,7 @@ public class SubConfigurationList extends AbstractUnmodifiableList<Object> {
         this.defaultValues = defaultValues;
         this.keyGenerator = keyGenerator;
         this.defaultPrefixes = defaultPrefixes;
-        this.attributes = customAttributes;
+        this.attributes = attributes;
 
         for (int i = 0; i < size; i++) {
             target.add(createNewInstance(i));

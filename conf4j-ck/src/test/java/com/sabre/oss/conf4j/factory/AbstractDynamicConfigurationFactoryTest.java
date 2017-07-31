@@ -58,14 +58,14 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
     @Before
     public void before() {
         super.before();
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(mutationSource.getValue(anyString())).thenReturn(absent());
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(mutationSource.getValue(anyString(), any())).thenReturn(absent());
     }
 
     @Test
     public void shouldReturnMutatedValueWhenMutationProviderIsAvailable() {
         // given
-        when(mutationSource.getValue("keyPrefix.someProperty")).thenReturn(present("customValue"));
+        when(mutationSource.getValue("keyPrefix.someProperty", null)).thenReturn(present("customValue"));
         // when
         Configuration config1 = factory.createConfiguration(Configuration.class, source);
         Configuration config2 = factory.createConfiguration(Configuration.class, source);
@@ -78,7 +78,7 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
     @Test
     public void shouldNotAccessValuesSourceWhenConfigurationIsInstantiated() {
         // given
-        when(source.getValue(anyString())).thenThrow(new IllegalStateException("ConfigurationValuesSource shouldn't be accessed"));
+        when(source.getValue(anyString(), any())).thenThrow(new IllegalStateException("ConfigurationValuesSource shouldn't be accessed"));
         // when
         factory.createConfiguration(BaseConfiguration.class, source);
     }
@@ -86,7 +86,7 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
     @Test
     public void shouldBeDynamicAndProvideFreshValueFromTheSource() {
         reset(source);
-        when(source.getValue(anyString())).thenReturn(absent());
+        when(source.getValue(anyString(), any())).thenReturn(absent());
 
         Component configuration = factory.createConfiguration(Component.class, source);
 
@@ -101,14 +101,14 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
 
 
         // setup values source
-        when(source.getValue("component.name")).thenReturn(present("name+"));
-        when(source.getValue("component.description")).thenReturn(present("description+"));
-        when(source.getValue("component.subComponent.size")).thenReturn(present("4"));
-        when(source.getValue("component.subComponent[0].propertyA")).thenReturn(present("A0+"));
-        when(source.getValue("component.subComponent[0].propertyB")).thenReturn(present("B0+"));
-        when(source.getValue("component.subComponent[1].propertyA")).thenReturn(present("A1+"));
-        when(source.getValue("component.subComponent[2].propertyA")).thenReturn(present("A2+"));
-        when(source.getValue("component.subComponent[3].propertyA")).thenReturn(present("A3+"));
+        when(source.getValue("component.name", null)).thenReturn(present("name+"));
+        when(source.getValue("component.description", null)).thenReturn(present("description+"));
+        when(source.getValue("component.subComponent.size", null)).thenReturn(present("4"));
+        when(source.getValue("component.subComponent[0].propertyA", null)).thenReturn(present("A0+"));
+        when(source.getValue("component.subComponent[0].propertyB", null)).thenReturn(present("B0+"));
+        when(source.getValue("component.subComponent[1].propertyA", null)).thenReturn(present("A1+"));
+        when(source.getValue("component.subComponent[2].propertyA", null)).thenReturn(present("A2+"));
+        when(source.getValue("component.subComponent[3].propertyA", null)).thenReturn(present("A3+"));
 
         // checks values from the source
         assertThat(configuration.getName()).isEqualTo("name+");
@@ -127,7 +127,7 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
     @Test
     public void shouldRespectIgnoreKeyPrefixAnnotation() {
         // given
-        when(source.getValue("subSubConfigurationProperty.subSubConfigurationClass.propertyA")).thenReturn(present("99"));
+        when(source.getValue("subSubConfigurationProperty.subSubConfigurationClass.propertyA", null)).thenReturn(present("99"));
         // when
         BaseConfiguration configInstance = factory.createConfiguration(BaseConfiguration.class, source);
         // then
@@ -137,7 +137,7 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
     @Test
     public void shouldReturnOnlyOneMutatedValue() {
         // given
-        when(mutationSource.getValue("composite.sub.keyPrefix.someProperty")).thenReturn(present("customValue"));
+        when(mutationSource.getValue("composite.sub.keyPrefix.someProperty", null)).thenReturn(present("customValue"));
         // when
         CompositeConfiguration config1 = factory.createConfiguration(CompositeConfiguration.class, source);
         AnotherCompositeConfig config2 = factory.createConfiguration(AnotherCompositeConfig.class, source);
@@ -150,8 +150,8 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
     @Test
     public void shouldWorkWithParametrizedCollections() {
         // given
-        when(source.getValue("component.subComponent[0].propertyA")).thenReturn(present("AAA1"));
-        when(source.getValue("component.subComponent[1].propertyA")).thenReturn(present("AAA2"));
+        when(source.getValue("component.subComponent[0].propertyA", null)).thenReturn(present("AAA1"));
+        when(source.getValue("component.subComponent[1].propertyA", null)).thenReturn(present("AAA2"));
         // when
         Component configInstance = factory.createConfiguration(Component.class, source);
         // then
@@ -163,8 +163,8 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
     @Test
     public void shouldWorkWithCompositeParametrizedCollections() {
         // given
-        when(mutationSource.getValue("composite.collections.mapStringToListOfStrings")).thenReturn(present("{1:[p],2:[p,q],3:[p,q,z]}"));
-        when(mutationSource.getValue("composite.collections.mapStringToMapStringToString")).thenReturn(present("{2:{a:1,b:2,c:3}}"));
+        when(mutationSource.getValue("composite.collections.mapStringToListOfStrings", null)).thenReturn(present("{1:[p],2:[p,q],3:[p,q,z]}"));
+        when(mutationSource.getValue("composite.collections.mapStringToMapStringToString", null)).thenReturn(present("{2:{a:1,b:2,c:3}}"));
         // when
         CompositeParametrisedCollectionsConfiguration defaultConfigInstance = factory.createConfiguration(CompositeParametrisedCollectionsConfiguration.class, source);
         CompositeParametrisedCollectionsConfiguration mutatedConfigInstance = factory.createConfiguration(CompositeParametrisedCollectionsConfiguration.class, source);

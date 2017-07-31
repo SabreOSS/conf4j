@@ -39,7 +39,7 @@ public class BigDecimalTypeConverterTest {
         // given
         String stringValue = "100.13";
         // when
-        BigDecimal bigDecimal = bigDecimalTypeAdapter.fromString(BigDecimal.class, stringValue);
+        BigDecimal bigDecimal = bigDecimalTypeAdapter.fromString(BigDecimal.class, stringValue, null);
         // then
         assertThat(bigDecimal).isEqualTo(BigDecimal.valueOf(10013, 2));
     }
@@ -50,7 +50,7 @@ public class BigDecimalTypeConverterTest {
         String stringValue = "two hundred";
         // when
         try {
-            bigDecimalTypeAdapter.fromString(BigDecimal.class, stringValue);
+            bigDecimalTypeAdapter.fromString(BigDecimal.class, stringValue, null);
             fail("Expected exception");
         } catch (IllegalArgumentException e) {
             // then
@@ -63,7 +63,7 @@ public class BigDecimalTypeConverterTest {
         // given
         BigDecimal bigDecimal = BigDecimal.valueOf(123, 1);
         // when
-        String asString = bigDecimalTypeAdapter.toString(BigDecimal.class, bigDecimal);
+        String asString = bigDecimalTypeAdapter.toString(BigDecimal.class, bigDecimal, null);
         // then
         assertThat(asString).isEqualTo("12.3");
     }
@@ -73,7 +73,7 @@ public class BigDecimalTypeConverterTest {
         // given
         BigDecimal bigDecimal = null;
         // when
-        String asString = bigDecimalTypeAdapter.toString(BigDecimal.class, bigDecimal);
+        String asString = bigDecimalTypeAdapter.toString(BigDecimal.class, bigDecimal, null);
         // then
         assertThat(asString).isNull();
     }
@@ -81,7 +81,7 @@ public class BigDecimalTypeConverterTest {
     @Test
     public void shouldBeApplicableToBigDecimal() {
         // when
-        boolean applicable = bigDecimalTypeAdapter.isApplicable(BigDecimal.class);
+        boolean applicable = bigDecimalTypeAdapter.isApplicable(BigDecimal.class, null);
         // then
         assertThat(applicable).isTrue();
     }
@@ -89,7 +89,7 @@ public class BigDecimalTypeConverterTest {
     @Test
     public void shouldNotBeApplicableToNonBigDecimal() {
         // when
-        boolean applicable = bigDecimalTypeAdapter.isApplicable(Object.class);
+        boolean applicable = bigDecimalTypeAdapter.isApplicable(Object.class, null);
         // then
         assertThat(applicable).isFalse();
     }

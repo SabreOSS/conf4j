@@ -27,6 +27,7 @@ package com.sabre.oss.conf4j.converter.standard;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -37,14 +38,14 @@ import static java.util.Objects.requireNonNull;
 public class FloatTypeConverter implements TypeConverter<Float> {
 
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
         return type instanceof Class<?> &&
                 (Float.class.isAssignableFrom((Class<?>) type) || Float.TYPE.isAssignableFrom((Class<?>) type));
     }
 
     @Override
-    public Float fromString(Type type, String value) {
+    public Float fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         try {
@@ -55,7 +56,7 @@ public class FloatTypeConverter implements TypeConverter<Float> {
     }
 
     @Override
-    public String toString(Type type, Float value) {
+    public String toString(Type type, Float value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return Objects.toString(value, null);

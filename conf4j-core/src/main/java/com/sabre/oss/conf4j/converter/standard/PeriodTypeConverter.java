@@ -29,6 +29,7 @@ import com.sabre.oss.conf4j.converter.TypeConverter;
 import java.lang.reflect.Type;
 import java.time.Period;
 import java.time.format.DateTimeParseException;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -38,14 +39,14 @@ import static java.util.Objects.requireNonNull;
  */
 public class PeriodTypeConverter implements TypeConverter<Period> {
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return type instanceof Class<?> && Period.class.isAssignableFrom((Class<?>) type);
     }
 
     @Override
-    public Period fromString(Type type, String value) {
+    public Period fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         try {
@@ -56,7 +57,7 @@ public class PeriodTypeConverter implements TypeConverter<Period> {
     }
 
     @Override
-    public String toString(Type type, Period value) {
+    public String toString(Type type, Period value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return Objects.toString(value, null);

@@ -27,6 +27,7 @@ package com.sabre.oss.conf4j.converter.standard;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -39,7 +40,7 @@ public class BooleanTypeConverter implements TypeConverter<Boolean> {
     public static final String FALSE = "false";
 
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return type instanceof Class<?> &&
@@ -47,7 +48,7 @@ public class BooleanTypeConverter implements TypeConverter<Boolean> {
     }
 
     @Override
-    public Boolean fromString(Type type, String value) {
+    public Boolean fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         if (value == null) {
@@ -63,7 +64,7 @@ public class BooleanTypeConverter implements TypeConverter<Boolean> {
     }
 
     @Override
-    public String toString(Type type, Boolean value) {
+    public String toString(Type type, Boolean value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return Objects.toString(value, null);

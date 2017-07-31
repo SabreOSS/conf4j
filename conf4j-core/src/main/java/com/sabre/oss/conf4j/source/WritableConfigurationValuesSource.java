@@ -24,6 +24,8 @@
 
 package com.sabre.oss.conf4j.source;
 
+import java.util.Map;
+
 /**
  * Configuration value source which supports modifications to the underlying configuration repository.
  * <p>
@@ -35,35 +37,13 @@ public interface WritableConfigurationValuesSource extends ConfigurationValuesSo
     /**
      * Creates or updates configuration value.
      *
-     * @param key   configuration key, {@code null} value is not allowed.
-     * @param value configuration value.
-     * @throws NullPointerException     when {@code key} is {@code null}.
-     * @throws IllegalArgumentException when {@code key} does not meet a store format.
-     */
-    void setValue(String key, String value);
-
-    /**
-     * Creates or updates configuration value.
-     *
      * @param key        configuration key, {@code null} value is not allowed.
      * @param value      configuration value.
      * @param attributes custom meta-data associated with property. It can be {@code null}.
      * @throws NullPointerException     when {@code key} is {@code null}.
      * @throws IllegalArgumentException when {@code key} does not meet a store format.
      */
-    default void setValue(String key, String value, Attributes attributes) {
-        this.setValue(key, value);
-    }
-
-    /**
-     * Removes the configuration value.
-     *
-     * @param key configuration key, {@code null} value is not allowed.
-     * @return removed value, when it is not present {@link OptionalValue#isPresent()} returns {@code false}.
-     * @throws NullPointerException     when {@code key} is {@code null}.
-     * @throws IllegalArgumentException when {@code key} does not meet a store format.
-     */
-    OptionalValue<String> removeValue(String key);
+    void setValue(String key, String value, Map<String, String> attributes);
 
     /**
      * Removes the configuration value.
@@ -74,7 +54,5 @@ public interface WritableConfigurationValuesSource extends ConfigurationValuesSo
      * @throws NullPointerException     when {@code key} is {@code null}.
      * @throws IllegalArgumentException when {@code key} does not meet a store format.
      */
-    default OptionalValue<String> removeValue(String key, Attributes attributes) {
-        return removeValue(key);
-    }
+    OptionalValue<String> removeValue(String key, Map<String, String> attributes);
 }

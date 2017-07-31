@@ -50,7 +50,7 @@ public class WritableMapConfigurationValuesSource extends MapConfigurationValues
      * {@inheritDoc}
      */
     @Override
-    public void setValue(String key, String value) {
+    public void setValue(String key, String value, Map<String, String> attributes) {
         requireNonNull(key, "key cannot be null");
         source.put(key, value);
     }
@@ -59,7 +59,7 @@ public class WritableMapConfigurationValuesSource extends MapConfigurationValues
      * {@inheritDoc}
      */
     @Override
-    public OptionalValue<String> removeValue(String key) {
+    public OptionalValue<String> removeValue(String key, Map<String, String> attributes) {
         requireNonNull(key, "key cannot be null");
 
         return source.containsKey(key) ? present(source.remove(key)) : absent();

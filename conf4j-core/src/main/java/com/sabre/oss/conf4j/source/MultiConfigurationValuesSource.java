@@ -27,6 +27,7 @@ package com.sabre.oss.conf4j.source;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static java.util.Objects.requireNonNull;
@@ -48,11 +49,11 @@ public class MultiConfigurationValuesSource implements ConfigurationValuesSource
     }
 
     @Override
-    public OptionalValue<String> getValue(String key) {
+    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
         requireNonNull(key, "key cannot be null");
 
         for (ConfigurationValuesSource source : sources) {
-            OptionalValue<String> value = source.getValue(key);
+            OptionalValue<String> value = source.getValue(key, attributes);
             if (value.isPresent()) {
                 return value;
             }
@@ -62,10 +63,11 @@ public class MultiConfigurationValuesSource implements ConfigurationValuesSource
     }
 
     @Override
-    public ConfigurationEntry findEntry(Collection<String> keys) {
+    public ConfigurationEntry findEntry(Collection<String> keys, Map<String, String> attributes) {
         requireNonNull(keys, "keys cannot be null");
+
         for (ConfigurationValuesSource source : sources) {
-            ConfigurationEntry entry = source.findEntry(keys);
+            ConfigurationEntry entry = source.findEntry(keys, attributes);
             if (entry != null) {
                 return entry;
             }

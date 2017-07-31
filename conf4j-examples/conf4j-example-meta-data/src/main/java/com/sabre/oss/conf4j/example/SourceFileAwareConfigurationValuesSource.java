@@ -24,7 +24,10 @@
 
 package com.sabre.oss.conf4j.example;
 
-import com.sabre.oss.conf4j.source.*;
+import com.sabre.oss.conf4j.source.ConfigurationEntry;
+import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.OptionalValue;
+import com.sabre.oss.conf4j.source.PropertiesConfigurationValuesSource;
 
 import java.util.Collection;
 import java.util.Map;
@@ -37,27 +40,17 @@ public class SourceFileAwareConfigurationValuesSource implements ConfigurationVa
     private final Map<String, ConfigurationValuesSource> sources = new ConcurrentHashMap<>();
 
     @Override
-    public OptionalValue<String> getValue(String key) {
-        return getValue(key, null);
-    }
-
-    @Override
-    public OptionalValue<String> getValue(String key, Attributes attributes) {
+    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
         return getConfigurationValuesSource(attributes).getValue(key, attributes);
     }
 
     @Override
-    public ConfigurationEntry findEntry(Collection<String> keys) {
-        return findEntry(keys, null);
-    }
-
-    @Override
-    public ConfigurationEntry findEntry(Collection<String> keys, Attributes attributes) {
+    public ConfigurationEntry findEntry(Collection<String> keys, Map<String, String> attributes) {
         return getConfigurationValuesSource(attributes).findEntry(keys, attributes);
     }
 
-    private ConfigurationValuesSource getConfigurationValuesSource(Attributes attributes) {
-        String fileAttributeValue = (attributes == null) ? null : attributes.getAttributes().get(FILE);
+    private ConfigurationValuesSource getConfigurationValuesSource(Map<String, String> attributes) {
+        String fileAttributeValue = (attributes == null) ? null : attributes.get(FILE);
         if (fileAttributeValue == null) {
             fileAttributeValue = DEFAULT_PROPERTIES;
         }
