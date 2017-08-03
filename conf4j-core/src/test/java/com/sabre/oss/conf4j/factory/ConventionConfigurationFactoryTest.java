@@ -58,17 +58,17 @@ public class ConventionConfigurationFactoryTest {
 
     private void validate() {
         // given
-        when(source.getValue("url")).thenReturn(present("http://some.url"));
-        when(source.getValue("userName")).thenReturn(present("user"));
-        when(source.getValue("timeout.connectTimeout")).thenReturn(present("1000"));
-        when(source.getValue("timeout.readTimeout")).thenReturn(present("2000"));
-        when(source.getValue("otherTimeouts.size")).thenReturn(present("3"));
-        when(source.getValue("otherTimeouts[0].connectTimeout")).thenReturn(present("100"));
-        when(source.getValue("otherTimeouts[0].readTimeout")).thenReturn(present("200"));
-        when(source.getValue("otherTimeouts[1].connectTimeout")).thenReturn(present("101"));
-        when(source.getValue("otherTimeouts[1].readTimeout")).thenReturn(present("201"));
-        when(source.getValue("otherTimeouts[2].connectTimeout")).thenReturn(present("0"));
-        when(source.getValue("otherTimeouts[2].readTimeout")).thenReturn(present("0"));
+        when(source.getValue("url", null)).thenReturn(present("http://some.url"));
+        when(source.getValue("userName", null)).thenReturn(present("user"));
+        when(source.getValue("timeout.connectTimeout", null)).thenReturn(present("1000"));
+        when(source.getValue("timeout.readTimeout", null)).thenReturn(present("2000"));
+        when(source.getValue("otherTimeouts.size", null)).thenReturn(present("3"));
+        when(source.getValue("otherTimeouts[0].connectTimeout", null)).thenReturn(present("100"));
+        when(source.getValue("otherTimeouts[0].readTimeout", null)).thenReturn(present("200"));
+        when(source.getValue("otherTimeouts[1].connectTimeout", null)).thenReturn(present("101"));
+        when(source.getValue("otherTimeouts[1].readTimeout", null)).thenReturn(present("201"));
+        when(source.getValue("otherTimeouts[2].connectTimeout", null)).thenReturn(present("0"));
+        when(source.getValue("otherTimeouts[2].readTimeout", null)).thenReturn(present("0"));
 
         // when
         ConnectionConfiguration configuration = configurationFactory.createConfiguration(ConnectionConfiguration.class, source);

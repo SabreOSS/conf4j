@@ -32,7 +32,6 @@ import com.sabre.oss.conf4j.internal.model.SubConfigurationListPropertyModel;
 import com.sabre.oss.conf4j.internal.model.SubConfigurationPropertyModel;
 import com.sabre.oss.conf4j.internal.model.ValuePropertyModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.Attributes;
 import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
 
@@ -40,6 +39,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import static com.sabre.oss.conf4j.internal.utils.AttributesUtils.mergeAttributes;
 import static com.sabre.oss.conf4j.internal.utils.KeyGenerator.emptyKeyGenerator;
 import static com.sabre.oss.conf4j.internal.utils.KeyGenerator.keyGenerator;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
@@ -53,7 +53,7 @@ public abstract class AbstractConfigurationInitializer extends AbstractConfigura
     protected final ConfigurationValuesSource valuesSource;
     protected final String fallbackKeyPrefix;
     protected final Map<String, String> defaultValues;
-    protected final Attributes customAttributes;
+    protected final Map<String, String> attributes;
     protected final ConfigurationValueProvider configurationValueProvider;
 
     protected KeyGenerator keyGenerator;
@@ -68,7 +68,7 @@ public abstract class AbstractConfigurationInitializer extends AbstractConfigura
             KeyGenerator keyGenerator,
             String fallbackKeyPrefix,
             Map<String, String> defaultValues,
-            Attributes customAttributes,
+            Map<String, String> attributes,
             ConfigurationValueProvider configurationValueProvider) {
 
         this.configuration = configuration;
@@ -80,7 +80,7 @@ public abstract class AbstractConfigurationInitializer extends AbstractConfigura
         this.keyGenerator = keyGenerator;
         this.fallbackKeyPrefix = fallbackKeyPrefix;
         this.defaultValues = defaultValues;
-        this.customAttributes = customAttributes;
+        this.attributes = attributes;
         this.configurationValueProvider = configurationValueProvider;
     }
 
@@ -90,18 +90,22 @@ public abstract class AbstractConfigurationInitializer extends AbstractConfigura
     }
 
     @Override
-    public Object createSubConfiguration(ConfigurationModel subConfigurationModel, KeyGenerator keyGenerator, String fallbackKey, Map<String, String> defaultValues, Attributes customAttributes) {
+    public Object createSubConfiguration(
+            ConfigurationModel subConfigurationModel, KeyGenerator keyGenerator, String fallbackKey,
+            Map<String, String> defaultValues, Map<String, String> attributes) {
+
         Object subConfiguration = configurationInstanceCreator.createInstance(subConfigurationModel, classLoader);
 
-        ConfigurationInitializer subConfigurationInitializer = createSubConfigurationInitializer(subConfiguration, subConfigurationModel, keyGenerator, fallbackKey, defaultValues, customAttributes);
+        ConfigurationInitializer subConfigurationInitializer = createSubConfigurationInitializer(
+                subConfiguration, subConfigurationModel, keyGenerator, fallbackKey, defaultValues, attributes);
         subConfigurationInitializer.initializeConfiguration();
 
         return subConfiguration;
     }
 
     protected abstract ConfigurationInitializer createSubConfigurationInitializer(
-            Object subConfiguration, ConfigurationModel configurationModel, KeyGenerator keyGenerator, String fallbackKey,
-            Map<String, String> defaultValues, Attributes customAttributes);
+            Object subConfiguration, ConfigurationModel configurationModel, KeyGenerator keyGenerator,
+            String fallbackKey, Map<String, String> defaultValues, Map<String, String> attributes);
 
     protected abstract ConfigurationPropertiesAccessor getConfigurationPropertiesAccessor();
 
@@ -125,7 +129,7 @@ public abstract class AbstractConfigurationInitializer extends AbstractConfigura
         String encryptionProvider = propertyModel.getEncryptionProviderName();
         Class<TypeConverter<?>> typeConverterClass = propertyModel.getTypeConverterClass();
 
-        Attributes propertyAttributes = Attributes.merge(customAttributes, propertyModel.getCustomAttributes());
+        Map<String, String> propertyAttributes = mergeAttributes(attributes, propertyModel.getAttributes());
         PropertyMetadata propertyMetadata = new PropertyMetadata(propertyName, type, typeConverterClass, keySet, defaultValue, encryptionProvider, propertyAttributes);
         storePropertyMetadata(propertyMetadata);
     }
@@ -138,7 +142,7 @@ public abstract class AbstractConfigurationInitializer extends AbstractConfigura
                 keyGenerator(propertyModel.getPrefixes()) :
                 this.keyGenerator.append(propertyModel.getPrefixes());
 
-        Attributes propertyAttributes = Attributes.merge(customAttributes, propertyModel.getCustomAttributes());
+        Map<String, String> propertyAttributes = mergeAttributes(attributes, propertyModel.getAttributes());
         Object subConfiguration = createSubConfiguration(propertyModel.getTypeModel(),
                 subConfigurationKeyGenerator, propertyModel.getFallbackKey(), propertyModel.getDefaultValues(), propertyAttributes);
 
@@ -153,7 +157,7 @@ public abstract class AbstractConfigurationInitializer extends AbstractConfigura
         String propertyName = propertyModel.getPropertyName();
         SubConfigurationList list = configurationPropertiesAccessor.getSubConfigurationListProperty(propertyName);
         if (list == null) {
-            Attributes propertyAttributes = Attributes.merge(customAttributes, propertyModel.getCustomAttributes());
+            Map<String, String> propertyAttributes = mergeAttributes(attributes, propertyModel.getAttributes());
             list = new SubConfigurationList(
                     propertyModel.getItemTypeModel(), this,
                     propertyModel.isResetPrefix() ? emptyKeyGenerator() : this.keyGenerator,

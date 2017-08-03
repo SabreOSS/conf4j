@@ -26,7 +26,6 @@ package com.sabre.oss.conf4j.internal.factory;
 
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.Attributes;
 
 import java.util.Map;
 
@@ -46,9 +45,10 @@ public interface ConfigurationInitializer {
      * @param keyGenerator          base key generator.
      * @param fallbackKey           base fallback, global key.
      * @param defaultValues         actual default values.
-     * @param customAttributes      actual custom data
+     * @param attributes            actual custom data
      * @return instantiated and initialized sub-configuration value.
      */
-    Object createSubConfiguration(ConfigurationModel subConfigurationModel, KeyGenerator keyGenerator, String fallbackKey,
-                                  Map<String, String> defaultValues, Attributes customAttributes);
+    Object createSubConfiguration(
+            ConfigurationModel subConfigurationModel, KeyGenerator keyGenerator,
+            String fallbackKey, Map<String, String> defaultValues, Map<String, String> attributes);
 }

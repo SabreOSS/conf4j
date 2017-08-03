@@ -24,10 +24,9 @@
 
 package com.sabre.oss.conf4j.internal.model;
 
-import com.sabre.oss.conf4j.source.Attributes;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
@@ -37,14 +36,14 @@ public abstract class PropertyModel {
     protected final Type type;
     protected final Method method;
     protected final String description;
-    protected final Attributes customAttributes;
+    protected final Map<String, String> attributes;
 
-    protected PropertyModel(String propertyName, Type type, Method method, String description, Attributes customAttributes) {
+    protected PropertyModel(String propertyName, Type type, Method method, String description, Map<String, String> attributes) {
         this.propertyName = requireNonNull(propertyName, "propertyName cannot be null");
         this.type = requireNonNull(type, "type cannot be null");
         this.method = requireNonNull(method, "method cannot be null");
         this.description = description;
-        this.customAttributes = customAttributes;
+        this.attributes = attributes;
     }
 
     public ConfigurationModel getOwner() {
@@ -71,7 +70,7 @@ public abstract class PropertyModel {
         return description;
     }
 
-    public Attributes getCustomAttributes() {
-        return customAttributes;
+    public Map<String, String> getAttributes() {
+        return attributes;
     }
 }

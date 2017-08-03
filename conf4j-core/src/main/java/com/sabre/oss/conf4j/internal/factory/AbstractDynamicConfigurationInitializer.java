@@ -29,7 +29,6 @@ import com.sabre.oss.conf4j.internal.config.ConfigurationValueProvider;
 import com.sabre.oss.conf4j.internal.config.PropertyMetadata;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.Attributes;
 import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
 
 import java.util.Map;
@@ -46,11 +45,11 @@ public abstract class AbstractDynamicConfigurationInitializer extends AbstractCo
             KeyGenerator keyGenerator,
             String fallbackKeyPrefix,
             Map<String, String> defaultValues,
-            Attributes customAttributes,
+            Map<String, String> attributes,
             ConfigurationValueProvider configurationValueProvider
     ) {
         super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
-                keyGenerator, fallbackKeyPrefix, defaultValues, customAttributes, configurationValueProvider);
+                keyGenerator, fallbackKeyPrefix, defaultValues, attributes, configurationValueProvider);
     }
 
     @Override
@@ -62,7 +61,7 @@ public abstract class AbstractDynamicConfigurationInitializer extends AbstractCo
         // don't store default value in metadata - value in the field (which is converted to proper type) is used instead.
         PropertyMetadata metadata = new PropertyMetadata(
                 propertyName, propertyMetadata.getType(), propertyMetadata.getTypeConverterClass(),
-                propertyMetadata.getKeySet(), absent(), propertyMetadata.getEncryptionProvider(), propertyMetadata.getCustomAttributes());
+                propertyMetadata.getKeySet(), absent(), propertyMetadata.getEncryptionProvider(), propertyMetadata.getAttributes());
         configurationPropertiesAccessor.setPropertyMetadata(propertyName, metadata);
 
         // don't fetch values from values source, just convert default value and decrypt is if needed.

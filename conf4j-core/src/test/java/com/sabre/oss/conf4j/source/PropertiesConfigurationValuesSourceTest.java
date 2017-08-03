@@ -48,9 +48,9 @@ public class PropertiesConfigurationValuesSourceTest {
 
         // then
         assertThat(source.getAllConfigurationEntries().iterator()).hasSize(properties.size());
-        assertThat(source.getValue("key1").get()).isEqualTo(properties.getProperty("key1"));
-        assertThat(source.getValue("key2").get()).isEqualTo(properties.getProperty("key2"));
-        assertThat(source.getValue("non-existing-key").isAbsent()).isTrue();
+        assertThat(source.getValue("key1", null).get()).isEqualTo(properties.getProperty("key1"));
+        assertThat(source.getValue("key2", null).get()).isEqualTo(properties.getProperty("key2"));
+        assertThat(source.getValue("non-existing-key", null).isAbsent()).isTrue();
     }
 
     @Test

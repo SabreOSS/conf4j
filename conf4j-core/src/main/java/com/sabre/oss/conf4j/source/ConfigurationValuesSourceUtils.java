@@ -25,6 +25,7 @@
 package com.sabre.oss.conf4j.source;
 
 import java.util.Collection;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
@@ -32,7 +33,11 @@ final class ConfigurationValuesSourceUtils {
     private ConfigurationValuesSourceUtils() {
     }
 
-    static ConfigurationEntry findEntry(ConfigurationValuesSource configurationValuesSource, Collection<String> keys, Attributes attributes) {
+    static ConfigurationEntry findEntry(
+            ConfigurationValuesSource configurationValuesSource,
+            Collection<String> keys,
+            Map<String, String> attributes
+    ) {
         requireNonNull(configurationValuesSource, "configurationValuesSource cannot be null");
         requireNonNull(keys, "keys cannot be null");
 

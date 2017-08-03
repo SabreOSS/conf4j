@@ -24,8 +24,6 @@
 
 package com.sabre.oss.conf4j.internal.model;
 
-import com.sabre.oss.conf4j.source.Attributes;
-
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +42,9 @@ public class SubConfigurationPropertyModel extends PropertyModel {
             String propertyName, Class<?> type, Class<?> declaredType, ConfigurationModel typeModel, Method method, String description,
             List<String> prefixes, boolean resetPrefix,
             String fallbackKey, Map<String, String> defaultValues,
-            Attributes customAttributes) {
+            Map<String, String> attributes) {
 
-        super(propertyName, type, method, description, customAttributes);
+        super(propertyName, type, method, description, attributes);
         this.typeModel = requireNonNull(typeModel, "typeModel cannot be null");
         this.declaredType = requireNonNull(declaredType, "declaredType cannot be null");
         this.prefixes = requireNonNull(prefixes, "prefixes cannot be null");

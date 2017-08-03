@@ -36,7 +36,7 @@ public class MapConfigurationValuesSourceTest {
         // given
         ConfigurationValuesSource source = new MapConfigurationValuesSource(of("key1", "value1", "key2", "value2"));
         // when
-        String value = source.getValue("key2").get();
+        String value = source.getValue("key2", null).get();
         // then
         assertThat(value).isEqualTo("value2");
     }

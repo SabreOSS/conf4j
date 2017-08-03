@@ -38,7 +38,7 @@ public class WritableMapConfigurationValuesSourceTest {
         // given
         ConfigurationValuesSource mapConfigurationValuesSource = new WritableMapConfigurationValuesSource(of("key", "value"));
         // when
-        OptionalValue<String> receivedValue = mapConfigurationValuesSource.getValue("key");
+        OptionalValue<String> receivedValue = mapConfigurationValuesSource.getValue("key", null);
         // then
         assertThat(receivedValue.isPresent()).isTrue();
         assertThat(receivedValue.get()).isEqualTo("value");
@@ -49,9 +49,9 @@ public class WritableMapConfigurationValuesSourceTest {
         // given
         WritableConfigurationValuesSource mapConfigurationValuesSource = new WritableMapConfigurationValuesSource(new HashMap<>());
         // when
-        mapConfigurationValuesSource.setValue("key", "value");
+        mapConfigurationValuesSource.setValue("key", "value", null);
         // then
-        OptionalValue<String> value = mapConfigurationValuesSource.getValue("key");
+        OptionalValue<String> value = mapConfigurationValuesSource.getValue("key", null);
         assertThat(value.isPresent()).isTrue();
         assertThat(value.get()).isEqualTo("value");
     }
@@ -64,9 +64,9 @@ public class WritableMapConfigurationValuesSourceTest {
         WritableConfigurationValuesSource mapConfigurationValuesSource = new WritableMapConfigurationValuesSource(map);
 
         // when
-        mapConfigurationValuesSource.removeValue("key");
+        mapConfigurationValuesSource.removeValue("key", null);
 
         // then
-        assertThat(mapConfigurationValuesSource.getValue("key").isPresent()).isFalse();
+        assertThat(mapConfigurationValuesSource.getValue("key", null).isPresent()).isFalse();
     }
 }

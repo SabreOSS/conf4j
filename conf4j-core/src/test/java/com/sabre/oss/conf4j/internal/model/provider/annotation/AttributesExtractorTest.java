@@ -36,14 +36,14 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static com.sabre.oss.conf4j.internal.model.provider.annotation.CustomAttributesExtractor.getMetaAttributes;
+import static com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractor.getMetaAttributes;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 
-public class CustomAttributesExtractorTest {
+public class AttributesExtractorTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -306,7 +306,7 @@ public class CustomAttributesExtractorTest {
         // expect
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage(
-                "All @com.sabre.oss.conf4j.internal.model.provider.annotation.CustomAttributesExtractorTest$NotAllAttributesAreAnnotated(annotated=annotatedValue, notAnnotated=notAnnotatedValue) " +
+                "All @com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$NotAllAttributesAreAnnotated(annotated=annotatedValue, notAnnotated=notAnnotatedValue) " +
                         "annotations attributes must be annotated with @com.sabre.oss.conf4j.annotation.Meta.");
         // when
         getMetaAttributes(NotAllAttributesAreAnnotatedUsage.class);
@@ -332,7 +332,7 @@ public class CustomAttributesExtractorTest {
         // expect
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage(
-                "@com.sabre.oss.conf4j.internal.model.provider.annotation.CustomAttributesExtractorTest$TooManyAttributes(attribute=attribute, anotherAttribute=anotherAttribute) " +
+                "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$TooManyAttributes(attribute=attribute, anotherAttribute=anotherAttribute) " +
                         "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and define more than one attribute: " +
                         "anotherAttribute, attribute ");
 
@@ -360,7 +360,7 @@ public class CustomAttributesExtractorTest {
         // expect
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage(
-                "@com.sabre.oss.conf4j.internal.model.provider.annotation.CustomAttributesExtractorTest$InvalidAttributeType(attribute=[1, 2]) " +
+                "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$InvalidAttributeType(attribute=[1, 2]) " +
                         "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and its attribute 'attribute' " +
                         "type is [Ljava.lang.String;. Only scalar, simple types are supported.");
         // when

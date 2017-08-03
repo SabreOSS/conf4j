@@ -32,10 +32,11 @@ import com.sabre.oss.conf4j.internal.factory.ConfigurationInstanceCreator;
 import com.sabre.oss.conf4j.internal.factory.ConfigurationPropertiesAccessor;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.Attributes;
 import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
 
 import java.util.Map;
+
+import static com.sabre.oss.conf4j.internal.utils.AttributesUtils.mergeAttributes;
 
 public class JavassistStaticConfigurationInitializer extends AbstractStaticConfigurationInitializer {
     private final ConfigurationPropertiesAccessor configurationPropertiesAccessor;
@@ -49,7 +50,7 @@ public class JavassistStaticConfigurationInitializer extends AbstractStaticConfi
             KeyGenerator keyGenerator,
             String fallbackKeyPrefix,
             Map<String, String> defaultValues,
-            Attributes attributes,
+            Map<String, String> attributes,
             ConfigurationValueProvider configurationValueProvider) {
 
         super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
@@ -61,11 +62,11 @@ public class JavassistStaticConfigurationInitializer extends AbstractStaticConfi
     @Override
     protected ConfigurationInitializer createSubConfigurationInitializer(
             Object subConfiguration, ConfigurationModel configurationModel, KeyGenerator keyGenerator,
-            String fallbackKey, Map<String, String> defaultValues, Attributes customAttributes) {
+            String fallbackKey, Map<String, String> defaultValues, Map<String, String> attributes) {
 
         return new JavassistStaticConfigurationInitializer(
                 subConfiguration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
-                keyGenerator, fallbackKey, defaultValues, Attributes.merge(configurationModel.getCustomAttributes(), customAttributes),
+                keyGenerator, fallbackKey, defaultValues, mergeAttributes(configurationModel.getAttributes(), attributes),
                 configurationValueProvider);
     }
 

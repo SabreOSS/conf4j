@@ -27,6 +27,7 @@ package com.sabre.oss.conf4j.converter.standard;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeJava;
@@ -37,7 +38,7 @@ import static org.apache.commons.lang3.StringEscapeUtils.unescapeJava;
  */
 public class CharacterTypeConverter implements TypeConverter<Character> {
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return type instanceof Class<?> &&
@@ -45,7 +46,7 @@ public class CharacterTypeConverter implements TypeConverter<Character> {
     }
 
     @Override
-    public Character fromString(Type type, String value) {
+    public Character fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         if (value == null || value.isEmpty()) {
@@ -73,7 +74,7 @@ public class CharacterTypeConverter implements TypeConverter<Character> {
     }
 
     @Override
-    public String toString(Type type, Character value) {
+    public String toString(Type type, Character value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return value == null ? null : escapeJava(value.toString());

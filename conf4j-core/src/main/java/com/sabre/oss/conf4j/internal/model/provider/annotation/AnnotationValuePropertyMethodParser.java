@@ -90,7 +90,7 @@ public class AnnotationValuePropertyMethodParser extends AbstractAnnotationPrope
                 metadataExtractor.getDefaultValue(configurationType, method),
                 metadataExtractor.getEncryptionProvider(configurationType, method),
                 metadataExtractor.getTypeConverter(configurationType, method),
-                metadataExtractor.getCustomAttributes(configurationType, method));
+                metadataExtractor.attributes(configurationType, method));
 
         checkPropertyModel(propertyModel);
 
@@ -135,7 +135,7 @@ public class AnnotationValuePropertyMethodParser extends AbstractAnnotationPrope
         Class<TypeConverter<?>> typeConverterClass = propertyModel.getTypeConverterClass();
         TypeConverter<?> customTypeConverter = getTypeConverterInstance(typeConverterClass);
         if (customTypeConverter != null) {
-            if (!customTypeConverter.isApplicable(type)) {
+            if (!customTypeConverter.isApplicable(type, propertyModel.getAttributes())) {
                 throw new IllegalArgumentException(
                         format("%s has custom converter %s which is not compatible with property's type %s.",
                                 propertyModel.getMethod(), typeConverterClass.getName(), type.getTypeName()));

@@ -73,34 +73,34 @@ public class CachingTypeConverterTest {
 
     @Test
     public void shouldDelegateToIsApplicableWithoutCaching() {
-        when(mockConverter.isApplicable(Long.class)).thenReturn(true);
-        when(mockConverter.isApplicable(Object.class)).thenReturn(false);
+        when(mockConverter.isApplicable(Long.class, null)).thenReturn(true);
+        when(mockConverter.isApplicable(Object.class, null)).thenReturn(false);
 
         converter.afterPropertiesSet();
 
-        assertThat(converter.isApplicable(Long.class)).isTrue();
-        assertThat(converter.isApplicable(Long.class)).isTrue();
-        assertThat(converter.isApplicable(Object.class)).isFalse();
+        assertThat(converter.isApplicable(Long.class, null)).isTrue();
+        assertThat(converter.isApplicable(Long.class, null)).isTrue();
+        assertThat(converter.isApplicable(Object.class, null)).isFalse();
 
-        verify(mockConverter, times(2)).isApplicable(Long.class);
-        verify(mockConverter, times(1)).isApplicable(Object.class);
+        verify(mockConverter, times(2)).isApplicable(Long.class, null);
+        verify(mockConverter, times(1)).isApplicable(Object.class, null);
         verify(mockCache, never()).get(Object.class);
     }
 
     @Test
     public void shouldDelegateToToStringToWithoutCaching() {
 
-        when(mockConverter.toString(Long.class, 10L)).thenReturn("10");
-        when(mockConverter.toString(Long.class, 20L)).thenReturn("20");
+        when(mockConverter.toString(Long.class, 10L, null)).thenReturn("10");
+        when(mockConverter.toString(Long.class, 20L, null)).thenReturn("20");
 
         converter.afterPropertiesSet();
 
-        assertThat(converter.toString(Long.class, 10L)).isEqualTo("10");
-        assertThat(converter.toString(Long.class, 10L)).isEqualTo("10");
-        assertThat(converter.toString(Long.class, 20L)).isEqualTo("20");
+        assertThat(converter.toString(Long.class, 10L, null)).isEqualTo("10");
+        assertThat(converter.toString(Long.class, 10L, null)).isEqualTo("10");
+        assertThat(converter.toString(Long.class, 20L, null)).isEqualTo("20");
 
-        verify(mockConverter, times(2)).toString(Long.class, 10L);
-        verify(mockConverter, times(1)).toString(Long.class, 20L);
+        verify(mockConverter, times(2)).toString(Long.class, 10L, null);
+        verify(mockConverter, times(1)).toString(Long.class, 20L, null);
         verify(mockCache, never()).get(Object.class);
     }
 
@@ -109,21 +109,21 @@ public class CachingTypeConverterTest {
         converter.setCacheManager(new ConcurrentMapCacheManager());
 
 
-        when(mockConverter.fromString(Long.class, "10")).thenReturn(10L);
-        when(mockConverter.fromString(Long.class, "20")).thenReturn(20L);
+        when(mockConverter.fromString(Long.class, "10", null)).thenReturn(10L);
+        when(mockConverter.fromString(Long.class, "20", null)).thenReturn(20L);
 
         converter.afterPropertiesSet();
 
-        Long val10a = converter.fromString(Long.class, "10");
-        Long val10b = converter.fromString(Long.class, "10");
+        Long val10a = converter.fromString(Long.class, "10", null);
+        Long val10b = converter.fromString(Long.class, "10", null);
 
         assertThat(val10a).isEqualTo(10L);
         assertThat(val10b).isSameAs(val10a);
 
-        assertThat(converter.fromString(Long.class, "20")).isEqualTo(20L);
+        assertThat(converter.fromString(Long.class, "20", null)).isEqualTo(20L);
 
-        verify(mockConverter, times(1)).fromString(Long.class, "10");
-        verify(mockConverter, times(1)).fromString(Long.class, "20");
+        verify(mockConverter, times(1)).fromString(Long.class, "10", null);
+        verify(mockConverter, times(1)).fromString(Long.class, "20", null);
     }
 
     @Test
@@ -133,8 +133,8 @@ public class CachingTypeConverterTest {
 
             assertThat(typeConverter).isInstanceOf(CachingTypeConverter.class);
 
-            Long val = (Long) typeConverter.fromString(Long.class, "10");
-            Long val2 = (Long) typeConverter.fromString(Long.class, "10");
+            Long val = (Long) typeConverter.fromString(Long.class, "10", null);
+            Long val2 = (Long) typeConverter.fromString(Long.class, "10", null);
             assertThat(val).isEqualTo(10L);
             assertThat(val2).isSameAs(val);
 

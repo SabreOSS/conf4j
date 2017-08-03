@@ -77,7 +77,7 @@ public class JavassistStaticConfigurationFactory extends AbstractConfigurationFa
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),
-                configurationModel.getCustomAttributes(),
+                configurationModel.getAttributes(),
                 new DefaultConfigurationValueProvider(configurationValueProcessors)
         ).initializeConfiguration();
     }

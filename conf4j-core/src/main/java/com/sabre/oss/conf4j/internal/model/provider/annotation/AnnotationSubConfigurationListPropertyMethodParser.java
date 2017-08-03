@@ -81,7 +81,7 @@ public class AnnotationSubConfigurationListPropertyMethodParser extends Abstract
                 metadataExtractor.shouldResetPrefix(configurationType, method),
                 defaultSize,
                 defaultValues,
-                metadataExtractor.getCustomAttributes(configurationType, method));
+                metadataExtractor.attributes(configurationType, method));
 
         checkPropertyModel(propertyModel);
 

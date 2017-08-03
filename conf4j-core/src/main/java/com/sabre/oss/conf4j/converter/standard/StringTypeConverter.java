@@ -27,6 +27,7 @@ package com.sabre.oss.conf4j.converter.standard;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
@@ -41,21 +42,21 @@ import static java.util.Objects.requireNonNull;
 public class StringTypeConverter implements TypeConverter<String> {
 
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return type instanceof Class<?> && String.class.isAssignableFrom((Class<?>) type);
     }
 
     @Override
-    public String fromString(Type type, String value) {
+    public String fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return value;
     }
 
     @Override
-    public String toString(Type type, String value) {
+    public String toString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return value;

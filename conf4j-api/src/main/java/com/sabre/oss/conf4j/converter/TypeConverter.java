@@ -25,6 +25,7 @@
 package com.sabre.oss.conf4j.converter;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 /**
  * Adapts string value to given type.
@@ -40,33 +41,36 @@ public interface TypeConverter<T> {
     /**
      * Check if the type converter is applicable for type {@code type}.
      *
-     * @param type actual type definition.
+     * @param type       actual type definition.
+     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
      * @return {@code true} when this type converter is applicable for a given type definition.
      * @throws NullPointerException when {@code type} is {@code null}.
      */
-    boolean isApplicable(Type type);
+    boolean isApplicable(Type type, Map<String, String> attributes);
 
     /**
      * Converts String to the target type.
      *
-     * @param type  actual type definition.
-     * @param value string representation of the value which is converted to {@code T}.
-     *              In case it is {@code null}, the converter should return either {@code null} or a value
-     *              that is equivalent (for example an empty list).
+     * @param type       actual type definition.
+     * @param value      string representation of the value which is converted to {@code T}.
+     *                   In case it is {@code null}, the converter should return either {@code null} or a value
+     *                   that is equivalent (for example an empty list).
+     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
      * @return value converted to type {@code T}.
      * @throws IllegalArgumentException when {@code value} cannot be converted to {@code T}.
      * @throws NullPointerException     when {@code type} is {@code null}.
      */
-    T fromString(Type type, String value);
+    T fromString(Type type, String value, Map<String, String> attributes);
 
     /**
      * Converts value from target type to String.
      *
-     * @param type  actual type definition.
-     * @param value value that needs to be converted to string.
+     * @param type       actual type definition.
+     * @param value      value that needs to be converted to string.
+     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
      * @return string representation of the {@code value}.
      * @throws IllegalArgumentException {@code value} cannot be converted to string.
      * @throws NullPointerException     when {@code type} is {@code null}.
      */
-    String toString(Type type, T value);
+    String toString(Type type, T value, Map<String, String> attributes);
 }

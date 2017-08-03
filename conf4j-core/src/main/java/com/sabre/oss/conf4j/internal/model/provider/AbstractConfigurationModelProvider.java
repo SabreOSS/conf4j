@@ -130,7 +130,7 @@ public abstract class AbstractConfigurationModelProvider implements Configuratio
                 metadataExtractor.getDescription(configurationType),
                 metadataExtractor.isAbstractConfiguration(configurationType),
                 metadataExtractor.getPrefixes(configurationType),
-                metadataExtractor.getCustomAttributes(configurationType),
+                metadataExtractor.attributes(configurationType),
                 properties);
     }
 

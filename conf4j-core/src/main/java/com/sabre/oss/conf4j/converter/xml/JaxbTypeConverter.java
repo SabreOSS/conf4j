@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -53,14 +54,14 @@ public class JaxbTypeConverter<T> implements TypeConverter<T> {
     private final ConcurrentMap<Class<T>, JaxbPool> jaxbPoolMap = new ConcurrentHashMap<>();
 
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return type instanceof Class && ((Class<?>) type).getAnnotation(XmlRootElement.class) != null;
     }
 
     @Override
-    public T fromString(Type type, String value) {
+    public T fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         if (isBlank(value)) {
@@ -77,7 +78,7 @@ public class JaxbTypeConverter<T> implements TypeConverter<T> {
     }
 
     @Override
-    public String toString(Type type, T value) {
+    public String toString(Type type, T value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         if (value == null) {

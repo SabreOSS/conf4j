@@ -30,6 +30,7 @@ import org.junit.Test;
 
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +43,7 @@ public class JavassistStaticConfigurationFactoryTest extends AbstractStaticConfi
     @Test
     public void shouldAllowToBuildConfigurationWithImplementedMethods() {
         // when
-        when(source.getValue(anyString())).thenReturn(absent());
+        when(source.getValue(anyString(), any())).thenReturn(absent());
 
         ValidAbstractConfigurationImpl configInstance = factory.createConfiguration(ValidAbstractConfigurationImpl.class, source);
         // then

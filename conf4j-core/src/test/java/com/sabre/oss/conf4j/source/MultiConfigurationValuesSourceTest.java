@@ -47,12 +47,12 @@ public class MultiConfigurationValuesSourceTest {
 
     @Test
     public void shouldReturnValuesFromProperSource() {
-        assertThat(source.getValue(A_KEY).get()).isEqualTo(A_KEY);
-        assertThat(source.getValue(B_KEY).get()).isEqualTo(B_KEY);
+        assertThat(source.getValue(A_KEY, null).get()).isEqualTo(A_KEY);
+        assertThat(source.getValue(B_KEY, null).get()).isEqualTo(B_KEY);
     }
 
     @Test
     public void shouldFindValuesInProperSource() {
-        assertThat(source.findEntry(asList("NotExistingKey", B_KEY))).isEqualTo(new ConfigurationEntry(B_KEY, B_KEY));
+        assertThat(source.findEntry(asList("NotExistingKey", B_KEY), null)).isEqualTo(new ConfigurationEntry(B_KEY, B_KEY));
     }
 }

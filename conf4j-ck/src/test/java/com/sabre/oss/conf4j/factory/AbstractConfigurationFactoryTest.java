@@ -41,7 +41,6 @@ import com.sabre.oss.conf4j.factory.model.parameterized.ConfigurationWithIdSubCo
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.processor.ConfigurationValueDecrypter;
 import com.sabre.oss.conf4j.processor.ConfigurationValueDecryptingProcessor;
-import com.sabre.oss.conf4j.source.Attributes;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
@@ -49,8 +48,8 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.List;
+import java.util.Map;
 
-import static com.sabre.oss.conf4j.source.Attributes.attributes;
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
 import static java.lang.String.format;
@@ -88,7 +87,7 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void returnsDefaultValueIfValueNotFound() {
         // When
-        when(source.getValue(anyString())).thenReturn(absent());
+        when(source.getValue(anyString(), any())).thenReturn(absent());
 
         ValidConfiguration configInstance = factory.createConfiguration(ValidConfiguration.class, source);
         // Then
@@ -98,7 +97,7 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldReturnNullWhenLackOfValueAndDefaultIsNotDefined() {
         // When
-        when(source.getValue(anyString())).thenReturn(absent());
+        when(source.getValue(anyString(), any())).thenReturn(absent());
         ConfigurationWithNoDefaultValue configInstance = factory.createConfiguration(ConfigurationWithNoDefaultValue.class, source);
         assertThat(configInstance.getSampleValue()).isNull();
         assertThat(configInstance.getIntegerValue()).isNull();
@@ -107,9 +106,9 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldAssignValueFromValuesSourceWhenAvailable() {
         // Given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("configuration.under.test.String.property")).thenReturn(present("string value"));
-        when(source.getValue("configuration.under.test.Integer.property")).thenReturn(present("456"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("configuration.under.test.String.property", null)).thenReturn(present("string value"));
+        when(source.getValue("configuration.under.test.Integer.property", null)).thenReturn(present("456"));
         // When
         ValidConfiguration configInstance = factory.createConfiguration(ValidConfiguration.class, source);
         // Then
@@ -120,7 +119,7 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleAllStandardTypesOfProperties() {
         // When
-        when(source.getValue(anyString())).thenReturn(absent());
+        when(source.getValue(anyString(), any())).thenReturn(absent());
         ValidConfiguration configInstance = factory.createConfiguration(ValidConfiguration.class, source);
 
         // Then
@@ -144,9 +143,9 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleHierarchicalConfigurations() {
         // Given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("L1.L2.L3.e")).thenReturn(present("TE1+"));
-        when(source.getValue("L1.secondLevelConfig.L2.d")).thenReturn(present("SD0+"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("L1.L2.L3.e", null)).thenReturn(present("TE1+"));
+        when(source.getValue("L1.secondLevelConfig.L2.d", null)).thenReturn(present("SD0+"));
 
         // When
         FirstLevel firstLevel = factory.createConfiguration(FirstLevel.class, source);
@@ -169,14 +168,14 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleMultipleKeys() {
         // Given
-        when(source.getValue("configuration.int")).thenReturn(absent());
-        when(source.getValue("configuration.intProperty")).thenReturn(present("100"));
+        when(source.getValue("configuration.int", null)).thenReturn(absent());
+        when(source.getValue("configuration.intProperty", null)).thenReturn(present("100"));
         // When
         MultipleKeysConfiguration configuration = factory.createConfiguration(MultipleKeysConfiguration.class, source);
         // Then
         assertThat(configuration.getIntProperty()).isEqualTo(100);
-        verify(source, times(1)).getValue("configuration.int");
-        verify(source, times(1)).getValue("configuration.intProperty");
+        verify(source, times(1)).getValue("configuration.int", null);
+        verify(source, times(1)).getValue("configuration.intProperty", null);
     }
 
     @Key("configuration")
@@ -188,8 +187,8 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleFallbackConfigurationForSubConfigurations() {
         // Given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("fallback.key.e")).thenReturn(present("fallbackValue"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("fallback.key.e", null)).thenReturn(present("fallbackValue"));
         // When
         FirstLevel configInstance = factory.createConfiguration(FirstLevel.class, source);
         // Then
@@ -199,9 +198,9 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldApplyFallbackConfigurationAfterStandardForSubConfigurations() {
         // Given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("L1.L2.L3.e")).thenReturn(present("propertyValue"));
-        when(source.getValue("fallback.key.e")).thenReturn(present("fallbackValue"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("L1.L2.L3.e", null)).thenReturn(present("propertyValue"));
+        when(source.getValue("fallback.key.e", null)).thenReturn(present("fallbackValue"));
 
         // When
         FirstLevel configInstance = factory.createConfiguration(FirstLevel.class, source);
@@ -212,9 +211,9 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleFallbackConfigurationForStandardProperties() {
         // Given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("configuration.under.test.property")).thenReturn(absent());
-        when(source.getValue("fallback.property")).thenReturn(present("fallbackValue"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("configuration.under.test.property", null)).thenReturn(absent());
+        when(source.getValue("fallback.property", null)).thenReturn(present("fallbackValue"));
         // When
         ValidConfiguration configInstance = factory.createConfiguration(ValidConfiguration.class, source);
         // Then
@@ -224,9 +223,9 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldApplyFallbackConfigurationAfterStandardForStandardProperties() {
         // Given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("configuration.under.test.property")).thenReturn(present("propertyValue"));
-        when(source.getValue("fallback.property")).thenReturn(present("follbackValue"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("configuration.under.test.property", null)).thenReturn(present("propertyValue"));
+        when(source.getValue("fallback.property", null)).thenReturn(present("follbackValue"));
         // When
         ValidConfiguration configInstance = factory.createConfiguration(ValidConfiguration.class, source);
         // Then
@@ -236,12 +235,12 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleListOfSubConfigurations() {
         // Given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("component.subComponent.size")).thenReturn(present("3"));
-        when(source.getValue("component.subComponent[0].propertyA")).thenReturn(present("A0+"));
-        when(source.getValue("component.subComponent[0].propertyB")).thenReturn(present("B0+"));
-        when(source.getValue("component.subComponent[1].propertyA")).thenReturn(present("A1+"));
-        when(source.getValue("component.subComponent[2].propertyA")).thenReturn(present("A2+"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("component.subComponent.size", null)).thenReturn(present("3"));
+        when(source.getValue("component.subComponent[0].propertyA", null)).thenReturn(present("A0+"));
+        when(source.getValue("component.subComponent[0].propertyB", null)).thenReturn(present("B0+"));
+        when(source.getValue("component.subComponent[1].propertyA", null)).thenReturn(present("A1+"));
+        when(source.getValue("component.subComponent[2].propertyA", null)).thenReturn(present("A2+"));
         // When
         Component configInstance = factory.createConfiguration(Component.class, source);
         // Then
@@ -259,9 +258,9 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleListOfSubConfigurationsWithAppendedItems() {
         // Given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("component.subComponent.size")).thenReturn(present("3"));
-        when(source.getValue("component.subComponent[2].propertyA")).thenReturn(present("A2+"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("component.subComponent.size", null)).thenReturn(present("3"));
+        when(source.getValue("component.subComponent[2].propertyA", null)).thenReturn(present("A2+"));
         // When
         Component configInstance = factory.createConfiguration(Component.class, source);
         // Then
@@ -279,11 +278,11 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleListOfSubConfigurationsWhenSizeIsMissing() {
         // Given component.subComponent.size=2 as a default from list annotation
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("component.subComponent[0].propertyA")).thenReturn(present("A0+"));
-        when(source.getValue("component.subComponent[0].propertyB")).thenReturn(present("B0+"));
-        when(source.getValue("component.subComponent[1].propertyA")).thenReturn(present("A1+"));
-        when(source.getValue("component.subComponent[2].propertyA")).thenReturn(present("A2+")); // this value will be ignored
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("component.subComponent[0].propertyA", null)).thenReturn(present("A0+"));
+        when(source.getValue("component.subComponent[0].propertyB", null)).thenReturn(present("B0+"));
+        when(source.getValue("component.subComponent[1].propertyA", null)).thenReturn(present("A1+"));
+        when(source.getValue("component.subComponent[2].propertyA", null)).thenReturn(present("A2+")); // this value will be ignored
         // When
         Component configInstance = factory.createConfiguration(Component.class, source);
         // Then
@@ -299,23 +298,23 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleSubConfigurationWithMultipleKeyPrefixesUsedToProvideDefaultValues() {
         // Given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("prefix.default.component.name")).thenReturn(present("N+"));
-        when(source.getValue("prefix.default.component.description")).thenReturn(present("D+"));
-        when(source.getValue("prefix.default.component.subComponent.size")).thenReturn(present("3"));
-        when(source.getValue("prefix.default.component.subComponent[0].propertyA")).thenReturn(present("A0+"));
-        when(source.getValue("prefix.default.component.subComponent[1].propertyA")).thenReturn(absent());
-        when(source.getValue("prefix.default.component.subComponent[2].propertyA")).thenReturn(present("A2+"));
-        when(source.getValue("prefix.default.component.subComponent[2].propertyB")).thenReturn(present("B2+"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("prefix.default.component.name", null)).thenReturn(present("N+"));
+        when(source.getValue("prefix.default.component.description", null)).thenReturn(present("D+"));
+        when(source.getValue("prefix.default.component.subComponent.size", null)).thenReturn(present("3"));
+        when(source.getValue("prefix.default.component.subComponent[0].propertyA", null)).thenReturn(present("A0+"));
+        when(source.getValue("prefix.default.component.subComponent[1].propertyA", null)).thenReturn(absent());
+        when(source.getValue("prefix.default.component.subComponent[2].propertyA", null)).thenReturn(present("A2+"));
+        when(source.getValue("prefix.default.component.subComponent[2].propertyB", null)).thenReturn(present("B2+"));
 
-        when(source.getValue("prefix.overridden.component.name")).thenReturn(present("N-"));
-        when(source.getValue("prefix.overridden.component.description")).thenReturn(present("D-"));
-        when(source.getValue("prefix.overridden.component.subComponent.size")).thenReturn(present("4"));
-        when(source.getValue("prefix.overridden.component.subComponent[2].propertyB")).thenReturn(present("B2-"));
-        when(source.getValue("prefix.overridden.component.subComponent[3].propertyA")).thenReturn(present("A3-"));
+        when(source.getValue("prefix.overridden.component.name", null)).thenReturn(present("N-"));
+        when(source.getValue("prefix.overridden.component.description", null)).thenReturn(present("D-"));
+        when(source.getValue("prefix.overridden.component.subComponent.size", null)).thenReturn(present("4"));
+        when(source.getValue("prefix.overridden.component.subComponent[2].propertyB", null)).thenReturn(present("B2-"));
+        when(source.getValue("prefix.overridden.component.subComponent[3].propertyA", null)).thenReturn(present("A3-"));
 
-        when(source.getValue("prefix.overriddenList.size")).thenReturn(present("2"));
-        when(source.getValue("prefix.overriddenList[1].component.subComponent[2].propertyB")).thenReturn(present("B2+-"));
+        when(source.getValue("prefix.overriddenList.size", null)).thenReturn(present("2"));
+        when(source.getValue("prefix.overriddenList[1].component.subComponent[2].propertyB", null)).thenReturn(present("B2+-"));
 
         // When
         ComponentsConfiguration configInstance = factory.createConfiguration(ComponentsConfiguration.class, source);
@@ -370,10 +369,10 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleMoreThenOneAttributeForCollectionElement() {
         // given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("component.subComponent.size")).thenReturn(present("1"));
-        when(source.getValue("component.subComponent[0].propertyA")).thenReturn(present("A"));
-        when(source.getValue("component.subComponent[0].propertyB")).thenReturn(present("B"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("component.subComponent.size", null)).thenReturn(present("1"));
+        when(source.getValue("component.subComponent[0].propertyA", null)).thenReturn(present("A"));
+        when(source.getValue("component.subComponent[0].propertyB", null)).thenReturn(present("B"));
         // when
         Component configInstance = factory.createConfiguration(Component.class, source);
         // then
@@ -385,13 +384,13 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldDetachConfigurationFromTheHierarchyWhenIgnoreKeyPrefixAnnotationIsUsed() {
         // given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("baseConfigurationClass.subConfigurationProperty.subConfigurationClass.propertyA")).thenReturn(present("1")); // fully qualified key
-        when(source.getValue("subSubConfigurationProperty.subSubConfigurationClass.propertyA")).thenReturn(present("2"));
-        when(source.getValue("fallback.key.propertyB")).thenReturn(present("3"));
-        when(source.getValue("subSubConfigurationListProperty.size")).thenReturn(present("4"));
-        when(source.getValue("subSubConfigurationListProperty[0].subSubConfigurationClass.propertyA")).thenReturn(present("5"));
-        when(source.getValue("subSubConfigurationListProperty[0].subSubConfigurationClass.propertyB")).thenReturn(present("6"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("baseConfigurationClass.subConfigurationProperty.subConfigurationClass.propertyA", null)).thenReturn(present("1")); // fully qualified key
+        when(source.getValue("subSubConfigurationProperty.subSubConfigurationClass.propertyA", null)).thenReturn(present("2"));
+        when(source.getValue("fallback.key.propertyB", null)).thenReturn(present("3"));
+        when(source.getValue("subSubConfigurationListProperty.size", null)).thenReturn(present("4"));
+        when(source.getValue("subSubConfigurationListProperty[0].subSubConfigurationClass.propertyA", null)).thenReturn(present("5"));
+        when(source.getValue("subSubConfigurationListProperty[0].subSubConfigurationClass.propertyB", null)).thenReturn(present("6"));
         // when
         BaseConfiguration baseConfiguration = factory.createConfiguration(BaseConfiguration.class, source);
         // then
@@ -407,8 +406,8 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleClassesWithoutKeyPrefixAnnotation() {
         // given
-        when(source.getValue(anyString())).thenReturn(present("A"));
-        when(source.getValue("a.b.c")).thenReturn(present("B"));
+        when(source.getValue(anyString(), any())).thenReturn(present("A"));
+        when(source.getValue("a.b.c", null)).thenReturn(present("B"));
         // when
         ConfigurationWithoutKeyPrefixDefinition configInstance = factory.createConfiguration(ConfigurationWithoutKeyPrefixDefinition.class, source);
         // then
@@ -422,8 +421,8 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
         }
 
         // given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("configuration.name")).thenReturn(present("Name"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("configuration.name", null)).thenReturn(present("Name"));
 
         // when
         Configuration configuration = factory.createConfiguration(Configuration.class, source);
@@ -447,12 +446,12 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldHandleParameterizedConfiguration() {
         // given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("configurationWithIdSubConfiguration.property")).thenReturn(present("customValue"));
-        when(source.getValue("configurationWithIdSubConfiguration.configuration.id")).thenReturn(present("1"));
-        when(source.getValue("configurationWithIdSubConfiguration.configurations.size")).thenReturn(present("2"));
-        when(source.getValue("configurationWithIdSubConfiguration.configurations[0].id")).thenReturn(present("0"));
-        when(source.getValue("configurationWithIdSubConfiguration.configurations[1].id")).thenReturn(present("1"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("configurationWithIdSubConfiguration.property", null)).thenReturn(present("customValue"));
+        when(source.getValue("configurationWithIdSubConfiguration.configuration.id", null)).thenReturn(present("1"));
+        when(source.getValue("configurationWithIdSubConfiguration.configurations.size", null)).thenReturn(present("2"));
+        when(source.getValue("configurationWithIdSubConfiguration.configurations[0].id", null)).thenReturn(present("0"));
+        when(source.getValue("configurationWithIdSubConfiguration.configurations[1].id", null)).thenReturn(present("1"));
 
         // when
         ConfigurationWithIdSubConfiguration configuration = factory.createConfiguration(ConfigurationWithIdSubConfiguration.class, source);
@@ -468,10 +467,10 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldSupportNestedPublicInterfaces() {
         // given
-        when(source.getValue("connection.url")).thenReturn(present("http://primary"));
-        when(source.getValue("connection.url2")).thenReturn(present("http://alternate"));
-        when(source.getValue("connection.active")).thenReturn(present("true"));
-        when(source.getValue("connection.mandatory")).thenReturn(present("true"));
+        when(source.getValue("connection.url", null)).thenReturn(present("http://primary"));
+        when(source.getValue("connection.url2", null)).thenReturn(present("http://alternate"));
+        when(source.getValue("connection.active", null)).thenReturn(present("true"));
+        when(source.getValue("connection.mandatory", null)).thenReturn(present("true"));
 
         // when
         ConnectionConfiguration config = factory.createConfiguration(ConnectionConfiguration.class, source);
@@ -509,9 +508,9 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
                 new ConfigurationValueDecryptingProcessor(decrypter)
         ));
 
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("connection.url")).thenReturn(present("http://primary"));
-        when(source.getValue("connection.password")).thenReturn(present("encrypted"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("connection.url", null)).thenReturn(present("http://primary"));
+        when(source.getValue("connection.password", null)).thenReturn(present("encrypted"));
 
 
         // when
@@ -535,8 +534,8 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldUseCustomTypeConverter() {
         // given
-        when(source.getValue("configuration.stringProperty")).thenReturn(present("string"));
-        when(source.getValue("configuration.booleanProperty")).thenReturn(present("true"));
+        when(source.getValue("configuration.stringProperty", null)).thenReturn(present("string"));
+        when(source.getValue("configuration.booleanProperty", null)).thenReturn(present("true"));
         // set converter which doesn't support String nor boolean
         factory.setTypeConverter(new IntegerTypeConverter());
 
@@ -789,11 +788,11 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Test
     public void shouldProvideCustomMetadata() {
         // given
-        when(source.getValue(anyString())).thenReturn(absent());
+        when(source.getValue(anyString(), any())).thenReturn(absent());
 
-        Attributes attributes = attributes(MapUtils.of("custom", "not-overridden", "file", "my.properties"));
-        Attributes overriddenAttributes = attributes(MapUtils.of("custom", "not-overridden", "file", "overridden.properties"));
-        Attributes anotherAttributes = attributes(MapUtils.of("custom", "not-overridden", "file", "another.properties"));
+        Map<String, String> attributes = MapUtils.of("custom", "not-overridden", "file", "my.properties");
+        Map<String, String> overriddenAttributes = MapUtils.of("custom", "not-overridden", "file", "overridden.properties");
+        Map<String, String> anotherAttributes = MapUtils.of("custom", "not-overridden", "file", "another.properties");
 
         when(source.getValue("metadataConfiguration.value", attributes)).thenReturn(present("value"));
         when(source.getValue("metadataConfiguration.override", overriddenAttributes)).thenReturn(present("overridden"));

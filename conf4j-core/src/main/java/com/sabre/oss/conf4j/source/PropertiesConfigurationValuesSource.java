@@ -28,6 +28,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -71,7 +72,7 @@ public class PropertiesConfigurationValuesSource implements IterableConfiguratio
      * {@inheritDoc}
      */
     @Override
-    public OptionalValue<String> getValue(String key) {
+    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
         requireNonNull(key, "key cannot be null");
 
         String value = source.getProperty(key);

@@ -40,18 +40,19 @@ import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public abstract class AbstractParametrizedConfigurationTest<F extends AbstractConfigurationFactory> extends AbstractBaseConfigurationFactoryTest<F> {
     @Test
     public void shouldSupportParameterizedConfiguration() {
-        when(source.getValue(anyString())).thenReturn(OptionalValue.absent());
-        when(source.getValue("stringValidation.validationName")).thenReturn(present("stringValidation"));
-        when(source.getValue("stringValidation.validationRule.pattern")).thenReturn(present(".*"));
-        when(source.getValue("intValidation.validationName")).thenReturn(present("intValidation"));
-        when(source.getValue("intValidation.validationRule.min")).thenReturn(present("1"));
-        when(source.getValue("intValidation.validationRule.max")).thenReturn(present("2"));
+        when(source.getValue(anyString(), any())).thenReturn(OptionalValue.absent());
+        when(source.getValue("stringValidation.validationName", null)).thenReturn(present("stringValidation"));
+        when(source.getValue("stringValidation.validationRule.pattern", null)).thenReturn(present(".*"));
+        when(source.getValue("intValidation.validationName", null)).thenReturn(present("intValidation"));
+        when(source.getValue("intValidation.validationRule.min", null)).thenReturn(present("1"));
+        when(source.getValue("intValidation.validationRule.max", null)).thenReturn(present("2"));
 
         StringValidationConfiguration stringValidation = factory.createConfiguration(StringValidationConfiguration.class, source);
         IntValidationConfiguration intValidation = factory.createConfiguration(IntValidationConfiguration.class, source);
@@ -112,10 +113,10 @@ public abstract class AbstractParametrizedConfigurationTest<F extends AbstractCo
 
     @Test
     public void shouldSupportParameterizedSubConfigurationList() {
-        when(source.getValue(anyString())).thenReturn(OptionalValue.absent());
-        when(source.getValue("stringValidationRules.validationRules.size")).thenReturn(present("2"));
-        when(source.getValue("stringValidationRules.validationRules[0].pattern")).thenReturn(present("0.*"));
-        when(source.getValue("stringValidationRules.validationRules[1].pattern")).thenReturn(present("1.*"));
+        when(source.getValue(anyString(), any())).thenReturn(OptionalValue.absent());
+        when(source.getValue("stringValidationRules.validationRules.size", null)).thenReturn(present("2"));
+        when(source.getValue("stringValidationRules.validationRules[0].pattern", null)).thenReturn(present("0.*"));
+        when(source.getValue("stringValidationRules.validationRules[1].pattern", null)).thenReturn(present("1.*"));
 
         StringValidationRules stringValidationRules = factory.createConfiguration(StringValidationRules.class, source);
 
@@ -135,11 +136,11 @@ public abstract class AbstractParametrizedConfigurationTest<F extends AbstractCo
 
     @Test
     public void shouldSupportParameterizedValueProperties() {
-        when(source.getValue(anyString())).thenReturn(OptionalValue.absent());
-        when(source.getValue("propertyConfiguration.property")).thenReturn(present("0"));
-        when(source.getValue("propertyConfiguration.list")).thenReturn(present("[1,2,3]"));
-        when(source.getValue("propertyConfiguration.map")).thenReturn(present("{one:1,two:2}"));
-        when(source.getValue("propertyConfiguration.mapOfLists")).thenReturn(present("{one:[1,11],two:[2,22]}"));
+        when(source.getValue(anyString(), any())).thenReturn(OptionalValue.absent());
+        when(source.getValue("propertyConfiguration.property", null)).thenReturn(present("0"));
+        when(source.getValue("propertyConfiguration.list", null)).thenReturn(present("[1,2,3]"));
+        when(source.getValue("propertyConfiguration.map", null)).thenReturn(present("{one:1,two:2}"));
+        when(source.getValue("propertyConfiguration.mapOfLists", null)).thenReturn(present("{one:[1,11],two:[2,22]}"));
 
         PropertyConfiguration propertyConfiguration = factory.createConfiguration(PropertyConfiguration.class, source);
 

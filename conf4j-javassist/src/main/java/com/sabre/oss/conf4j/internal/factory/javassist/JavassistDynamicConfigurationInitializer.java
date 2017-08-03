@@ -33,10 +33,11 @@ import com.sabre.oss.conf4j.internal.factory.ConfigurationInstanceCreator;
 import com.sabre.oss.conf4j.internal.factory.ConfigurationPropertiesAccessor;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.Attributes;
 import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
 
 import java.util.Map;
+
+import static com.sabre.oss.conf4j.internal.utils.AttributesUtils.mergeAttributes;
 
 public class JavassistDynamicConfigurationInitializer extends AbstractDynamicConfigurationInitializer {
     private final ConfigurationPropertiesAccessor configurationPropertiesAccessor;
@@ -50,11 +51,11 @@ public class JavassistDynamicConfigurationInitializer extends AbstractDynamicCon
             KeyGenerator keyGenerator,
             String fallbackKeyPrefix,
             Map<String, String> defaultValues,
-            Attributes customAttributes,
+            Map<String, String> attributes,
             ConfigurationValueProvider configurationValueProvider) {
 
         super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
-                keyGenerator, fallbackKeyPrefix, defaultValues, customAttributes, configurationValueProvider);
+                keyGenerator, fallbackKeyPrefix, defaultValues, attributes, configurationValueProvider);
 
         configurationPropertiesAccessor = new JavassistConfigurationPropertiesAccessor(configuration);
     }
@@ -62,10 +63,11 @@ public class JavassistDynamicConfigurationInitializer extends AbstractDynamicCon
     @Override
     protected ConfigurationInitializer createSubConfigurationInitializer(
             Object subConfiguration, ConfigurationModel configurationModel, KeyGenerator keyGenerator, String fallbackKey,
-            Map<String, String> defaultValues, Attributes customAttributes) {
+            Map<String, String> defaultValues, Map<String, String> attributes) {
         return new JavassistDynamicConfigurationInitializer(
                 subConfiguration, configurationModel, classLoader, configurationInstanceCreator, typeConverter,
-                valuesSource, keyGenerator, fallbackKey, defaultValues, Attributes.merge(configurationModel.getCustomAttributes(), customAttributes),
+                valuesSource, keyGenerator, fallbackKey, defaultValues,
+                mergeAttributes(configurationModel.getAttributes(), attributes),
                 configurationValueProvider);
     }
 
@@ -76,8 +78,8 @@ public class JavassistDynamicConfigurationInitializer extends AbstractDynamicCon
 
     @Override
     public Object createSubConfiguration(ConfigurationModel subConfigurationModel, KeyGenerator keyGenerator, String fallbackKey,
-                                         Map<String, String> defaultValues, Attributes customAttributes) {
-        Object subConfiguration = super.createSubConfiguration(subConfigurationModel, keyGenerator, fallbackKey, defaultValues, customAttributes);
+                                         Map<String, String> defaultValues, Map<String, String> attributes) {
+        Object subConfiguration = super.createSubConfiguration(subConfigurationModel, keyGenerator, fallbackKey, defaultValues, attributes);
         if (subConfiguration instanceof DynamicConfiguration && configuration instanceof DynamicConfiguration) {
             DynamicConfiguration dynamicSubConfiguration = (DynamicConfiguration) subConfiguration;
             DynamicConfiguration dynamicConfiguration = (DynamicConfiguration) this.configuration;

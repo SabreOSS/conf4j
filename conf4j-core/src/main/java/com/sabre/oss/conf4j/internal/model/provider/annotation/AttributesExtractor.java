@@ -26,6 +26,7 @@ package com.sabre.oss.conf4j.internal.model.provider.annotation;
 
 import com.sabre.oss.conf4j.annotation.Meta;
 import com.sabre.oss.conf4j.annotation.Meta.Metas;
+import com.sabre.oss.conf4j.internal.utils.AttributesUtils;
 import com.sabre.oss.conf4j.internal.utils.CachedAnnotationUtils;
 import com.sabre.oss.conf4j.internal.utils.spring.ConcurrentReferenceHashMap;
 
@@ -49,13 +50,13 @@ import static org.apache.commons.lang3.StringUtils.join;
  *
  * @see Meta
  */
-final class CustomAttributesExtractor {
+final class AttributesExtractor {
     private static final Map<Class<?>, Map<String, String>> attributesByTypeCache = new ConcurrentReferenceHashMap<>();
     private static final Map<Method, Map<String, String>> attributesByMethodCache = new ConcurrentReferenceHashMap<>();
     private static final Map<Class<?>, List<Annotation>> allAnnotationsByTypeCache = new ConcurrentReferenceHashMap<>();
     private static final Map<Method, List<Annotation>> allAnnotationsByMethodCache = new ConcurrentReferenceHashMap<>();
 
-    private CustomAttributesExtractor() {
+    private AttributesExtractor() {
     }
 
     /**
@@ -85,9 +86,10 @@ final class CustomAttributesExtractor {
     }
 
     private static Map<String, String> getMetaAttributes(List<Annotation> annotations) {
-        return annotations.stream()
+        Map<String, String> attributes = annotations.stream()
                 .flatMap(a -> extractMeta(a).stream())
                 .collect(toMap(Meta::name, Meta::value, (p, n) -> n, LinkedHashMap::new));
+        return attributes.isEmpty() ? null : AttributesUtils.attributes(attributes);
     }
 
     private static List<Meta> extractMeta(Annotation annotation) {
@@ -200,7 +202,7 @@ final class CustomAttributesExtractor {
     }
 
     private static List<Annotation> getAnnotations(Class<?> clazz) {
-        return allAnnotationsByTypeCache.computeIfAbsent(clazz, CustomAttributesExtractor::getAnnotationsInternal);
+        return allAnnotationsByTypeCache.computeIfAbsent(clazz, AttributesExtractor::getAnnotationsInternal);
     }
 
     private static List<Annotation> getAnnotationsInternal(Class<?> clazz) {
@@ -215,7 +217,7 @@ final class CustomAttributesExtractor {
     }
 
     private static List<Annotation> getAnnotations(Method method) {
-        return allAnnotationsByMethodCache.computeIfAbsent(method, CustomAttributesExtractor::getAnnotationsInternal);
+        return allAnnotationsByMethodCache.computeIfAbsent(method, AttributesExtractor::getAnnotationsInternal);
     }
 
     private static List<Annotation> getAnnotationsInternal(Method method) {

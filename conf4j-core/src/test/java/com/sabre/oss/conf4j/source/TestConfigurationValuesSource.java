@@ -26,6 +26,8 @@ package com.sabre.oss.conf4j.source;
 
 import org.mockito.Mockito;
 
+import java.util.Map;
+
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 
 /**
@@ -33,7 +35,7 @@ import static com.sabre.oss.conf4j.source.OptionalValue.absent;
  */
 public class TestConfigurationValuesSource implements ConfigurationValuesSource {
     @Override
-    public OptionalValue<String> getValue(String key) {
+    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
         return absent();
     }
 }

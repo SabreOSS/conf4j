@@ -29,6 +29,8 @@ import com.sabre.oss.conf4j.source.OptionalValue;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 
+import java.util.Map;
+
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
 import static java.util.Objects.requireNonNull;
@@ -52,7 +54,7 @@ public class EnvironmentConfigurationValuesSource implements ConfigurationValues
      * {@inheritDoc}
      */
     @Override
-    public OptionalValue<String> getValue(String key) {
+    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
         requireNonNull(key, "key cannot be null");
         state(environment != null, "environment is not set");
 

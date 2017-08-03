@@ -27,8 +27,8 @@ package com.sabre.oss.conf4j.internal.model.provider.annotation;
 import com.sabre.oss.conf4j.annotation.*;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 import com.sabre.oss.conf4j.internal.model.provider.MetadataExtractor;
+import com.sabre.oss.conf4j.internal.utils.AttributesUtils;
 import com.sabre.oss.conf4j.internal.utils.ReflectionUtils;
-import com.sabre.oss.conf4j.source.Attributes;
 import com.sabre.oss.conf4j.source.OptionalValue;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -38,7 +38,7 @@ import java.lang.reflect.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-import static com.sabre.oss.conf4j.internal.model.provider.annotation.CustomAttributesExtractor.getMetaAttributes;
+import static com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractor.getMetaAttributes;
 import static com.sabre.oss.conf4j.internal.utils.CachedAnnotationUtils.*;
 import static com.sabre.oss.conf4j.internal.utils.PropertyUtils.getPropertyName;
 import static com.sabre.oss.conf4j.internal.utils.spring.GenericTypeResolver.*;
@@ -250,13 +250,13 @@ public class AnnotationMetadataExtractor implements MetadataExtractor {
     }
 
     @Override
-    public Attributes getCustomAttributes(Class<?> configurationType) {
-        return Attributes.attributes(getMetaAttributes(configurationType));
+    public Map<String, String> attributes(Class<?> configurationType) {
+        return AttributesUtils.attributes(getMetaAttributes(configurationType));
     }
 
     @Override
-    public Attributes getCustomAttributes(Class<?> configurationType, Method method) {
-        return Attributes.attributes(getMetaAttributes(method));
+    public Map<String, String> attributes(Class<?> configurationType, Method method) {
+        return AttributesUtils.attributes(getMetaAttributes(method));
     }
 
     protected boolean isConfigurationPropertyMethod(Method method) {

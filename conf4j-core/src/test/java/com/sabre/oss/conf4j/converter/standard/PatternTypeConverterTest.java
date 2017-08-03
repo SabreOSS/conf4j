@@ -41,7 +41,7 @@ public class PatternTypeConverterTest {
         // given
         Pattern pattern = Pattern.compile(".*");
         // when
-        Pattern value = converter.fromString(Pattern.class, ".*");
+        Pattern value = converter.fromString(Pattern.class, ".*", null);
         // then
         assertThat(value.pattern()).isEqualTo(pattern.pattern());
     }
@@ -51,7 +51,7 @@ public class PatternTypeConverterTest {
         // given
         Pattern pattern = Pattern.compile("123.*");
         // when
-        String asString = converter.toString(Pattern.class, pattern);
+        String asString = converter.toString(Pattern.class, pattern, null);
         // then
         assertThat(asString).isEqualTo(pattern.toString());
     }
@@ -61,7 +61,7 @@ public class PatternTypeConverterTest {
         // given
         Type type = Pattern.class;
         // when
-        boolean isApplicable = converter.isApplicable(type);
+        boolean isApplicable = converter.isApplicable(type, null);
         // then
         assertThat(isApplicable).isTrue();
     }
@@ -69,7 +69,7 @@ public class PatternTypeConverterTest {
     @Test
     public void shouldNotAcceptUnknownType() {
         // when
-        boolean isApplicable = converter.isApplicable(mock(Type.class));
+        boolean isApplicable = converter.isApplicable(mock(Type.class), null);
         // then
         assertThat(isApplicable).isFalse();
     }

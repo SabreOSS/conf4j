@@ -40,7 +40,7 @@ public class DurationTypeConverterTest {
         // given
         Duration duration = Duration.ofMillis(1260535L);
         // when
-        Duration readDuration = converter.fromString(Duration.class, "PT21M0.535S");
+        Duration readDuration = converter.fromString(Duration.class, "PT21M0.535S", null);
         // then
         assertThat(readDuration).isEqualTo(duration);
     }
@@ -50,7 +50,7 @@ public class DurationTypeConverterTest {
         // given
         Duration duration = Duration.ofMillis(1260535L);
         // when
-        String asString = converter.toString(Duration.class, duration);
+        String asString = converter.toString(Duration.class, duration, null);
         // then
         assertThat(asString).isEqualTo("PT21M0.535S");
     }
@@ -60,7 +60,7 @@ public class DurationTypeConverterTest {
         // given
         Type type = Duration.class;
         // when
-        boolean isApplicable = converter.isApplicable(type);
+        boolean isApplicable = converter.isApplicable(type, null);
         // then
         assertThat(isApplicable).isTrue();
     }
@@ -68,7 +68,7 @@ public class DurationTypeConverterTest {
     @Test
     public void shouldNotAcceptUnknownType() {
         // when
-        boolean isApplicable = converter.isApplicable(mock(Type.class));
+        boolean isApplicable = converter.isApplicable(mock(Type.class), null);
         // then
         assertThat(isApplicable).isFalse();
     }

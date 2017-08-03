@@ -42,6 +42,7 @@ import static com.sabre.oss.conf4j.source.OptionalValue.present;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -49,7 +50,7 @@ public abstract class AbstractDefaultsAnnotationTest<F extends AbstractConfigura
     @Test
     public void shouldProvideDefaultValuesAndUseDefaultSize() {
         // given
-        when(source.getValue(anyString())).thenReturn(absent());
+        when(source.getValue(anyString(), any())).thenReturn(absent());
 
         // when
         ConfigWithoutPrefixes config = factory.createConfiguration(ConfigWithoutPrefixes.class, source);
@@ -76,17 +77,17 @@ public abstract class AbstractDefaultsAnnotationTest<F extends AbstractConfigura
     @Test
     public void shouldProvideValuesFromValueSourceAndSizeIsLessThanNumberOfDefaults() {
         // given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("config.withoutDefaultsAnnotation.int")).thenReturn(present("10"));
-        when(source.getValue("config.withoutDefaultsAnnotation.string")).thenReturn(present("fromSource"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("config.withoutDefaultsAnnotation.int", null)).thenReturn(present("10"));
+        when(source.getValue("config.withoutDefaultsAnnotation.string", null)).thenReturn(present("fromSource"));
 
-        when(source.getValue("config.withDefaultsAnnotation.int")).thenReturn(present("10"));
-        when(source.getValue("config.withDefaultsAnnotation.string")).thenReturn(present("fromSource"));
+        when(source.getValue("config.withDefaultsAnnotation.int", null)).thenReturn(present("10"));
+        when(source.getValue("config.withDefaultsAnnotation.string", null)).thenReturn(present("fromSource"));
 
-        when(source.getValue("config.listWithoutDefaultsAnnotation.size")).thenReturn(present("2"));
-        when(source.getValue("config.listWithDefaultsAnnotation.size")).thenReturn(present("2"));
-        when(source.getValue("config.listWithDefaultsAnnotation.int")).thenReturn(present("10"));
-        when(source.getValue("config.listWithDefaultsAnnotation.string")).thenReturn(present("fromSource"));
+        when(source.getValue("config.listWithoutDefaultsAnnotation.size", null)).thenReturn(present("2"));
+        when(source.getValue("config.listWithDefaultsAnnotation.size", null)).thenReturn(present("2"));
+        when(source.getValue("config.listWithDefaultsAnnotation.int", null)).thenReturn(present("10"));
+        when(source.getValue("config.listWithDefaultsAnnotation.string", null)).thenReturn(present("fromSource"));
 
         // when
         ConfigWithoutPrefixes config = factory.createConfiguration(ConfigWithoutPrefixes.class, source);
@@ -111,18 +112,18 @@ public abstract class AbstractDefaultsAnnotationTest<F extends AbstractConfigura
     @Test
     public void shouldProvideValuesFromValueSourceAndSizeIsGreaterThanNumberOfDefaults() {
         // given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("config.listWithoutDefaultsAnnotation.size")).thenReturn(present("5"));
-        when(source.getValue("config.listWithoutDefaultsAnnotation[0].int")).thenReturn(present("11"));
-        when(source.getValue("config.listWithoutDefaultsAnnotation[0].string")).thenReturn(present("fromSource-1"));
-        when(source.getValue("config.listWithoutDefaultsAnnotation[1].int")).thenReturn(present("22"));
-        when(source.getValue("config.listWithoutDefaultsAnnotation[1].string")).thenReturn(present("fromSource-2"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("config.listWithoutDefaultsAnnotation.size", null)).thenReturn(present("5"));
+        when(source.getValue("config.listWithoutDefaultsAnnotation[0].int", null)).thenReturn(present("11"));
+        when(source.getValue("config.listWithoutDefaultsAnnotation[0].string", null)).thenReturn(present("fromSource-1"));
+        when(source.getValue("config.listWithoutDefaultsAnnotation[1].int", null)).thenReturn(present("22"));
+        when(source.getValue("config.listWithoutDefaultsAnnotation[1].string", null)).thenReturn(present("fromSource-2"));
 
-        when(source.getValue("config.listWithDefaultsAnnotation.size")).thenReturn(present("5"));
-        when(source.getValue("config.listWithDefaultsAnnotation[0].int")).thenReturn(present("11"));
-        when(source.getValue("config.listWithDefaultsAnnotation[0].string")).thenReturn(present("fromSource-1"));
-        when(source.getValue("config.listWithDefaultsAnnotation[1].int")).thenReturn(present("22"));
-        when(source.getValue("config.listWithDefaultsAnnotation[1].string")).thenReturn(present("fromSource-2"));
+        when(source.getValue("config.listWithDefaultsAnnotation.size", null)).thenReturn(present("5"));
+        when(source.getValue("config.listWithDefaultsAnnotation[0].int", null)).thenReturn(present("11"));
+        when(source.getValue("config.listWithDefaultsAnnotation[0].string", null)).thenReturn(present("fromSource-1"));
+        when(source.getValue("config.listWithDefaultsAnnotation[1].int", null)).thenReturn(present("22"));
+        when(source.getValue("config.listWithDefaultsAnnotation[1].string", null)).thenReturn(present("fromSource-2"));
 
         // when
         ConfigWithoutPrefixes config = factory.createConfiguration(ConfigWithoutPrefixes.class, source);
@@ -153,15 +154,15 @@ public abstract class AbstractDefaultsAnnotationTest<F extends AbstractConfigura
     @Test
     public void shouldProvideValuesFromValueSourceAndResolvePrefixes() {
         // given
-        when(source.getValue(anyString())).thenReturn(absent());
-        when(source.getValue("config.withoutDefaults.int")).thenReturn(present("10"));
-        when(source.getValue("config.withoutDefaults.string")).thenReturn(present("withoutDefaults-fromSource"));
-        when(source.getValue("config.withDefaults.int")).thenReturn(present("20"));
-        when(source.getValue("config.withDefaults.string")).thenReturn(present("withDefaults-fromSource"));
-        when(source.getValue("config.listWithoutDefaults.size")).thenReturn(present("2"));
-        when(source.getValue("config.listWithDefaults.size")).thenReturn(present("1"));
-        when(source.getValue("config.listWithDefaults.int")).thenReturn(present("30"));
-        when(source.getValue("config.listWithDefaults.string")).thenReturn(present("listWithDefaults-fromSource"));
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("config.withoutDefaults.int", null)).thenReturn(present("10"));
+        when(source.getValue("config.withoutDefaults.string", null)).thenReturn(present("withoutDefaults-fromSource"));
+        when(source.getValue("config.withDefaults.int", null)).thenReturn(present("20"));
+        when(source.getValue("config.withDefaults.string", null)).thenReturn(present("withDefaults-fromSource"));
+        when(source.getValue("config.listWithoutDefaults.size", null)).thenReturn(present("2"));
+        when(source.getValue("config.listWithDefaults.size", null)).thenReturn(present("1"));
+        when(source.getValue("config.listWithDefaults.int", null)).thenReturn(present("30"));
+        when(source.getValue("config.listWithDefaults.string", null)).thenReturn(present("listWithDefaults-fromSource"));
 
         // when
         ConfigWithPrefixes config = factory.createConfiguration(ConfigWithPrefixes.class, source);

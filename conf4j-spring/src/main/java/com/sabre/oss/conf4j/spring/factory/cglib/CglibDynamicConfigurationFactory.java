@@ -68,7 +68,7 @@ public class CglibDynamicConfigurationFactory extends AbstractConfigurationFacto
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),
-                configurationModel.getCustomAttributes(),
+                configurationModel.getAttributes(),
                 new DefaultConfigurationValueProvider(configurationValueProcessors)
         ).initializeConfiguration();
     }

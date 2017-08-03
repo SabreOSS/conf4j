@@ -27,6 +27,7 @@ package com.sabre.oss.conf4j.converter.standard;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -36,7 +37,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class IntegerTypeConverter implements TypeConverter<Integer> {
     @Override
-    public boolean isApplicable(Type type) {
+    public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return type instanceof Class<?> &&
@@ -44,7 +45,7 @@ public class IntegerTypeConverter implements TypeConverter<Integer> {
     }
 
     @Override
-    public Integer fromString(Type type, String value) {
+    public Integer fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         try {
@@ -55,7 +56,7 @@ public class IntegerTypeConverter implements TypeConverter<Integer> {
     }
 
     @Override
-    public String toString(Type type, Integer value) {
+    public String toString(Type type, Integer value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
         return Objects.toString(value, null);
