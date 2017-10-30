@@ -39,7 +39,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * for details of how to setup this feature.
  * </p>
  * <p>
- * {@code &#064;Encrypted} annotation can be used for configuration properties. It is not supported
+ * {@code @Encrypted} annotation can be used for configuration properties. It is not supported
  * for sub-configurations, nor a list of sub-configurations.
  * </p>
  * <b>Example usage:</b>

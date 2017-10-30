@@ -34,10 +34,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Specifies an additional fallback, global configuration key as a source of the property value.
  * It is used when the value associated with the key defined by {@link Key} annotation is not available.
- * The key specified by {@code &#064;FallbackKey} is <i>absolute</i>. No other prefixes defined by {@link Key}
+ * The key specified by {@code @FallbackKey} is <i>absolute</i>. No other prefixes defined by {@link Key}
  * on any level is applied.
  * <p>
- * {@code &#064;FallbackKey} is used primarily to maintain backward compatibility when the original key
+ * {@code @FallbackKey} is used primarily to maintain backward compatibility when the original key
  * cannot be changed in the underlying data source.
  * <p>
  * <b>Example usage:</b>
