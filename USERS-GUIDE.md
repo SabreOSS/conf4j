@@ -133,7 +133,7 @@ _Type converters_ which implement `TypeConverter` interface are responsible for 
 
 The _conf4j_ library provides type converters for all primitive types (like `boolean`, `int`, `double`),
 primitive wrapper types (like `Boolean`, `Integer`, `Double`), _enumerations_ and many other types which are frequently
-used (like `BigDecimal`). More complex types are also supported - there is a dedicated converter for `List<E>` and `Map<K, V>`
+used (like `BigDecimal`, `LocalDateTime`). More complex types are also supported - there is a dedicated converter for `List<E>` and `Map<K, V>`
 which is able to convert even very complex types like `Map<String, Map<Integer, List<Double>>>`. Because lists and maps
 are quite complex, the data must be encoded to be represented as a string. Currently `JsonLikeTypeConverter` is used
 as a default implementation. It encodes `List` and `Map` as _JSON_, but by default _compact mode_ is activated to make
@@ -387,8 +387,8 @@ The converter must be _thread safe_ and _stateless_ because it's accessed from m
 Ideally it should be _symmetric_ so the result of _value_ conversion to string, and then the string back to the value,
 produces the same value.
 
-_conf4j_ provides converters for commonly used types like `int`, `long`, `boolean`, `double`, _enumerations_, `String`
-but also converts to `List<E>` and `Map<K, V>` . The former converters are generic and support any `E, K, V` types
+_conf4j_ provides converters for commonly used types like `int`, `long`, `boolean`, `double`, _enumerations_, `String`, 
+`LocalDateTime` but also converts to `List<E>` and `Map<K, V>` . The former converters are generic and support any `E, K, V` types
 as long as converters for `E, K, V` are available.
 Even exotic types are supported: `Map<List<String>, List<Map<Integer, Double>>`.
 

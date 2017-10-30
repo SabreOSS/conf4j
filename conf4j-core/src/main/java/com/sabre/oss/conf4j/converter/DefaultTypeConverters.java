@@ -25,7 +25,21 @@
 package com.sabre.oss.conf4j.converter;
 
 import com.sabre.oss.conf4j.converter.composite.JsonLikeTypeConverter;
-import com.sabre.oss.conf4j.converter.standard.*;
+import com.sabre.oss.conf4j.converter.standard.BigDecimalTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.BooleanTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.ByteTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.CharacterTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.DoubleTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.DurationTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.EnumTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.EscapingStringTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.FloatTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.IntegerTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.LocalDateTimeTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.LongTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.PatternTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.PeriodTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.ShortTypeConverter;
 import com.sabre.oss.conf4j.converter.xml.JaxbTypeConverter;
 
 import java.util.List;
@@ -59,6 +73,7 @@ public final class DefaultTypeConverters {
      */
     private static TypeConverter<Object> prepareDefaultTypeConverter() {
         TypeConverter<Object> simpleTypeConverters = new ChainedTypeConverter(asList(
+                new LocalDateTimeTypeConverter(),
                 new EscapingStringTypeConverter(),
                 new BooleanTypeConverter(),
                 new CharacterTypeConverter(),
