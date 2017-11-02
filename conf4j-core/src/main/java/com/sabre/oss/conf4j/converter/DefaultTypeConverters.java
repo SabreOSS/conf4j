@@ -40,6 +40,7 @@ import com.sabre.oss.conf4j.converter.standard.LongTypeConverter;
 import com.sabre.oss.conf4j.converter.standard.PatternTypeConverter;
 import com.sabre.oss.conf4j.converter.standard.PeriodTypeConverter;
 import com.sabre.oss.conf4j.converter.standard.ShortTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.UrlTypeConverter;
 import com.sabre.oss.conf4j.converter.xml.JaxbTypeConverter;
 
 import java.util.List;
@@ -74,6 +75,7 @@ public final class DefaultTypeConverters {
     private static TypeConverter<Object> prepareDefaultTypeConverter() {
         TypeConverter<Object> simpleTypeConverters = new ChainedTypeConverter(asList(
                 new LocalDateTimeTypeConverter(),
+                new UrlTypeConverter(),
                 new EscapingStringTypeConverter(),
                 new BooleanTypeConverter(),
                 new CharacterTypeConverter(),
