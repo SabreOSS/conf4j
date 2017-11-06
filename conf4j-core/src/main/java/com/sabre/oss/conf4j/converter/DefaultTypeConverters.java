@@ -70,9 +70,11 @@ public final class DefaultTypeConverters {
                 new LongTypeConverter(),
                 new EnumTypeConverter(),
                 new DurationTypeConverter(),
+                new LocalDateTimeTypeConverter(),
                 new PeriodTypeConverter(),
                 new BigDecimalTypeConverter(),
                 new PatternTypeConverter(),
+                new UrlTypeConverter(),
                 new JaxbTypeConverter<>()
         ));
 
