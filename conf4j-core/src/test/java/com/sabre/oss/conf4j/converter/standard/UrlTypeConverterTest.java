@@ -70,7 +70,7 @@ public class UrlTypeConverterTest {
 
     @Test
     public void shouldThrowExceptionWhenCheckingIfApplicableAndTypeIsNull() {
-        // given / when / then
+        // then
         assertThatThrownBy(() -> urlTypeConverter.isApplicable(null, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
@@ -91,7 +91,7 @@ public class UrlTypeConverterTest {
 
     @Test
     public void shouldReturnNullWhenConvertingToStringAndValueToConvertIsNull() {
-        // given / when
+        // when
         String converted = urlTypeConverter.toString(URL.class, null, emptyMap());
 
         // then
@@ -116,7 +116,7 @@ public class UrlTypeConverterTest {
         // given
         String malformedUrlString = "malformed URL";
 
-        // when / then
+        // then
         assertThatThrownBy(() -> urlTypeConverter.fromString(URL.class, malformedUrlString, emptyMap()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Unable to convert to URL: malformed URL");
@@ -127,7 +127,7 @@ public class UrlTypeConverterTest {
         // given
         String urlInString = "http://www.example.com/docs/resource1.html";
 
-        // when / then
+        // then
         assertThatThrownBy(() -> urlTypeConverter.fromString(null, urlInString, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
@@ -135,7 +135,7 @@ public class UrlTypeConverterTest {
 
     @Test
     public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
-        // given / when
+        // when
         URL fromConversion = urlTypeConverter.fromString(URL.class, null, emptyMap());
 
         // then

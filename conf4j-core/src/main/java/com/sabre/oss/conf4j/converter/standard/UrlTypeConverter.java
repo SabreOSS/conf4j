@@ -32,6 +32,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Objects;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -52,12 +53,11 @@ public class UrlTypeConverter implements TypeConverter<URL> {
 
         if (value == null) {
             return null;
-        } else {
-            try {
-                return new URL(value);
-            } catch (MalformedURLException e) {
-                throw new IllegalArgumentException("Unable to convert to URL: " + value);
-            }
+        }
+        try {
+            return new URL(value);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(format("Unable to convert to URL: %s", value));
         }
     }
 

@@ -4,7 +4,7 @@
  * Copyright 2017 Sabre GLBL Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of Cthis software and associated documentation files (the "Software"), to deal
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -74,7 +74,7 @@ public class LocalDateTimeTypeConverterTest {
 
     @Test
     public void shouldThrowExceptionWhenCheckingIfApplicableAndTypeIsNull() {
-        // given / when / then
+        // then
         assertThatThrownBy(() -> localDateTimeTypeConverter.isApplicable(null, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
@@ -110,7 +110,7 @@ public class LocalDateTimeTypeConverterTest {
 
     @Test
     public void shouldReturnNullWhenConvertingToStringAndValueToConvertIsNull() {
-        // given / when
+        // when
         String converted = localDateTimeTypeConverter.toString(LocalDateTime.class, null, emptyMap());
 
         // then
@@ -125,10 +125,10 @@ public class LocalDateTimeTypeConverterTest {
         String format = "invalid format";
         Map<String, String> attributes = singletonMap("format", format);
 
-        // when / then
+        // then
         assertThatThrownBy(() -> localDateTimeTypeConverter.toString(LocalDateTime.class, toConvert, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Unable to convert LocalDateTime to String");
+                .hasMessage("Unable to convert LocalDateTime to String. Invalid format pattern: invalid format");
     }
 
     @Test
@@ -137,7 +137,7 @@ public class LocalDateTimeTypeConverterTest {
         Clock clock = Clock.fixed(Instant.EPOCH, ZoneId.of("Z"));
         LocalDateTime toConvert = LocalDateTime.now(clock);
 
-        // when / then
+        // then
         assertThatThrownBy(() -> localDateTimeTypeConverter.toString(null, toConvert, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
@@ -174,11 +174,22 @@ public class LocalDateTimeTypeConverterTest {
 
     @Test
     public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
-        // given / when
+        // when
         LocalDateTime fromConversion = localDateTimeTypeConverter.fromString(LocalDateTime.class, null, emptyMap());
 
         // then
         assertThat(fromConversion).isNull();
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenConvertingFromStringAndWrongValueString() {
+        // given
+        String dateInString = "invalid value string";
+
+        // then
+        assertThatThrownBy(() -> localDateTimeTypeConverter.fromString(LocalDateTime.class, dateInString, emptyMap()))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Unable to convert to LocalDateTime: invalid value string. The value doesn't match specified format null.");
     }
 
     @Test
@@ -188,10 +199,10 @@ public class LocalDateTimeTypeConverterTest {
         String format = "invalid format";
         Map<String, String> attributes = singletonMap("format", format);
 
-        // when / then
+        // then
         assertThatThrownBy(() -> localDateTimeTypeConverter.fromString(LocalDateTime.class, dateInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Unable to convert to LocalDateTime: 1970 01 01 00:00");
+                .hasMessage("Unable to convert to LocalDateTime: 1970 01 01 00:00. Invalid format: invalid format");
     }
 
     @Test
@@ -200,7 +211,7 @@ public class LocalDateTimeTypeConverterTest {
         Clock clock = Clock.fixed(Instant.EPOCH, ZoneId.of("Z"));
         LocalDateTime toConvert = LocalDateTime.now(clock);
 
-        // when / then
+        // then
         assertThatThrownBy(() -> localDateTimeTypeConverter.toString(null, toConvert, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
