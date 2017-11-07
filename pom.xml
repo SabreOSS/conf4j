@@ -71,7 +71,6 @@
     </developers>
 
     <modules>
-        <module>conf4j-build-tools</module>
         <module>conf4j-api</module>
         <module>conf4j-core</module>
         <module>conf4j-javassist</module>
@@ -409,11 +408,6 @@
                             <groupId>com.puppycrawl.tools</groupId>
                             <artifactId>checkstyle</artifactId>
                             <version>8.0</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>com.sabre.oss.conf4j</groupId>
-                            <artifactId>conf4j-build-tools</artifactId>
-                            <version>${project.version}</version>
                         </dependency>
                     </dependencies>
                     <executions>
