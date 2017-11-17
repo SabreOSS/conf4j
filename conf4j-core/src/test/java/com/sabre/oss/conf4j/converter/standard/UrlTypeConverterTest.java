@@ -45,7 +45,7 @@ public class UrlTypeConverterTest {
     }
 
     @Test
-    public void shouldBeApplicableWhenLocalDateTimeType() {
+    public void shouldBeApplicableWhenUrlType() {
         // given
         Type type = URL.class;
 
@@ -57,7 +57,7 @@ public class UrlTypeConverterTest {
     }
 
     @Test
-    public void shouldNotBeApplicableWhenNotLocalDateTimeType() {
+    public void shouldNotBeApplicableWhenNotUrlType() {
         // given
         Type type = Boolean.class;
 

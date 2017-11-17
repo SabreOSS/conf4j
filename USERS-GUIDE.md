@@ -420,6 +420,51 @@ make sure creating new instance is fast and created object doesn't occupy much m
 
 In general favor setting up `ConfigurationFactory` with the appropriate converters over using `@Converter` annotation.
 
+#### Formatted Type Converters
+Some of the standard Type Converters support custom formats. See the table below.
+
+| Converter | Supported format |
+| --- | --- |
+| BigDecimalTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html) |
+| BooleanTypeConverter | Possible formats are: _string_when_true/string_when_false_ |
+| ByteTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| DoubleTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| DurationTypeConverter | Compliant with [`DurationFormatUtils`](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/time/DurationFormatUtils.html) |
+| FloatTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| IntegerTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| LocalDateTimeTypeConverter | Compliant with [`DateTimeFormatter`](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html) |
+| LongTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| ShortTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+
+Moreover, converters compliant with `DecimalFormat` support also custom locales. They should be compliant with ISO 639 standard.
+The following example shows how to use custom formats and locales.
+```java
+public interface DisplayConfiguration {
+   @Meta(name="format")
+   @Meta(name="locale")
+   BigDecimal getValue();
+}
+```
+
+Of course, it is possible to define own annotations specifying conversion attributes, as shown at the example below.
+```java
+@Meta(name = "format", value="#.000")
+@Retention(RUNTIME)
+@Target(METHOD)
+@Documented
+public @interface Format {
+    String value();
+}
+```
+
+Such created annotation can be used in the following manner.
+```java
+public interface DisplayConfiguration {
+   @Format(value="#.000")
+   BigDecimal getValue();
+}
+```
+
 ## Configuration Types with Generics
 
 _conf4j_ configuration types supports generics. It simplifies creating configurations which shares same behaviour.

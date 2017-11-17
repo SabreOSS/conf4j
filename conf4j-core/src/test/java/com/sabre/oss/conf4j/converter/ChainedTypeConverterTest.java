@@ -24,8 +24,8 @@
 
 package com.sabre.oss.conf4j.converter;
 
+import com.sabre.oss.conf4j.converter.standard.EscapingStringTypeConverter;
 import com.sabre.oss.conf4j.converter.standard.IntegerTypeConverter;
-import com.sabre.oss.conf4j.converter.standard.StringTypeConverter;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -40,7 +40,7 @@ public class ChainedTypeConverterTest {
 
     @Test
     public void shouldSupportConvertersFromTheChain() {
-        TypeConverter<?> converter = new ChainedTypeConverter(new StringTypeConverter(), new IntegerTypeConverter());
+        TypeConverter<?> converter = new ChainedTypeConverter(new EscapingStringTypeConverter(false), new IntegerTypeConverter());
 
         assertThat(converter.isApplicable(String.class, null)).isTrue();
         assertThat(converter.isApplicable(Integer.class, null)).isTrue();
@@ -49,7 +49,7 @@ public class ChainedTypeConverterTest {
 
     @Test
     public void shouldDelegateToTheConvertersInTheChain() {
-        TypeConverter<Object> converter = new ChainedTypeConverter(new StringTypeConverter(), new IntegerTypeConverter());
+        TypeConverter<Object> converter = new ChainedTypeConverter(new EscapingStringTypeConverter(false), new IntegerTypeConverter());
 
         assertThat(converter.fromString(String.class, "string", null)).isEqualTo("string");
         assertThat(converter.fromString(Integer.class, "10", null)).isEqualTo(10);
@@ -60,7 +60,7 @@ public class ChainedTypeConverterTest {
 
     @Test
     public void shouldThrowIAEWhenTypeIsNotSupported() {
-        TypeConverter<Object> converter = new ChainedTypeConverter(new StringTypeConverter());
+        TypeConverter<Object> converter = new ChainedTypeConverter(new EscapingStringTypeConverter(false));
 
         exception.expect(IllegalArgumentException.class);
         converter.fromString(Long.class, "10", null);
@@ -82,6 +82,6 @@ public class ChainedTypeConverterTest {
         exception.expect(IllegalArgumentException.class);
 
         // when
-        new ChainedTypeConverter(Arrays.asList(new StringTypeConverter(), null));
+        new ChainedTypeConverter(Arrays.asList(new EscapingStringTypeConverter(false), null));
     }
 }

@@ -24,18 +24,12 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
-import com.sabre.oss.conf4j.converter.TypeConverter;
-
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * This class converts {@link Double} to/from string.
- */
-public class DoubleTypeConverter implements TypeConverter<Double> {
+public class DoubleTypeConverter extends AbstractNumericConverter<Double> {
 
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
@@ -46,20 +40,13 @@ public class DoubleTypeConverter implements TypeConverter<Double> {
     }
 
     @Override
-    public Double fromString(Type type, String value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        try {
-            return value == null ? null : Double.valueOf(value);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Unable to convert to a Double: " + value, e);
-        }
+    protected Double parseWithoutFormat(String value) {
+        return Double.valueOf(value);
     }
 
     @Override
-    public String toString(Type type, Double value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return Objects.toString(value, null);
+    protected Double convertResult(Number value) {
+        return value.doubleValue();
     }
+
 }

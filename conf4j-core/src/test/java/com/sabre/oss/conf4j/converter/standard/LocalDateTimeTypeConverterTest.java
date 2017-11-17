@@ -144,7 +144,7 @@ public class LocalDateTimeTypeConverterTest {
     }
 
     @Test
-    public void shouldCovertFromStringWhenFormatNotSpecified() {
+    public void shouldConvertFromStringWhenFormatNotSpecified() {
         // given
         String dateInString = "1970-01-01T00:00";
 
@@ -158,7 +158,7 @@ public class LocalDateTimeTypeConverterTest {
     }
 
     @Test
-    public void shouldCovertFromStringWhenFormatSpecified() {
+    public void shouldConvertFromStringWhenFormatSpecified() {
         // given
         String dateInString = "1970 01 01 00:00";
         String format = "yyyy MM dd HH:mm";
