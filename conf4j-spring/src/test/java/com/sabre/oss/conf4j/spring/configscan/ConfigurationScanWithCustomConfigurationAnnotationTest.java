@@ -27,7 +27,7 @@ package com.sabre.oss.conf4j.spring.configscan;
 import com.sabre.oss.conf4j.spring.annotation.ConfigurationScan;
 import com.sabre.oss.conf4j.spring.configscan.model.*;
 import com.sabre.oss.conf4j.spring.configscan.model.ConfigurationWithCustomAnnotation.CustomConfiguration;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ContextConfiguration;
 
 @ConfigurationScan(basePackageClasses = ConfigurationWithCustomAnnotation.class, configurationAnnotations = CustomConfiguration.class)

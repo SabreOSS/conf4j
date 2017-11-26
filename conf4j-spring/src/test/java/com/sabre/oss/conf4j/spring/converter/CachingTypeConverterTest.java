@@ -31,13 +31,11 @@ import com.sabre.oss.conf4j.converter.TypeConverter;
 import com.sabre.oss.conf4j.spring.Conf4jSpringConstants;
 import com.sabre.oss.conf4j.spring.annotation.ConfigurationType;
 import com.sabre.oss.conf4j.spring.annotation.EnableConf4j;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import name.falgout.jeffrey.testing.junit5.MockitoExtension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -49,7 +47,7 @@ import org.springframework.context.annotation.Configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CachingTypeConverterTest {
     private CachingTypeConverter<Long> converter = new CachingTypeConverter<>();
 
@@ -60,10 +58,7 @@ public class CachingTypeConverterTest {
     @Mock
     private Cache mockCache;
 
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setUp() {
         when(mockCacheManager.getCache("cacheRegion")).thenReturn(mockCache);
         converter.setTypeConverter(mockConverter);

@@ -28,7 +28,7 @@ import com.sabre.oss.conf4j.annotation.IgnoreKey;
 import com.sabre.oss.conf4j.annotation.IgnorePrefix;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

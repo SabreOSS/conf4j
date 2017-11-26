@@ -29,7 +29,7 @@ import com.sabre.oss.conf4j.annotation.IgnoreKey;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.annotation.Meta;
 import com.sabre.oss.conf4j.internal.model.provider.MetadataExtractor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.*;
 import java.lang.reflect.Method;

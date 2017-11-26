@@ -25,8 +25,8 @@
 package com.sabre.oss.conf4j.spring.boot;
 
 import com.sabre.oss.conf4j.spring.annotation.ConfigurationScan;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -38,7 +38,7 @@ public class SpringBootApplicationTest {
 
     private ConfigurableApplicationContext applicationContext;
 
-    @After
+    @AfterEach
     public void tearDown() {
         applicationContext.close();
     }

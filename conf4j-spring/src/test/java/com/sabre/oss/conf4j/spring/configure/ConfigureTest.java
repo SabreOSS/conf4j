@@ -33,8 +33,8 @@ import com.sabre.oss.conf4j.spring.configscan.model.ConfigurationWithName;
 import com.sabre.oss.conf4j.spring.configscan.model.RootConfiguration;
 import com.sabre.oss.conf4j.spring.configscan.model.SubConfiguration;
 import com.sabre.oss.conf4j.spring.source.PropertySourceConfigurationSource;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 

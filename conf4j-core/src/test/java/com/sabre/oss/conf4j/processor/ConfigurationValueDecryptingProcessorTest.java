@@ -25,16 +25,13 @@
 package com.sabre.oss.conf4j.processor;
 
 import com.sabre.oss.conf4j.annotation.Encrypted;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class ConfigurationValueDecryptingProcessorTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     private ConfigurationValueDecryptingProcessor processor;
     private ConfigurationValueDecrypter decrypter = mock(ConfigurationValueDecrypter.class);
@@ -105,11 +102,9 @@ public class ConfigurationValueDecryptingProcessorTest {
 
     @Test
     public void shouldThrowIllegalArgumentExceptionFromNoOpConfigurationValueDecrypter() {
-        // expect
-        exception.expect(IllegalArgumentException.class);
-
-        // when
-        processor = new ConfigurationValueDecryptingProcessor();
-        processor.process(new ConfigurationValue(null, null, true, Encrypted.DEFAULT, null));
+        assertThrows(IllegalArgumentException.class, () -> {
+            processor = new ConfigurationValueDecryptingProcessor();
+            processor.process(new ConfigurationValue(null, null, true, Encrypted.DEFAULT, null));
+        });
     }
 }

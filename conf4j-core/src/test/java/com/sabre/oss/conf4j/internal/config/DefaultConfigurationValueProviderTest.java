@@ -31,12 +31,12 @@ import com.sabre.oss.conf4j.processor.ConfigurationValue;
 import com.sabre.oss.conf4j.processor.ConfigurationValueProcessor;
 import com.sabre.oss.conf4j.source.OptionalValue;
 import com.sabre.oss.conf4j.source.TestConfigurationSource;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import name.falgout.jeffrey.testing.junit5.MockitoExtension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DefaultConfigurationValueProviderTest {
     private final KeyGenerator keyGenerator = keyGenerator("fallback", "fallback.p1", "fallback.p1.p2");
     private final List<String> configurationKeys = asList("key", "alternateKey");
@@ -67,7 +67,7 @@ public class DefaultConfigurationValueProviderTest {
 
     private ConfigurationValueProvider provider = new DefaultConfigurationValueProvider(emptyList());
 
-    @Before
+    @BeforeEach
     public void before() {
         reset(source);
         when(source.getValue(anyString(), any())).thenReturn(absent());
@@ -191,5 +191,4 @@ public class DefaultConfigurationValueProviderTest {
         // then
         verify(configurationValueProcessor, times(1)).process(any(ConfigurationValue.class));
     }
-
 }

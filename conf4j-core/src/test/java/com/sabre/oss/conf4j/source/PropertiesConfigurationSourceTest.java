@@ -24,17 +24,35 @@
 
 package com.sabre.oss.conf4j.source;
 
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Properties;
 
+import static java.nio.file.Files.createTempDirectory;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+
 public class PropertiesConfigurationSourceTest {
-    private TemporaryFolder folder = new TemporaryFolder();
+    private File file;
+    private Path filePath;
+
+    @BeforeEach
+    public void createTempDirectoryWithFile() throws IOException {
+        filePath = createTempDirectory("tmp");
+        file = new File(filePath.toString() + "\\sample.properties");
+        file.createNewFile();
+    }
+
+    @AfterEach
+    public void deleteTempDirectoryWithFile() {
+        file.deleteOnExit();
+        filePath.toFile().deleteOnExit();
+    }
 
     @Test
     public void shouldAdaptPropertiesToConfigurationSource() {
@@ -42,7 +60,6 @@ public class PropertiesConfigurationSourceTest {
         Properties properties = new Properties();
         properties.setProperty("key1", "value1");
         properties.setProperty("key2", "value2");
-
         // when
         PropertiesConfigurationSource source = new PropertiesConfigurationSource(properties);
 
@@ -55,9 +72,6 @@ public class PropertiesConfigurationSourceTest {
 
     @Test
     public void shouldLoadPropertiesFromFile() throws IOException {
-        // given
-        folder.create();
-        File file = folder.newFile("sample.properties");
         // when
         PropertiesConfigurationSource source = new PropertiesConfigurationSource(file.getAbsolutePath());
 

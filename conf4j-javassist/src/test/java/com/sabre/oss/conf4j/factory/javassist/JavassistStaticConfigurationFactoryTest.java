@@ -26,7 +26,7 @@ package com.sabre.oss.conf4j.factory.javassist;
 
 import com.sabre.oss.conf4j.factory.AbstractStaticConfigurationFactoryTest;
 import com.sabre.oss.conf4j.factory.model.ValidAbstractConfigurationImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static org.assertj.core.api.Assertions.assertThat;

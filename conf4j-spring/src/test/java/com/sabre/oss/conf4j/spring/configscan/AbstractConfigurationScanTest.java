@@ -26,10 +26,10 @@ package com.sabre.oss.conf4j.spring.configscan;
 
 import com.sabre.oss.conf4j.spring.AbstractContextTest;
 import com.sabre.oss.conf4j.spring.annotation.EnableConf4j;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @EnableConf4j
 public abstract class AbstractConfigurationScanTest extends AbstractContextTest {
 }

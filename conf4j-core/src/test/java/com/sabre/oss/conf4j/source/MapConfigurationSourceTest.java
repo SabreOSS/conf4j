@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.source;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.sabre.oss.conf4j.internal.utils.MapUtils.of;
 import static org.assertj.core.api.Assertions.assertThat;

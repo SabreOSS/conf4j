@@ -29,8 +29,8 @@ import com.sabre.oss.conf4j.spring.configscan.model.Bean;
 import com.sabre.oss.conf4j.spring.configscan.model.ConfigurationWithName;
 import com.sabre.oss.conf4j.spring.configscan.model.RootConfiguration;
 import com.sabre.oss.conf4j.spring.configscan.model.SubConfiguration;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ContextConfiguration;
 
 @ConfigurationScan("com.sabre.oss.conf4j.spring.configscan.model")

@@ -28,26 +28,31 @@ import com.sabre.oss.conf4j.internal.model.ConfigurationModelProvider;
 import com.sabre.oss.conf4j.internal.model.provider.annotation.AnnotationConfigurationModelProvider;
 import com.sabre.oss.conf4j.spring.AbstractContextTest;
 import com.sabre.oss.conf4j.spring.annotation.EnableConf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 
 import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.CONF4J_CONFIGURATION_MODEL_PROVIDER;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ContextConfiguration(classes = ConfigureCustomConfigurationModelProviderTest.class)
+@ContextConfiguration(classes = ConfigureCustomConfigurationModelProviderTest.ContextConfiguration.class)
 @EnableConf4j
 public class ConfigureCustomConfigurationModelProviderTest extends AbstractContextTest {
-    @Bean(name = CONF4J_CONFIGURATION_MODEL_PROVIDER)
-    public static ConfigurationModelProvider get() {
-        return AnnotationConfigurationModelProvider.getInstance();
-    }
 
     @Test
     public void shouldRegisterCustomConfigurationModelProvider() {
         isRegistered(ConfigurationModelProvider.class, CONF4J_CONFIGURATION_MODEL_PROVIDER);
         assertThat(applicationContext.getBean(ConfigurationModelProvider.class)).isInstanceOf(AnnotationConfigurationModelProvider.class);
     }
-}
 
+    @Configuration
+    static class ContextConfiguration {
+
+        @Bean(name = CONF4J_CONFIGURATION_MODEL_PROVIDER)
+        public static ConfigurationModelProvider get() {
+            return AnnotationConfigurationModelProvider.getInstance();
+        }
+    }
+}
 

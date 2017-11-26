@@ -42,7 +42,7 @@ import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.processor.ConfigurationValueDecrypter;
 import com.sabre.oss.conf4j.processor.ConfigurationValueDecryptingProcessor;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -59,6 +59,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -74,14 +75,11 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
 
     @Test
     public void shouldThrowExceptionWhenClassContainsIncompatibleAbstractMethods() {
-        // Expect
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage(
-                "public abstract java.lang.String com.sabre.oss.conf4j.factory.model.ConfigurationWithIncompatibleAbstractMethod.convertSomeValue(java.lang.String) " +
-                        "is an abstract method but it is not a valid configuration property. Configuration property method must be abstract, public or protected, " +
-                        "without parameters and its name starts with get or is (if return type is boolean). The return type cannot be void.");
-        // When
-        factory.createConfiguration(ConfigurationWithIncompatibleAbstractMethod.class, source);
+        assertThrows(IllegalArgumentException.class, () -> {
+            factory.createConfiguration(ConfigurationWithIncompatibleAbstractMethod.class, source);
+        }, "public abstract java.lang.String com.sabre.oss.conf4j.factory.model.ConfigurationWithIncompatibleAbstractMethod.convertSomeValue(java.lang.String) " +
+                "is an abstract method but it is not a valid configuration property. Configuration property method must be abstract, public or protected, " +
+                "without parameters and its name starts with get or is (if return type is boolean). The return type cannot be void.");
     }
 
     @Test
@@ -560,12 +558,9 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
 
     @Test
     public void shouldPreventAbstractConfigurationInstantiation() {
-        // given
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage(format("Configuration type %s is marked as abstract configuration and creating an configuration instance is forbidden.", AnAbstractConfiguration.class.getName()));
-        // when
-        factory.createConfiguration(AnAbstractConfiguration.class, source);
-        // then
+        assertThrows(IllegalArgumentException.class, () -> {
+            factory.createConfiguration(AnAbstractConfiguration.class, source);
+        }, format("Configuration type %s is marked as abstract configuration and creating an configuration instance is forbidden.", AnAbstractConfiguration.class.getName()));
     }
 
     @AbstractConfiguration
@@ -576,12 +571,9 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
 
     @Test
     public void shouldDetectCycles() {
-        // given
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Cycle between configurations detected");
-        // when
-        factory.createConfiguration(CycleConfiguration.class, source);
-        // then
+        assertThrows(IllegalArgumentException.class, () -> {
+            factory.createConfiguration(CycleConfiguration.class, source);
+        }, "Cycle between configurations detected");
     }
 
     @Key

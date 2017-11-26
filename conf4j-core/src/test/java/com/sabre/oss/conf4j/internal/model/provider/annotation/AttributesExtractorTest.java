@@ -28,9 +28,7 @@ import com.sabre.oss.conf4j.annotation.Configuration;
 import com.sabre.oss.conf4j.annotation.Meta;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -45,10 +43,9 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AttributesExtractorTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void shouldExtractAttributesFromFixedAnnotation() {
@@ -306,14 +303,10 @@ public class AttributesExtractorTest {
 
     @Test
     public void shouldFailIfNotAllAttributesAreAnnotated() {
-        // expect
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage(new MatchesPattern(
-                "All @com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest\\$NotAllAttributesAreAnnotated(.*) " +
-                        "annotations attributes must be annotated with @com.sabre.oss.conf4j.annotation.Meta."
-        ));
-        // when
-        getMetaAttributes(NotAllAttributesAreAnnotatedUsage.class);
+        assertThrows(IllegalArgumentException.class, () -> {
+            getMetaAttributes(NotAllAttributesAreAnnotatedUsage.class);
+        }, "All @com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$NotAllAttributesAreAnnotated(annotated=annotatedValue, notAnnotated=notAnnotatedValue) " +
+                "annotations attributes must be annotated with @com.sabre.oss.conf4j.annotation.Meta.");
     }
 
     @Retention(RUNTIME)
@@ -333,16 +326,11 @@ public class AttributesExtractorTest {
 
     @Test
     public void shouldFailIfMoreThanAttributeIsDefined() {
-        // expect
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage(new MatchesPattern(
-                "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest\\$TooManyAttributes(.*) " +
-                        "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and define more than one attribute: " +
-                        "anotherAttribute, attribute "
-        ));
-
-        // when
-        getMetaAttributes(TooManyAttributesUsage.class);
+        assertThrows(IllegalArgumentException.class, () -> {
+            getMetaAttributes(TooManyAttributesUsage.class);
+        }, "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$TooManyAttributes(attribute=attribute, anotherAttribute=anotherAttribute) " +
+                "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and define more than one attribute: " +
+                "anotherAttribute, attribute ");
     }
 
     @Meta(name = "annotated")
@@ -362,16 +350,11 @@ public class AttributesExtractorTest {
 
     @Test
     public void shouldFailIfInvalidAttributeType() {
-        // expect
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage(new MatchesPattern(
-                "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest\\$InvalidAttributeType(.*]" +
-                        ") " +
-                        "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and its attribute 'attribute' " +
-                        "type is [Ljava.lang.String;. Only scalar, simple types are supported."
-        ));
-        // when
-        getMetaAttributes(InvalidAttributeTypeUsage.class);
+        assertThrows(IllegalArgumentException.class, () -> {
+            getMetaAttributes(InvalidAttributeTypeUsage.class);
+        }, "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$InvalidAttributeType(attribute=[1, 2]) " +
+                "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and its attribute 'attribute' " +
+                "type is [Ljava.lang.String;. Only scalar, simple types are supported.");
     }
 
     @Meta(name = "annotated")

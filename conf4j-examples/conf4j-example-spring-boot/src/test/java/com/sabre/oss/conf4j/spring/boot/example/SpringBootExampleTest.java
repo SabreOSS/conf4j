@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.spring.boot.example;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SpringBootExampleTest {
     @Test

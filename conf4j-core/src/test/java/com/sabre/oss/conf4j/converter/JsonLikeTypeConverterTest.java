@@ -25,8 +25,8 @@
 package com.sabre.oss.conf4j.converter;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Type;
@@ -70,7 +70,7 @@ public class JsonLikeTypeConverterTest {
 
     private JsonLikeTypeConverter typeConverter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         typeConverter = createConverter(true);
     }

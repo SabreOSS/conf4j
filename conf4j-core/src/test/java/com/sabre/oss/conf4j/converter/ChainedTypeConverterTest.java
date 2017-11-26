@@ -24,17 +24,14 @@
 
 package com.sabre.oss.conf4j.converter;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ChainedTypeConverterTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void shouldSupportConvertersFromTheChain() {
@@ -58,28 +55,24 @@ public class ChainedTypeConverterTest {
 
     @Test
     public void shouldThrowIAEWhenTypeIsNotSupported() {
-        TypeConverter<Object> converter = new ChainedTypeConverter(new StringConverter(false));
-
-        exception.expect(IllegalArgumentException.class);
-        converter.fromString(Long.class, "10", null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            TypeConverter<Object> converter = new ChainedTypeConverter(new StringConverter());
+            converter.fromString(Long.class, "10", null);
+        });
     }
 
 
     @Test
     public void shouldThrowNPEWhenNullConvertersChainIsProvided() {
-        // expect
-        exception.expect(NullPointerException.class);
-
-        // when
-        new ChainedTypeConverter((TypeConverter<?>[]) null);
+        assertThrows(NullPointerException.class, () -> {
+            new ChainedTypeConverter((TypeConverter<?>[]) null);
+        });
     }
 
     @Test
     public void shouldThrowIAEWhenThereIsNullConverterInTheChain() {
-        // expect
-        exception.expect(IllegalArgumentException.class);
-
-        // when
-        new ChainedTypeConverter(Arrays.asList(new StringConverter(false), null));
+        assertThrows(IllegalArgumentException.class, () -> {
+            new ChainedTypeConverter(Arrays.asList(new StringConverter(), null));
+        });
     }
 }

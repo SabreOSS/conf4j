@@ -28,7 +28,7 @@ import com.sabre.oss.conf4j.converter.TypeConverter;
 import com.sabre.oss.conf4j.factory.AbstractDynamicConfigurationFactoryTest;
 import com.sabre.oss.conf4j.internal.config.PropertyMetadata;
 import com.sabre.oss.conf4j.source.ConfigurationSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 

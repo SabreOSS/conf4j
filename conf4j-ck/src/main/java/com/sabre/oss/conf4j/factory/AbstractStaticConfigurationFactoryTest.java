@@ -26,7 +26,7 @@ package com.sabre.oss.conf4j.factory;
 
 import com.sabre.oss.conf4j.factory.model.ValidConfiguration;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.lang.reflect.Field;

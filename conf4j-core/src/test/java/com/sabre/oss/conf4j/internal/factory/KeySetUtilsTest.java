@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.internal.factory;
 
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
