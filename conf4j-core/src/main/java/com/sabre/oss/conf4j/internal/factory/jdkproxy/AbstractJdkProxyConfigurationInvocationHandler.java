@@ -49,9 +49,9 @@ import static java.util.stream.Collectors.toSet;
 
 abstract class AbstractJdkProxyConfigurationInvocationHandler implements InvocationHandler, Serializable, ConfigurationPropertiesAccessor {
     private static final long serialVersionUID = 1L;
-    
+
     private static final Constructor<Lookup> lookupConstructor = getLookupConstructor();
-    
+
     /**
      * Holds properties.
      */
