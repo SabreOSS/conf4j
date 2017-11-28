@@ -49,7 +49,9 @@ import static java.util.stream.Collectors.toSet;
 
 abstract class AbstractJdkProxyConfigurationInvocationHandler implements InvocationHandler, Serializable, ConfigurationPropertiesAccessor {
     private static final long serialVersionUID = 1L;
+    
     private static final Constructor<Lookup> lookupConstructor = getLookupConstructor();
+    
     /**
      * Holds properties.
      */
@@ -90,12 +92,11 @@ abstract class AbstractJdkProxyConfigurationInvocationHandler implements Invocat
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
         if (method.isDefault()) {
-            final Class<?> declaringClass = method.getDeclaringClass();
-            return
-                    lookupConstructor.newInstance(declaringClass, Lookup.PRIVATE)
-                            .unreflectSpecial(method, declaringClass)
-                            .bindTo(proxy)
-                            .invokeWithArguments(args);
+            Class<?> declaringClass = method.getDeclaringClass();
+            return lookupConstructor.newInstance(declaringClass, Lookup.PRIVATE)
+                    .unreflectSpecial(method, declaringClass)
+                    .bindTo(proxy)
+                    .invokeWithArguments(args);
         }
 
         // Handle Object methods
