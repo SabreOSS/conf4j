@@ -785,6 +785,7 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
         }
     }
 
+
     @Test
     public void shouldProvideCustomMetadata() {
         // given
@@ -866,5 +867,31 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
         @Key
         @Meta(name = "file", value = "another.properties")
         String getAnother();
+    }
+
+    @Test
+    public void shouldSupportDefaultMethods() {
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+        when(source.getValue("configuration.firstName", null)).thenReturn(present("John"));
+        when(source.getValue("configuration.lastName", null)).thenReturn(present("Doe"));
+
+        // when
+        ConfigurationWithDefaultMethods configuration = factory.createConfiguration(ConfigurationWithDefaultMethods.class, source);
+
+        // then
+        assertThat(configuration.getFirstName()).isEqualTo("John");
+        assertThat(configuration.getLastName()).isEqualTo("Doe");
+        assertThat(configuration.getFullName()).isEqualTo("John Doe");
+    }
+
+    @Key("configuration")
+    public interface ConfigurationWithDefaultMethods {
+        String getFirstName();
+
+        String getLastName();
+
+        default String getFullName() {
+            return getFirstName() + ' ' + getLastName();
+        }
     }
 }
