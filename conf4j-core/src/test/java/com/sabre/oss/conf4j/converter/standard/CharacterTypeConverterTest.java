@@ -24,26 +24,42 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CharacterTypeConverterTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
+    private CharacterTypeConverter converter;
 
-    private CharacterTypeConverter converter = new CharacterTypeConverter();
+    @Before
+    public void setUp() {
+        converter = new CharacterTypeConverter();
+    }
 
     @Test
-    public void shouldReadValuesFromString() {
+    public void shouldReadValuesFromStringWhenNotUnescaping() {
         // given
         String stringValue = "A";
+
         // when
         Character value = converter.fromString(Character.class, stringValue, null);
+
         // then
         assertThat(value).isEqualTo('A');
+    }
+
+    @Test
+    public void shouldReadValuesFromStringWhenUnescaping() {
+        // given
+        String stringValue = "\\u0080";
+
+        // when
+        Character value = converter.fromString(Character.class, stringValue, null);
+
+        // then
+        assertThat(value).isEqualTo('\u0080');
     }
 
     @Test
@@ -51,20 +67,20 @@ public class CharacterTypeConverterTest {
         // given
         String stringValue = "longer then just on character string";
 
-        // expect
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Unable to convert to a Character: " + stringValue);
-
         // when
-        converter.fromString(Character.class, stringValue, null);
+        assertThatThrownBy(() -> converter.fromString(Character.class, stringValue, null))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unable to convert to a Character:");
     }
 
     @Test
     public void shouldWriteValueAsString() {
         // given
         Character value = 'A';
+
         // when
         String asString = converter.toString(Character.class, value, null);
+
         // then
         assertThat(asString).isEqualTo("A");
     }
@@ -73,8 +89,10 @@ public class CharacterTypeConverterTest {
     public void shouldConvertToNullFromNull() {
         // given
         Character value = null;
+
         // when
         String asString = converter.toString(Character.class, value, null);
+
         // then
         assertThat(asString).isNull();
     }
@@ -83,8 +101,10 @@ public class CharacterTypeConverterTest {
     public void shouldConvertToNullFromEmptyString() {
         // given
         String stringValue = "";
+
         // when
         Character value = converter.fromString(Character.class, stringValue, null);
+
         // then
         assertThat(value).isNull();
     }
@@ -93,29 +113,30 @@ public class CharacterTypeConverterTest {
     public void shouldUnescapeEscapedString() {
         // given
         Character value = '\u0080';
+
         // when
         String asString = converter.toString(Character.class, value, null);
+
         // then
         assertThat(asString).isEqualTo("\\u0080");
     }
 
     @Test
-    public void shouldEscapedString() {
+    public void shouldThrowExceptionWhenReadingFromStringAndInvalidEscapedString() {
         // given
         String invalidEncodedCharacter = "\\u001";
 
-        // expect
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Unable to convert to a Character: " + invalidEncodedCharacter);
-
         // when
-        converter.fromString(Character.class, invalidEncodedCharacter, null);
+        assertThatThrownBy(() -> converter.fromString(Character.class, invalidEncodedCharacter, null))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unable to convert to a Character:");
     }
 
     @Test
     public void shouldBeApplicableToCharacter() {
         // when
         boolean applicable = converter.isApplicable(Character.class, null);
+
         // then
         assertThat(applicable).isTrue();
     }
@@ -124,6 +145,7 @@ public class CharacterTypeConverterTest {
     public void shouldNotBeApplicableToNonCharacter() {
         // when
         boolean applicable = converter.isApplicable(Object.class, null);
+
         // then
         assertThat(applicable).isFalse();
     }

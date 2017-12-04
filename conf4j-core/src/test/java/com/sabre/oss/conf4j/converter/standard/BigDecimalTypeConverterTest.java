@@ -24,64 +24,30 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.fail;
 
 public class BigDecimalTypeConverterTest {
-    BigDecimalTypeConverter bigDecimalTypeAdapter = new BigDecimalTypeConverter();
+    private BigDecimalTypeConverter bigDecimalTypeConverter;
 
-    @Test
-    public void shouldReadValuesFromString() {
-        // given
-        String stringValue = "100.13";
-        // when
-        BigDecimal bigDecimal = bigDecimalTypeAdapter.fromString(BigDecimal.class, stringValue, null);
-        // then
-        assertThat(bigDecimal).isEqualTo(BigDecimal.valueOf(10013, 2));
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenReadingIllegalValuesFromString() {
-        // given
-        String stringValue = "two hundred";
-        // when
-        try {
-            bigDecimalTypeAdapter.fromString(BigDecimal.class, stringValue, null);
-            fail("Expected exception");
-        } catch (IllegalArgumentException e) {
-            // then
-            assertThat(e).hasMessage("Unable to convert to a BigDecimal: " + stringValue);
-        }
-    }
-
-    @Test
-    public void shouldWriteValueAsString() {
-        // given
-        BigDecimal bigDecimal = BigDecimal.valueOf(123, 1);
-        // when
-        String asString = bigDecimalTypeAdapter.toString(BigDecimal.class, bigDecimal, null);
-        // then
-        assertThat(asString).isEqualTo("12.3");
-    }
-
-    @Test
-    public void shouldWriteNullValueAsString() {
-        // given
-        BigDecimal bigDecimal = null;
-        // when
-        String asString = bigDecimalTypeAdapter.toString(BigDecimal.class, bigDecimal, null);
-        // then
-        assertThat(asString).isNull();
+    @Before
+    public void setUp() {
+        bigDecimalTypeConverter = new BigDecimalTypeConverter();
     }
 
     @Test
     public void shouldBeApplicableToBigDecimal() {
         // when
-        boolean applicable = bigDecimalTypeAdapter.isApplicable(BigDecimal.class, null);
+        boolean applicable = bigDecimalTypeConverter.isApplicable(BigDecimal.class, null);
+
         // then
         assertThat(applicable).isTrue();
     }
@@ -89,9 +55,108 @@ public class BigDecimalTypeConverterTest {
     @Test
     public void shouldNotBeApplicableToNonBigDecimal() {
         // when
-        boolean applicable = bigDecimalTypeAdapter.isApplicable(Object.class, null);
+        boolean applicable = bigDecimalTypeConverter.isApplicable(Object.class, null);
+
         // then
         assertThat(applicable).isFalse();
     }
 
+    @Test
+    public void shouldConvertValuesFromStringWhenFormatNotSpecified() {
+        // given
+        String stringValue = "100.13";
+
+        // when
+        BigDecimal bigDecimal = bigDecimalTypeConverter.fromString(BigDecimal.class, stringValue, null);
+
+        // then
+        assertThat(bigDecimal).isEqualTo(BigDecimal.valueOf(10013, 2));
+    }
+
+    @Test
+    public void shouldConvertValuesFromStringWhenFormatSpecified() {
+        // given
+        String stringValue = "100.130";
+        String format = "#.000";
+        Map<String, String> attributes = singletonMap("format", format);
+
+        // when
+        BigDecimal bigDecimal = bigDecimalTypeConverter.fromString(BigDecimal.class, stringValue, attributes);
+
+        // then
+        assertThat(bigDecimal).isEqualTo(BigDecimal.valueOf(100130, 3));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenReadingIllegalValuesFromString() {
+        // given
+        String stringValue = "two hundred";
+
+        // when
+        try {
+            bigDecimalTypeConverter.fromString(BigDecimal.class, stringValue, null);
+            fail("Expected exception");
+        } catch (IllegalArgumentException e) {
+
+            // then
+            assertThat(e).hasMessage("Unable to convert to BigDecimal: " + stringValue);
+        }
+    }
+
+    @Test
+    public void shouldWriteValueAsStringWhenFormatNotSpecified() {
+        // given
+        BigDecimal bigDecimal = BigDecimal.valueOf(123, 1);
+
+        // when
+        String asString = bigDecimalTypeConverter.toString(BigDecimal.class, bigDecimal, null);
+
+        // then
+        assertThat(asString).isEqualTo("12.3");
+    }
+
+    @Test
+    public void shouldWriteValueAsStringWhenFormatSpecified() {
+        // given
+        BigDecimal bigDecimal = BigDecimal.valueOf(123, 1);
+        String format = "#.00";
+        Map<String, String> attributes = singletonMap("format", format);
+
+        // when
+        String asString = bigDecimalTypeConverter.toString(BigDecimal.class, bigDecimal, attributes);
+
+        // then
+        assertThat(asString).isEqualTo("12.30");
+    }
+
+    @Test
+    public void shouldWriteNullValueAsString() {
+        // when
+        String asString = bigDecimalTypeConverter.toString(BigDecimal.class, null, null);
+
+        // then
+        assertThat(asString).isNull();
+    }
+
+    @Test
+    public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
+        // when
+        BigDecimal fromConversion = bigDecimalTypeConverter.fromString(BigDecimal.class, null, null);
+
+        // then
+        assertThat(fromConversion).isNull();
+    }
+
+    @Test
+    public void shouldThrowWhenReadingIllegalValuesWithFormat() {
+        // given
+        String bigDecimalAsString = "wrong value";
+        String format = "#.00";
+        Map<String, String> attributes = singletonMap("format", format);
+
+        // then
+        assertThatThrownBy(() -> bigDecimalTypeConverter.fromString(BigDecimal.class, bigDecimalAsString, attributes))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("The value doesn't match specified format");
+    }
 }

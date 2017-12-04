@@ -57,7 +57,7 @@ public class UrlTypeConverter implements TypeConverter<URL> {
         try {
             return new URL(value);
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(format("Unable to convert to URL: %s", value));
+            throw new IllegalArgumentException(format("Unable to convert to URL: %s", value), e);
         }
     }
 

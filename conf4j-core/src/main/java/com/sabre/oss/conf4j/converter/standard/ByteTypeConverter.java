@@ -24,18 +24,31 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
-import com.sabre.oss.conf4j.converter.TypeConverter;
-
 import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Objects;
 
+import static java.lang.Byte.MAX_VALUE;
+import static java.lang.Byte.MIN_VALUE;
 import static java.util.Objects.requireNonNull;
 
 /**
  * This class converts {@link Byte} to/from string.
+ *
+ * <p>
+ * The converter supports {@value #FORMAT} attribute (provided in the attributes map) which specifies
+ * the format used during conversion. The format is compliant with {@link java.text.DecimalFormat}
+ * </p>
+ * <p>
+ * When the format is not specified, {@link Objects#toString() } method is used.
+ * </p>
+ * <p>
+ * The converter supports also {@value LOCALE} attribute (provided in the attributes map) which specifies
+ * the locale used during conversion. It will be used only if {@value FORMAT} attribute is provided.
+ * The locale should be provided as ISO 639 string. If not present, Locale.US is used.
+ * </p>
  */
-public class ByteTypeConverter implements TypeConverter<Byte> {
+public class ByteTypeConverter extends AbstractNumericConverter<Byte> {
 
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
@@ -46,20 +59,16 @@ public class ByteTypeConverter implements TypeConverter<Byte> {
     }
 
     @Override
-    public Byte fromString(Type type, String value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        try {
-            return value == null ? null : Byte.valueOf(value);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Unable to convert to a Byte: " + value, e);
-        }
+    protected Byte parseWithoutFormat(String value) {
+        return Byte.valueOf(value);
     }
 
     @Override
-    public String toString(Type type, Byte value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return Objects.toString(value, null);
+    protected Byte convertResult(Number value) {
+        if (value.longValue() > MAX_VALUE || value.longValue() < MIN_VALUE) {
+            throw new IllegalArgumentException(String.format("Provided value: %d is out of Byte type range.",
+                    value.longValue()));
+        }
+        return value.byteValue();
     }
 }

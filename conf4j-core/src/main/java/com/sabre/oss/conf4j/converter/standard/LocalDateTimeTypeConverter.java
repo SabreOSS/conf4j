@@ -43,8 +43,8 @@ import static java.util.Objects.requireNonNull;
 /**
  * This class converts {@link LocalDateTime} to/from string.
  * <p>
- * The converter supports {@code format} attribute (provided in the attributes map) which specifies
- * the format used during conversion. The format is complaint with {@link DateTimeFormatter}.
+ * The converter supports {@value #FORMAT} attribute (provided in the attributes map) which specifies
+ * the format used during conversion. The format is compliant with {@link DateTimeFormatter}.
  * </p>
  * <p>
  * When the format is not specified, {@link DateTimeFormatter#ISO_LOCAL_DATE_TIME} is used.
@@ -73,7 +73,7 @@ public class LocalDateTimeTypeConverter implements TypeConverter<LocalDateTime> 
      *                   In case it is {@code null}, the converter should return either {@code null} or a value
      *                   that is equivalent (for example an empty list).
      * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
-     *                   If present, the value for {@code format} key will be used during conversion
+     *                   If present, the value for {@value #FORMAT} key will be used during conversion
      *                   as a formatting pattern.
      * @return value converted to {@link LocalDateTime}
      * @throws IllegalArgumentException when {@code value} cannot be converted to {@link LocalDateTime} because of

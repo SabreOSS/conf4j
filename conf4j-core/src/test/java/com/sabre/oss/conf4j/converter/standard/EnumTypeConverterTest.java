@@ -24,26 +24,35 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Type;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class EnumTypeConverterTest {
 
-    enum TestEnum {
+    private enum TestEnum {
         FIRST, SECOND_VALUE
     }
 
-    EnumTypeConverter enumTypeAdapter = new EnumTypeConverter();
+    private EnumTypeConverter enumTypeAdapter;
+
+    @Before
+    public void setUp() {
+        enumTypeAdapter = new EnumTypeConverter();
+    }
 
     @Test
     public void shouldAcceptEnumType() {
         // given
         Type type = TestEnum.class;
+
         // when
         boolean isApplicable = enumTypeAdapter.isApplicable(type, null);
+
         // then
         assertThat(isApplicable).isTrue();
     }
@@ -51,17 +60,32 @@ public class EnumTypeConverterTest {
     @Test
     public void shouldConvertFromString() {
         // given enumTypeAdapter
+
         // when
         Enum<?> testEnum = enumTypeAdapter.fromString(TestEnum.class, "FIRST", null);
+
         // then
         assertThat(testEnum).isEqualTo(TestEnum.FIRST);
     }
 
     @Test
+    public void shouldThrowExceptionWhenConvertingFromStringAndWrongValue() {
+        // when
+        String value = "WRONG_VALUE";
+
+        // then
+        assertThatThrownBy(() -> enumTypeAdapter.fromString(TestEnum.class, value, null))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unable to convert a value to an enumeration:");
+    }
+
+    @Test
     public void shouldConvertToString() {
         // given enumTypeAdapter
+
         // when
         String value = enumTypeAdapter.toString(TestEnum.class, TestEnum.SECOND_VALUE, null);
+
         // then
         assertThat(value).isEqualTo(TestEnum.SECOND_VALUE.name());
     }

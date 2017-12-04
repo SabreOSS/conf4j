@@ -24,33 +24,154 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Type;
+import java.util.Map;
+
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class EscapingStringTypeConverterTest {
+    private EscapingStringTypeConverter converter;
 
-    EscapingStringTypeConverter converter = new EscapingStringTypeConverter();
+    @Before
+    public void setUp() {
+        converter = new EscapingStringTypeConverter();
+    }
 
     @Test
-    public void shouldConvertFromString() {
+    public void shouldBeApplicableWhenStringType() {
+        // given
+        Type type = String.class;
+
+        // when
+        boolean applicable = converter.isApplicable(type, emptyMap());
+
+        // then
+        assertThat(applicable).isTrue();
+    }
+
+    @Test
+    public void shouldNotBeApplicableWhenNotStringType() {
+        // given
+        Type type = Boolean.class;
+
+        // when
+        boolean applicable = converter.isApplicable(type, emptyMap());
+
+        // then
+        assertThat(applicable).isFalse();
+    }
+
+    @Test
+    public void shouldConvertFromStringWhenFormatNotSpecified() {
         // given
         String in = "One\\\\Two";
         String expected = "One\\Two";
+
         // when
         String out = converter.fromString(String.class, in, null);
+
         // then
         assertThat(out).isEqualTo(expected);
     }
 
     @Test
-    public void shouldConvertToString() {
+    public void shouldConvertFromStringWhenFormatSpecifiedAndFalse() {
+        // given
+        String in = "One\\\\Two";
+        String escape = "false";
+        Map<String, String> attributes = singletonMap("escape", escape);
+
+        // when
+        String out = converter.fromString(String.class, in, attributes);
+
+        // then
+        assertThat(out).isEqualTo(in);
+    }
+
+    @Test
+    public void shouldConvertFromStringWhenFormatSpecifiedAndTrue() {
+        // given
+        String in = "One\\\\Two";
+        String escape = "true";
+        Map<String, String> attributes = singletonMap("escape", escape);
+
+        // when
+        String out = converter.fromString(String.class, in, attributes);
+
+        // then
+        assertThat(out).isEqualTo("One\\Two");
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenConvertingFromStringAndWrongEscapeValue() {
+        // given
+        String in = "One\\Two";
+        String escape = "wrong value";
+        Map<String, String> attributes = singletonMap("escape", escape);
+
+        // then
+        assertThatThrownBy(() -> converter.fromString(String.class, in, attributes))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Value for escape attribute should be equal to true or false. Provided:");
+    }
+
+    @Test
+    public void shouldConvertToStringWhenFormatNotSpecified() {
         // given
         String in = "One\\Two";
         String expected = "One\\\\Two";
+
         // when
         String out = converter.toString(String.class, in, null);
+
         // then
         assertThat(out).isEqualTo(expected);
+    }
+
+    @Test
+    public void shouldConvertToStringWhenFormatSpecifiedAndFalse() {
+        // given
+        String in = "One\\Two";
+        String escape = "false";
+        Map<String, String> attributes = singletonMap("escape", escape);
+
+        // when
+        String out = converter.toString(String.class, in, attributes);
+
+        // then
+        assertThat(out).isEqualTo(in);
+    }
+
+    @Test
+    public void shouldConvertToStringWhenFormatSpecifiedAndTrue() {
+        // given
+        String in = "One\\Two";
+        String escape = "true";
+        Map<String, String> attributes = singletonMap("escape", escape);
+
+        // when
+        String out = converter.toString(String.class, in, attributes);
+
+        // then
+        assertThat(out).isEqualTo("One\\\\Two");
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenConvertingToStringAndWrongEscapeValue() {
+        // given
+        String in = "One\\Two";
+        String escape = "wrong value";
+        Map<String, String> attributes = singletonMap("escape", escape);
+
+        // then
+        assertThatThrownBy(() -> converter.toString(String.class, in, attributes))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Value for escape attribute should be equal to true or false. Provided:");
     }
 }

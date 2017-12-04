@@ -24,34 +24,55 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
-import com.sabre.oss.conf4j.converter.TypeConverter;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Type;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 public class PatternTypeConverterTest {
-    private TypeConverter<Pattern> converter = new PatternTypeConverter();
+    private PatternTypeConverter converter;
+
+    @Before
+    public void setUp() {
+        converter = new PatternTypeConverter();
+    }
 
     @Test
     public void shouldConvertFromString() {
         // given
         Pattern pattern = Pattern.compile(".*");
+
         // when
         Pattern value = converter.fromString(Pattern.class, ".*", null);
+
         // then
         assertThat(value.pattern()).isEqualTo(pattern.pattern());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenConvertingFromStringAndWrongValue() {
+        // given
+        String value = "{";
+
+        // then
+        assertThatThrownBy(() -> converter.fromString(Pattern.class, value, null))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unable to convert to a Pattern:");
     }
 
     @Test
     public void shouldConvertToString() {
         // given
         Pattern pattern = Pattern.compile("123.*");
+
         // when
         String asString = converter.toString(Pattern.class, pattern, null);
+
         // then
         assertThat(asString).isEqualTo(pattern.toString());
     }
@@ -60,8 +81,10 @@ public class PatternTypeConverterTest {
     public void shouldAcceptType() {
         // given
         Type type = Pattern.class;
+
         // when
         boolean isApplicable = converter.isApplicable(type, null);
+
         // then
         assertThat(isApplicable).isTrue();
     }
@@ -70,6 +93,7 @@ public class PatternTypeConverterTest {
     public void shouldNotAcceptUnknownType() {
         // when
         boolean isApplicable = converter.isApplicable(mock(Type.class), null);
+
         // then
         assertThat(isApplicable).isFalse();
     }

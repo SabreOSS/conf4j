@@ -26,8 +26,8 @@ package com.sabre.oss.conf4j.factory;
 
 import com.sabre.oss.conf4j.annotation.*;
 import com.sabre.oss.conf4j.converter.standard.BooleanTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.EscapingStringTypeConverter;
 import com.sabre.oss.conf4j.converter.standard.IntegerTypeConverter;
-import com.sabre.oss.conf4j.converter.standard.StringTypeConverter;
 import com.sabre.oss.conf4j.factory.model.ConfigurationWithIncompatibleAbstractMethod;
 import com.sabre.oss.conf4j.factory.model.ConfigurationWithNoDefaultValue;
 import com.sabre.oss.conf4j.factory.model.ValidConfiguration;
@@ -550,7 +550,7 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Key("configuration")
     public interface CustomConfiguration {
         @Key
-        @Converter(StringTypeConverter.class)
+        @Converter(EscapingStringTypeConverter.class)
         String getStringProperty();
 
         @Key

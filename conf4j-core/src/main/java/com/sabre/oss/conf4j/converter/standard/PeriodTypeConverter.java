@@ -32,6 +32,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.Objects;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -52,7 +53,7 @@ public class PeriodTypeConverter implements TypeConverter<Period> {
         try {
             return value == null ? null : Period.parse(value);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Unable to convert to a Period: " + value, e);
+            throw new IllegalArgumentException(format("Unable to convert to a Period: %s", value), e);
         }
     }
 

@@ -29,6 +29,7 @@ import com.sabre.oss.conf4j.converter.TypeConverter;
 import java.lang.reflect.Type;
 import java.util.Map;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeJava;
 import static org.apache.commons.lang3.StringEscapeUtils.unescapeJava;
@@ -62,14 +63,14 @@ public class CharacterTypeConverter implements TypeConverter<Character> {
             try {
                 unescapedValue = unescapeJava(value);
             } catch (RuntimeException e) {
-                throw new IllegalArgumentException("Unable to convert to a Character: " + value, e);
+                throw new IllegalArgumentException(format("Unable to convert to a Character: %s", value), e);
             }
             if (unescapedValue.length() == 1) {
                 return unescapedValue.charAt(0);
             }
         }
 
-        throw new IllegalArgumentException("Unable to convert to a Character: " + value);
+        throw new IllegalArgumentException(format("Unable to convert to a Character: %s", value));
 
     }
 

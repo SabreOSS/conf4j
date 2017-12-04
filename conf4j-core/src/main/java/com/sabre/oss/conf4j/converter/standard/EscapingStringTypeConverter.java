@@ -37,11 +37,37 @@ import static org.apache.commons.lang3.StringEscapeUtils.unescapeJava;
  * This class converts {@link String} to/from string.
  * <p>
  * This converter escapes/unescapes special characters like new lines or tabs using the same rules as java.
+ * When "escape" attribute name is provided and is equal to "false", escaping/unescaping is not performed.
  * </p>
- *
- * @see StringTypeConverter
  */
 public class EscapingStringTypeConverter implements TypeConverter<String> {
+
+    /**
+     * Escape string attribute name.
+     */
+    public static final String ESCAPE = "escape";
+
+    private static final String FALSE = "false";
+    private static final String TRUE = "true";
+
+    private boolean escape;
+
+    /**
+     * Create the converter instance with specified escape argument.
+     *
+     * @param escape Sets if values provided to converter should be escaped/unescaped
+     */
+    public EscapingStringTypeConverter(boolean escape) {
+        this.escape = escape;
+    }
+
+    /**
+     * Create the converter instance with values always escaped/unescaped.
+     */
+    public EscapingStringTypeConverter() {
+        this(true);
+    }
+
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
@@ -53,13 +79,39 @@ public class EscapingStringTypeConverter implements TypeConverter<String> {
     public String fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return unescapeJava(value);
+        if (attributes != null && attributes.containsKey(ESCAPE)) {
+            String escape = attributes.get(ESCAPE);
+
+            if (escape.equalsIgnoreCase(FALSE)) {
+                return value;
+            }
+            if (escape.equalsIgnoreCase(TRUE)) {
+                return unescapeJava(value);
+            }
+            throw new IllegalArgumentException(String.format(
+                    "Value for escape attribute should be equal to true or false. Provided: %s", escape));
+        }
+
+        return escape ? unescapeJava(value) : value;
     }
 
     @Override
     public String toString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return escapeJava(value);
+        if (attributes != null && attributes.containsKey(ESCAPE)) {
+            String escape = attributes.get(ESCAPE);
+
+            if (escape.equalsIgnoreCase(FALSE)) {
+                return value;
+            }
+            if (escape.equalsIgnoreCase(TRUE)) {
+                return escapeJava(value);
+            }
+            throw new IllegalArgumentException(String.format(
+                    "Value for escape attribute should be equal to true or false. Provided: %s", escape));
+        }
+
+        return escape ? escapeJava(value) : value;
     }
 }

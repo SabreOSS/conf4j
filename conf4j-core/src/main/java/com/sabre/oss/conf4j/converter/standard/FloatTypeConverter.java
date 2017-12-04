@@ -24,18 +24,30 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
-import com.sabre.oss.conf4j.converter.TypeConverter;
-
 import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Objects;
 
+import static java.lang.Float.MAX_VALUE;
+import static java.lang.Float.MIN_VALUE;
 import static java.util.Objects.requireNonNull;
 
 /**
  * This class converts {@link Float} to/from string.
+ * <p>
+ * The converter supports {@value #FORMAT} attribute (provided in the attributes map) which specifies
+ * the format used during conversion. The format is compliant with {@link java.text.DecimalFormat}
+ * </p>
+ * <p>
+ * When the format is not specified, {@link Objects#toString() } method is used.
+ * </p>
+ * <p>
+ * The converter supports also {@value LOCALE} attribute (provided in the attributes map) which specifies
+ * the locale used during conversion. It will be used only if {@value FORMAT} attribute is provided.
+ * The locale should be provided as ISO 639 string. If not present, Locale.US is used.
+ * </p>
  */
-public class FloatTypeConverter implements TypeConverter<Float> {
+public class FloatTypeConverter extends AbstractNumericConverter<Float> {
 
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
@@ -45,20 +57,16 @@ public class FloatTypeConverter implements TypeConverter<Float> {
     }
 
     @Override
-    public Float fromString(Type type, String value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        try {
-            return value == null ? null : Float.valueOf(value);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Unable to convert to a Float: " + value, e);
-        }
+    protected Float parseWithoutFormat(String value) {
+        return Float.valueOf(value);
     }
 
     @Override
-    public String toString(Type type, Float value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return Objects.toString(value, null);
+    protected Float convertResult(Number value) {
+        if (value.doubleValue() > MAX_VALUE || value.doubleValue() < MIN_VALUE) {
+            throw new IllegalArgumentException(String.format("Provided value: %f is out of Float type range.",
+                    value.floatValue()));
+        }
+        return value.floatValue();
     }
 }
