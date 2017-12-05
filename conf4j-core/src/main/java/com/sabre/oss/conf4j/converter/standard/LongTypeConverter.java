@@ -26,33 +26,20 @@ package com.sabre.oss.conf4j.converter.standard;
 
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.Objects;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * This class converts {@link Long} to/from string.
  * <p>
- * The converter supports {@value #FORMAT} attribute (provided in the attributes map) which specifies
- * the format used during conversion. The format is compliant with {@link java.text.DecimalFormat}
- * </p>
- * <p>
- * When the format is not specified, {@link Objects#toString() } method is used.
- * </p>
- * <p>
- * The converter supports also {@value LOCALE} attribute (provided in the attributes map) which specifies
- * the locale used during conversion. It will be used only if {@value FORMAT} attribute is provided.
- * The locale should be provided as ISO 639 string. If not present, Locale.US is used.
+ * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
  * </p>
  */
-public class LongTypeConverter extends AbstractNumericConverter<Long> {
-
+public class LongTypeConverter extends AbstractNumberConverter<Long> {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return type instanceof Class<?> &&
-                (Long.class.isAssignableFrom((Class<?>) type) || Long.TYPE.isAssignableFrom((Class<?>) type));
+        return isApplicable(type, Long.class, Long.TYPE);
     }
 
     @Override

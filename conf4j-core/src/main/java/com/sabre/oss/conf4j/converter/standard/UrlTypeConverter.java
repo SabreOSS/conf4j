@@ -39,7 +39,6 @@ import static java.util.Objects.requireNonNull;
  * This class converts {@link URL} to/from string.
  */
 public class UrlTypeConverter implements TypeConverter<URL> {
-
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
@@ -54,6 +53,7 @@ public class UrlTypeConverter implements TypeConverter<URL> {
         if (value == null) {
             return null;
         }
+
         try {
             return new URL(value);
         } catch (MalformedURLException e) {

@@ -88,7 +88,7 @@ public class LocalDateTimeTypeConverter implements TypeConverter<LocalDateTime> 
             return null;
         }
 
-        String format = attributes.get(FORMAT);
+        String format = (attributes == null) ? null : attributes.get(FORMAT);
         try {
             return parse(value, getFormatterForPattern(format));
         } catch (DateTimeParseException e) {
@@ -96,7 +96,7 @@ public class LocalDateTimeTypeConverter implements TypeConverter<LocalDateTime> 
                     "The value doesn't match specified format %s.", value, format), e);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(format("Unable to convert to LocalDateTime: %s. " +
-                    "Invalid format: %s", value, format), e);
+                    "Invalid format: '%s'", value, format), e);
         }
     }
 
@@ -119,24 +119,20 @@ public class LocalDateTimeTypeConverter implements TypeConverter<LocalDateTime> 
         if (value == null) {
             return null;
         }
-        if (attributes.containsKey(FORMAT)) {
-            String formattingPattern = attributes.get(FORMAT);
-            try {
-                return value.format(getFormatterForPattern(formattingPattern));
-            } catch (DateTimeException e) {
-                throw new IllegalArgumentException("Unable to convert LocalDateTime to String. " +
-                        "Error occurred during printing.", e);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException(format("Unable to convert LocalDateTime to String. " +
-                        "Invalid format pattern: %s", formattingPattern), e);
-            }
-        }
 
-        return value.toString();
+        String format = (attributes == null) ? null : attributes.get(FORMAT);
+        try {
+            return format == null ? value.toString() : value.format(getFormatterForPattern(format));
+        } catch (DateTimeException e) {
+            throw new IllegalArgumentException("Unable to convert LocalDateTime to String. " +
+                    "Error occurred during printing.", e);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(format("Unable to convert LocalDateTime to String. " +
+                    "Invalid format: '%s'", format), e);
+        }
     }
 
     private DateTimeFormatter getFormatterForPattern(String pattern) {
-        return pattern == null ?
-                ISO_LOCAL_DATE_TIME : cache.computeIfAbsent(pattern, DateTimeFormatter::ofPattern);
+        return pattern == null ? ISO_LOCAL_DATE_TIME : cache.computeIfAbsent(pattern, DateTimeFormatter::ofPattern);
     }
 }

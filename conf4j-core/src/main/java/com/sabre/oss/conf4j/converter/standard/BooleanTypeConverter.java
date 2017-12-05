@@ -26,6 +26,7 @@ package com.sabre.oss.conf4j.converter.standard;
 
 import com.sabre.oss.conf4j.converter.TypeConverter;
 import com.sabre.oss.conf4j.internal.utils.spring.ConcurrentReferenceHashMap;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -34,25 +35,36 @@ import java.util.concurrent.ConcurrentMap;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
  * <p>This class converts {@link Boolean} to/from string.</p>
- * <p>The converter supports {@value #FORMAT} attribute (provided in the attributes map) which specifies
- * the format used during conversion.</p>
- * <p>Possible formats are: value_when_true/value_when_false</p>
  * <p>
- * When the format is not specified, {@link Objects#toString() } method is used.
+ * The converter supports {@value #FORMAT} meta-attribute which specifies the values corresponding to
+ * {@code true} and {@code false} values.
+ * </p>
+ * <p>
+ * The format of {@value #FORMAT} meta-attribute value is: {@code {true-value}/{false-value}}
+ * where {@code {true-value}} is as string which is used when the boolean value is {@code true}
+ * and {@code {false-value}} is as string which is used when the boolean value is {@code false}.
+ * </p>
+ * <p>
+ * For example: {@code yes/no}, {@code true/false}
+ * </p>
+ * When the format is not specified {@value #TRUE} and {@value #FALSE} values are used.
  */
 public class BooleanTypeConverter implements TypeConverter<Boolean> {
-
     /**
      * Format attribute name.
      */
     public static final String FORMAT = "format";
 
+    private static final char SEPARATOR = '/';
     private static final String TRUE = "true";
     private static final String FALSE = "false";
-    private static final ConcurrentMap<String, BooleanFormatter> cache = new ConcurrentReferenceHashMap<>();
+
+    private static final ConcurrentMap<String, Pair<String, String>> cache = new ConcurrentReferenceHashMap<>();
+
 
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
@@ -85,18 +97,27 @@ public class BooleanTypeConverter implements TypeConverter<Boolean> {
             return null;
         }
 
-        if (attributes != null && attributes.containsKey(FORMAT)) {
-            String formattingPattern = attributes.get(FORMAT);
-            return cache.computeIfAbsent(formattingPattern, BooleanFormatter::getInstance).parseString(value);
+        String format = (attributes == null) ? null : attributes.get(FORMAT);
+        if (format != null) {
+            Pair<String, String> values = cache.computeIfAbsent(format, this::getValues);
+            if (value.equals(values.getLeft())) {
+                return Boolean.TRUE;
+            }
+            if (value.equals(values.getRight())) {
+                return Boolean.FALSE;
+            }
+            throw new IllegalArgumentException(
+                    format("Unable to convert to Boolean, values must be either '%s' or '%s' but provided value is '%s'.",
+                            values.getLeft(), values.getRight(), value));
+        } else {
+            if (TRUE.equals(value)) {
+                return Boolean.TRUE;
+            }
+            if (FALSE.equals(value)) {
+                return Boolean.FALSE;
+            }
+            throw new IllegalArgumentException(format("Unable to convert to Boolean. Unknown value: %s", value));
         }
-
-        if (TRUE.equals(value)) {
-            return Boolean.TRUE;
-        }
-        if (FALSE.equals(value)) {
-            return Boolean.FALSE;
-        }
-        throw new IllegalArgumentException(format("Unable to convert to Boolean. Unknown value: %s", value));
     }
 
     /**
@@ -116,55 +137,23 @@ public class BooleanTypeConverter implements TypeConverter<Boolean> {
         requireNonNull(type, "type cannot be null");
 
         if (attributes != null && attributes.containsKey(FORMAT)) {
-            String formattingPattern = attributes.get(FORMAT);
-            return cache.computeIfAbsent(formattingPattern, BooleanFormatter::getInstance).formatBoolean(value);
-        }
-
-        return Objects.toString(value, null);
-    }
-
-    private static final class BooleanFormatter {
-        private String trueString;
-        private String falseString;
-        private String formattingPattern;
-
-        private BooleanFormatter() {
-        }
-
-        static BooleanFormatter getInstance(String format) {
-            BooleanFormatter bf = new BooleanFormatter();
-            bf.setFormattingPattern(format);
-            bf.parseFormat();
-            return bf;
-        }
-
-        String formatBoolean(Boolean value) {
-            return value ? trueString : falseString;
-        }
-
-        private void setFormattingPattern(String formattingPattern) {
-            this.formattingPattern = formattingPattern;
-        }
-
-        Boolean parseString(String value) {
-            if (value.equals(trueString)) {
-                return true;
-            }
-            if (value.equals(falseString)) {
-                return false;
-            }
-            throw new IllegalArgumentException(String.format(
-                    "Provided value: %s does not match specified format: %s", value, formattingPattern));
-        }
-
-        private void parseFormat() {
-            String[] options = formattingPattern.split("/");
-            if (options.length == 2 && !options[0].isEmpty() && !options[1].isEmpty()) {
-                trueString = options[0];
-                falseString = options[1];
-            } else {
-                throw new IllegalArgumentException(String.format("Provided formatting pattern cannot be parsed: %s", formattingPattern));
-            }
+            String format = attributes.get(FORMAT);
+            Pair<String, String> values = cache.computeIfAbsent(format, this::getValues);
+            return value ? values.getLeft() : values.getRight();
+        } else {
+            return Objects.toString(value, null);
         }
     }
+
+    private Pair<String, String> getValues(String format) {
+        int idx = format.indexOf(SEPARATOR);
+        if (idx < 0) {
+            throw new IllegalArgumentException(format(
+                    "Invalid '%s' meta-attribute value, it must contain '%c' separator character. Provided value is '%s'.",
+                    FORMAT, SEPARATOR, format));
+        }
+
+        return Pair.of(format.substring(0, idx), (idx == format.length() - 1) ? EMPTY : format.substring(idx + 1));
+    }
+
 }

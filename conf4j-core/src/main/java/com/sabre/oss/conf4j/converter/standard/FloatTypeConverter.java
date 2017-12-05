@@ -26,34 +26,23 @@ package com.sabre.oss.conf4j.converter.standard;
 
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.Objects;
 
-import static java.lang.Float.MAX_VALUE;
-import static java.lang.Float.MIN_VALUE;
-import static java.util.Objects.requireNonNull;
+import static java.lang.String.format;
 
 /**
- * This class converts {@link Float} to/from string.
+ * Converts {@link Byte} to/from string.
  * <p>
- * The converter supports {@value #FORMAT} attribute (provided in the attributes map) which specifies
- * the format used during conversion. The format is compliant with {@link java.text.DecimalFormat}
- * </p>
- * <p>
- * When the format is not specified, {@link Objects#toString() } method is used.
- * </p>
- * <p>
- * The converter supports also {@value LOCALE} attribute (provided in the attributes map) which specifies
- * the locale used during conversion. It will be used only if {@value FORMAT} attribute is provided.
- * The locale should be provided as ISO 639 string. If not present, Locale.US is used.
+ * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
  * </p>
  */
-public class FloatTypeConverter extends AbstractNumericConverter<Float> {
+public class FloatTypeConverter extends AbstractNumberConverter<Float> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-        return type instanceof Class<?> &&
-                (Float.class.isAssignableFrom((Class<?>) type) || Float.TYPE.isAssignableFrom((Class<?>) type));
+        return isApplicable(type, Float.class, Float.TYPE);
     }
 
     @Override
@@ -63,9 +52,9 @@ public class FloatTypeConverter extends AbstractNumericConverter<Float> {
 
     @Override
     protected Float convertResult(Number value) {
-        if (value.doubleValue() > MAX_VALUE || value.doubleValue() < MIN_VALUE) {
-            throw new IllegalArgumentException(String.format("Provided value: %f is out of Float type range.",
-                    value.floatValue()));
+        double doubleValue = value.doubleValue();
+        if (doubleValue > Float.MAX_VALUE || doubleValue < Float.MIN_VALUE) {
+            throw new IllegalArgumentException(format("Provided value: %f is out of Float type range.", doubleValue));
         }
         return value.floatValue();
     }

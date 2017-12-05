@@ -421,32 +421,32 @@ make sure creating new instance is fast and created object doesn't occupy much m
 In general favor setting up `ConfigurationFactory` with the appropriate converters over using `@Converter` annotation.
 
 #### Formatted Type Converters
-Some of the standard Type Converters support custom formats. See the table below.
 
-| Converter | Supported format |
-| --- | --- |
-| BigDecimalTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html) |
-| BooleanTypeConverter | Possible formats are: _string_when_true/string_when_false_ |
-| ByteTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| DoubleTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| DurationTypeConverter | Compliant with [`DurationFormatUtils`](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/time/DurationFormatUtils.html) |
-| FloatTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| IntegerTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| LocalDateTimeTypeConverter | Compliant with [`DateTimeFormatter`](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html) |
-| LongTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| ShortTypeConverter | Compliant with [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+Many type converters support custom formats which can be specified via _format_ meta-attribute.
+Format is converter specific and defines how the configuration value is converter from/to a string.
+In addition, converters for the numbers support _locale_ meta-attribute - its value must be valid ISO 639 locale code.
 
-Moreover, converters compliant with `DecimalFormat` support also custom locales. They should be compliant with ISO 639 standard.
-The following example shows how to use custom formats and locales.
+Meta-attribute value can be assigned to a configuration property via `@Meta` annotation as shown below:
+
 ```java
 public interface DisplayConfiguration {
-   @Meta(name="format")
-   @Meta(name="locale")
+   @Meta(name="format", value="#.000")
    BigDecimal getValue();
 }
 ```
 
-Of course, it is possible to define own annotations specifying conversion attributes, as shown at the example below.
+`@Meta` annotation associates meta-attribute with a configuration value. It can be applied on the configuration
+property method level as well as on the configuration interface/class level - in this case all configuration properties
+defined in the interface/class inherit this meta-attribute. For more details please consult `@Meta` javadoc.
+
+meta-attributes are available for _type converters_ and _configuration value sources_ and can be used for any purpose.
+As mentioned earlier, many _conf4j_ type converters understand _format_ meta-attribute. Whenever type converter
+is asked for converting string to value (and vice versa), the _format_ attribute's value is used and appropriate
+formatting applied.
+
+`@Meta` annotation can be used for meta annotating custom annotation. It is very handy and allows creating
+dedicated annotation like in the example below:
+
 ```java
 @Meta(name = "format", value="#.000")
 @Retention(RUNTIME)
@@ -457,13 +457,29 @@ public @interface Format {
 }
 ```
 
-Such created annotation can be used in the following manner.
+Now `@Format` annotation can be used instead of `@Meta(name="format", value="#.000")`:
+
 ```java
 public interface DisplayConfiguration {
    @Format(value="#.000")
    BigDecimal getValue();
 }
 ```
+
+The table below contains the list of available type converters and the format they support.
+
+| Converter | Supported format |
+| --- | --- |
+| BooleanTypeConverter | _{true value}/{false value}_, for example: _true/false_ or _yes/no_ |
+| ByteTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| ShortTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| IntegerTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| LongTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| FloatTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| DoubleTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| BigDecimalTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html) |
+| LocalDateTimeTypeConverter | As defined by [`DateTimeFormatter`](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html) |
+| DurationTypeConverter | As defined by [`DurationFormatUtils`](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/time/DurationFormatUtils.html) |
 
 ## Configuration Types with Generics
 

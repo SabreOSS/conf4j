@@ -146,7 +146,7 @@ public class BooleanTypeConverterTest {
         // then
         assertThatThrownBy(() -> booleanTypeConverter.toString(Boolean.class, toConvert, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Provided formatting pattern cannot be parsed:");
+                .hasMessageEndingWith("Invalid 'format' meta-attribute value, it must contain '/' separator character. Provided value is 'wrong format'.");
     }
 
     @Test
@@ -242,7 +242,7 @@ public class BooleanTypeConverterTest {
         // then
         assertThatThrownBy(() -> booleanTypeConverter.fromString(Boolean.class, booleanInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Provided formatting pattern cannot be parsed:");
+                .hasMessageEndingWith("Invalid 'format' meta-attribute value, it must contain '/' separator character. Provided value is 'wrong format'.");
     }
 
     @Test
@@ -255,7 +255,7 @@ public class BooleanTypeConverterTest {
         // then
         assertThatThrownBy(() -> booleanTypeConverter.fromString(Boolean.class, booleanInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("does not match specified format");
+                .hasMessageEndingWith("Unable to convert to Boolean, values must be either 'yes' or 'no' but provided value is 'wrong value'.");
     }
 
     @Test

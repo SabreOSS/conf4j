@@ -31,15 +31,20 @@ import java.text.ParseException;
 import java.util.Map;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
-public class BigDecimalTypeConverter extends AbstractNumericConverter<BigDecimal> {
-
+/**
+ * This class converts {@link BigDecimal} to/from string.
+ * <p>
+ * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
+ * </p>
+ */
+public class BigDecimalTypeConverter extends AbstractNumberConverter<BigDecimal> {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return type instanceof Class<?> && BigDecimal.class.isAssignableFrom((Class<?>) type);
+        return isApplicable(type, BigDecimal.class, null);
     }
 
     @Override

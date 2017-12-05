@@ -27,16 +27,19 @@ package com.sabre.oss.conf4j.converter.standard;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import static java.util.Objects.requireNonNull;
-
-public class DoubleTypeConverter extends AbstractNumericConverter<Double> {
-
+/**
+ * This class converts {@link Double} to/from string.
+ * <p>
+ * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
+ * </p>
+ */
+public class DoubleTypeConverter extends AbstractNumberConverter<Double> {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return type instanceof Class<?> &&
-                (Double.class.isAssignableFrom((Class<?>) type) || Double.TYPE.isAssignableFrom((Class<?>) type));
+        return isApplicable(type, Double.class, Double.TYPE);
     }
 
     @Override

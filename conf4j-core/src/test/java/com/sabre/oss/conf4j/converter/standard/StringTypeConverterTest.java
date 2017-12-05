@@ -30,17 +30,18 @@ import org.junit.Test;
 import java.lang.reflect.Type;
 import java.util.Map;
 
+import static com.sabre.oss.conf4j.converter.standard.StringTypeConverter.ESCAPE;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class EscapingStringTypeConverterTest {
-    private EscapingStringTypeConverter converter;
+public class StringTypeConverterTest {
+    private StringTypeConverter converter;
 
     @Before
     public void setUp() {
-        converter = new EscapingStringTypeConverter();
+        converter = new StringTypeConverter();
     }
 
     @Test
@@ -118,7 +119,7 @@ public class EscapingStringTypeConverterTest {
         // then
         assertThatThrownBy(() -> converter.fromString(String.class, in, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Value for escape attribute should be equal to true or false. Provided:");
+                .hasMessageEndingWith("Invalid 'escape' meta-attribute value, it must be either 'true' or 'false', but 'wrong value' is provided.");
     }
 
     @Test
@@ -139,7 +140,7 @@ public class EscapingStringTypeConverterTest {
         // given
         String in = "One\\Two";
         String escape = "false";
-        Map<String, String> attributes = singletonMap("escape", escape);
+        Map<String, String> attributes = singletonMap(ESCAPE, escape);
 
         // when
         String out = converter.toString(String.class, in, attributes);
@@ -153,7 +154,7 @@ public class EscapingStringTypeConverterTest {
         // given
         String in = "One\\Two";
         String escape = "true";
-        Map<String, String> attributes = singletonMap("escape", escape);
+        Map<String, String> attributes = singletonMap(ESCAPE, escape);
 
         // when
         String out = converter.toString(String.class, in, attributes);
@@ -167,11 +168,11 @@ public class EscapingStringTypeConverterTest {
         // given
         String in = "One\\Two";
         String escape = "wrong value";
-        Map<String, String> attributes = singletonMap("escape", escape);
+        Map<String, String> attributes = singletonMap(ESCAPE, escape);
 
         // then
         assertThatThrownBy(() -> converter.toString(String.class, in, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Value for escape attribute should be equal to true or false. Provided:");
+                .hasMessageEndingWith("Invalid 'escape' meta-attribute value, it must be either 'true' or 'false', but 'wrong value' is provided.");
     }
 }
