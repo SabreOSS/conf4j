@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.converter.composite;
 
-import com.sabre.oss.conf4j.converter.standard.StringTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.EscapingStringTypeConverter;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,7 +72,7 @@ public class JsonLikeTypeConverterTest {
 
     @Before
     public void setUp() {
-        typeConverter = new JsonLikeTypeConverter(new StringTypeConverter());
+        typeConverter = new JsonLikeTypeConverter(new EscapingStringTypeConverter(false));
     }
 
     @Test

@@ -24,23 +24,32 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Type;
 import java.time.Period;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 public class PeriodTypeConverterTest {
-    private PeriodTypeConverter converter = new PeriodTypeConverter();
+    private PeriodTypeConverter converter;
+
+    @Before
+    public void setUp() {
+        converter = new PeriodTypeConverter();
+    }
 
     @Test
     public void shouldConvertFromString() {
         // given
         Period period = Period.ofDays(123);
+
         // when
         Period readPeriod = converter.fromString(Period.class, "P123D", null);
+
         // then
         assertThat(readPeriod).isEqualTo(period);
     }
@@ -49,8 +58,10 @@ public class PeriodTypeConverterTest {
     public void shouldConvertToString() {
         // given
         Period period = Period.ofDays(123);
+
         // when
         String asString = converter.toString(Period.class, period, null);
+
         // then
         assertThat(asString).isEqualTo("P123D");
     }
@@ -59,8 +70,10 @@ public class PeriodTypeConverterTest {
     public void shouldAcceptPeriodType() {
         // given
         Type type = Period.class;
+
         // when
         boolean isApplicable = converter.isApplicable(type, null);
+
         // then
         assertThat(isApplicable).isTrue();
     }
@@ -69,7 +82,19 @@ public class PeriodTypeConverterTest {
     public void shouldNotAcceptUnknownType() {
         // when
         boolean isApplicable = converter.isApplicable(mock(Type.class), null);
+
         // then
         assertThat(isApplicable).isFalse();
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenConvertingFromStringAndWrongValue() {
+        // given
+        String toConvert = "XXXXX";
+
+        // then
+        assertThatThrownBy(() -> converter.fromString(Period.class, toConvert, null))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Unable to convert to a Period: XXXXX");
     }
 }

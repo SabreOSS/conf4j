@@ -45,5 +45,4 @@
         <module>conf4j-example-generics</module>
         <module>conf4j-example-meta-data</module>
     </modules>
-
 </project>

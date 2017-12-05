@@ -27,38 +27,44 @@ package com.sabre.oss.conf4j.converter.standard;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
+import java.util.Objects;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 /**
- * This class converts {@link String} to/from string.
- * <p>
- * Unlike {@link EscapingStringTypeConverter}, this converter does not perform any string transformation.
- * </p>
- *
- * @see EscapingStringTypeConverter
+ * This class converts {@link URL} to/from string.
  */
-public class StringTypeConverter implements TypeConverter<String> {
+public class UrlTypeConverter implements TypeConverter<URL> {
 
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return type instanceof Class<?> && String.class.isAssignableFrom((Class<?>) type);
+        return type instanceof Class<?> && URL.class.isAssignableFrom((Class<?>) type);
     }
 
     @Override
-    public String fromString(Type type, String value, Map<String, String> attributes) {
+    public URL fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return value;
+        if (value == null) {
+            return null;
+        }
+        try {
+            return new URL(value);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(format("Unable to convert to URL: %s", value), e);
+        }
     }
 
     @Override
-    public String toString(Type type, String value, Map<String, String> attributes) {
+    public String toString(Type type, URL value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return value;
+        return Objects.toString(value, null);
     }
 }
