@@ -74,7 +74,6 @@ public final class Conf4jSpringConstants {
      * <p>
      * It is unlikely this bean will be customized. By default it is of {@link ConfigurationBeanFactoryPostProcessor}
      * type.
-     * </p>
      */
     public static final String CONF4J_BEAN_FACTORY_POST_PROCESSOR = "com.sabre.oss.conf4j.beanFactoryPostProcessor";
 

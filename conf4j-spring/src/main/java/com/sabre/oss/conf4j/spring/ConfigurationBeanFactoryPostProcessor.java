@@ -67,7 +67,6 @@ import static org.springframework.core.annotation.AnnotationUtils.findAnnotation
  * <p>
  * Annotation which is used for detecting configurations can be customized by {@link #setConfigurationAnnotations(Set)}
  * and by default is {@link Component}.
- * </p>
  */
 public class ConfigurationBeanFactoryPostProcessor implements BeanDefinitionRegistryPostProcessor, PriorityOrdered, BeanClassLoaderAware {
     private static final Logger log = LoggerFactory.getLogger(ConfigurationBeanFactoryPostProcessor.class);

@@ -37,11 +37,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p>
  * The library does not provide a default implementation for this feature at runtime. See configuration factory
  * for details of how to setup this feature.
- * </p>
  * <p>
  * {@code @Encrypted} annotation can be used for configuration properties. It is not supported
  * for sub-configurations, nor a list of sub-configurations.
- * </p>
+ * <p>
  * <b>Example usage:</b>
  * <pre>
  * public interface ConnectionConfiguration {
@@ -76,7 +75,6 @@ public @interface Encrypted {
      * <p>
      * If there is no suitable encryption provider, an exception is thrown for the configuration implementation
      * at build-time, or when the configuration property is accessed.
-     * </p>
      *
      * @return encryption provider name.
      */

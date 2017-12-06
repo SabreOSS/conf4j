@@ -78,7 +78,6 @@ public class SpringBootExample implements CommandLineRunner {
      * types in the application class package and sub-packages (including inner classes).
      * <p>
      * Please note it is annotated with {@link Component} to make it discoverable.
-     * </p>
      */
     @Component
     @Key("application")

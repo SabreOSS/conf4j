@@ -39,7 +39,6 @@ import static java.util.Collections.unmodifiableMap;
  * It ensures that attributes maps are cached to avoid storing copies in memory.
  * In most cases number of different attribute sets is small and storing separate copy for each property
  * is wast of space.
- * </p>
  */
 public final class AttributesUtils implements Serializable {
     private static final long serialVersionUID = -7363608399917768393L;

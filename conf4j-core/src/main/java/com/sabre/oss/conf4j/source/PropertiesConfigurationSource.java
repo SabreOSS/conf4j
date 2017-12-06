@@ -40,7 +40,6 @@ import static java.util.Objects.requireNonNull;
  * Configuration value source backed by {@code Properties}.
  * <p>
  * It is <i>thread safe</i>.
- * </p>
  */
 public class PropertiesConfigurationSource implements IterableConfigurationSource {
     protected final Properties source;

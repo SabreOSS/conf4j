@@ -45,23 +45,19 @@ import static org.springframework.util.Assert.hasText;
  * by {@link #toString(Type, Object, Map)} (which in most cases is not used frequently) doesn't take advantage of caching
  * (but it may change in the future). The same applies to {@link #isApplicable(Type, Map)} which is usually very fast
  * and caching it won't provide any performance improvement.
- * </p>
  * <p>
  * {@code CachingTypeConverter} delegates to {@link #setTypeConverter(TypeConverter) typeConverter}
  * and the resulting value is stored in the cache. Because the value may be reused it should be <i>immutable</i>
  * to avoid unintended cache modifications.
- * </p>
  * <p>
  * Before this converter can be used {@link #setTypeConverter(TypeConverter) typeConverter}
  * and {@link #setCacheManager(CacheManager) cacheManager} must be set.
- * </p>
  * <p>
  * <b>Note:</b>
  * Use this converter if deemed it will improve overall performance. Type converters are usually extremely fast;
  * therefore, caching may slow down conversions. This converter is useful when the conversion is done frequently
  * for complex types like {@code Map<String, List<String>>} but be aware it is associated with higher memory utilization
  * (both string representation and value are cached).
- * </p>
  *
  * @see TypeConverter
  * @see CacheManager

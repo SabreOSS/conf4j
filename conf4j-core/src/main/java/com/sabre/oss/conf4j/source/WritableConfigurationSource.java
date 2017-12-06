@@ -31,7 +31,6 @@ import java.util.Map;
  * <p>
  * Configuration value source is usually accessed from multiple threads and it should be <i>thread safe</i>,
  * but it is not an absolute requirement. All implementations must explicitly document thread safety.
- * </p>
  */
 public interface WritableConfigurationSource extends ConfigurationSource {
     /**

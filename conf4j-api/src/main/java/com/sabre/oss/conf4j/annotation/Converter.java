@@ -42,12 +42,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * it is instantiated on runtime via reflection. It must be <i>thread-safe</i> and <i>stateless</i>.
  * Many instances of the converter are created; therefore, be sure that creating a new instance is fast and the created
  * object doesn't occupy too much memory.
- * </p>
  * <p>
  * <b>Note:</b> Configuration factory is usually pre-configured with a wide range of converters. {@code @Converter}
  * should be used when a type of configuration property is not supported, or there is a need to use a different
  * converter.
- * </p>
+ * <p>
  * <b>Example usage:</b>
  * <pre>
  * public interface DateRange {

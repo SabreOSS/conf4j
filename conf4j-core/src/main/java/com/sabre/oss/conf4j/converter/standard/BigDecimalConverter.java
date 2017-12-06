@@ -36,7 +36,6 @@ import static java.lang.String.format;
  * This class converts {@link BigDecimal} to/from string.
  * <p>
  * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
- * </p>
  */
 public class BigDecimalConverter extends AbstractNumberConverter<BigDecimal> {
     /**

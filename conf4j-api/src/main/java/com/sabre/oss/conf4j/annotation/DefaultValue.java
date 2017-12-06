@@ -40,8 +40,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <i>Note:</i> Default value is encoded as a string. It is converted to the value of the property type, which
  * depends on the {@link TypeConverter}. Converters are configurable and it is the developer's responsibility
  * to ensure the converter configuration matches the format of the default value.
- * </p>
- * <b>Example usage:</b>
+ * <p> <b>Example usage:</b>
  * <pre>
  * public interface ConnectionConfiguration {
  *    &#064;Key("name")
@@ -62,14 +61,16 @@ public @interface DefaultValue {
      * Used to specify the default value {@code null}. Using {@code NULL} is equivalent to not applying
      * {@code DefaultValue} annotation, but it may be useful to explicitly specify (for documentation purposes)
      * the default value as {@code null}.
-     * <p>For types that do not support {@code null}, such as primitives, using {@code NULL} is not supported.</p>
+     * <p>
+     * For types that do not support {@code null}, such as primitives, using {@code NULL} is not supported.
      */
     String NULL = Constants.NULL;
 
     /**
      * Default value is represented as a string. The format must be compatible with the converter, which is responsible
      * for converting {@code value} to the appropriate type.
-     * <p>Use {@link #NULL} to assign {@code null} as a default value.</p>
+     * <p>
+     * Use {@link #NULL} to assign {@code null} as a default value.
      *
      * @return default value.
      */

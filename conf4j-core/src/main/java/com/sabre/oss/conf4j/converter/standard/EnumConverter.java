@@ -38,7 +38,6 @@ import static java.util.Objects.requireNonNull;
  * <p>
  * {@link Enum#name()} method is used for converting an enumeration value to a string in {@link #toString(Type, Enum, Map)}.
  * This method is also used by {@link #fromString(Type, String, Map)} to find matching enumeration values.
- * </p>
  */
 public class EnumConverter implements TypeConverter<Enum<?>> {
 

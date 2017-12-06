@@ -32,7 +32,6 @@ import org.springframework.stereotype.Component;
  * This is an additional configuration which is discovered via {@link ConfigurationScan} or {@code <conf4j:configuration-scan/>}.
  * <p>
  * Please note it is annotated with {@link Component} to make it discoverable.
- * </p>
  */
 @Component
 @Key("application")

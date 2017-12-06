@@ -46,10 +46,8 @@ import static org.apache.commons.lang3.time.DurationFormatUtils.formatDuration;
  * <p>
  * The converter supports {@value #FORMAT} attribute (provided in the attributes map) which specifies
  * the format used during conversion. The format is compliant with {@link DurationFormatUtils}.
- * </p>
  * <p>
  * When the format is not specified, {@link Objects#toString() } method is used.
- * </p>
  */
 public class DurationConverter implements TypeConverter<Duration> {
 

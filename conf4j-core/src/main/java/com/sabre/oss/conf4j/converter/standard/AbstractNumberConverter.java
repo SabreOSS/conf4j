@@ -44,17 +44,14 @@ import static java.util.Objects.requireNonNull;
  * <p>
  * The converter supports {@value #FORMAT} meta-attribute which specifies the format of resulting string representation.
  * The format string must be compatible with the format defined by {@link DecimalFormat}.
- * </p>
  * <p>
  * In case the format is not provided, <em>natural</em> number representation is used:
  * {@link Objects#toString()} while converting from value to string and <em>NumberType.valueOf(String value)</em>
  * while converting from string to a type value (<em>NumberType</em> is a concrete class for example {@code Double}).
- * </p>
  * <p>
  * The converter also supports {@value LOCALE} meta-attribute which specifies
  * the locale used during conversion. It is used only when {@value FORMAT} attribute is provided.
  * The locale must be a ISO 639. If not specified, {@link Locale#US} locale is used.
- * </p>
  *
  * @param <T> actual number type
  */

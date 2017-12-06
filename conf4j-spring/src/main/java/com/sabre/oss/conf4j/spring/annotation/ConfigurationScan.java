@@ -34,7 +34,6 @@ import java.lang.annotation.*;
  * Scans for configurations in the specified packages. It is usually used with spring's {@link Configuration} annotation.
  * <p>
  * <b>Example usage:</b>
- * </p>
  * <pre>
  * &#064;Component
  * public interface ConnectionConfiguration {
@@ -79,7 +78,6 @@ public @interface ConfigurationScan {
      * {@link #value()} is an alias for (and mutually exclusive with) this attribute.
      * Use {@link #basePackageClasses()} for a type-safe alternative to String-based
      * package names.
-     * </p>
      *
      * @return the list of base packages.
      */
@@ -91,7 +89,6 @@ public @interface ConfigurationScan {
      * <p>
      * Consider creating a special no-op marker class or interface in each package that
      * serves no purpose other than being referenced by this attribute.
-     * </p>
      *
      * @return the list of classes which point to base packages.
      */
@@ -103,7 +100,7 @@ public @interface ConfigurationScan {
      * with one of specified annotations will be discovered.
      * <p>
      * Default value is {@link Component}
-     * </p>
+     * <p>
      * Here is and example of the custom annotation which will be used for discovering configuration type candidates.
      * <pre>
      * &#064;Retention(RUNTIME)

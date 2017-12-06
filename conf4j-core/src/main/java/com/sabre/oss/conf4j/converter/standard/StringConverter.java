@@ -42,7 +42,6 @@ import static org.apache.commons.lang3.StringEscapeUtils.unescapeJava;
  * It is controlled via {@code escape} constructor parameter but can be change by {@value #ESCAPE} meta-attribute
  * during conversion. When {@value #ESCAPE} is {@value #TRUE}, then resulting string will be escaped,
  * when it is {@value FALSE}, not string transformation is performed.
- * </p>
  */
 public class StringConverter implements TypeConverter<String> {
 

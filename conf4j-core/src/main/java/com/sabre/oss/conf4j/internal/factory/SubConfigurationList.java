@@ -70,7 +70,6 @@ public class SubConfigurationList extends AbstractUnmodifiableList<Object> {
      * Provides a list of (unmodifiable) configurations.
      * <p>
      * <b>Note:</b> Do not remove. It is used from the generated code.
-     * </p>
      *
      * @param requiredSize specifies the resulting collection size. When it is {@code >} actual size, missing elements
      *                     will be created and initialized with default values.

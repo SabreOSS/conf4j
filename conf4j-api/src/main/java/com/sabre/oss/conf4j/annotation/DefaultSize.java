@@ -40,8 +40,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * declared by &#064;{@link DefaultsAnnotation}). It defines the size of the list
  * (in absence of the value in configuration source) and allows sub-configuration elements to be populated in the list
  * from default values.
- * </p>
- * <p><b>Example usage:</b></p>
+ * <p><b>Example usage:</b>
  * <pre>
  * &#064;DefaultsAnnotation(DefaultTimeout.class)
  * public interface TimeoutConfiguration {

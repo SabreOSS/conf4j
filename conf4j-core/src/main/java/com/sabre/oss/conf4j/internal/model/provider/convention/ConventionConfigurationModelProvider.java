@@ -36,10 +36,8 @@ import static java.util.Arrays.asList;
  * Convention doesn't allow specifying some metadata, for example it is not possible to specify more than one
  * <i>configuration key</i>, <i>fallback, global keys</i> nor <i>default values</i>.
  * In such cases it is possible to use <i>conf4j</i> annotations as a fallback.
- * </p>
  * <p>
  * Following conventions is used while extracting configuration data:
- * </p>
  * <ul>
  * <li>
  * A method associated with a configuration property must be public, abstract, returns non {@code void},
