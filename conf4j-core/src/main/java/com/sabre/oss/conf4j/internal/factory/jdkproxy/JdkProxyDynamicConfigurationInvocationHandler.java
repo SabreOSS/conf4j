@@ -30,7 +30,7 @@ import com.sabre.oss.conf4j.internal.config.DefaultDynamicConfiguration;
 import com.sabre.oss.conf4j.internal.config.DynamicConfiguration;
 import com.sabre.oss.conf4j.internal.config.PropertyMetadata;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
 
 import java.lang.reflect.Method;
@@ -49,8 +49,8 @@ class JdkProxyDynamicConfigurationInvocationHandler extends AbstractJdkProxyConf
         this.dynamicConfiguration.setTypeConverter(typeConverter);
     }
 
-    void setConfigurationValuesSource(ConfigurationValuesSource configurationValuesSource) {
-        this.dynamicConfiguration.setConfigurationValuesSource(configurationValuesSource);
+    void setConfigurationSource(ConfigurationSource configurationSource) {
+        this.dynamicConfiguration.setConfigurationSource(configurationSource);
     }
 
     void setConfigurationValueProvider(ConfigurationValueProvider configurationValueProvider) {
@@ -74,20 +74,20 @@ class JdkProxyDynamicConfigurationInvocationHandler extends AbstractJdkProxyConf
         }
 
         TypeConverter<?> typeConverter = dynamicConfiguration.getTypeConverter();
-        ConfigurationValuesSource configurationValuesSource = dynamicConfiguration.getConfigurationValuesSource();
+        ConfigurationSource configurationSource = dynamicConfiguration.getConfigurationSource();
         ConfigurationValueProvider configurationValueProvider = dynamicConfiguration.getConfigurationValueProvider();
         if (subConfigurationListProperties.contains(propertyName)) {
             // return sub-configuration list
             String sizePropertyName = propertyName + COLLECTION_SIZE_SUFFIX;
             PropertyMetadata listSizePropertyMetadata = getPropertyMetadata(sizePropertyName);
-            OptionalValue<?> size = configurationValueProvider.getConfigurationValue(typeConverter, configurationValuesSource, listSizePropertyMetadata);
+            OptionalValue<?> size = configurationValueProvider.getConfigurationValue(typeConverter, configurationSource, listSizePropertyMetadata);
             int actualSize = (Integer) (size.isPresent() ? size.get() : getValueProperty(sizePropertyName));
             return getSubConfigurationListProperty(propertyName).asUnmodifiableList(actualSize);
         }
 
         // return value property
         PropertyMetadata metadata = getPropertyMetadata(propertyName);
-        OptionalValue<?> configurationValue = configurationValueProvider.getConfigurationValue(typeConverter, configurationValuesSource, metadata);
+        OptionalValue<?> configurationValue = configurationValueProvider.getConfigurationValue(typeConverter, configurationSource, metadata);
         return configurationValue.isPresent() ? configurationValue.get() : getValueProperty(propertyName);
     }
 
@@ -98,10 +98,10 @@ class JdkProxyDynamicConfigurationInvocationHandler extends AbstractJdkProxyConf
             case "setTypeConverter":
                 this.dynamicConfiguration.setTypeConverter((TypeConverter<?>) args[0]);
                 return null;
-            case "getConfigurationValuesSource":
-                return this.dynamicConfiguration.getConfigurationValuesSource();
-            case "setConfigurationValuesSource":
-                this.dynamicConfiguration.setConfigurationValuesSource((ConfigurationValuesSource) args[0]);
+            case "getConfigurationSource":
+                return this.dynamicConfiguration.getConfigurationSource();
+            case "setConfigurationSource":
+                this.dynamicConfiguration.setConfigurationSource((ConfigurationSource) args[0]);
                 return null;
             case "getConfigurationValueProvider":
                 return this.dynamicConfiguration.getConfigurationValueProvider();

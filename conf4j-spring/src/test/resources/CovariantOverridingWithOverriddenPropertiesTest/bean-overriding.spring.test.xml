@@ -33,7 +33,7 @@
 
     <conf4j:configuration-scan base-package="com.sabre.oss.conf4j.spring.model.inheritance"/>
 
-    <bean id="conf4j.test.properties" class="com.sabre.oss.conf4j.source.MapConfigurationValuesSource">
+    <bean id="conf4j.test.properties" class="com.sabre.oss.conf4j.source.MapConfigurationSource">
         <constructor-arg>
             <map>
                 <entry key="configuration.nested.commonProperty" value="1"/>
@@ -43,6 +43,6 @@
     </bean>
 
     <!-- check for spring property overrides -->
-    <alias name="conf4j.test.properties" alias="com.sabre.oss.conf4j.configurationValuesSource"/>
+    <alias name="conf4j.test.properties" alias="com.sabre.oss.conf4j.configurationSource"/>
 
 </beans>

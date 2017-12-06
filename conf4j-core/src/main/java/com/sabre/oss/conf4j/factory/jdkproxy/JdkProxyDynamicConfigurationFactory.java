@@ -31,14 +31,14 @@ import com.sabre.oss.conf4j.internal.factory.jdkproxy.AbstractJdkProxyConfigurat
 import com.sabre.oss.conf4j.internal.factory.jdkproxy.JdkProxyDynamicConfigurationInitializer;
 import com.sabre.oss.conf4j.internal.factory.jdkproxy.JdkProxyDynamicConfigurationInstanceCreator;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 import static com.sabre.oss.conf4j.internal.utils.KeyGenerator.emptyKeyGenerator;
 import static java.util.Collections.emptyMap;
 
 /**
  * A configuration factory which creates configuration instances which are <i>dynamic</i>. Each time
- * the configuration property is accessed, the framework delegates to {@link ConfigurationValuesSource} to find the appropriate
+ * the configuration property is accessed, the framework delegates to {@link ConfigurationSource} to find the appropriate
  * configuration value associated with one of the configuration keys. The value is then converted to the
  * configuration property type by the {@link TypeConverter}.
  * <p>
@@ -59,13 +59,13 @@ public class JdkProxyDynamicConfigurationFactory extends AbstractJdkProxyConfigu
     @Override
     protected void initializeConfiguration(
             Object configurationInstance, ConfigurationModel configurationModel,
-            ConfigurationValuesSource valuesSource, ClassLoader classLoader) {
+            ConfigurationSource configurationSource, ClassLoader classLoader) {
 
         new JdkProxyDynamicConfigurationInitializer(
                 configurationInstance, configurationModel,
                 classLoader, configurationInstanceCreator,
                 typeConverter,
-                valuesSource,
+                configurationSource,
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),

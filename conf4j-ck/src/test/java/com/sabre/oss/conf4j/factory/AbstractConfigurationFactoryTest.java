@@ -104,7 +104,7 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     }
 
     @Test
-    public void shouldAssignValueFromValuesSourceWhenAvailable() {
+    public void shouldAssignValueFromConfigurationSourceWhenAvailable() {
         // Given
         when(source.getValue(anyString(), any())).thenReturn(absent());
         when(source.getValue("configuration.under.test.String.property", null)).thenReturn(present("string value"));

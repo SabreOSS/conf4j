@@ -37,9 +37,9 @@ import java.util.Map;
  * but it is not a must have requirement. All implementations must explicitly document thread safety.
  * </p>
  *
- * @see WritableConfigurationValuesSource
+ * @see WritableConfigurationSource
  */
-public interface ConfigurationValuesSource {
+public interface ConfigurationSource {
 
     /**
      * Return a value associated with a given key.
@@ -63,6 +63,6 @@ public interface ConfigurationValuesSource {
      * @throws NullPointerException when {@code keys} or any key in {@code keys} is {@code null}.
      */
     default ConfigurationEntry findEntry(Collection<String> keys, Map<String, String> attributes) {
-        return ConfigurationValuesSourceUtils.findEntry(this, keys, attributes);
+        return ConfigurationSourceUtils.findEntry(this, keys, attributes);
     }
 }

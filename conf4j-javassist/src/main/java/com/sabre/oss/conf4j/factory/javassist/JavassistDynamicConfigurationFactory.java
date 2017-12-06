@@ -32,14 +32,14 @@ import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.internal.factory.javassist.JavassistDynamicConfigurationInitializer;
 import com.sabre.oss.conf4j.internal.factory.javassist.JavassistDynamicConfigurationInstanceCreator;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 import static com.sabre.oss.conf4j.internal.utils.KeyGenerator.emptyKeyGenerator;
 import static java.util.Collections.emptyMap;
 
 /**
  * Configuration factory which creates configuration instances which are <i>dynamic</i>. Each time
- * the configuration property is accessed framework delegates to {@link ConfigurationValuesSource} to find the appropriate
+ * the configuration property is accessed framework delegates to {@link ConfigurationSource} to find the appropriate
  * configuration value associated with one of the configuration keys and then the value is converted to the
  * configuration property type by the {@link TypeConverter}.
  *
@@ -58,12 +58,12 @@ public class JavassistDynamicConfigurationFactory extends AbstractConfigurationF
      * {@inheritDoc}
      */
     @Override
-    protected void initializeConfiguration(Object configurationInstance, ConfigurationModel configurationModel, ConfigurationValuesSource valuesSource, ClassLoader classLoader) {
+    protected void initializeConfiguration(Object configurationInstance, ConfigurationModel configurationModel, ConfigurationSource configurationSource, ClassLoader classLoader) {
         new JavassistDynamicConfigurationInitializer(
                 configurationInstance, configurationModel,
                 classLoader, configurationInstanceCreator,
                 typeConverter,
-                valuesSource,
+                configurationSource,
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),

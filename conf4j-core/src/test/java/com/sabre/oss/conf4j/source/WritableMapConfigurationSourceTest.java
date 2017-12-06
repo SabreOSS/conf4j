@@ -26,29 +26,47 @@ package com.sabre.oss.conf4j.source;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.sabre.oss.conf4j.internal.utils.MapUtils.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MapConfigurationValuesSourceTest {
-
+public class WritableMapConfigurationSourceTest {
     @Test
-    public void shouldGetSingleValueFromUnderlyingMap() {
+    public void shouldGetValue() {
         // given
-        ConfigurationValuesSource source = new MapConfigurationValuesSource(of("key1", "value1", "key2", "value2"));
+        ConfigurationSource mapConfigurationSource = new WritableMapConfigurationSource(of("key", "value"));
         // when
-        String value = source.getValue("key2", null).get();
+        OptionalValue<String> receivedValue = mapConfigurationSource.getValue("key", null);
         // then
-        assertThat(value).isEqualTo("value2");
+        assertThat(receivedValue.isPresent()).isTrue();
+        assertThat(receivedValue.get()).isEqualTo("value");
     }
 
+    @Test
+    public void shouldSetAndGetValue() {
+        // given
+        WritableConfigurationSource mapConfigurationSource = new WritableMapConfigurationSource(new HashMap<>());
+        // when
+        mapConfigurationSource.setValue("key", "value", null);
+        // then
+        OptionalValue<String> value = mapConfigurationSource.getValue("key", null);
+        assertThat(value.isPresent()).isTrue();
+        assertThat(value.get()).isEqualTo("value");
+    }
 
     @Test
-    public void shouldIterateOver() {
+    public void shouldRemoveValue() {
         // given
-        MapConfigurationValuesSource source = new MapConfigurationValuesSource(of("key1", "value1", "key2", "value2"));
+        Map<String, String> map = new HashMap<>();
+        map.put("key", "value");
+        WritableConfigurationSource mapConfigurationSource = new WritableMapConfigurationSource(map);
+
         // when
-        Iterable<ConfigurationEntry> iterable = source.getAllConfigurationEntries();
+        mapConfigurationSource.removeValue("key", null);
+
         // then
-        assertThat(iterable).containsExactly(new ConfigurationEntry("key1", "value1"), new ConfigurationEntry("key2", "value2"));
+        assertThat(mapConfigurationSource.getValue("key", null).isPresent()).isFalse();
     }
 }

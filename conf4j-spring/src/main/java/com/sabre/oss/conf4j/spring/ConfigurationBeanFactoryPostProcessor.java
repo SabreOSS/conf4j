@@ -50,7 +50,7 @@ import java.lang.annotation.Annotation;
 import java.util.Set;
 
 import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.CONF4J_CONFIGURATION_FACTORY;
-import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.CONF4J_CONFIGURATION_VALUES_SOURCE;
+import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.CONF4J_CONFIGURATION_SOURCE;
 import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.getConf4jConfigurationIndicator;
 import static java.lang.String.format;
 import static java.lang.System.nanoTime;
@@ -182,7 +182,7 @@ public class ConfigurationBeanFactoryPostProcessor implements BeanDefinitionRegi
         definition.setBeanClassName(ConfigurationFactoryBean.class.getName());
         MutablePropertyValues propertyValues = definition.getPropertyValues();
         propertyValues.addPropertyValue("configurationFactory", new RuntimeBeanReference(CONF4J_CONFIGURATION_FACTORY));
-        propertyValues.addPropertyValue("configurationValuesSource", new RuntimeBeanReference(CONF4J_CONFIGURATION_VALUES_SOURCE));
+        propertyValues.addPropertyValue("configurationSource", new RuntimeBeanReference(CONF4J_CONFIGURATION_SOURCE));
         propertyValues.addPropertyValue("configurationType", configurationType);
     }
 

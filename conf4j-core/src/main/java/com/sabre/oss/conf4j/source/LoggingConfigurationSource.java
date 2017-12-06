@@ -37,17 +37,17 @@ import static org.apache.commons.lang3.StringUtils.join;
 /**
  * Configuration value source which logs every access to the configuration. Useful for debugging purposes.
  */
-public class LoggingConfigurationValuesSource implements ConfigurationValuesSource {
-    private static final Logger log = LoggerFactory.getLogger(LoggingConfigurationValuesSource.class);
+public class LoggingConfigurationSource implements ConfigurationSource {
+    private static final Logger log = LoggerFactory.getLogger(LoggingConfigurationSource.class);
 
-    private final ConfigurationValuesSource source;
+    private final ConfigurationSource source;
 
     /**
      * Construct value source and delegates all invocations to {@code source}.
      *
      * @param source value source all invocations are delegated.
      */
-    public LoggingConfigurationValuesSource(ConfigurationValuesSource source) {
+    public LoggingConfigurationSource(ConfigurationSource source) {
         this.source = requireNonNull(source, "source cannot be null");
     }
 

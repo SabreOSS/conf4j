@@ -28,7 +28,7 @@ import com.sabre.oss.conf4j.converter.TypeConverter;
 import com.sabre.oss.conf4j.processor.ConfigurationValue;
 import com.sabre.oss.conf4j.processor.ConfigurationValueProcessor;
 import com.sabre.oss.conf4j.source.ConfigurationEntry;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
 
 import java.util.List;
@@ -47,7 +47,7 @@ public class DefaultConfigurationValueProvider implements ConfigurationValueProv
     }
 
     @Override
-    public <T> OptionalValue<T> getConfigurationValue(TypeConverter<T> typeConverter, ConfigurationValuesSource valuesSource, PropertyMetadata metadata) {
+    public <T> OptionalValue<T> getConfigurationValue(TypeConverter<T> typeConverter, ConfigurationSource configurationSource, PropertyMetadata metadata) {
         requireNonNull(typeConverter, "typeConverter cannot be null");
         requireNonNull(metadata, "metadata cannot be null");
 
@@ -55,8 +55,8 @@ public class DefaultConfigurationValueProvider implements ConfigurationValueProv
         String resolvedKey = null;
 
         Map<String, String> attributes = metadata.getAttributes();
-        if (valuesSource != null) {
-            ConfigurationEntry configurationEntry = valuesSource.findEntry(metadata.getKeySet(), attributes);
+        if (configurationSource != null) {
+            ConfigurationEntry configurationEntry = configurationSource.findEntry(metadata.getKeySet(), attributes);
             if (configurationEntry != null) {
                 resolvedKey = configurationEntry.getKey();
                 value = present(configurationEntry.getValue());

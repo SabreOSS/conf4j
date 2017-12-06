@@ -22,12 +22,43 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.internal.config;
+package com.sabre.oss.conf4j.spring.source;
 
-import com.sabre.oss.conf4j.converter.TypeConverter;
 import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 
-public interface ConfigurationValueProvider {
-    <T> OptionalValue<T> getConfigurationValue(TypeConverter<T> typeConverter, ConfigurationSource configurationSource, PropertyMetadata metadata);
+import java.util.Map;
+
+import static com.sabre.oss.conf4j.source.OptionalValue.absent;
+import static com.sabre.oss.conf4j.source.OptionalValue.present;
+import static java.util.Objects.requireNonNull;
+import static org.springframework.util.Assert.state;
+
+/**
+ * {@link ConfigurationSource} adapter to {@link Environment}.
+ */
+public class EnvironmentConfigurationSource implements ConfigurationSource, EnvironmentAware {
+    private Environment environment;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
+        requireNonNull(key, "key cannot be null");
+        state(environment != null, "environment is not set");
+
+        String property = environment.getProperty(key);
+        return property != null || environment.containsProperty(key) ? present(property) : absent();
+    }
 }

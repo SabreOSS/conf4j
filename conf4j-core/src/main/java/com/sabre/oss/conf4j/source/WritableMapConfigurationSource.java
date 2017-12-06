@@ -35,14 +35,14 @@ import static java.util.Objects.requireNonNull;
  * <p>
  * It <i>may or <b>may not</b> be thread safe</i> - it depends on the backing map.
  */
-public class WritableMapConfigurationValuesSource extends MapConfigurationValuesSource implements WritableConfigurationValuesSource {
+public class WritableMapConfigurationSource extends MapConfigurationSource implements WritableConfigurationSource {
     /**
      * Constructs values source.
      *
      * @param source the map that holds configuration keys. It cannot contain {@code null} keys.
      * @throws NullPointerException when {@code source} is null.
      */
-    public WritableMapConfigurationValuesSource(Map<String, String> source) {
+    public WritableMapConfigurationSource(Map<String, String> source) {
         super(source);
     }
 

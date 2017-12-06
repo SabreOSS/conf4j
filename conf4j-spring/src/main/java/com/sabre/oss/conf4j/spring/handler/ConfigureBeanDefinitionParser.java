@@ -29,7 +29,7 @@ import com.sabre.oss.conf4j.factory.javassist.JavassistDynamicConfigurationFacto
 import com.sabre.oss.conf4j.internal.model.provider.convention.ConventionConfigurationModelProvider;
 import com.sabre.oss.conf4j.spring.ConfigurationBeanFactoryPostProcessor;
 import com.sabre.oss.conf4j.spring.factory.cglib.CglibDynamicConfigurationFactory;
-import com.sabre.oss.conf4j.spring.source.PropertySourceConfigurationValuesSource;
+import com.sabre.oss.conf4j.spring.source.PropertySourceConfigurationSource;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -100,12 +100,12 @@ public class ConfigureBeanDefinitionParser extends AbstractBeanDefinitionParser 
             }
         }
 
-        if (!registry.containsBeanDefinition(CONF4J_CONFIGURATION_VALUES_SOURCE)) {
-            BeanDefinitionBuilder builder = genericBeanDefinition(PropertySourceConfigurationValuesSource.class)
+        if (!registry.containsBeanDefinition(CONF4J_CONFIGURATION_SOURCE)) {
+            BeanDefinitionBuilder builder = genericBeanDefinition(PropertySourceConfigurationSource.class)
                     .setRole(BeanDefinition.ROLE_INFRASTRUCTURE)
                     .setLazyInit(true);
 
-            registry.registerBeanDefinition(CONF4J_CONFIGURATION_VALUES_SOURCE, builder.getBeanDefinition());
+            registry.registerBeanDefinition(CONF4J_CONFIGURATION_SOURCE, builder.getBeanDefinition());
         }
 
         if (!registry.containsBeanDefinition(CONF4J_BEAN_FACTORY_POST_PROCESSOR)) {

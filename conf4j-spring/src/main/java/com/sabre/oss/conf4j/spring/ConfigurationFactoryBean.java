@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.spring;
 
 import com.sabre.oss.conf4j.factory.ConfigurationFactory;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Required;
@@ -39,7 +39,7 @@ public class ConfigurationFactoryBean implements FactoryBean<Object>, BeanClassL
 
     private Class<?> configurationType;
     private ConfigurationFactory configurationFactory;
-    private ConfigurationValuesSource configurationValuesSource;
+    private ConfigurationSource configurationSource;
     private ClassLoader classLoader;
 
     /**
@@ -65,11 +65,11 @@ public class ConfigurationFactoryBean implements FactoryBean<Object>, BeanClassL
     /**
      * Configuration values source.
      *
-     * @param configurationValuesSource configuration values source.
+     * @param configurationSource configuration values source.
      */
     @Required
-    public void setConfigurationValuesSource(ConfigurationValuesSource configurationValuesSource) {
-        this.configurationValuesSource = configurationValuesSource;
+    public void setConfigurationSource(ConfigurationSource configurationSource) {
+        this.configurationSource = configurationSource;
     }
 
     /**
@@ -89,9 +89,9 @@ public class ConfigurationFactoryBean implements FactoryBean<Object>, BeanClassL
     public Object getObject() {
         validState(configurationType != null, "configurationType is not set");
         validState(configurationFactory != null, "configurationFactory is not set");
-        validState(configurationValuesSource != null, "configurationValuesSource is not set");
+        validState(configurationSource != null, "configurationSource is not set");
 
-        return configurationFactory.createConfiguration(configurationType, configurationValuesSource, classLoader);
+        return configurationFactory.createConfiguration(configurationType, configurationSource, classLoader);
     }
 
     /**

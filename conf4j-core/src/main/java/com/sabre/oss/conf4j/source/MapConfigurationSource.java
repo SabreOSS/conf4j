@@ -24,55 +24,47 @@
 
 package com.sabre.oss.conf4j.source;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
+import static com.sabre.oss.conf4j.source.OptionalValue.present;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Configuration value source which delegates configuration key lookup to list of {@link ConfigurationValuesSource}.
+ * Configuration value source backed by {@code Map<String, String>}.
  * <p>
- * The order of lookup is defined by the list. If the same key is available from multiple sources, the value
- * will be retrieved from the first one on the list.
- * </p>
- * It <i>may or <b>may not</b> be thread safe</i> - it depends on the backing configuration value sources.
+ * It <i>may or <b>may not</b> be thread safe</i> - it depends on the backing map.
  */
-public class MultiConfigurationValuesSource implements ConfigurationValuesSource {
-    protected final List<ConfigurationValuesSource> sources;
+public class MapConfigurationSource implements IterableConfigurationSource {
+    protected final Map<String, String> source;
 
-    public MultiConfigurationValuesSource(List<ConfigurationValuesSource> sources) {
-        requireNonNull(sources, "sources cannot be null");
-        this.sources = new ArrayList<>(sources);
+    /**
+     * Constructs values source.
+     *
+     * @param source the map that holds configuration keys. It cannot contain {@code null} keys.
+     * @throws NullPointerException when {@code source} is null.
+     */
+    public MapConfigurationSource(Map<String, String> source) {
+        this.source = requireNonNull(source, "source cannot be null");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
         requireNonNull(key, "key cannot be null");
 
-        for (ConfigurationValuesSource source : sources) {
-            OptionalValue<String> value = source.getValue(key, attributes);
-            if (value.isPresent()) {
-                return value;
-            }
-        }
+        String value = source.get(key);
 
-        return absent();
+        return value != null || source.containsKey(key) ? present(value) : absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ConfigurationEntry findEntry(Collection<String> keys, Map<String, String> attributes) {
-        requireNonNull(keys, "keys cannot be null");
-
-        for (ConfigurationValuesSource source : sources) {
-            ConfigurationEntry entry = source.findEntry(keys, attributes);
-            if (entry != null) {
-                return entry;
-            }
-        }
-
-        return null;
+    public Iterable<ConfigurationEntry> getAllConfigurationEntries() {
+        return new MapConfigurationEntryIterable(source);
     }
 }

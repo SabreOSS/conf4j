@@ -32,7 +32,7 @@ import com.sabre.oss.conf4j.internal.model.SubConfigurationListPropertyModel;
 import com.sabre.oss.conf4j.internal.model.SubConfigurationPropertyModel;
 import com.sabre.oss.conf4j.internal.model.ValuePropertyModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
 
 import java.lang.reflect.Type;
@@ -50,7 +50,7 @@ public abstract class AbstractConfigurationInitializer extends AbstractConfigura
     protected final ClassLoader classLoader;
     protected final ConfigurationInstanceCreator configurationInstanceCreator;
     protected final TypeConverter<?> typeConverter;
-    protected final ConfigurationValuesSource valuesSource;
+    protected final ConfigurationSource configurationSource;
     protected final String fallbackKeyPrefix;
     protected final Map<String, String> defaultValues;
     protected final Map<String, String> attributes;
@@ -64,7 +64,7 @@ public abstract class AbstractConfigurationInitializer extends AbstractConfigura
             ClassLoader classLoader,
             ConfigurationInstanceCreator configurationInstanceCreator,
             TypeConverter<?> typeConverter,
-            ConfigurationValuesSource valuesSource,
+            ConfigurationSource configurationSource,
             KeyGenerator keyGenerator,
             String fallbackKeyPrefix,
             Map<String, String> defaultValues,
@@ -76,7 +76,7 @@ public abstract class AbstractConfigurationInitializer extends AbstractConfigura
         this.classLoader = classLoader;
         this.configurationInstanceCreator = configurationInstanceCreator;
         this.typeConverter = typeConverter;
-        this.valuesSource = valuesSource;
+        this.configurationSource = configurationSource;
         this.keyGenerator = keyGenerator;
         this.fallbackKeyPrefix = fallbackKeyPrefix;
         this.defaultValues = defaultValues;

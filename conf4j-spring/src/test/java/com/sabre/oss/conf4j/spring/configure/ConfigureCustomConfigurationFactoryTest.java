@@ -29,7 +29,7 @@ import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyDynamicConfigurationFactory
 import com.sabre.oss.conf4j.spring.AbstractContextTest;
 import com.sabre.oss.conf4j.spring.ConfigurationBeanFactoryPostProcessor;
 import com.sabre.oss.conf4j.spring.configscan.model.RootConfiguration;
-import com.sabre.oss.conf4j.spring.source.PropertySourceConfigurationValuesSource;
+import com.sabre.oss.conf4j.spring.source.PropertySourceConfigurationSource;
 import org.junit.Test;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
@@ -48,7 +48,7 @@ public class ConfigureCustomConfigurationFactoryTest extends AbstractContextTest
     public void shouldRegisterInfrastructureBeans() {
         isRegistered(JdkProxyDynamicConfigurationFactory.class, CONF4J_CONFIGURATION_FACTORY);
         isRegistered(TypeConverter.class, CONF4J_TYPE_CONVERTER);
-        isRegistered(PropertySourceConfigurationValuesSource.class, CONF4J_CONFIGURATION_VALUES_SOURCE);
+        isRegistered(PropertySourceConfigurationSource.class, CONF4J_CONFIGURATION_SOURCE);
         isRegistered(ConfigurationBeanFactoryPostProcessor.class, CONF4J_BEAN_FACTORY_POST_PROCESSOR);
     }
 }

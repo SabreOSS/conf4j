@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.spring;
 
 import com.sabre.oss.conf4j.internal.config.DynamicConfiguration;
-import com.sabre.oss.conf4j.source.MapConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.MapConfigurationSource;
 import com.sabre.oss.conf4j.spring.model.SpringBean;
 import com.sabre.oss.conf4j.spring.model.SpringBeanConfiguration;
 import com.sabre.oss.conf4j.spring.model.inheritance.CommonConfiguration;
@@ -105,7 +105,7 @@ public class SpringConfigurationFactoryTest extends AbstractJUnit4SpringContextT
     @DirtiesContext
     public void shouldHandleDefaultValuesForComplexMaps() {
         SpringBeanConfiguration configuration = applicationContext.getBean(SpringBeanConfiguration.class);
-        ((DynamicConfiguration) configuration).setConfigurationValuesSource(new MapConfigurationValuesSource(of(
+        ((DynamicConfiguration) configuration).setConfigurationSource(new MapConfigurationSource(of(
                 "springBeanConfigurationPrefix.mapWithListAsValue", "{1:[a,b],2:[a,b,c]}",
                 "springBeanConfigurationPrefix.mapWithMapAsValue", "{1:{a:b},2:{c:d,e:f}}"
         )));

@@ -29,7 +29,7 @@ import com.sabre.oss.conf4j.factory.ConfigurationFactory;
 import com.sabre.oss.conf4j.internal.config.DefaultConfigurationValueProvider;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.spring.internal.factory.cglib.CglibStaticConfigurationInitializer;
 import com.sabre.oss.conf4j.spring.internal.factory.cglib.CglibStaticConfigurationInstanceCreator;
 
@@ -43,7 +43,7 @@ import static java.util.Collections.emptyMap;
  * (one for each configuration property).
  * Once the configuration has been created, values within these fields do not change.
  * <p>
- * Once the configuration instance is created, {@link ConfigurationValuesSource} associated with the factory
+ * Once the configuration instance is created, {@link ConfigurationSource} associated with the factory
  * is never accessed again.
  * </p>
  * <p>
@@ -69,13 +69,13 @@ public class CglibStaticConfigurationFactory extends AbstractConfigurationFactor
     @Override
     protected void initializeConfiguration(
             Object configurationInstance, ConfigurationModel configurationModel,
-            ConfigurationValuesSource valuesSource, ClassLoader classLoader) {
+            ConfigurationSource configurationSource, ClassLoader classLoader) {
 
         new CglibStaticConfigurationInitializer(
                 configurationInstance, configurationModel,
                 classLoader, configurationInstanceCreator,
                 typeConverter,
-                valuesSource,
+                configurationSource,
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),

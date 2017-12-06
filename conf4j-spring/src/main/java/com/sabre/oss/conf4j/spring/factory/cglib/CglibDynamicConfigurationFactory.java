@@ -29,7 +29,7 @@ import com.sabre.oss.conf4j.factory.ConfigurationFactory;
 import com.sabre.oss.conf4j.internal.config.DefaultConfigurationValueProvider;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.spring.internal.factory.cglib.CglibDynamicConfigurationInitializer;
 import com.sabre.oss.conf4j.spring.internal.factory.cglib.CglibDynamicConfigurationInstanceCreator;
 
@@ -38,7 +38,7 @@ import static java.util.Collections.emptyMap;
 
 /**
  * Configuration factory which creates configuration instances which are <i>dynamic</i>. Each time
- * the configuration property is accessed, framework delegates to {@link ConfigurationValuesSource}
+ * the configuration property is accessed, framework delegates to {@link ConfigurationSource}
  * to find an appropriate configuration value associated with one of the configuration keys
  * and then the value is converted to the configuration property type by the {@link TypeConverter}.
  * <p>
@@ -58,13 +58,13 @@ public class CglibDynamicConfigurationFactory extends AbstractConfigurationFacto
     @Override
     protected void initializeConfiguration(
             Object configurationInstance, ConfigurationModel configurationModel,
-            ConfigurationValuesSource valuesSource, ClassLoader classLoader) {
+            ConfigurationSource configurationSource, ClassLoader classLoader) {
 
         new CglibDynamicConfigurationInitializer(
                 configurationInstance, configurationModel,
                 classLoader, configurationInstanceCreator,
                 typeConverter,
-                valuesSource,
+                configurationSource,
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),

@@ -27,7 +27,7 @@ package com.sabre.oss.conf4j.factory;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 import com.sabre.oss.conf4j.factory.javassist.JavassistDynamicConfigurationFactory;
 import com.sabre.oss.conf4j.internal.config.PropertyMetadata;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -60,11 +60,11 @@ public class JavassistDynamicConfigurationFactoryTest extends AbstractDynamicCon
         // then
         assertThat(isFieldDeclaredOnClassDirectly(config, "someProperty" + METADATA_SUFFIX)).isTrue();
         assertThat(isFieldDeclaredOnClassDirectly(config, "someProperty")).isTrue();
-        assertThat(isFieldDeclaredOnClassDirectly(config, "configurationValuesSource")).isTrue();
+        assertThat(isFieldDeclaredOnClassDirectly(config, "configurationSource")).isTrue();
         assertThat(isFieldDeclaredOnClassDirectly(config, "typeConverter")).isTrue();
         assertThat(isMethodDeclared(config, "getSomeProperty")).isTrue();
         assertThat(isMethodDeclared(config, "setSomeProperty" + METADATA_SUFFIX, PropertyMetadata.class)).isTrue();
-        assertThat(isMethodDeclared(config, "setConfigurationValuesSource", ConfigurationValuesSource.class)).isTrue();
+        assertThat(isMethodDeclared(config, "setConfigurationSource", ConfigurationSource.class)).isTrue();
         assertThat(isMethodDeclared(config, "setTypeConverter", TypeConverter.class)).isTrue();
     }
 
@@ -75,7 +75,7 @@ public class JavassistDynamicConfigurationFactoryTest extends AbstractDynamicCon
         // then
         assertThat(isFieldDeclaredOnClassDirectly(config, "subConfiguration" + METADATA_SUFFIX)).isFalse();
         assertThat(isFieldDeclaredOnClassDirectly(config, "subConfiguration")).isTrue();
-        assertThat(isFieldDeclaredOnClassDirectly(config, "configurationValuesSource")).isTrue();
+        assertThat(isFieldDeclaredOnClassDirectly(config, "configurationSource")).isTrue();
         assertThat(isFieldDeclaredOnClassDirectly(config.getSubConfiguration(), "someProperty")).isTrue();
         assertThat(isFieldDeclaredOnClassDirectly(config.getSubConfiguration(), "someProperty" + METADATA_SUFFIX)).isTrue();
     }

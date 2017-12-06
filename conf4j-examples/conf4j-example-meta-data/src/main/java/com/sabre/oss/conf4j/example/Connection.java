@@ -32,7 +32,7 @@ import com.sabre.oss.conf4j.annotation.Key;
 @Key
 @Description("Connection configuration")
 // Configuration values for all properties defined in this configuration are retrieved from 'application.properties'.
-// SourceFileAwareConfigurationValuesSource understands 'file' meta-data attribute and uses the file specified by
+// SourceFileAwareConfigurationSource understands 'file' meta-data attribute and uses the file specified by
 // 'file' attribute's value as a source of configuration values.
 // @SourceFile("application.properties") is more convenient and expressive way of defining meta-data attributes than @Meta.
 // This declaration is equivalent to @Meta(name="file", value="application.properties")

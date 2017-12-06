@@ -39,9 +39,9 @@
         <property name="typeConverter" ref="com.sabre.oss.conf4j.typeConverter"/>
     </bean>
 
-    <!-- override configuration values source -->
-    <bean id="com.sabre.oss.conf4j.configurationValuesSource"
-          class="com.sabre.oss.conf4j.source.MapConfigurationValuesSource">
+    <!-- override configuration source -->
+    <bean id="com.sabre.oss.conf4j.configurationSource"
+          class="com.sabre.oss.conf4j.source.MapConfigurationSource">
         <constructor-arg>
             <map/>
         </constructor-arg>

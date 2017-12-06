@@ -24,41 +24,30 @@
 
 package com.sabre.oss.conf4j.spring.source;
 
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
-import com.sabre.oss.conf4j.source.OptionalValue;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.Environment;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
+import org.junit.Test;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import java.util.Map;
+import javax.annotation.Resource;
 
-import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
-import static java.util.Objects.requireNonNull;
-import static org.springframework.util.Assert.state;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * {@link ConfigurationValuesSource} adapter to {@link Environment}.
- */
-public class EnvironmentConfigurationValuesSource implements ConfigurationValuesSource, EnvironmentAware {
-    private Environment environment;
+@ContextConfiguration(locations = "classpath*:META-INF/com/sabre/oss/conf4j/conf4j.xml")
+@TestPropertySource({
+        "classpath:PropertySourceConfigurationSourceTest/a.properties",
+        "classpath:PropertySourceConfigurationSourceTest/b.properties"})
+public class PropertySourceConfigurationSourceTest extends AbstractJUnit4SpringContextTests {
+    @Resource
+    private ConfigurationSource source;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
-        requireNonNull(key, "key cannot be null");
-        state(environment != null, "environment is not set");
-
-        String property = environment.getProperty(key);
-        return property != null || environment.containsProperty(key) ? present(property) : absent();
+    @Test
+    public void shouldResolvePropertyPlaceholdersSetWithCorrectOrder() {
+        // then
+        assertThat(source.getValue("property.only.in.A", null)).isEqualTo(present("A"));
+        assertThat(source.getValue("property.only.in.B", null)).isEqualTo(present("B"));
+        assertThat(source.getValue("property.in.A.and.B", null)).isEqualTo(present("B"));
     }
 }

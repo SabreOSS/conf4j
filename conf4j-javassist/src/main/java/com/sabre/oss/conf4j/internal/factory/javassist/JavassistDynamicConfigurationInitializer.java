@@ -33,7 +33,7 @@ import com.sabre.oss.conf4j.internal.factory.ConfigurationInstanceCreator;
 import com.sabre.oss.conf4j.internal.factory.ConfigurationPropertiesAccessor;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 import java.util.Map;
 
@@ -47,14 +47,14 @@ public class JavassistDynamicConfigurationInitializer extends AbstractDynamicCon
             ConfigurationModel configurationModel,
             ClassLoader classLoader,
             ConfigurationInstanceCreator configurationInstanceCreator, TypeConverter<?> typeConverter,
-            ConfigurationValuesSource valuesSource,
+            ConfigurationSource configurationSource,
             KeyGenerator keyGenerator,
             String fallbackKeyPrefix,
             Map<String, String> defaultValues,
             Map<String, String> attributes,
             ConfigurationValueProvider configurationValueProvider) {
 
-        super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
+        super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, configurationSource,
                 keyGenerator, fallbackKeyPrefix, defaultValues, attributes, configurationValueProvider);
 
         configurationPropertiesAccessor = new JavassistConfigurationPropertiesAccessor(configuration);
@@ -66,7 +66,7 @@ public class JavassistDynamicConfigurationInitializer extends AbstractDynamicCon
             Map<String, String> defaultValues, Map<String, String> attributes) {
         return new JavassistDynamicConfigurationInitializer(
                 subConfiguration, configurationModel, classLoader, configurationInstanceCreator, typeConverter,
-                valuesSource, keyGenerator, fallbackKey, defaultValues,
+                configurationSource, keyGenerator, fallbackKey, defaultValues,
                 mergeAttributes(configurationModel.getAttributes(), attributes),
                 configurationValueProvider);
     }
@@ -84,7 +84,7 @@ public class JavassistDynamicConfigurationInitializer extends AbstractDynamicCon
             DynamicConfiguration dynamicSubConfiguration = (DynamicConfiguration) subConfiguration;
             DynamicConfiguration dynamicConfiguration = (DynamicConfiguration) this.configuration;
             dynamicSubConfiguration.setParentConfiguration(dynamicConfiguration);
-            dynamicSubConfiguration.setConfigurationValuesSource(dynamicConfiguration.getConfigurationValuesSource());
+            dynamicSubConfiguration.setConfigurationSource(dynamicConfiguration.getConfigurationSource());
             dynamicSubConfiguration.setTypeConverter(dynamicConfiguration.getTypeConverter());
             dynamicSubConfiguration.setConfigurationValueProvider(dynamicSubConfiguration.getConfigurationValueProvider());
         }
@@ -96,7 +96,7 @@ public class JavassistDynamicConfigurationInitializer extends AbstractDynamicCon
         super.processConfiguration(configurationModel);
         DynamicConfiguration dynamicConfiguration = (DynamicConfiguration) this.configuration;
         dynamicConfiguration.setTypeConverter(typeConverter);
-        dynamicConfiguration.setConfigurationValuesSource(valuesSource);
+        dynamicConfiguration.setConfigurationSource(configurationSource);
         dynamicConfiguration.setConfigurationValueProvider(configurationValueProvider);
     }
 

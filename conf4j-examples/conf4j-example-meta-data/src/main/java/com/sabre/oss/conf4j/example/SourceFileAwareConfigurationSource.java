@@ -25,36 +25,36 @@
 package com.sabre.oss.conf4j.example;
 
 import com.sabre.oss.conf4j.source.ConfigurationEntry;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
-import com.sabre.oss.conf4j.source.PropertiesConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.PropertiesConfigurationSource;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SourceFileAwareConfigurationValuesSource implements ConfigurationValuesSource {
+public class SourceFileAwareConfigurationSource implements ConfigurationSource {
     public static final String FILE = "file";
     public static final String DEFAULT_PROPERTIES = "application.properties";
 
-    private final Map<String, ConfigurationValuesSource> sources = new ConcurrentHashMap<>();
+    private final Map<String, ConfigurationSource> sources = new ConcurrentHashMap<>();
 
     @Override
     public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
-        return getConfigurationValuesSource(attributes).getValue(key, attributes);
+        return getConfigurationSource(attributes).getValue(key, attributes);
     }
 
     @Override
     public ConfigurationEntry findEntry(Collection<String> keys, Map<String, String> attributes) {
-        return getConfigurationValuesSource(attributes).findEntry(keys, attributes);
+        return getConfigurationSource(attributes).findEntry(keys, attributes);
     }
 
-    private ConfigurationValuesSource getConfigurationValuesSource(Map<String, String> attributes) {
+    private ConfigurationSource getConfigurationSource(Map<String, String> attributes) {
         String fileAttributeValue = (attributes == null) ? null : attributes.get(FILE);
         if (fileAttributeValue == null) {
             fileAttributeValue = DEFAULT_PROPERTIES;
         }
         String file = getClass().getResource('/' + fileAttributeValue).getFile();
-        return sources.computeIfAbsent(file, PropertiesConfigurationValuesSource::new);
+        return sources.computeIfAbsent(file, PropertiesConfigurationSource::new);
     }
 }
