@@ -36,11 +36,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class IntegerTypeConverterTest {
-    private IntegerTypeConverter integerTypeConverter;
+    private IntegerConverter integerTypeConverter;
 
     @Before
     public void setUp() {
-        integerTypeConverter = new IntegerTypeConverter();
+        integerTypeConverter = new IntegerConverter();
     }
 
     @Test

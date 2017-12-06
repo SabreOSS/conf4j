@@ -37,11 +37,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class DoubleTypeConverterTest {
-    private DoubleTypeConverter doubleTypeConverter;
+    private DoubleConverter doubleTypeConverter;
 
     @Before
     public void setUp() {
-        doubleTypeConverter = new DoubleTypeConverter();
+        doubleTypeConverter = new DoubleConverter();
     }
 
     @Test

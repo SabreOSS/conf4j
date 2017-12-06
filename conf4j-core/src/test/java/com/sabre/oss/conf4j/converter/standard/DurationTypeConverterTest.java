@@ -37,11 +37,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 public class DurationTypeConverterTest {
-    private DurationTypeConverter converter;
+    private DurationConverter converter;
 
     @Before
     public void setUp() {
-        converter = new DurationTypeConverter();
+        converter = new DurationConverter();
     }
 
     @Test

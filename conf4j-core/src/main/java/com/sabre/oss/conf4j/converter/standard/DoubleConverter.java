@@ -24,43 +24,32 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
-import com.sabre.oss.conf4j.converter.TypeConverter;
-
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.Objects;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import static java.util.Objects.requireNonNull;
 
 /**
- * This class converts {@link Pattern} to/from string.
+ * This class converts {@link Double} to/from string.
+ * <p>
+ * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
+ * </p>
  */
-public class PatternTypeConverter implements TypeConverter<Pattern> {
-
+public class DoubleConverter extends AbstractNumberConverter<Double> {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return type instanceof Class<?> && Pattern.class.isAssignableFrom((Class<?>) type);
+        return isApplicable(type, Double.class, Double.TYPE);
     }
 
     @Override
-    public Pattern fromString(Type type, String value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        try {
-            return (value == null) ? null : Pattern.compile(value);
-        } catch (PatternSyntaxException e) {
-            throw new IllegalArgumentException("Unable to convert to a Pattern: " + value, e);
-        }
+    protected Double parseWithoutFormat(String value) {
+        return Double.valueOf(value);
     }
 
     @Override
-    public String toString(Type type, Pattern value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return Objects.toString(value, null);
+    protected Double convertResult(Number value) {
+        return value.doubleValue();
     }
+
 }

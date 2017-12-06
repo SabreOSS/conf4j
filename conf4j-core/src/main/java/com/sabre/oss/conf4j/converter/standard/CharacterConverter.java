@@ -37,7 +37,7 @@ import static org.apache.commons.lang3.StringEscapeUtils.unescapeJava;
 /**
  * This class converts {@link Character} to/from string.
  */
-public class CharacterTypeConverter implements TypeConverter<Character> {
+public class CharacterConverter implements TypeConverter<Character> {
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");

@@ -42,9 +42,9 @@ import static org.apache.commons.lang3.StringUtils.remove;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNull;
 
-public class JaxbTypeConverterTest {
+public class JaxbConverterTest {
 
-    TypeConverter<Object> jaxbTypeConverter = new JaxbTypeConverter<>();
+    TypeConverter<Object> jaxbTypeConverter = new JaxbConverter<>();
 
     @Test
     public void shouldBeApplicableForMultipleXmlTypes() {

@@ -24,47 +24,38 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
-import com.sabre.oss.conf4j.converter.TypeConverter;
-
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Map;
-import java.util.Objects;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 /**
- * This class converts {@link URL} to/from string.
+ * Converts {@link Byte} to/from string.
+ * <p>
+ * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
+ * </p>
  */
-public class UrlTypeConverter implements TypeConverter<URL> {
+public class ByteConverter extends AbstractNumberConverter<Byte> {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return type instanceof Class<?> && URL.class.isAssignableFrom((Class<?>) type);
+        return isApplicable(type, Byte.class, Byte.TYPE);
     }
 
     @Override
-    public URL fromString(Type type, String value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        if (value == null) {
-            return null;
-        }
-
-        try {
-            return new URL(value);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(format("Unable to convert to URL: %s", value), e);
-        }
+    protected Byte parseWithoutFormat(String value) {
+        return Byte.valueOf(value);
     }
 
     @Override
-    public String toString(Type type, URL value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return Objects.toString(value, null);
+    protected Byte convertResult(Number value) {
+        long longVale = value.longValue();
+        if (longVale > Byte.MAX_VALUE || longVale < Byte.MIN_VALUE) {
+            throw new IllegalArgumentException(format("Provided value: %d is out of Byte type range.", longVale));
+        }
+        return value.byteValue();
     }
 }

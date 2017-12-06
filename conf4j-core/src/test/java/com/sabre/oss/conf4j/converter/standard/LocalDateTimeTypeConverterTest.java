@@ -41,11 +41,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class LocalDateTimeTypeConverterTest {
 
-    private LocalDateTimeTypeConverter localDateTimeTypeConverter;
+    private LocalDateTimeConverter localDateTimeTypeConverter;
 
     @Before
     public void setUp() {
-        localDateTimeTypeConverter = new LocalDateTimeTypeConverter();
+        localDateTimeTypeConverter = new LocalDateTimeConverter();
     }
 
     @Test

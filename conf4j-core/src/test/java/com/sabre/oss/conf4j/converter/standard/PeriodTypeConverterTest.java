@@ -35,11 +35,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 public class PeriodTypeConverterTest {
-    private PeriodTypeConverter converter;
+    private PeriodConverter converter;
 
     @Before
     public void setUp() {
-        converter = new PeriodTypeConverter();
+        converter = new PeriodConverter();
     }
 
     @Test

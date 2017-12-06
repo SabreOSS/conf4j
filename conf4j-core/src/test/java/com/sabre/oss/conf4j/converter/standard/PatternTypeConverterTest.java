@@ -35,11 +35,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 public class PatternTypeConverterTest {
-    private PatternTypeConverter converter;
+    private PatternConverter converter;
 
     @Before
     public void setUp() {
-        converter = new PatternTypeConverter();
+        converter = new PatternConverter();
     }
 
     @Test

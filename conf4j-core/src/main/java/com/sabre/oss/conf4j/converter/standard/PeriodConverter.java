@@ -24,32 +24,43 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
+import com.sabre.oss.conf4j.converter.TypeConverter;
+
 import java.lang.reflect.Type;
+import java.time.Period;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
+import java.util.Objects;
+
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 /**
- * This class converts {@link Double} to/from string.
- * <p>
- * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
- * </p>
+ * This class converts {@link Period} to/from string.
  */
-public class DoubleTypeConverter extends AbstractNumberConverter<Double> {
-    /**
-     * {@inheritDoc}
-     */
+public class PeriodConverter implements TypeConverter<Period> {
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
-        return isApplicable(type, Double.class, Double.TYPE);
+        requireNonNull(type, "type cannot be null");
+
+        return type instanceof Class<?> && Period.class.isAssignableFrom((Class<?>) type);
     }
 
     @Override
-    protected Double parseWithoutFormat(String value) {
-        return Double.valueOf(value);
+    public Period fromString(Type type, String value, Map<String, String> attributes) {
+        requireNonNull(type, "type cannot be null");
+
+        try {
+            return value == null ? null : Period.parse(value);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException(format("Unable to convert to a Period: %s", value), e);
+        }
     }
 
     @Override
-    protected Double convertResult(Number value) {
-        return value.doubleValue();
-    }
+    public String toString(Type type, Period value, Map<String, String> attributes) {
+        requireNonNull(type, "type cannot be null");
 
+        return Objects.toString(value, null);
+    }
 }

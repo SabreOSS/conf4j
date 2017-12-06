@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.internal.model.provider.annotation;
 
 import com.sabre.oss.conf4j.annotation.*;
-import com.sabre.oss.conf4j.converter.standard.StringTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.StringConverter;
 import com.sabre.oss.conf4j.internal.model.*;
 import org.junit.Test;
 
@@ -61,7 +61,7 @@ public class AnnotationConfigurationModelProviderTest {
         assertThat(urlProperty.isResetPrefix()).isFalse();
         assertThat(urlProperty.getEncryptionProviderName()).isEqualTo("secured");
         assertThat(urlProperty.getDefaultValue().get()).isEqualTo("http://url.com");
-        assertThat(urlProperty.getTypeConverterClass()).isEqualTo(StringTypeConverter.class);
+        assertThat(urlProperty.getTypeConverterClass()).isEqualTo(StringConverter.class);
 
         SubConfigurationPropertyModel timeoutProperty = property(model, "timeout");
         assertThat(timeoutProperty.getType()).isEqualTo(TimeoutConfiguration.class);
@@ -101,7 +101,7 @@ public class AnnotationConfigurationModelProviderTest {
         @DefaultValue("http://url.com")
         @Description("target url")
         @Encrypted("secured")
-        @Converter(StringTypeConverter.class)
+        @Converter(StringConverter.class)
         String getUrl();
 
         @Key("timeout")

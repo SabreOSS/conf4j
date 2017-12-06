@@ -44,7 +44,7 @@ import static org.apache.commons.lang3.StringEscapeUtils.unescapeJava;
  * when it is {@value FALSE}, not string transformation is performed.
  * </p>
  */
-public class StringTypeConverter implements TypeConverter<String> {
+public class StringConverter implements TypeConverter<String> {
 
     /**
      * Escape string meta-attribute name.
@@ -61,14 +61,14 @@ public class StringTypeConverter implements TypeConverter<String> {
      *
      * @param escape when {@code true}, string special characters are escaped using <em>java</em> rules.
      */
-    public StringTypeConverter(boolean escape) {
+    public StringConverter(boolean escape) {
         this.escape = escape;
     }
 
     /**
      * Create the converter instance which escapes special characters using <em>java</em> escaping rules.
      */
-    public StringTypeConverter() {
+    public StringConverter() {
         this(true);
     }
 

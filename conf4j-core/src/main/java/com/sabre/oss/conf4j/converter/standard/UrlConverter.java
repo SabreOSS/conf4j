@@ -27,51 +27,44 @@ package com.sabre.oss.conf4j.converter.standard;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 /**
- * This class converts {@link Enum} of any type to/from string.
- * <p>
- * {@link Enum#name()} method is used for converting an enumeration value to a string in {@link #toString(Type, Enum, Map)}.
- * This method is also used by {@link #fromString(Type, String, Map)} to find matching enumeration values.
- * </p>
+ * This class converts {@link URL} to/from string.
  */
-public class EnumTypeConverter implements TypeConverter<Enum<?>> {
-
+public class UrlConverter implements TypeConverter<URL> {
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return type instanceof Class<?> && Enum.class.isAssignableFrom((Class<?>) type);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Enum<?> fromString(Type type, String value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        return value == null ? null : toEnumValue((Class<Enum<?>>) type, value);
+        return type instanceof Class<?> && URL.class.isAssignableFrom((Class<?>) type);
     }
 
     @Override
-    public String toString(Type type, Enum<?> value, Map<String, String> attributes) {
+    public URL fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return value == null ? null : value.name();
-    }
-
-    protected Enum<?> toEnumValue(Class<Enum<?>> enumClass, String value) {
-        for (Enum<?> t : enumClass.getEnumConstants()) {
-            if (t.name().equals(value)) {
-                return t;
-            }
+        if (value == null) {
+            return null;
         }
-        throw new IllegalArgumentException(
-                format("Unable to convert a value to an enumeration: %s. The value for %s enumeration type must be one of: %s",
-                        value, enumClass.getName(), Arrays.toString(enumClass.getEnumConstants())));
+
+        try {
+            return new URL(value);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(format("Unable to convert to URL: %s", value), e);
+        }
+    }
+
+    @Override
+    public String toString(Type type, URL value, Map<String, String> attributes) {
+        requireNonNull(type, "type cannot be null");
+
+        return Objects.toString(value, null);
     }
 }

@@ -36,11 +36,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ShortTypeConverterTest {
-    private ShortTypeConverter shortTypeConverter;
+    private ShortConverter shortTypeConverter;
 
     @Before
     public void setUp() {
-        shortTypeConverter = new ShortTypeConverter();
+        shortTypeConverter = new ShortConverter();
     }
 
     @Test

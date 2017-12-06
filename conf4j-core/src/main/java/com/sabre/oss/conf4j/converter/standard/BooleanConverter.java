@@ -53,7 +53,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  * </p>
  * When the format is not specified {@value #TRUE} and {@value #FALSE} values are used.
  */
-public class BooleanTypeConverter implements TypeConverter<Boolean> {
+public class BooleanConverter implements TypeConverter<Boolean> {
     /**
      * Format attribute name.
      */

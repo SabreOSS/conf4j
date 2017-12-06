@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.converter.composite;
 
-import com.sabre.oss.conf4j.converter.standard.StringTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.StringConverter;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -298,6 +298,6 @@ public class JsonLikeTypeConverterTest {
     }
 
     private JsonLikeTypeConverter createConverter(boolean compactMode) {
-        return new JsonLikeTypeConverter(new StringTypeConverter(false), compactMode);
+        return new JsonLikeTypeConverter(new StringConverter(false), compactMode);
     }
 }

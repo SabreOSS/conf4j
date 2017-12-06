@@ -24,36 +24,43 @@
 
 package com.sabre.oss.conf4j.converter.standard;
 
+import com.sabre.oss.conf4j.converter.TypeConverter;
+
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import static java.util.Objects.requireNonNull;
 
 /**
- * This class converts {@link Short} to/from string.
- * <p>
- * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
- * </p>
+ * This class converts {@link Pattern} to/from string.
  */
-public class ShortTypeConverter extends AbstractNumberConverter<Short> {
+public class PatternConverter implements TypeConverter<Pattern> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
-        return isApplicable(type, Short.class, Short.TYPE);
+        requireNonNull(type, "type cannot be null");
+
+        return type instanceof Class<?> && Pattern.class.isAssignableFrom((Class<?>) type);
     }
 
     @Override
-    protected Short parseWithoutFormat(String value) {
-        return Short.valueOf(value);
-    }
+    public Pattern fromString(Type type, String value, Map<String, String> attributes) {
+        requireNonNull(type, "type cannot be null");
 
-    @Override
-    protected Short convertResult(Number value) {
-        long longValue = value.longValue();
-        if (longValue > Short.MAX_VALUE || longValue < Short.MIN_VALUE) {
-            throw new IllegalArgumentException(String.format("Provided value: %d is out of Short type range.", longValue));
+        try {
+            return (value == null) ? null : Pattern.compile(value);
+        } catch (PatternSyntaxException e) {
+            throw new IllegalArgumentException("Unable to convert to a Pattern: " + value, e);
         }
-        return value.shortValue();
+    }
+
+    @Override
+    public String toString(Type type, Pattern value, Map<String, String> attributes) {
+        requireNonNull(type, "type cannot be null");
+
+        return Objects.toString(value, null);
     }
 }

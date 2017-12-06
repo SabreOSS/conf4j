@@ -30,18 +30,18 @@ import org.junit.Test;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import static com.sabre.oss.conf4j.converter.standard.StringTypeConverter.ESCAPE;
+import static com.sabre.oss.conf4j.converter.standard.StringConverter.ESCAPE;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class StringTypeConverterTest {
-    private StringTypeConverter converter;
+    private StringConverter converter;
 
     @Before
     public void setUp() {
-        converter = new StringTypeConverter();
+        converter = new StringConverter();
     }
 
     @Test
