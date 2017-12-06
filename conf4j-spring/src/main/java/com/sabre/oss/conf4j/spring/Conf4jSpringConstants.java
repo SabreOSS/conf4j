@@ -28,7 +28,7 @@ import com.sabre.oss.conf4j.converter.TypeConverter;
 import com.sabre.oss.conf4j.factory.ConfigurationFactory;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModelProvider;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 import java.util.List;
 
@@ -65,12 +65,12 @@ public final class Conf4jSpringConstants {
      * The name of the bean which resolves configuration keys to values.
      * It must implement {@link ConfigurationModelProvider} interface.
      */
-    public static final String CONF4J_CONFIGURATION_VALUES_SOURCE = "com.sabre.oss.conf4j.configurationValuesSource";
+    public static final String CONF4J_CONFIGURATION_SOURCE = "com.sabre.oss.conf4j.configurationSource";
 
     /**
      * The name of the bean factory post-processor which implements {@link org.springframework.beans.factory.config.BeanFactoryPostProcessor}
      * and is responsible for instrumenting configuration bean definitions and binding them with proper
-     * instances of {@link ConfigurationFactory}, {@link TypeConverter} and {@link ConfigurationValuesSource}.
+     * instances of {@link ConfigurationFactory}, {@link TypeConverter} and {@link ConfigurationSource}.
      * <p>
      * It is unlikely this bean will be customized. By default it is of {@link ConfigurationBeanFactoryPostProcessor}
      * type.

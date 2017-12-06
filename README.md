@@ -50,7 +50,7 @@ public interface ConnectionConfiguration {
 Then a configuration instance is created and bound to the _value source_ by the _configuration factory_.
 
 ```java
-ConfigurationValuesSource source = new PropertiesConfigurationValuesSource("configuration.properties");
+ConfigurationSource source = new PropertiesConfigurationSource("configuration.properties");
 ConfigurationFactory factory = new JdkProxyStaticConfigurationFactory();
 ConnectionConfiguration configuration = factory.createConfiguration(ConnectionConfiguration.class, source);
 ```

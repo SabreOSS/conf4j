@@ -25,15 +25,15 @@
 package com.sabre.oss.conf4j.internal.config;
 
 import com.sabre.oss.conf4j.converter.TypeConverter;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 /**
- * {@link DynamicConfiguration} implementation which holds {@link TypeConverter}, {@link ConfigurationValuesSource}
+ * {@link DynamicConfiguration} implementation which holds {@link TypeConverter}, {@link ConfigurationSource}
  * {@link ConfigurationValueProvider} and parent {@link DynamicConfiguration} as internal fields.
  */
 public class DefaultDynamicConfiguration implements DynamicConfiguration {
     private TypeConverter<?> typeConverter;
-    private ConfigurationValuesSource configurationValuesSource;
+    private ConfigurationSource configurationSource;
     private ConfigurationValueProvider configurationValueProvider;
     private DynamicConfiguration parentConfiguration;
 
@@ -51,16 +51,16 @@ public class DefaultDynamicConfiguration implements DynamicConfiguration {
     }
 
     @Override
-    public ConfigurationValuesSource getConfigurationValuesSource() {
-        if (configurationValuesSource == null && parentConfiguration != null) {
-            configurationValuesSource = parentConfiguration.getConfigurationValuesSource();
+    public ConfigurationSource getConfigurationSource() {
+        if (configurationSource == null && parentConfiguration != null) {
+            configurationSource = parentConfiguration.getConfigurationSource();
         }
-        return configurationValuesSource;
+        return configurationSource;
     }
 
     @Override
-    public void setConfigurationValuesSource(ConfigurationValuesSource configurationValuesSource) {
-        this.configurationValuesSource = configurationValuesSource;
+    public void setConfigurationSource(ConfigurationSource configurationSource) {
+        this.configurationSource = configurationSource;
     }
 
     @Override

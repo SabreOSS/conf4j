@@ -33,7 +33,7 @@ import java.util.Map;
  * but it is not an absolute requirement. All implementations must explicitly document thread safety.
  * </p>
  */
-public interface WritableConfigurationValuesSource extends ConfigurationValuesSource {
+public interface WritableConfigurationSource extends ConfigurationSource {
     /**
      * Creates or updates configuration value.
      *

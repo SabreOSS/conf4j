@@ -35,7 +35,7 @@ import com.sabre.oss.conf4j.factory.model.collections.Component;
 import com.sabre.oss.conf4j.factory.model.ignoreprefix.BaseConfiguration;
 import com.sabre.oss.conf4j.internal.config.DynamicConfiguration;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,7 +52,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public abstract class AbstractDynamicConfigurationFactoryTest<F extends AbstractConfigurationFactory> extends AbstractConfigurationFactoryTest<F> {
-    protected final ConfigurationValuesSource mutationSource = spy(TestConfigurationValuesSource.class);
+    protected final ConfigurationSource mutationSource = spy(TestConfigurationSource.class);
 
     @Override
     @Before
@@ -69,16 +69,16 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
         // when
         Configuration config1 = factory.createConfiguration(Configuration.class, source);
         Configuration config2 = factory.createConfiguration(Configuration.class, source);
-        ((DynamicConfiguration) config2).setConfigurationValuesSource(mutationSource);
+        ((DynamicConfiguration) config2).setConfigurationSource(mutationSource);
         // then
         assertThat(config1.getSomeProperty()).isEqualTo("defaultValue");
         assertThat(config2.getSomeProperty()).isEqualTo("customValue");
     }
 
     @Test
-    public void shouldNotAccessValuesSourceWhenConfigurationIsInstantiated() {
+    public void shouldNotAccessConfigurationSourceWhenConfigurationIsInstantiated() {
         // given
-        when(source.getValue(anyString(), any())).thenThrow(new IllegalStateException("ConfigurationValuesSource shouldn't be accessed"));
+        when(source.getValue(anyString(), any())).thenThrow(new IllegalStateException("ConfigurationSource shouldn't be accessed"));
         // when
         factory.createConfiguration(BaseConfiguration.class, source);
     }
@@ -141,8 +141,8 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
         // when
         CompositeConfiguration config1 = factory.createConfiguration(CompositeConfiguration.class, source);
         AnotherCompositeConfig config2 = factory.createConfiguration(AnotherCompositeConfig.class, source);
-        ((DynamicConfiguration) config1.getSubConfiguration()).setConfigurationValuesSource(mutationSource);
-        ((DynamicConfiguration) config2.getSubConfiguration()).setConfigurationValuesSource(mutationSource);
+        ((DynamicConfiguration) config1.getSubConfiguration()).setConfigurationSource(mutationSource);
+        ((DynamicConfiguration) config2.getSubConfiguration()).setConfigurationSource(mutationSource);
         // then
         assertThat(config1.getSubConfiguration().getSomeProperty()).isNotEqualTo(config2.getSubConfiguration().getSomeProperty());
     }
@@ -168,7 +168,7 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
         // when
         CompositeParametrisedCollectionsConfiguration defaultConfigInstance = factory.createConfiguration(CompositeParametrisedCollectionsConfiguration.class, source);
         CompositeParametrisedCollectionsConfiguration mutatedConfigInstance = factory.createConfiguration(CompositeParametrisedCollectionsConfiguration.class, source);
-        ((DynamicConfiguration) mutatedConfigInstance).setConfigurationValuesSource(mutationSource);
+        ((DynamicConfiguration) mutatedConfigInstance).setConfigurationSource(mutationSource);
         // then
         assertThat(defaultConfigInstance.getMapStringToListOfStrings()).hasSize(2).contains(
                 entry("1", singletonList("a")),

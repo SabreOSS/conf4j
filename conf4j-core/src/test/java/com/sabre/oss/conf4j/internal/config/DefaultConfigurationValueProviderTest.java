@@ -30,7 +30,7 @@ import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
 import com.sabre.oss.conf4j.processor.ConfigurationValue;
 import com.sabre.oss.conf4j.processor.ConfigurationValueProcessor;
 import com.sabre.oss.conf4j.source.OptionalValue;
-import com.sabre.oss.conf4j.source.TestConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.TestConfigurationSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,7 +61,7 @@ public class DefaultConfigurationValueProviderTest {
     private final String defaultValue = "methodDefaultValue";
     private final String notEncrypted = null;
     @Spy
-    private TestConfigurationValuesSource source;
+    private TestConfigurationSource source;
     @Mock
     private TypeConverter<String> typeConverter;
 

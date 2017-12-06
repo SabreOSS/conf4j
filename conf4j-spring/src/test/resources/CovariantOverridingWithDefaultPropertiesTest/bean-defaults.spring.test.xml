@@ -34,13 +34,13 @@
 
     <conf4j:configuration-scan base-package="com.sabre.oss.conf4j.spring.model.inheritance"/>
 
-    <bean id="conf4j.test.properties" class="com.sabre.oss.conf4j.source.MapConfigurationValuesSource">
+    <bean id="conf4j.test.properties" class="com.sabre.oss.conf4j.source.MapConfigurationSource">
         <constructor-arg>
             <map/>
         </constructor-arg>
     </bean>
 
     <!-- check for spring property overrides -->
-    <alias name="conf4j.test.properties" alias="conf4j.configurationValuesSource"/>
+    <alias name="conf4j.test.properties" alias="conf4j.configurationSource"/>
 
 </beans>

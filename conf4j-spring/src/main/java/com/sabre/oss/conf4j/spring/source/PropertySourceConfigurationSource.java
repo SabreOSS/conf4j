@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.spring.source;
 
 import com.sabre.oss.conf4j.source.ConfigurationEntry;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
@@ -48,7 +48,7 @@ import static java.util.Objects.requireNonNull;
 import static org.springframework.context.ConfigurableApplicationContext.CONVERSION_SERVICE_BEAN_NAME;
 
 /**
- * Configuration values source which gets the configuration value from either
+ * Configuration source which gets the configuration value from either
  * {@linkplain #setPropertySources(PropertySources) propertySources}
  * or flattenedPropertySources {@link PropertySourcesPlaceholderConfigurer} registered in the context
  * (when {@linkplain #setPropertySources(PropertySources) propertySources} is not set)
@@ -58,7 +58,7 @@ import static org.springframework.context.ConfigurableApplicationContext.CONVERS
  * Usually only one instance of this source should be registered in the context.
  * </p>
  */
-public class PropertySourceConfigurationValuesSource implements ConfigurationValuesSource, BeanFactoryAware, EnvironmentAware, InitializingBean {
+public class PropertySourceConfigurationSource implements ConfigurationSource, BeanFactoryAware, EnvironmentAware, InitializingBean {
     private List<PropertySource<?>> flattenedPropertySources;
     private PropertySources propertySources;
     private ConversionService conversionService;

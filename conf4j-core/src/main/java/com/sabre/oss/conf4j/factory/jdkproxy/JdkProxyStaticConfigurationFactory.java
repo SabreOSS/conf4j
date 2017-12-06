@@ -31,7 +31,7 @@ import com.sabre.oss.conf4j.internal.factory.jdkproxy.AbstractJdkProxyConfigurat
 import com.sabre.oss.conf4j.internal.factory.jdkproxy.JdkProxyStaticConfigurationInitializer;
 import com.sabre.oss.conf4j.internal.factory.jdkproxy.JdkProxyStaticConfigurationInstanceCreator;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 import static com.sabre.oss.conf4j.internal.utils.KeyGenerator.emptyKeyGenerator;
 import static java.util.Collections.emptyMap;
@@ -42,7 +42,7 @@ import static java.util.Collections.emptyMap;
  * (one for each configuration property).
  * Once the configuration has been created, values within these fields do not change.
  * <p>
- * Once the configuration instance is created, {@link ConfigurationValuesSource} associated with the factory
+ * Once the configuration instance is created, {@link ConfigurationSource} associated with the factory
  * is never accessed again.
  * </p>
  * <p>
@@ -69,13 +69,13 @@ public class JdkProxyStaticConfigurationFactory extends AbstractJdkProxyConfigur
     @Override
     protected void initializeConfiguration(
             Object configurationInstance, ConfigurationModel configurationModel,
-            ConfigurationValuesSource valuesSource, ClassLoader classLoader) {
+            ConfigurationSource configurationSource, ClassLoader classLoader) {
 
         new JdkProxyStaticConfigurationInitializer(
                 configurationInstance, configurationModel,
                 classLoader, configurationInstanceCreator,
                 typeConverter,
-                valuesSource,
+                configurationSource,
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),

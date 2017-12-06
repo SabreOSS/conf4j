@@ -32,7 +32,7 @@ import com.sabre.oss.conf4j.internal.factory.ConfigurationInstanceCreator;
 import com.sabre.oss.conf4j.internal.factory.ConfigurationPropertiesAccessor;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import org.springframework.cglib.proxy.Factory;
 
 import java.util.Map;
@@ -45,13 +45,13 @@ public class CglibDynamicConfigurationInitializer extends AbstractDynamicConfigu
             ConfigurationModel configurationModel,
             ClassLoader classLoader,
             ConfigurationInstanceCreator configurationInstanceCreator, TypeConverter<?> typeConverter,
-            ConfigurationValuesSource valuesSource,
+            ConfigurationSource configurationSource,
             KeyGenerator keyGenerator,
             String fallbackKeyPrefix,
             Map<String, String> defaultValues,
             Map<String, String> attributes,
             ConfigurationValueProvider configurationValueProvider) {
-        super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
+        super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, configurationSource,
                 keyGenerator, fallbackKeyPrefix, defaultValues, attributes, configurationValueProvider);
     }
 
@@ -61,7 +61,7 @@ public class CglibDynamicConfigurationInitializer extends AbstractDynamicConfigu
             KeyGenerator keyGenerator, String fallbackKey, Map<String, String> defaultValues, Map<String, String> attributes) {
 
         return new CglibDynamicConfigurationInitializer(
-                subConfiguration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
+                subConfiguration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, configurationSource,
                 keyGenerator, fallbackKey, defaultValues, mergeAttributes(configurationModel.getAttributes(), attributes),
                 configurationValueProvider);
     }
@@ -76,7 +76,7 @@ public class CglibDynamicConfigurationInitializer extends AbstractDynamicConfigu
         super.processConfiguration(configurationModel);
 
         CglibDynamicConfigurationMethodInterceptor methodInterceptor = getMethodInterceptor();
-        methodInterceptor.setConfigurationValuesSource(valuesSource);
+        methodInterceptor.setConfigurationSource(configurationSource);
         methodInterceptor.setTypeConverter(typeConverter);
         methodInterceptor.setConfigurationValueProvider(configurationValueProvider);
     }

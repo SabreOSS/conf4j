@@ -32,7 +32,7 @@ import com.sabre.oss.conf4j.internal.factory.ConfigurationInstanceCreator;
 import com.sabre.oss.conf4j.internal.factory.ConfigurationPropertiesAccessor;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 import java.lang.reflect.Proxy;
 import java.util.Map;
@@ -45,13 +45,13 @@ public class JdkProxyDynamicConfigurationInitializer extends AbstractDynamicConf
             ConfigurationModel configurationModel,
             ClassLoader classLoader,
             ConfigurationInstanceCreator configurationInstanceCreator, TypeConverter<?> typeConverter,
-            ConfigurationValuesSource valuesSource,
+            ConfigurationSource configurationSource,
             KeyGenerator keyGenerator,
             String fallbackKeyPrefix,
             Map<String, String> defaultValues,
             Map<String, String> attributes,
             ConfigurationValueProvider configurationValueProvider) {
-        super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
+        super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, configurationSource,
                 keyGenerator, fallbackKeyPrefix, defaultValues, attributes, configurationValueProvider);
     }
 
@@ -61,7 +61,7 @@ public class JdkProxyDynamicConfigurationInitializer extends AbstractDynamicConf
             String fallbackKey, Map<String, String> defaultValues, Map<String, String> attributes) {
 
         return new JdkProxyDynamicConfigurationInitializer(
-                subConfiguration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
+                subConfiguration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, configurationSource,
                 keyGenerator, fallbackKey, defaultValues, mergeAttributes(configurationModel.getAttributes(), attributes),
                 configurationValueProvider);
     }
@@ -76,7 +76,7 @@ public class JdkProxyDynamicConfigurationInitializer extends AbstractDynamicConf
         super.processConfiguration(configurationModel);
 
         JdkProxyDynamicConfigurationInvocationHandler invocationHandler = getInvocationHandler();
-        invocationHandler.setConfigurationValuesSource(valuesSource);
+        invocationHandler.setConfigurationSource(configurationSource);
         invocationHandler.setTypeConverter(typeConverter);
         invocationHandler.setConfigurationValueProvider(configurationValueProvider);
     }

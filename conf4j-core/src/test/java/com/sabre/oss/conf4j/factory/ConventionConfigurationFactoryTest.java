@@ -30,8 +30,8 @@ import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyDynamicConfigurationFactory
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.internal.model.provider.annotation.AnnotationConfigurationModelProvider;
 import com.sabre.oss.conf4j.internal.model.provider.convention.ConventionConfigurationModelProvider;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
-import com.sabre.oss.conf4j.source.TestConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
+import com.sabre.oss.conf4j.source.TestConfigurationSource;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 public class ConventionConfigurationFactoryTest {
-    private final ConfigurationValuesSource source = Mockito.spy(TestConfigurationValuesSource.class);
+    private final ConfigurationSource source = Mockito.spy(TestConfigurationSource.class);
     private AbstractConfigurationFactory configurationFactory;
 
     @Test

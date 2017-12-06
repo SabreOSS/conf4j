@@ -29,7 +29,7 @@ import com.sabre.oss.conf4j.internal.config.ConfigurationValueProvider;
 import com.sabre.oss.conf4j.internal.config.PropertyMetadata;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.utils.KeyGenerator;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 import java.util.Map;
 
@@ -39,20 +39,20 @@ public abstract class AbstractStaticConfigurationInitializer extends AbstractCon
             ConfigurationModel configurationModel,
             ClassLoader classLoader,
             ConfigurationInstanceCreator configurationInstanceCreator, TypeConverter<?> typeConverter,
-            ConfigurationValuesSource valuesSource,
+            ConfigurationSource configurationSource,
             KeyGenerator keyGenerator,
             String fallbackKeyPrefix,
             Map<String, String> defaultValues,
             Map<String, String> attributes,
             ConfigurationValueProvider configurationValueProvider) {
-        super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, valuesSource,
+        super(configuration, configurationModel, classLoader, configurationInstanceCreator, typeConverter, configurationSource,
                 keyGenerator, fallbackKeyPrefix, defaultValues, attributes, configurationValueProvider);
     }
 
     @Override
     protected void storePropertyMetadata(PropertyMetadata propertyMetadata) {
         // Don't store metadata - it is not required by static configuration. Store only value resolved from source.
-        Object value = configurationValueProvider.getConfigurationValue(typeConverter, valuesSource, propertyMetadata).getOrNull();
+        Object value = configurationValueProvider.getConfigurationValue(typeConverter, configurationSource, propertyMetadata).getOrNull();
         getConfigurationPropertiesAccessor().setValueProperty(propertyMetadata.getPropertyName(), value);
     }
 }

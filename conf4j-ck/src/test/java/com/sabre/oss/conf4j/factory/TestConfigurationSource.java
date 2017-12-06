@@ -22,31 +22,22 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.source;
+package com.sabre.oss.conf4j.factory;
 
-import java.util.Collection;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
+import com.sabre.oss.conf4j.source.OptionalValue;
+import org.mockito.Mockito;
+
 import java.util.Map;
 
-import static java.util.Objects.requireNonNull;
+import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 
-final class ConfigurationValuesSourceUtils {
-    private ConfigurationValuesSourceUtils() {
-    }
-
-    static ConfigurationEntry findEntry(
-            ConfigurationValuesSource configurationValuesSource,
-            Collection<String> keys,
-            Map<String, String> attributes
-    ) {
-        requireNonNull(configurationValuesSource, "configurationValuesSource cannot be null");
-        requireNonNull(keys, "keys cannot be null");
-
-        for (String key : keys) {
-            OptionalValue<String> value = configurationValuesSource.getValue(key, attributes);
-            if (value.isPresent()) {
-                return new ConfigurationEntry(key, value.get());
-            }
-        }
-        return null;
+/**
+ * This value source is intended for unit tests. It's best combined with {@link Mockito#spy}.
+ */
+public class TestConfigurationSource implements ConfigurationSource {
+    @Override
+    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
+        return absent();
     }
 }

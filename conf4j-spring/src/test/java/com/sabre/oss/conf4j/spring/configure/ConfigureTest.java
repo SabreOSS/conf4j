@@ -32,7 +32,7 @@ import com.sabre.oss.conf4j.spring.ConfigurationBeanFactoryPostProcessor;
 import com.sabre.oss.conf4j.spring.configscan.model.ConfigurationWithName;
 import com.sabre.oss.conf4j.spring.configscan.model.RootConfiguration;
 import com.sabre.oss.conf4j.spring.configscan.model.SubConfiguration;
-import com.sabre.oss.conf4j.spring.source.PropertySourceConfigurationValuesSource;
+import com.sabre.oss.conf4j.spring.source.PropertySourceConfigurationSource;
 import org.junit.Test;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
@@ -52,7 +52,7 @@ public class ConfigureTest extends AbstractContextTest {
     public void shouldRegisterInfrastructureBeans() {
         isRegistered(JavassistDynamicConfigurationFactory.class, CONF4J_CONFIGURATION_FACTORY);
         isRegistered(TypeConverter.class, CONF4J_TYPE_CONVERTER);
-        isRegistered(PropertySourceConfigurationValuesSource.class, CONF4J_CONFIGURATION_VALUES_SOURCE);
+        isRegistered(PropertySourceConfigurationSource.class, CONF4J_CONFIGURATION_SOURCE);
         isRegistered(ConfigurationModelProvider.class, CONF4J_CONFIGURATION_MODEL_PROVIDER);
         isRegistered(ConfigurationBeanFactoryPostProcessor.class, CONF4J_BEAN_FACTORY_POST_PROCESSOR);
     }

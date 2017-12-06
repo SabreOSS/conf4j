@@ -31,7 +31,7 @@ import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModelProvider;
 import com.sabre.oss.conf4j.internal.model.provider.convention.ConventionConfigurationModelProvider;
 import com.sabre.oss.conf4j.processor.ConfigurationValueProcessor;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,26 +122,26 @@ public abstract class AbstractConfigurationFactory implements ConfigurationFacto
      *
      * @param configurationInstance configuration instance for initialization.
      * @param configurationModel    configuration model associated with the configuration instance.
-     * @param valuesSource          values source used for initialization.
+     * @param configurationSource   values source used for initialization.
      * @param classLoader           class loaded which is used for loading classes when necessary.
      */
-    protected abstract void initializeConfiguration(Object configurationInstance, ConfigurationModel configurationModel, ConfigurationValuesSource valuesSource, ClassLoader classLoader);
+    protected abstract void initializeConfiguration(Object configurationInstance, ConfigurationModel configurationModel, ConfigurationSource configurationSource, ClassLoader classLoader);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> T createConfiguration(Class<T> configurationType, ConfigurationValuesSource valuesSource) {
-        return createConfiguration(configurationType, valuesSource, Thread.currentThread().getContextClassLoader());
+    public <T> T createConfiguration(Class<T> configurationType, ConfigurationSource configurationSource) {
+        return createConfiguration(configurationType, configurationSource, Thread.currentThread().getContextClassLoader());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> T createConfiguration(Class<T> configurationType, ConfigurationValuesSource valuesSource, ClassLoader classLoader) {
+    public <T> T createConfiguration(Class<T> configurationType, ConfigurationSource configurationSource, ClassLoader classLoader) {
         requireNonNull(configurationType, "configurationType cannot be null");
-        requireNonNull(valuesSource, "valuesSource cannot be null");
+        requireNonNull(configurationSource, "configurationSource cannot be null");
 
         long start = nanoTime();
 
@@ -154,7 +154,7 @@ public abstract class AbstractConfigurationFactory implements ConfigurationFacto
 
         ClassLoader actualClassLoader = (classLoader != null) ? classLoader : Thread.currentThread().getContextClassLoader();
         Object configurationInstance = configurationInstanceCreator.createInstance(configurationModel, actualClassLoader);
-        initializeConfiguration(configurationInstance, configurationModel, valuesSource, actualClassLoader);
+        initializeConfiguration(configurationInstance, configurationModel, configurationSource, actualClassLoader);
 
         log.trace("Configuration {} created in {} us", configurationType.getSimpleName(), NANOSECONDS.toMicros(nanoTime() - start));
 

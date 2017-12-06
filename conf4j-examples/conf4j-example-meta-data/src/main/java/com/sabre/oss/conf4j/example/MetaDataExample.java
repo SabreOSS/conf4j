@@ -27,7 +27,7 @@ package com.sabre.oss.conf4j.example;
 import com.sabre.oss.conf4j.annotation.Meta;
 import com.sabre.oss.conf4j.factory.ConfigurationFactory;
 import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyStaticConfigurationFactory;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 /**
  * Example application which demonstrates how to use <i>custom meta-data attributes</i> defined via {@link Meta} annotation.
@@ -42,7 +42,7 @@ public class MetaDataExample {
 
     private void run() {
         // Create a configuration values source which is aware of custom meta-data.
-        ConfigurationValuesSource source = new SourceFileAwareConfigurationValuesSource();
+        ConfigurationSource source = new SourceFileAwareConfigurationSource();
 
         // Create a configuration instance and bind it to the values source.
         Connection connection = factory.createConfiguration(Connection.class, source);

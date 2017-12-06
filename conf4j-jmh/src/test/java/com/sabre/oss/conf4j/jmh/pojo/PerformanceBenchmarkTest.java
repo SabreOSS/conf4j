@@ -27,8 +27,8 @@ package com.sabre.oss.conf4j.jmh.pojo;
 import com.sabre.oss.conf4j.factory.ConfigurationFactory;
 import com.sabre.oss.conf4j.factory.javassist.JavassistDynamicConfigurationFactory;
 import com.sabre.oss.conf4j.jmh.JmhConfiguration;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
-import com.sabre.oss.conf4j.source.MapConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
+import com.sabre.oss.conf4j.source.MapConfigurationSource;
 import org.junit.Test;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
@@ -93,14 +93,14 @@ public class PerformanceBenchmarkTest {
 
     @State(Scope.Benchmark)
     public static class BenchmarkState {
-        ConfigurationValuesSource valueSource;
+        ConfigurationSource valueSource;
         ConfigurationFactory factory;
         JmhConfiguration configInstance;
 
         @Setup(Level.Trial)
         public void initialize() {
             Map<String, String> properties = range(1, 1000).boxed().collect(toMap(i -> random(8), i -> random(256)));
-            valueSource = new MapConfigurationValuesSource(properties);
+            valueSource = new MapConfigurationSource(properties);
             factory = new JavassistDynamicConfigurationFactory();
             configInstance = this.factory.createConfiguration(JmhConfiguration.class, this.valueSource);
         }

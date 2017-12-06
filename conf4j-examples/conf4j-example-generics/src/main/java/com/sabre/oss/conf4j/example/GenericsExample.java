@@ -27,9 +27,9 @@ package com.sabre.oss.conf4j.example;
 import com.sabre.oss.conf4j.example.config.*;
 import com.sabre.oss.conf4j.factory.ConfigurationFactory;
 import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyStaticConfigurationFactory;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
-import com.sabre.oss.conf4j.source.LoggingConfigurationValuesSource;
-import com.sabre.oss.conf4j.source.PropertiesConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
+import com.sabre.oss.conf4j.source.LoggingConfigurationSource;
+import com.sabre.oss.conf4j.source.PropertiesConfigurationSource;
 
 /**
  * Example application which demonstrates how to use generics in the configuration types.
@@ -55,9 +55,9 @@ public class GenericsExample {
 
     private void run() {
         // Creates a configuration values source from the property files.
-        ConfigurationValuesSource source = new PropertiesConfigurationValuesSource(getClass().getResource("/application.properties").getFile());
+        ConfigurationSource source = new PropertiesConfigurationSource(getClass().getResource("/application.properties").getFile());
 
-        source = new LoggingConfigurationValuesSource(source);
+        source = new LoggingConfigurationSource(source);
         // Creates the validators configuration instance and binds them to the values source.
         IntegerValidatorConfiguration integerValidator = factory.createConfiguration(IntegerValidatorConfiguration.class, source);
         StringValidatorConfiguration stringValidator = factory.createConfiguration(StringValidatorConfiguration.class, source);

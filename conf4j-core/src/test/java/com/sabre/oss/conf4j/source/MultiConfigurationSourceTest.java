@@ -22,32 +22,37 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.spring.source;
+package com.sabre.oss.conf4j.source;
 
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import javax.annotation.Resource;
-
-import static com.sabre.oss.conf4j.source.OptionalValue.present;
+import static com.sabre.oss.conf4j.internal.utils.MapUtils.of;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ContextConfiguration(locations = "classpath*:META-INF/com/sabre/oss/conf4j/conf4j.xml")
-@TestPropertySource({
-        "classpath:PropertySourceConfigurationValuesSourceTest/a.properties",
-        "classpath:PropertySourceConfigurationValuesSourceTest/b.properties"})
-public class PropertySourceConfigurationValuesSourceTest extends AbstractJUnit4SpringContextTests {
-    @Resource
-    private ConfigurationValuesSource source;
+public class MultiConfigurationSourceTest {
+    static final String A_KEY = "A";
+    static final String B_KEY = "B";
+
+    private MultiConfigurationSource source;
+
+    @Before
+    public void before() {
+        source = new MultiConfigurationSource(asList(
+                new MapConfigurationSource(of(A_KEY, A_KEY)),
+                new MapConfigurationSource(of(A_KEY, A_KEY + A_KEY, B_KEY, B_KEY))
+        ));
+    }
 
     @Test
-    public void shouldResolvePropertyPlaceholdersSetWithCorrectOrder() {
-        // then
-        assertThat(source.getValue("property.only.in.A", null)).isEqualTo(present("A"));
-        assertThat(source.getValue("property.only.in.B", null)).isEqualTo(present("B"));
-        assertThat(source.getValue("property.in.A.and.B", null)).isEqualTo(present("B"));
+    public void shouldReturnValuesFromProperSource() {
+        assertThat(source.getValue(A_KEY, null).get()).isEqualTo(A_KEY);
+        assertThat(source.getValue(B_KEY, null).get()).isEqualTo(B_KEY);
+    }
+
+    @Test
+    public void shouldFindValuesInProperSource() {
+        assertThat(source.findEntry(asList("NotExistingKey", B_KEY), null)).isEqualTo(new ConfigurationEntry(B_KEY, B_KEY));
     }
 }

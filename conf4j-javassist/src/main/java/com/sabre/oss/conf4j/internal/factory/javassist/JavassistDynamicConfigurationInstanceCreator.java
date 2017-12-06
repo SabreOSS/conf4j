@@ -29,7 +29,7 @@ import com.sabre.oss.conf4j.internal.config.ConfigurationValueProvider;
 import com.sabre.oss.conf4j.internal.config.DynamicConfiguration;
 import com.sabre.oss.conf4j.internal.config.PropertyMetadata;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.source.OptionalValue;
 import javassist.*;
 
@@ -45,7 +45,7 @@ public class JavassistDynamicConfigurationInstanceCreator extends AbstractJavass
 
     protected static class DynamicGenerator extends AbstractGenerator {
         private static final String PARENT_CONFIGURATION_FIELD_NAME = "parentConfiguration";
-        private static final String CONFIGURATION_VALUES_SOURCE_FIELD_NAME = "configurationValuesSource";
+        private static final String CONFIGURATION_SOURCE_FIELD_NAME = "configurationSource";
         private static final String TYPE_CONVERTER_FIELD_NAME = "typeConverter";
         private static final String CONFIGURATION_VALUE_PROVIDER_FIELD_NAME = "configurationValueProvider";
 
@@ -58,10 +58,10 @@ public class JavassistDynamicConfigurationInstanceCreator extends AbstractJavass
          */
         public static OptionalValue<Object> getConfigurationValue(Object configuration, PropertyMetadata metadata) {
             DynamicConfiguration dynamicConfiguration = (DynamicConfiguration) configuration;
-            ConfigurationValuesSource valuesSource = dynamicConfiguration.getConfigurationValuesSource();
+            ConfigurationSource configurationSource = dynamicConfiguration.getConfigurationSource();
             TypeConverter<Object> typeConverter = (TypeConverter<Object>) dynamicConfiguration.getTypeConverter();
             ConfigurationValueProvider configurationValueProvider = dynamicConfiguration.getConfigurationValueProvider();
-            return configurationValueProvider.getConfigurationValue(typeConverter, valuesSource, metadata);
+            return configurationValueProvider.getConfigurationValue(typeConverter, configurationSource, metadata);
         }
 
         @Override
@@ -70,7 +70,7 @@ public class JavassistDynamicConfigurationInstanceCreator extends AbstractJavass
             try {
                 ctClass.addInterface(classPool.get(DynamicConfiguration.class.getName()));
                 addFiledWithAccessors(PARENT_CONFIGURATION_FIELD_NAME, "getParentConfiguration", DynamicConfiguration.class, true);
-                addConfigurationValuesSourceFieldAndAccessors();
+                addConfigurationSourceFieldAndAccessors();
                 addTypeConverterAccessors();
                 addConfigurationValueProviderAccessors();
             } catch (NotFoundException | CannotCompileException e) {
@@ -143,23 +143,23 @@ public class JavassistDynamicConfigurationInstanceCreator extends AbstractJavass
             return ctGetter;
         }
 
-        private void addConfigurationValuesSourceFieldAndAccessors() {
+        private void addConfigurationSourceFieldAndAccessors() {
             try {
-                CtField field = addField(CONFIGURATION_VALUES_SOURCE_FIELD_NAME, ConfigurationValuesSource.class);
-                addSetter("setConfigurationValuesSource", field, true);
+                CtField field = addField(CONFIGURATION_SOURCE_FIELD_NAME, ConfigurationSource.class);
+                addSetter("setConfigurationSource", field, true);
 
-                String getterName = "getConfigurationValuesSource";
+                String getterName = "getConfigurationSource";
                 log.trace("Adding getter {}()", getterName);
                 String body = new CodeBuilder()
                         .add("{")
-                        .add("  $ConfigurationValuesSource$ source = this.$valuesSource$;")
+                        .add("  $ConfigurationSource$ source = this.$configurationSource$;")
                         .add("  if (source == null) {")
-                        .add("    source = getParentConfiguration().getConfigurationValuesSource();")
+                        .add("    source = getParentConfiguration().getConfigurationSource();")
                         .add("  }")
                         .add("  return source;")
                         .add("}")
-                        .var("ConfigurationValuesSource", ConfigurationValuesSource.class.getName())
-                        .var("valuesSource", CONFIGURATION_VALUES_SOURCE_FIELD_NAME)
+                        .var("ConfigurationSource", ConfigurationSource.class.getName())
+                        .var("configurationSource", CONFIGURATION_SOURCE_FIELD_NAME)
                         .code();
                 CtMethod ctGetter = CtNewMethod.getter(getterName, field);
                 ctGetter.setBody(body);

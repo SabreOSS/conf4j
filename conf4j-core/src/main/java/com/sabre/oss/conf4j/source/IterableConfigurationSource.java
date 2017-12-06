@@ -24,18 +24,14 @@
 
 package com.sabre.oss.conf4j.source;
 
-import org.mockito.Mockito;
-
-import java.util.Map;
-
-import static com.sabre.oss.conf4j.source.OptionalValue.absent;
-
 /**
- * This value source is intended for unit tests. It's very convenient together {@link Mockito#spy}.
+ * A configuration value source that allows iterating over all configuration entries.
  */
-public class TestConfigurationValuesSource implements ConfigurationValuesSource {
-    @Override
-    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
-        return absent();
-    }
+public interface IterableConfigurationSource extends ConfigurationSource {
+    /**
+     * Provides all configuration entries.
+     *
+     * @return an {@link Iterable} that allows navigating over all entries.
+     */
+    Iterable<ConfigurationEntry> getAllConfigurationEntries();
 }

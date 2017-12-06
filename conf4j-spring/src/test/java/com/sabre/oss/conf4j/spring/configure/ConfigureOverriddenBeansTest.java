@@ -26,7 +26,7 @@ package com.sabre.oss.conf4j.spring.configure;
 
 import com.sabre.oss.conf4j.converter.standard.StringConverter;
 import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyDynamicConfigurationFactory;
-import com.sabre.oss.conf4j.source.MapConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.MapConfigurationSource;
 import com.sabre.oss.conf4j.spring.AbstractContextTest;
 import com.sabre.oss.conf4j.spring.ConfigurationBeanFactoryPostProcessor;
 import com.sabre.oss.conf4j.spring.configscan.model.RootConfiguration;
@@ -48,7 +48,7 @@ public class ConfigureOverriddenBeansTest extends AbstractContextTest {
     public void shouldRegisterInfrastructureBeans() {
         isRegistered(JdkProxyDynamicConfigurationFactory.class, CONF4J_CONFIGURATION_FACTORY);
         isRegistered(StringConverter.class, CONF4J_TYPE_CONVERTER);
-        isRegistered(MapConfigurationValuesSource.class, CONF4J_CONFIGURATION_VALUES_SOURCE);
+        isRegistered(MapConfigurationSource.class, CONF4J_CONFIGURATION_SOURCE);
         isRegistered(ConfigurationBeanFactoryPostProcessor.class, CONF4J_BEAN_FACTORY_POST_PROCESSOR);
     }
 }

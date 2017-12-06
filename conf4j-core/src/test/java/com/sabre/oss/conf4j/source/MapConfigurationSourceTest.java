@@ -24,35 +24,31 @@
 
 package com.sabre.oss.conf4j.source;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static com.sabre.oss.conf4j.internal.utils.MapUtils.of;
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MultiConfigurationValuesSourceTest {
-    static final String A_KEY = "A";
-    static final String B_KEY = "B";
-
-    private MultiConfigurationValuesSource source;
-
-    @Before
-    public void before() {
-        source = new MultiConfigurationValuesSource(asList(
-                new MapConfigurationValuesSource(of(A_KEY, A_KEY)),
-                new MapConfigurationValuesSource(of(A_KEY, A_KEY + A_KEY, B_KEY, B_KEY))
-        ));
-    }
+public class MapConfigurationSourceTest {
 
     @Test
-    public void shouldReturnValuesFromProperSource() {
-        assertThat(source.getValue(A_KEY, null).get()).isEqualTo(A_KEY);
-        assertThat(source.getValue(B_KEY, null).get()).isEqualTo(B_KEY);
+    public void shouldGetSingleValueFromUnderlyingMap() {
+        // given
+        ConfigurationSource source = new MapConfigurationSource(of("key1", "value1", "key2", "value2"));
+        // when
+        String value = source.getValue("key2", null).get();
+        // then
+        assertThat(value).isEqualTo("value2");
     }
 
+
     @Test
-    public void shouldFindValuesInProperSource() {
-        assertThat(source.findEntry(asList("NotExistingKey", B_KEY), null)).isEqualTo(new ConfigurationEntry(B_KEY, B_KEY));
+    public void shouldIterateOver() {
+        // given
+        MapConfigurationSource source = new MapConfigurationSource(of("key1", "value1", "key2", "value2"));
+        // when
+        Iterable<ConfigurationEntry> iterable = source.getAllConfigurationEntries();
+        // then
+        assertThat(iterable).containsExactly(new ConfigurationEntry("key1", "value1"), new ConfigurationEntry("key2", "value2"));
     }
 }

@@ -43,8 +43,7 @@
         <xsd:annotation>
             <xsd:documentation>
                 Configure conf4j beans in the SpringFramework context. It registers appropriate conf4j
-                configuration factory, type converters, configuration values sources etc. under
-                appropriate names.
+                configuration factory, type converters, configuration sources etc. under appropriate names.
                 If the beans are registered already, they are reused. It is also possible to override the beans
                 latter to change the configuration.
             </xsd:documentation>

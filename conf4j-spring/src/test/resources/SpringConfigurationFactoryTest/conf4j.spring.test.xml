@@ -39,7 +39,7 @@
     <bean class="com.sabre.oss.conf4j.spring.model.SpringBean"/>
 
     <!-- Test specific extensions -->
-    <mockito:spy beanName="com.sabre.oss.conf4j.configurationValuesSource"/>
+    <mockito:spy beanName="com.sabre.oss.conf4j.configurationSource"/>
     <mockito:spy beanName="com.sabre.oss.conf4j.typeConverter"/>
 
 </beans>

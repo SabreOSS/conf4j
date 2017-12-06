@@ -32,7 +32,7 @@ import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.internal.factory.javassist.JavassistStaticConfigurationInitializer;
 import com.sabre.oss.conf4j.internal.factory.javassist.JavassistStaticConfigurationInstanceCreator;
 import com.sabre.oss.conf4j.internal.model.ConfigurationModel;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 import static com.sabre.oss.conf4j.internal.utils.KeyGenerator.emptyKeyGenerator;
 import static java.util.Collections.emptyMap;
@@ -43,7 +43,7 @@ import static java.util.Collections.emptyMap;
  * (one for each configuration property).
  * Once the configuration has been created, values within these fields do not change.
  * <p>
- * Once the configuration instance is created, {@link ConfigurationValuesSource} associated with the factory
+ * Once the configuration instance is created, {@link ConfigurationSource} associated with the factory
  * is never accessed again.
  * </p>
  * <p>
@@ -68,12 +68,12 @@ public class JavassistStaticConfigurationFactory extends AbstractConfigurationFa
      * {@inheritDoc}
      */
     @Override
-    protected void initializeConfiguration(Object configurationInstance, ConfigurationModel configurationModel, ConfigurationValuesSource valuesSource, ClassLoader classLoader) {
+    protected void initializeConfiguration(Object configurationInstance, ConfigurationModel configurationModel, ConfigurationSource configurationSource, ClassLoader classLoader) {
         new JavassistStaticConfigurationInitializer(
                 configurationInstance, configurationModel,
                 classLoader, configurationInstanceCreator,
                 typeConverter,
-                valuesSource,
+                configurationSource,
                 emptyKeyGenerator(),
                 null,
                 emptyMap(),

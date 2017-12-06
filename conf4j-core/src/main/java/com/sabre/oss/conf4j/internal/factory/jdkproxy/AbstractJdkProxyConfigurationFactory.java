@@ -26,7 +26,7 @@ package com.sabre.oss.conf4j.internal.factory.jdkproxy;
 
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.internal.factory.ConfigurationInstanceCreator;
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -40,9 +40,9 @@ public abstract class AbstractJdkProxyConfigurationFactory extends AbstractConfi
      * {@inheritDoc}
      */
     @Override
-    public <T> T createConfiguration(Class<T> configurationType, ConfigurationValuesSource valuesSource, ClassLoader classLoader) {
+    public <T> T createConfiguration(Class<T> configurationType, ConfigurationSource configurationSource, ClassLoader classLoader) {
         requireNonNull(configurationType, "configurationType cannot be null");
-        requireNonNull(valuesSource, "valuesSource cannot be null");
+        requireNonNull(configurationSource, "configurationSource cannot be null");
 
         if (!configurationType.isInterface()) {
             throw new IllegalArgumentException(
@@ -50,6 +50,6 @@ public abstract class AbstractJdkProxyConfigurationFactory extends AbstractConfi
                             getClass().getName(), configurationType.getName()));
         }
 
-        return super.createConfiguration(configurationType, valuesSource, classLoader);
+        return super.createConfiguration(configurationType, configurationSource, classLoader);
     }
 }

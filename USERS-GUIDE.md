@@ -101,23 +101,23 @@ based on _property name_, `@Key`, `@FallbackKey`, `@IgnorePrefix` and `@IgnoreKe
 The rules that govern how the _configuration key set_ is constructed are covered in the
 [Configuration Keys](#configuration-keys) section.
 
-When a value related to a configuration property is required, it is retrieved from the `ConfigurationValuesSource`.
+When a value related to a configuration property is required, it is retrieved from the `ConfigurationSource`.
 Each key associated with the property is checked in the sequence until the value associated with the key is found
-in the _values source_. It is also possible to specify a default value for the property via the
+in the _configuration source_. It is also possible to specify a default value for the property via the
 `@DefaultValue` annotation and `@DefaultsAnnotation` meta-annotations. See _javadoc_ for details.
 
 The configuration type is like a template. Before you begin accessing the configuration, a configuration instance
-must first be created and bound to the _values source_. This can be done via `ConfigurationFactory.createConfiguration()`
+must first be created and bound to the _configuration source_. This can be done via `ConfigurationFactory.createConfiguration()`
 as shown below.
 
 ```java
-// Create values source from the property file.
-ConfigurationValuesSource source = new PropertiesConfigurationValuesSource("configuration.properties");
+// Create configuration source from the property file.
+ConfigurationSource source = new PropertiesConfigurationSource("configuration.properties");
 
 // Create configuration factory - it is thread safe.
 ConfigurationFactory factory = new JdkProxyStaticConfigurationFactory();
 
-// Create configuration instance and bind it to the values source.
+// Create configuration instance and bind it to the configuration source.
 ConnectionConfiguration configuration = factory.createConfiguration(ConnectionConfiguration.class, source);
 
 // Now you can access configuration properties via configuration object.
@@ -125,7 +125,7 @@ String url = configuration.getUrl();
 int connectionTimeout = configuration.getTimeouts().getConnectionTimeout();
 ```
 
-The `ConfigurationValuesSource` allows accessing a configuration value associated with a key. Both key and value
+The `ConfigurationSource` allows accessing a configuration value associated with a key. Both key and value
 are represented as string. Of course, very often, the configuration property type is not `java.lang.String`
 so the value must be converted into the appropriate type.
 _Type converters_ which implement `TypeConverter` interface are responsible for such conversion.
@@ -207,7 +207,7 @@ For details, see [Spring Framework Integration](#spring-framework-integration) s
 ## Configuration Factory
 
 The `ConfigurationFactory` interface specifies how the configuration type is instantiated and bound
-to the `ConfigurationValuesSource`. It takes a configuration type and _values source_ and creates a configuration instance.
+to the `ConfigurationSource`. It takes a configuration type and _configuration source_ and creates a configuration instance.
 
 ```java
 ConnectionConfiguration configuration = factory.createConfiguration(ConnectionConfiguration.class, source);
@@ -217,15 +217,15 @@ How a configuration instance is generated depends on the configuration factory i
 There are two flavors of the `ConfigurationFactory`: _static_ and _dynamic_ configuration factories.
 
 _Static configuration factory_ creates _static_/_frozen_ configuration instances which retrieves values from
-`ConfigurationValuesSource` only during the instance-creation phase. The configuration values are then stored
+`ConfigurationSource` only during the instance-creation phase. The configuration values are then stored
 in the configuration instance and never change in the future. Access to _static_ configuration properties is very fast,
 it's just a getter invocation.
 
 _Static_ configuration classes implements the `java.io.Serializable` interface which allows a configuration instance
 to be serialized, as long as all configuration property types are also serializable.
 
-`Dynamic configuration factory` creates a _dynamic_ configuration instance which hits `ConfigurationValuesSource`
-every time the configuration property method is invoked. It is an ideal choice when values in _values source_
+`Dynamic configuration factory` creates a _dynamic_ configuration instance which hits `ConfigurationSource`
+every time the configuration property method is invoked. It is an ideal choice when values in _configuration source_
 changes over time and a configuration should reflect those changes.
 Bear in mind there is an overhead associated with a configuration property access. It requires getting configuration
 value from the source and converting it the proper type.
@@ -245,7 +245,7 @@ _conf4j_ provides three configuration factory families:
 
 Every configuration property has an ordered set of _configuration keys_ assigned. A property can be associated
 with multiple keys, and multiple properties can be associated to the same keys. When a configuration value is required,
-the keys from the _key set_ is submitted to `ConfigurationValuesSource` in sequence until the value associated
+the keys from the _key set_ is submitted to `ConfigurationSource` in sequence until the value associated
 with the key is found.
 
 _Key set_ is constructed based on _conf4j_ annotations.
@@ -358,7 +358,7 @@ The first two keys have `[0]` appended to the `other` key component. _conf4j_ us
 
 Surprisingly the key set contains _connection.other.timeout.connect_ and _alternateConnection.other.timeout.connect_.
 They are added for each element's key set as a fallback. These keys are used only when there is no value associated
-with indexed keys in the _values source_.
+with indexed keys in the _configuration source_.
 
 For the configuration property which returns a list of sub-configuration there is a need to provide the size of the list.
 There is an additional key set associated, which is created by appending the _.size_ suffix.
@@ -580,8 +580,8 @@ _conf4j_ provides custom configuration schema `http://www.sabre.com/schema/oss/c
 `<conf4j:configure/>`, `<conf4j:configuration/>` and `<conf4j:configuration-scan/>`.
 
 `<conf4j:configure/>` is used for activating _conf4j_ integration with _Spring Framework_. It registers several infrastructure
-beans (like `ConfigurationFactory`, `ConfigurationValuesSource` or `TypeConverter`) and post processors. Such beans are used
-by _conf4j_ for registering configuration types as beans, creating configuration instances and binding the values source.
+beans (like `ConfigurationFactory`, `ConfigurationSource` or `TypeConverter`) and post processors. Such beans are used
+by _conf4j_ for registering configuration types as beans, creating configuration instances and binding the configuration source.
 
 `<conf4j:configuration/>` registers in the context a bean for the configuration type.
 This tag expects one attribute `class` which specifies fully qualified name of the configuration type. It is also
@@ -631,17 +631,17 @@ and register all configuration types from _com.your.organization.configuration.p
 As mentioned earlier, `<conf4j:configure/>` registers several beans with into the context. Each bean has pre-defined
 name which starts with `com.sabre.oss.conf4j.` prefix.
 
-The bean `com.sabre.oss.conf4j.configurationValuesSource` is used for providing configuration values and must implement `ConfigurationValuesSource`
-interface. _conf4j_ registers `PropertySourceConfigurationValuesSource` by default. This values sources integrates with
+The bean `com.sabre.oss.conf4j.ConfigurationSource` is used for providing configuration values and must implement `ConfigurationSource`
+interface. _conf4j_ registers `PropertySourceConfigurationSource` by default. This configuration source integrates with
 `Environment` and all `PropertySourcesPlaceholderConfigurer`s registered in the context
 (e.g. by `<context:property-placeholder .../>` or `@PropertySource`).
 
-If you would like to provide your own implementation of `ConfigurationValuesSource` (e.g. to fetch configuration values
-from the database) just declare own bean or an alias with `com.sabre.oss.conf4j.configurationValuesSource` name.
+If you would like to provide your own implementation of `ConfigurationSource` (e.g. to fetch configuration values
+from the database) just declare own bean or an alias with `com.sabre.oss.conf4j.ConfigurationSource` name.
 
 ```xml
-<bean id="com.sabre.oss.conf4j.configurationValuesSource"
-      class="com.your.organization.CustomConfigurationValuesSource">
+<bean id="com.sabre.oss.conf4j.ConfigurationSource"
+      class="com.your.organization.CustomConfigurationSource">
   <!-- ... -->
 </bean>
 ```

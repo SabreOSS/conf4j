@@ -33,18 +33,18 @@ import java.util.Properties;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-public class PropertiesConfigurationValuesSourceTest {
+public class PropertiesConfigurationSourceTest {
     private TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    public void shouldAdaptPropertiesToValuesSource() {
+    public void shouldAdaptPropertiesToConfigurationSource() {
         // given
         Properties properties = new Properties();
         properties.setProperty("key1", "value1");
         properties.setProperty("key2", "value2");
 
         // when
-        PropertiesConfigurationValuesSource source = new PropertiesConfigurationValuesSource(properties);
+        PropertiesConfigurationSource source = new PropertiesConfigurationSource(properties);
 
         // then
         assertThat(source.getAllConfigurationEntries().iterator()).hasSize(properties.size());
@@ -59,7 +59,7 @@ public class PropertiesConfigurationValuesSourceTest {
         folder.create();
         File file = folder.newFile("sample.properties");
         // when
-        PropertiesConfigurationValuesSource source = new PropertiesConfigurationValuesSource(file.getAbsolutePath());
+        PropertiesConfigurationSource source = new PropertiesConfigurationSource(file.getAbsolutePath());
 
         // then
         assertThat(source.getAllConfigurationEntries().iterator()).isEmpty();

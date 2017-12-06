@@ -30,14 +30,14 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static com.sabre.oss.conf4j.example.SourceFileAwareConfigurationValuesSource.FILE;
+import static com.sabre.oss.conf4j.example.SourceFileAwareConfigurationSource.FILE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * This is custom annotation which allows defining meta-data attributes instead of {@code @Meta}.
- * {@code file} attribute is recognized by {@link SourceFileAwareConfigurationValuesSource}
+ * {@code file} attribute is recognized by {@link SourceFileAwareConfigurationSource}
  * and if specified, its value is interpreted as name of a property file.
  */
 @Meta(name = FILE)

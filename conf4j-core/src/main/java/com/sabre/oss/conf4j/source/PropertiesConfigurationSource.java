@@ -42,7 +42,7 @@ import static java.util.Objects.requireNonNull;
  * It is <i>thread safe</i>.
  * </p>
  */
-public class PropertiesConfigurationValuesSource implements IterableConfigurationValuesSource {
+public class PropertiesConfigurationSource implements IterableConfigurationSource {
     protected final Properties source;
 
     /**
@@ -51,7 +51,7 @@ public class PropertiesConfigurationValuesSource implements IterableConfiguratio
      * @param source properties which holds configuration keys.
      * @throws NullPointerException when {@code source} is null.
      */
-    public PropertiesConfigurationValuesSource(Properties source) {
+    public PropertiesConfigurationSource(Properties source) {
         this.source = requireNonNull(source, "source cannot be null");
     }
 
@@ -63,7 +63,7 @@ public class PropertiesConfigurationValuesSource implements IterableConfiguratio
      * @throws IllegalArgumentException when the format of a property file is invalid.
      * @throws UncheckedIOException     when {@link IOException} thrown while loading the property file.
      */
-    public PropertiesConfigurationValuesSource(String propertyFile) {
+    public PropertiesConfigurationSource(String propertyFile) {
         requireNonNull(propertyFile, "propertyFile cannot be null");
         this.source = loadFromFile(propertyFile);
     }

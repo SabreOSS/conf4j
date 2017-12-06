@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory;
 
-import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
+import com.sabre.oss.conf4j.source.ConfigurationSource;
 
 /**
  * This class creates a configuration instance and binds it to the value source.
@@ -34,24 +34,24 @@ import com.sabre.oss.conf4j.source.ConfigurationValuesSource;
  */
 public interface ConfigurationFactory {
     /**
-     * Creates configuration class and binds it to {@code valuesSource}. Classes are loaded using
+     * Creates configuration class and binds it to {@code configurationSource}. Classes are loaded using
      * class provided by {@code Thread.currentThread().getContextClassLoader()}.
      *
      * @param configurationType configuration class.
-     * @param valuesSource      values source.
+     * @param configurationSource      values source.
      * @param <T>               configuration type.
      * @return configuration instance
      */
-    <T> T createConfiguration(Class<T> configurationType, ConfigurationValuesSource valuesSource);
+    <T> T createConfiguration(Class<T> configurationType, ConfigurationSource configurationSource);
 
     /**
-     * Creates configuration class and binds it to {@code valuesSource}.
+     * Creates configuration class and binds it to {@code configurationSource}.
      *
      * @param configurationType configuration class.
-     * @param valuesSource      values source.
+     * @param configurationSource      values source.
      * @param classLoader       class loader, when {@code null} {@code Thread.currentThread().getContextClassLoader()} is used.
      * @param <T>               configuration type.
      * @return configuration instance
      */
-    <T> T createConfiguration(Class<T> configurationType, ConfigurationValuesSource valuesSource, ClassLoader classLoader);
+    <T> T createConfiguration(Class<T> configurationType, ConfigurationSource configurationSource, ClassLoader classLoader);
 }
