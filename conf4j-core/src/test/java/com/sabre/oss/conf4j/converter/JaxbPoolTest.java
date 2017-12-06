@@ -24,6 +24,7 @@
 
 package com.sabre.oss.conf4j.converter;
 
+import com.sabre.oss.conf4j.converter.JaxbConverter.JaxbPool;
 import com.sabre.oss.conf4j.converter.xml.XmlRootConfiguration01;
 import org.junit.Test;
 
@@ -35,8 +36,8 @@ public class JaxbPoolTest {
 
     @Test
     public void shouldReturnSchemaFromValidPackageInfo() throws Exception {
-        // give
-        JaxbConverter.JaxbPool jaxbPool = new JaxbConverter.JaxbPool(XmlRootConfiguration01.class);
+        // given
+        JaxbPool jaxbPool = new JaxbPool(XmlRootConfiguration01.class);
         // when
         Schema schema = jaxbPool.readXsdSchema(JaxbPoolTest.class);
         // then
@@ -45,8 +46,8 @@ public class JaxbPoolTest {
 
     @Test
     public void shouldReturnNullSchemaWhenPackageInfoIsNotAvailable() throws Exception {
-        // give
-        JaxbConverter.JaxbPool jaxbPool = new JaxbConverter.JaxbPool(XmlRootConfiguration01.class);
+        // given
+        JaxbPool jaxbPool = new JaxbPool(XmlRootConfiguration01.class);
         // when
         Schema schema = jaxbPool.readXsdSchema(XmlRootConfiguration01.class);
         // then
