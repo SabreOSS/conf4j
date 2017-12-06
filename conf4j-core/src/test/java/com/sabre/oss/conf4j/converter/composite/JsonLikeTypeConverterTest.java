@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.converter.composite;
 
-import com.sabre.oss.conf4j.converter.standard.EscapingStringTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.StringTypeConverter;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +45,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("ConstantConditions")
 public class JsonLikeTypeConverterTest {
 
     public static final List<String> LIST_SIGNATURE = null;
@@ -72,7 +73,7 @@ public class JsonLikeTypeConverterTest {
 
     @Before
     public void setUp() {
-        typeConverter = new JsonLikeTypeConverter(new EscapingStringTypeConverter(false));
+        typeConverter = createConverter(true);
     }
 
     @Test
@@ -178,7 +179,7 @@ public class JsonLikeTypeConverterTest {
 
     private void convertComplexStructureToStringAndBack(boolean compact) throws NoSuchFieldException {
         // given
-        typeConverter.setCompactMode(compact);
+        typeConverter = createConverter(compact);
         Map<List<String>, Map<String, List<String>>> in = of(
                 singletonList("key1"), of(
                         "sub11", asList(EMPTY_STRING, "one", "two"),
@@ -198,21 +199,21 @@ public class JsonLikeTypeConverterTest {
     @Test
     public void shouldProperlyConsumeJsonNullsAndAddNullValuesToBuilder() {
         // given
-        typeConverter.setCompactMode(false);
+        boolean compact = false;
         ObjectBuilder builder = Mockito.mock(ObjectBuilder.class);
         // when / then
-        assertThat(typeConverter.consumeNull(JSON_NULL, 0, builder)).isEqualTo(JSON_NULL.length());
-        assertThat(typeConverter.consumeNull(JSON_NULL + ',', 0, builder)).isEqualTo(JSON_NULL.length());
-        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL, 3, builder)).isEqualTo(JSON_NULL.length());
-        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + ',', 3, builder)).isEqualTo(JSON_NULL.length());
-        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + ':', 3, builder)).isEqualTo(JSON_NULL.length());
-        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + '}', 3, builder)).isEqualTo(JSON_NULL.length());
-        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + ']', 3, builder)).isEqualTo(JSON_NULL.length());
+        assertThat(typeConverter.consumeNull(JSON_NULL, 0, builder, compact)).isEqualTo(JSON_NULL.length());
+        assertThat(typeConverter.consumeNull(JSON_NULL + ',', 0, builder, compact)).isEqualTo(JSON_NULL.length());
+        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL, 3, builder, compact)).isEqualTo(JSON_NULL.length());
+        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + ',', 3, builder, compact)).isEqualTo(JSON_NULL.length());
+        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + ':', 3, builder, compact)).isEqualTo(JSON_NULL.length());
+        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + '}', 3, builder, compact)).isEqualTo(JSON_NULL.length());
+        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + ']', 3, builder, compact)).isEqualTo(JSON_NULL.length());
 
-        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + ',', 2, builder)).isEqualTo(0);
-        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + '{', 3, builder)).isEqualTo(0);
-        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + '[', 3, builder)).isEqualTo(0);
-        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + '[', 3, builder)).isEqualTo(0);
+        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + ',', 2, builder, compact)).isEqualTo(0);
+        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + '{', 3, builder, compact)).isEqualTo(0);
+        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + '[', 3, builder, compact)).isEqualTo(0);
+        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + '[', 3, builder, compact)).isEqualTo(0);
 
         verify(builder, times(7)).addValue(eq(null));
     }
@@ -220,21 +221,21 @@ public class JsonLikeTypeConverterTest {
     @Test
     public void shouldProperlyConsumeCompactJsonNullsAndAddNullValuesToBuilder() {
         // given
-        typeConverter.setCompactMode(true);
+        boolean compact = true;
         ObjectBuilder builder = Mockito.mock(ObjectBuilder.class);
         // when / then
-        assertThat(typeConverter.consumeNull(COMPACT_JSON_NULL, 0, builder)).isEqualTo(COMPACT_JSON_NULL.length());
-        assertThat(typeConverter.consumeNull(COMPACT_JSON_NULL + ',', 0, builder)).isEqualTo(COMPACT_JSON_NULL.length());
-        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL, 3, builder)).isEqualTo(COMPACT_JSON_NULL.length());
-        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + ',', 3, builder)).isEqualTo(COMPACT_JSON_NULL.length());
-        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + ':', 3, builder)).isEqualTo(COMPACT_JSON_NULL.length());
-        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + '}', 3, builder)).isEqualTo(COMPACT_JSON_NULL.length());
-        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + ']', 3, builder)).isEqualTo(COMPACT_JSON_NULL.length());
+        assertThat(typeConverter.consumeNull(COMPACT_JSON_NULL, 0, builder, compact)).isEqualTo(COMPACT_JSON_NULL.length());
+        assertThat(typeConverter.consumeNull(COMPACT_JSON_NULL + ',', 0, builder, compact)).isEqualTo(COMPACT_JSON_NULL.length());
+        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL, 3, builder, compact)).isEqualTo(COMPACT_JSON_NULL.length());
+        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + ',', 3, builder, compact)).isEqualTo(COMPACT_JSON_NULL.length());
+        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + ':', 3, builder, compact)).isEqualTo(COMPACT_JSON_NULL.length());
+        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + '}', 3, builder, compact)).isEqualTo(COMPACT_JSON_NULL.length());
+        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + ']', 3, builder, compact)).isEqualTo(COMPACT_JSON_NULL.length());
 
-        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + ',', 2, builder)).isEqualTo(0);
-        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + '{', 3, builder)).isEqualTo(0);
-        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + '{', 3, builder)).isEqualTo(0);
-        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + '[', 3, builder)).isEqualTo(0);
+        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + ',', 2, builder, compact)).isEqualTo(0);
+        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + '{', 3, builder, compact)).isEqualTo(0);
+        assertThat(typeConverter.consumeNull("ABC" + COMPACT_JSON_NULL + '{', 3, builder, compact)).isEqualTo(0);
+        assertThat(typeConverter.consumeNull("ABC" + JSON_NULL + '[', 3, builder, compact)).isEqualTo(0);
 
         verify(builder, times(7)).addValue(eq(null));
     }
@@ -246,7 +247,7 @@ public class JsonLikeTypeConverterTest {
 
     protected void assertProperConversionToString(boolean compactMode, Type type, Object in, String expectedOut) {
         // given
-        typeConverter.setCompactMode(compactMode);
+        typeConverter = createConverter(compactMode);
         // when
         String out = typeConverter.toString(type, in, null);
         Object outObj = typeConverter.fromString(type, out, null);
@@ -257,7 +258,7 @@ public class JsonLikeTypeConverterTest {
 
     protected void assertProperConversionFromString(boolean compactMode, Type type, String in, Object expectedOut) {
         // given
-        typeConverter.setCompactMode(compactMode);
+        typeConverter = createConverter(compactMode);
         // when
         Object out = typeConverter.fromString(type, in, null);
         String outStr = typeConverter.toString(type, out, null);
@@ -294,5 +295,9 @@ public class JsonLikeTypeConverterTest {
 
     private static String escapeCompactJson(String text) {
         return JsonLikeEscapeUtils.ESCAPE_COMPACT_JSON.translate(text);
+    }
+
+    private JsonLikeTypeConverter createConverter(boolean compactMode) {
+        return new JsonLikeTypeConverter(new StringTypeConverter(false), compactMode);
     }
 }

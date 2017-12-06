@@ -59,7 +59,7 @@ public final class DefaultTypeConverters {
      */
     private static TypeConverter<Object> prepareDefaultTypeConverter() {
         TypeConverter<Object> simpleTypeConverters = new ChainedTypeConverter(asList(
-                new EscapingStringTypeConverter(),
+                new StringTypeConverter(),
                 new BooleanTypeConverter(),
                 new CharacterTypeConverter(),
                 new IntegerTypeConverter(),

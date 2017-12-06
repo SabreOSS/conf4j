@@ -128,7 +128,7 @@ public class LocalDateTimeTypeConverterTest {
         // then
         assertThatThrownBy(() -> localDateTimeTypeConverter.toString(LocalDateTime.class, toConvert, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Unable to convert LocalDateTime to String. Invalid format pattern: invalid format");
+                .hasMessage("Unable to convert LocalDateTime to String. Invalid format: 'invalid format'");
     }
 
     @Test
@@ -202,7 +202,7 @@ public class LocalDateTimeTypeConverterTest {
         // then
         assertThatThrownBy(() -> localDateTimeTypeConverter.fromString(LocalDateTime.class, dateInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Unable to convert to LocalDateTime: 1970 01 01 00:00. Invalid format: invalid format");
+                .hasMessage("Unable to convert to LocalDateTime: 1970 01 01 00:00. Invalid format: 'invalid format'");
     }
 
     @Test

@@ -40,31 +40,33 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 /**
- * This class provides useful methods for integral numeric type converters.
+ * This is base class for converting numeric values from/to string.
  * <p>
- * The converters supports {@value #FORMAT} attribute (provided in the attributes map) which specifies
- * the format used during conversion. The format is compliant with {@link java.text.DecimalFormat}
+ * The converter supports {@value #FORMAT} meta-attribute which specifies the format of resulting string representation.
+ * The format string must be compatible with the format defined by {@link DecimalFormat}.
  * </p>
  * <p>
- * When the format is not specified, {@link Objects#toString() } method is used.
+ * In case the format is not provided, <em>natural</em> number representation is used:
+ * {@link Objects#toString()} while converting from value to string and <em>NumberType.valueOf(String value)</em>
+ * while converting from string to a type value (<em>NumberType</em> is a concrete class for example {@code Double}).
  * </p>
  * <p>
- * The converters support also {@value LOCALE} attribute (provided in the attributes map) which specifies
- * the locale used during conversion. It will be used only if {@value FORMAT} attribute is provided.
- * The locale should be provided as ISO 639 string. If not present, Locale.US is used.
+ * The converter also supports {@value LOCALE} meta-attribute which specifies
+ * the locale used during conversion. It is used only when {@value FORMAT} attribute is provided.
+ * The locale must be a ISO 639. If not specified, {@link Locale#US} locale is used.
  * </p>
  *
- * @param <T> actual type of converter
+ * @param <T> actual number type
  */
-public abstract class AbstractNumericConverter<T> implements TypeConverter<T> {
+public abstract class AbstractNumberConverter<T extends Number> implements TypeConverter<T> {
 
     /**
-     * Format attribute name.
+     * Format meat-attribute name.
      */
     public static final String FORMAT = "format";
 
     /**
-     * Locale attribute name.
+     * Locale meta-attribute name.
      */
     public static final String LOCALE = "locale";
 
@@ -74,18 +76,20 @@ public abstract class AbstractNumericConverter<T> implements TypeConverter<T> {
 
     protected abstract T convertResult(Number value);
 
+    protected boolean isApplicable(Type type, Class<T> clazz, Class<T> primitiveType) {
+        requireNonNull(type, "type cannot be null");
+
+        return type instanceof Class<?> &&
+                (clazz.isAssignableFrom((Class<?>) type) || primitiveType != null && primitiveType.isAssignableFrom((Class<?>) type));
+    }
+
     /**
      * Converts String to given type
      *
-     * @param type       actual type definition.
-     * @param value      string representation of the value which is converted to given type.
-     *                   In case it is {@code null}, the converter should return either {@code null} or a value
-     *                   that is equivalent (for example an empty list).
-     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
-     *                   If present, the value for {@value #FORMAT} key will be used during conversion
-     *                   as a formatting pattern.
-     *                   If present, the value for {@value #LOCALE} key will be used during conversion.
-     *                   Otherwise, {@link Locale#US} will be used.
+     * @param type       actual type.
+     * @param value      string representation of the value which is converted to a given type.
+     *                   In case it is {@code null}, the converter returns {@code null}.
+     * @param attributes meta-attributes; see class javadoc for more details.
      * @return value converted to {@code T}
      * @throws IllegalArgumentException when {@code value} cannot be converted to {@code T} because of
      *                                  invalid format of {@code value} string, invalid formatting pattern or
@@ -100,14 +104,14 @@ public abstract class AbstractNumericConverter<T> implements TypeConverter<T> {
             return null;
         }
 
+        String format = (attributes == null) ? null : attributes.get(FORMAT);
         try {
-            if (attributes != null && attributes.containsKey(FORMAT)) {
-                String format = attributes.get(FORMAT);
+            if (format == null) {
+                return parseWithoutFormat(value);
+            } else {
                 String locale = attributes.get(LOCALE);
                 return convertResult(parseWithFormat(value, format, locale, type));
             }
-
-            return parseWithoutFormat(value);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(format("Unable to convert to %s: %s", getSimpleClassName(type), value), e);
         }
@@ -116,15 +120,11 @@ public abstract class AbstractNumericConverter<T> implements TypeConverter<T> {
     /**
      * Converts value from {@code T} to String
      *
-     * @param type       actual type definition.
+     * @param type       actual type.
      * @param value      value that needs to be converted to string.
-     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
-     *                   If present, the value for {@value #FORMAT} key will be used during conversion
-     *                   as a formatting pattern.
-     *                   If present, the value for {@value #LOCALE} key will be used during conversion.
-     *                   Otherwise, {@link Locale#US} will be used.
+     * @param attributes meta-attributes; see class javadoc for more details.
      * @return string representation of the {@code value}
-     * @throws IllegalArgumentException when {@code value} cannot be converted to String because of
+     * @throws IllegalArgumentException when {@code value} cannot be converted to string because of
      *                                  invalid formatting pattern or error during printing.
      * @throws NullPointerException     when {@code type} is {@code null}.
      */
@@ -132,13 +132,14 @@ public abstract class AbstractNumericConverter<T> implements TypeConverter<T> {
     public String toString(Type type, T value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        if (attributes != null && attributes.containsKey(FORMAT)) {
+        String format = (attributes == null) ? null : attributes.get(FORMAT);
+        if (format == null) {
+            return Objects.toString(value, null);
+        } else {
             String formattingPattern = attributes.get(FORMAT);
             String locale = attributes.get(LOCALE);
             return getFormatter(formattingPattern, locale).format(value);
         }
-
-        return Objects.toString(value, null);
     }
 
     protected Number parseWithFormat(String value, String format, String locale, Type type) {
@@ -152,12 +153,13 @@ public abstract class AbstractNumericConverter<T> implements TypeConverter<T> {
         }
     }
 
-    DecimalFormat getFormatter(String format, String locale) {
+    protected DecimalFormat getFormatter(String format, String locale) {
         CacheKey attributes = new CacheKey(format, locale);
-        return formatCache.computeIfAbsent(attributes, this::createNewFormatter);
+        // DecimalFormat is not thread safe, clone() creates a copy efficiently
+        return (DecimalFormat) formatCache.computeIfAbsent(attributes, this::createFormatter).clone();
     }
 
-    private DecimalFormat createNewFormatter(CacheKey attributes) {
+    private DecimalFormat createFormatter(CacheKey attributes) {
         Locale formatterLocale = attributes.locale == null ? Locale.US : Locale.forLanguageTag(attributes.locale);
         DecimalFormat formatter = (DecimalFormat) NumberFormat.getNumberInstance(formatterLocale);
         formatter.applyPattern(attributes.format);

@@ -85,7 +85,7 @@ public class DurationTypeConverterTest {
     @Test
     public void shouldConvertToStringWhenFormatSpecified() {
         // given
-        Duration duration = Duration.ofMillis(600000L);
+        Duration duration = Duration.ofHours(1).plusMinutes(10).plusSeconds(20);
         String format = "HH:mm:ss";
         Map<String, String> attributes = singletonMap("format", format);
 
@@ -93,7 +93,7 @@ public class DurationTypeConverterTest {
         String asString = converter.toString(Duration.class, duration, attributes);
 
         // then
-        assertThat(asString).isEqualTo("00:10:00");
+        assertThat(asString).isEqualTo("01:10:20");
     }
 
     @Test

@@ -48,9 +48,11 @@ import static org.apache.commons.lang3.StringEscapeUtils.UNESCAPE_JSON;
  * numbers, booleans etc.) {@link #innerTypeConverter} has to be registered.
  * <p>
  * <b>NOTE:</b> JSON must not contain whitespaces.
+ * </p>
  * <p>
  * Due to limitations of the JSON format to directly represent Java {@link Map}s as JSON Objects (as JSON Object's property names
  * are limited to JSON String), the format was enhanced to support JSON Objects with <b>any</b> JSON as the property name. For example:
+ * </p>
  * <pre>
  *  {
  *     null : "value2",                                         // Valid JSON and JSON-like (after removing whitespaces) entry
@@ -59,9 +61,9 @@ import static org.apache.commons.lang3.StringEscapeUtils.UNESCAPE_JSON;
  *  }
  * </pre>
  * <p>
- * Another enhancement to the JSON format is a {@link #compactMode}, i.e. mode, is that double-quotes
+ * Another enhancement to the JSON format is a {@link #defaultCompactMode}, i.e. mode, is that double-quotes
  * can be omitted (double-quotes in compat. mode does not have any special meaning and is treated like the double-quote character).
- * <p>
+ * </p>
  * The above example can be converted into a compacted JSON-like format:
  * <pre>{\@null:value1,[key2part1,key2part2]:[\@empty],{key3:[item3,item4]}:[value3.1,value3.2]}</pre>
  *
@@ -73,8 +75,20 @@ import static org.apache.commons.lang3.StringEscapeUtils.UNESCAPE_JSON;
  *
  * In contrast to JSON special characters escapes, in compact mode, double-quote must not be escaped. The characters
  * must be: ','(comma), ':'(colon), '}'(right curly brace) and ']'(right square bracket).
+ * <p>
+ * {@code JsonLikeTypeConverter} supports {@value FORMAT} meta-attribute which can be used to override
+ * {@link #defaultCompactMode} in {@link #fromString(Type, String, Map)} and {@link #toString(Type, Object, Map)}.
+ * </p>
+ * When {@value FORMAT} meta-attribute value is:
+ * <ul>
+ * <li>{@value COMPACT} - compact format is used.</li>
+ * <li>{@value JSON} - JSON-like format is used.</li>
+ * </ul>
  */
 public class JsonLikeTypeConverter implements TypeConverter<Object> {
+    public static final String FORMAT = "format";
+    public static final String COMPACT = "compact";
+    public static final String JSON = "json";
 
     public static final String EMPTY_STRING = "";
     public static final String JSON_NULL = "null";
@@ -90,20 +104,22 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
     private static final StringEscaper JSON_ESCAPER = new StringEscaper(ESCAPE_JSON::translate, UNESCAPE_JSON::translate);
     private static final StringEscaper COMPACT_JSON_ESCAPER = new StringEscaper(ESCAPE_COMPACT_JSON::translate, UNESCAPE_COMPACT_JSON::translate);
 
-    private TypeConverter<Object> innerTypeConverter;
+    private final TypeConverter<Object> innerTypeConverter;
 
     /**
      * Compact mode is a JSON mode with omitted beginning and ending DOUBLE-QUOTEs for string values
      * (i.e. DOUBLE-QUOTEs in strings should (and must) not be escaped).
      */
-    private boolean compactMode = true;
-
-    public JsonLikeTypeConverter() {
-    }
+    private final boolean defaultCompactMode;
 
     @SuppressWarnings("unchecked")
     public JsonLikeTypeConverter(TypeConverter<?> innerTypeConverter) {
+        this(innerTypeConverter, true);
+    }
+
+    public JsonLikeTypeConverter(TypeConverter<?> innerTypeConverter, boolean compactMode) {
         this.innerTypeConverter = (TypeConverter<Object>) requireNonNull(innerTypeConverter, "innerTypeConverter must not be null");
+        this.defaultCompactMode = compactMode;
     }
 
     @Override
@@ -140,7 +156,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         ObjectBuilder builder = new ObjectBuilder();
         char[] array = value.toCharArray();
         CharSequence charSequence = new Segment(array, 0, array.length);
-        if (consumeItem(type, charSequence, 0, builder) != value.length()) {
+        if (consumeItem(type, charSequence, 0, builder, isCompactMode(attributes)) != value.length()) {
             throw new IllegalArgumentException(MSG_UNEXPECTED_EXTRA_DATA);
         }
         return builder.build();
@@ -157,21 +173,14 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         ParameterizedType parameterizedType = (ParameterizedType) type;
         Class<?> rawType = (Class<?>) parameterizedType.getRawType();
         try {
+            boolean compact = isCompactMode(attributes);
             StringBuilder out = new StringBuilder();
             return (List.class.isAssignableFrom(rawType)
-                    ? listToString(parameterizedType, (List<Object>) value, out)
-                    : mapToString(parameterizedType, (Map<Object, Object>) value, out)).toString();
+                    ? listToString(parameterizedType, (List<Object>) value, out, compact)
+                    : mapToString(parameterizedType, (Map<Object, Object>) value, out, compact)).toString();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-    }
-
-    public void setInnerTypeConverter(TypeConverter<Object> innerTypeConverter) {
-        this.innerTypeConverter = requireNonNull(innerTypeConverter, "innerTypeConverter cannot be null");
-    }
-
-    public void setCompactMode(boolean compactMode) {
-        this.compactMode = compactMode;
     }
 
     protected List<Object> createList(ParameterizedType type) {
@@ -184,21 +193,21 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
                 : new LinkedHashMap<>();
     }
 
-    private int listFromString(ParameterizedType type, CharSequence value, ObjectBuilder builder) {
+    private int listFromString(ParameterizedType type, CharSequence value, ObjectBuilder builder, boolean compact) {
         try {
-            return doListFromString(type, value, builder);
+            return doListFromString(type, value, builder, compact);
         } catch (StringIndexOutOfBoundsException e) {
             throw new IllegalArgumentException(format(MSG_UNEXPECTED_END_OF_DATA, value), e);
         }
     }
 
     @SuppressWarnings("unchecked")
-    private int doListFromString(ParameterizedType type, CharSequence value, ObjectBuilder builder) {
+    private int doListFromString(ParameterizedType type, CharSequence value, ObjectBuilder builder, boolean compact) {
         Type itemType = type.getActualTypeArguments()[0];
 
         int current = 0;
         if (value.charAt(current++) != LEFT_SQUARE_BRACKET) {
-            int consumed = consumeNull(value, --current, builder);
+            int consumed = consumeNull(value, --current, builder, compact);
             if (consumed > 0) {
                 return consumed;
             }
@@ -213,7 +222,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
             }
 
             // Consume list item
-            current += consumeItem(itemType, value, current, builder);
+            current += consumeItem(itemType, value, current, builder, compact);
 
             // Expected ',' or ']'
             if (value.charAt(current) != COMMA && value.charAt(current) != RIGHT_SQUARE_BRACKET) {
@@ -224,29 +233,29 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
                 current++;
                 if (value.charAt(current) == RIGHT_SQUARE_BRACKET) {
                     // support for proper ,] sequence in compact mode
-                    current += consumeItem(itemType, value, current, builder);
+                    current += consumeItem(itemType, value, current, builder, compact);
                 }
             }
         }
         throw new IllegalArgumentException(format(MSG_CONSUMED_ALL_BUT_NOT_FOUND, "']'", value));
     }
 
-    private int mapFromString(ParameterizedType type, CharSequence value, ObjectBuilder builder) {
+    private int mapFromString(ParameterizedType type, CharSequence value, ObjectBuilder builder, boolean compact) {
         try {
-            return doMapFromString(type, value, builder);
+            return doMapFromString(type, value, builder, compact);
         } catch (StringIndexOutOfBoundsException e) {
             throw new IllegalArgumentException(format(MSG_UNEXPECTED_END_OF_DATA, value), e);
         }
     }
 
     @SuppressWarnings("unchecked")
-    private int doMapFromString(ParameterizedType type, CharSequence value, ObjectBuilder builder) {
+    private int doMapFromString(ParameterizedType type, CharSequence value, ObjectBuilder builder, boolean compact) {
         Type keyType = type.getActualTypeArguments()[0];
         Type valueType = type.getActualTypeArguments()[1];
 
         int current = 0;
         if (value.charAt(current++) != LEFT_CURLY_BRACE) {
-            int consumed = consumeNull(value, --current, builder);
+            int consumed = consumeNull(value, --current, builder, compact);
             if (consumed > 0) {
                 return consumed;
             }
@@ -262,7 +271,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
             }
             // Consume Key
             ObjectBuilder keyBuilder = new ObjectBuilder();
-            current += consumeItem(keyType, value, current, keyBuilder);
+            current += consumeItem(keyType, value, current, keyBuilder, compact);
             builder.addKey(keyBuilder.build());
 
             // Consume ':'
@@ -272,7 +281,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
             }
 
             // Consume Value
-            current += consumeItem(valueType, value, current, builder);
+            current += consumeItem(valueType, value, current, builder, compact);
 
             // Expected ',' or '}' but not both - checked below.
             if (value.charAt(current) != COMMA && value.charAt(current) != RIGHT_CURLY_BRACE) {
@@ -290,18 +299,18 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         throw new IllegalArgumentException(format(MSG_CONSUMED_ALL_BUT_NOT_FOUND, "'}'", value));
     }
 
-    private int consumeItem(Type type, CharSequence value, int current, ObjectBuilder builder) {
+    private int consumeItem(Type type, CharSequence value, int current, ObjectBuilder builder, boolean compact) {
         if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
             if (List.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
-                return listFromString(parameterizedType, value.subSequence(current, value.length()), builder);
+                return listFromString(parameterizedType, value.subSequence(current, value.length()), builder, compact);
             } else if (Map.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
-                return mapFromString(parameterizedType, value.subSequence(current, value.length()), builder);
+                return mapFromString(parameterizedType, value.subSequence(current, value.length()), builder, compact);
             }
         }
 
         // Process item as a string value
-        if (compactMode) {
+        if (compact) {
             int found = notEscapedIndexOf(value, current, COMMA, COLON, RIGHT_CURLY_BRACE, RIGHT_SQUARE_BRACKET);
             if (found == NOT_FOUND) {
                 throw new IllegalArgumentException(format(MSG_EXPECTED_BUT_NOT_FOUND_STARTING,
@@ -323,7 +332,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         }
 
         if (value.charAt(current) != DOUBLE_QUOTE) {
-            int consumed = consumeNull(value, current, builder);
+            int consumed = consumeNull(value, current, builder, compact);
             if (consumed > 0) {
                 return consumed;
             }
@@ -340,10 +349,10 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         return found - current + 1;
     }
 
-    int consumeNull(CharSequence value, int current, ObjectBuilder builder) {
+    int consumeNull(CharSequence value, int current, ObjectBuilder builder, boolean compact) {
         int found = value.length();
         boolean consume = false;
-        if (compactMode) {
+        if (compact) {
             if (value.charAt(current) == COMPACT_JSON_NULL.charAt(0)) {
                 if (found != COMPACT_JSON_NULL.length() + current) {
                     found = notEscapedIndexOf(value, current, COMMA, COLON, RIGHT_CURLY_BRACE, RIGHT_SQUARE_BRACKET);
@@ -366,9 +375,9 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
     }
 
     @SuppressWarnings("unchecked")
-    private Appendable listToString(ParameterizedType type, List<Object> value, Appendable out) throws IOException {
+    private Appendable listToString(ParameterizedType type, List<Object> value, Appendable out, boolean compact) throws IOException {
         if (value == null) {
-            return compactMode
+            return compact
                     ? out.append(COMPACT_JSON_NULL)
                     : out.append(JSON_NULL);
         }
@@ -380,7 +389,7 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         // The only case to encode empty string in compact mode is one element List
         boolean encodeEmptyCompactString = value.size() == 1;
         while (iterator.hasNext()) {
-            append(itemType, iterator.next(), out, encodeEmptyCompactString);
+            append(itemType, iterator.next(), out, encodeEmptyCompactString, compact);
             if (iterator.hasNext()) {
                 out.append(COMMA);
             }
@@ -388,9 +397,9 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         return out.append(RIGHT_SQUARE_BRACKET);
     }
 
-    private Appendable mapToString(ParameterizedType type, Map<Object, Object> value, Appendable out) throws IOException {
+    private Appendable mapToString(ParameterizedType type, Map<Object, Object> value, Appendable out, boolean compact) throws IOException {
         if (value == null) {
-            return compactMode
+            return compact
                     ? out.append(COMPACT_JSON_NULL)
                     : out.append(JSON_NULL);
         }
@@ -401,9 +410,9 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         Iterator<Entry<Object, Object>> iterator = value.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry<Object, Object> entry = iterator.next();
-            append(keyType, entry.getKey(), out);
+            append(keyType, entry.getKey(), out, compact);
             out.append(COLON);
-            append(valueType, entry.getValue(), out);
+            append(valueType, entry.getValue(), out, compact);
             if (iterator.hasNext()) {
                 out.append(COMMA);
             }
@@ -412,14 +421,14 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         return out;
     }
 
-    private Appendable append(Type type, Object value, Appendable appendable) throws IOException {
-        return append(type, value, appendable, false);
+    private Appendable append(Type type, Object value, Appendable appendable, boolean compact) throws IOException {
+        return append(type, value, appendable, false, compact);
     }
 
     @SuppressWarnings("unchecked")
-    private Appendable append(Type type, Object value, Appendable out, boolean encodeCompactEmptyString) throws IOException {
+    private Appendable append(Type type, Object value, Appendable out, boolean encodeCompactEmptyString, boolean compact) throws IOException {
         if (value == null) {
-            return out.append(compactMode
+            return out.append(compact
                     ? COMPACT_JSON_NULL
                     : JSON_NULL);
         }
@@ -427,14 +436,14 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
         if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
             if (List.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
-                return listToString(parameterizedType, (List<Object>) value, out);
+                return listToString(parameterizedType, (List<Object>) value, out, compact);
             } else if (Map.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
-                return mapToString(parameterizedType, (Map<Object, Object>) value, out);
+                return mapToString(parameterizedType, (Map<Object, Object>) value, out, compact);
             }
         }
 
         // Not a List/Map, treated as a string literal
-        if (compactMode) {
+        if (compact) {
             String valueStr = innerTypeConverter.toString(type, value, null);
             return out.append(encodeCompactEmptyString && EMPTY_STRING.equals(valueStr)
                     ? COMPACT_JSON_EMPTY
@@ -444,5 +453,22 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
                 .append(DOUBLE_QUOTE)
                 .append(JSON_ESCAPER.escape(innerTypeConverter.toString(type, value, null)))
                 .append(DOUBLE_QUOTE);
+    }
+
+    private boolean isCompactMode(Map<String, String> attributes) {
+        String format = (attributes == null) ? null : attributes.get(FORMAT);
+        if (format == null) {
+            return defaultCompactMode;
+        }
+        switch (format) {
+            case COMPACT:
+                return true;
+            case JSON:
+                return false;
+            default:
+                throw new IllegalArgumentException(format(
+                        "Invalid '%s' meta-attribute value, it must be either '%s' or '%s', but '%s' is provided.",
+                        FORMAT, COMPACT, JSON, format));
+        }
     }
 }

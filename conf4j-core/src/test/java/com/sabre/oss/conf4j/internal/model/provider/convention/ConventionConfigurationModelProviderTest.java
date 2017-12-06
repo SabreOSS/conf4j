@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.internal.model.provider.convention;
 
 import com.sabre.oss.conf4j.annotation.*;
-import com.sabre.oss.conf4j.converter.standard.EscapingStringTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.StringTypeConverter;
 import com.sabre.oss.conf4j.internal.model.*;
 import com.sabre.oss.conf4j.internal.model.provider.convention.ConventionConfigurationModelProviderTest.AnnotatedTimeoutConfiguration.DefaultTimeout;
 import com.sabre.oss.conf4j.internal.utils.MapUtils;
@@ -163,7 +163,7 @@ public class ConventionConfigurationModelProviderTest {
         assertThat(urlProperty.isResetPrefix()).isFalse();
         assertThat(urlProperty.getEncryptionProviderName()).isEqualTo("default");
         assertThat(urlProperty.getDefaultValue()).isEqualTo(present("http://sabre.com"));
-        assertThat(urlProperty.getTypeConverterClass()).isEqualTo(EscapingStringTypeConverter.class);
+        assertThat(urlProperty.getTypeConverterClass()).isEqualTo(StringTypeConverter.class);
 
         SubConfigurationPropertyModel timeoutProperty = property(model, "timeout");
         assertThat(timeoutProperty.getType()).isEqualTo(AnnotatedTimeoutConfiguration.class);
@@ -198,7 +198,7 @@ public class ConventionConfigurationModelProviderTest {
         @DefaultValue("http://sabre.com")
         @Description("url")
         @Encrypted("default")
-        @Converter(EscapingStringTypeConverter.class)
+        @Converter(StringTypeConverter.class)
         String getUrl();
 
         @IgnorePrefix

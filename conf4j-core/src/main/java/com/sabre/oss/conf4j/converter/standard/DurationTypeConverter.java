@@ -39,6 +39,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.time.DurationFormatUtils.formatDuration;
 
 /**
  * This class converts {@link Duration} to/from string.
@@ -85,18 +86,18 @@ public class DurationTypeConverter implements TypeConverter<Duration> {
     public Duration fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        if (attributes != null && attributes.containsKey(FORMAT)) {
-            String formattingPattern = attributes.get(FORMAT);
+        String format = (attributes == null) ? null : attributes.get(FORMAT);
+        if (format != null) {
             try {
-                SimpleDateFormat sdf = cache.computeIfAbsent(formattingPattern, SimpleDateFormat::new);
-                LocalDateTime ldt = LocalDateTime.ofInstant(sdf.parse(value).toInstant(), ZoneId.systemDefault());
-                return Duration.between(Instant.EPOCH, ldt.toInstant(ZoneOffset.ofTotalSeconds(0)));
+                SimpleDateFormat dateFormat = getDateFormat(format);
+                LocalDateTime localDateTime = LocalDateTime.ofInstant(dateFormat.parse(value).toInstant(), ZoneId.systemDefault());
+                return Duration.between(Instant.EPOCH, localDateTime.toInstant(ZoneOffset.ofTotalSeconds(0)));
             } catch (ParseException e) {
                 throw new IllegalArgumentException(format("Unable to convert to Duration: %s. " +
-                        "The value doesn't match specified format %s.", value, formattingPattern), e);
+                        "The value doesn't match specified format '%s'.", value, format), e);
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(format("Unable to convert to Duration: %s. " +
-                        "Invalid format: %s", value, formattingPattern), e);
+                        "Invalid format: '%s'", value, format), e);
             }
         }
 
@@ -127,10 +128,10 @@ public class DurationTypeConverter implements TypeConverter<Duration> {
             return null;
         }
 
-        if (attributes != null && attributes.containsKey("format")) {
-            String formattingPattern = attributes.get(FORMAT);
+        String format = (attributes == null) ? null : attributes.get(FORMAT);
+        if (format != null) {
             try {
-                return DurationFormatUtils.formatDuration(value.toMillis(), formattingPattern);
+                return formatDuration(value.toMillis(), format);
             } catch (DateTimeException e) {
                 throw new IllegalArgumentException(
                         "Unable to convert Duration to String. Error occurred during printing.", e);
@@ -143,4 +144,7 @@ public class DurationTypeConverter implements TypeConverter<Duration> {
         return value.toString();
     }
 
+    private SimpleDateFormat getDateFormat(String format) {
+        return (SimpleDateFormat) cache.computeIfAbsent(format, SimpleDateFormat::new).clone();
+    }
 }

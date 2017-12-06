@@ -33,13 +33,13 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Defines custom meta-data associated with a configuration property.
+ * Defines custom meta-attribute associated with a configuration property.
  * <p>
- * Custom meta-data is useful when there is a need to resolve a configuration
+ * Custom meta-attribute is useful when there is a need to resolve a configuration
  * key to a value based on additional rules.
  * For example it can be used to specify a property file the configuration values source
  * should use. Of course there must be a logic in configuration values source implementation class which understands
- * such meta-data.
+ * such meta-attribute.
  * </p>
  * <pre>
  * public interface ConnectionConfiguration {
@@ -157,16 +157,16 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Meta {
     /**
-     * Specifies meta-data name.
+     * Specifies meta-attribute name.
      *
-     * @return meta-data name.
+     * @return meta-attribute name.
      */
     String name();
 
     /**
-     * Specifies meta-data value.
+     * Specifies meta-attribute value.
      *
-     * @return meta-data property name and value.
+     * @return meta-attribute property name and value.
      */
     String value() default "";
 
