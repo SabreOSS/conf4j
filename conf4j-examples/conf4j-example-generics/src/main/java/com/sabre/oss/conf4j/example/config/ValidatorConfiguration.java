@@ -34,7 +34,6 @@ import com.sabre.oss.conf4j.annotation.Key;
  * <p>
  * Each validator configuration has <i>name</i> and <i>enabled</i> properties and set of associated constraints.
  * Constraints can be expressed as a separate type and provided via {@code C} parameter.
- * </p>
  *
  * @param <C> validation constraint type.
  */

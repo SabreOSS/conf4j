@@ -56,7 +56,6 @@ import static org.springframework.context.ConfigurableApplicationContext.CONVERS
  * there is no {@link PropertySourcesPlaceholderConfigurer} registered).
  * <p>
  * Usually only one instance of this source should be registered in the context.
- * </p>
  */
 public class PropertySourceConfigurationSource implements ConfigurationSource, BeanFactoryAware, EnvironmentAware, InitializingBean {
     private List<PropertySource<?>> flattenedPropertySources;

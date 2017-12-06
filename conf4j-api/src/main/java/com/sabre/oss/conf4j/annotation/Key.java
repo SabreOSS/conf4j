@@ -41,17 +41,15 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * or on the property which returns sub-configurations or a list of sub-configurations, it specifies a key prefix
  * which is appended to the children properties. When {@code @Key} is applied to the value property
  * (where the type is not another configuration or list of configurations), it specifies the final component of the key.
- * </p>
  * <p>
  * {@code @Key} can specify multiple keys (or prefixes). Each key is applied in the sequence
  * until the configuration value associated with the resulting key is found. When {@code value} is not specified,
  * the property name (when the annotation is applied on the getter) or uncapitalized short class name is used.
- * </p>
  * <p>
  * <i>Note</i>: Specifying {@code @Key} (without any keys) on the value property (which type is not another
  * configuration nor list of configurations) is optional in default <i>non-strict</i> configuration model provider.
  * If <i>strict</i> provider is used, every value configuration property must be annotated.
- * </p>
+ * <p>
  * <b>Example usage:</b>
  * <pre>
  * // defines a 'connection' prefix which is applied for all properties defined by the configuration type

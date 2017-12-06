@@ -28,7 +28,6 @@ package com.sabre.oss.conf4j.internal.model;
  * Provides {@link ConfigurationModel} extracted from configuration type.
  * <p>
  * There may be different strategies to obtain a model (for example from annotations).
- * </p>
  */
 public interface ConfigurationModelProvider {
     /**

@@ -38,19 +38,17 @@ import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
- * <p>This class converts {@link Boolean} to/from string.</p>
+ * This class converts {@link Boolean} to/from string.
  * <p>
  * The converter supports {@value #FORMAT} meta-attribute which specifies the values corresponding to
  * {@code true} and {@code false} values.
- * </p>
  * <p>
  * The format of {@value #FORMAT} meta-attribute value is: {@code {true-value}/{false-value}}
  * where {@code {true-value}} is as string which is used when the boolean value is {@code true}
  * and {@code {false-value}} is as string which is used when the boolean value is {@code false}.
- * </p>
  * <p>
  * For example: {@code yes/no}, {@code true/false}
- * </p>
+ * <p>
  * When the format is not specified {@value #TRUE} and {@value #FALSE} values are used.
  */
 public class BooleanConverter implements TypeConverter<Boolean> {

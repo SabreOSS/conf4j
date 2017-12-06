@@ -37,7 +37,7 @@ import static java.util.Objects.requireNonNull;
  * <p>
  * The order of lookup is defined by the list. If the same key is available from multiple sources, the value
  * will be retrieved from the first one on the list.
- * </p>
+ * <p>
  * It <i>may or <b>may not</b> be thread safe</i> - it depends on the backing configuration value sources.
  */
 public class MultiConfigurationSource implements ConfigurationSource {

@@ -37,7 +37,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Enables conf4j for the application context.
  * <p>
  * <b>Example usage:</b>
- * </p>
+ * <p>
  * <pre>
  * &#064;EnableConf4j
  * &#064;ConfigurationScan

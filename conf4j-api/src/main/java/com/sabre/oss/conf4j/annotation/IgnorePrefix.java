@@ -38,12 +38,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * locally, without affecting other properties. The common use case is coupling {@code Key} together
  * with {@code @IgnorePrefix}. The first annotation will set a key prefix, the second will disable all prefixes
  * defined by parent configurations.
- * </p>
  * <p>
  * {@code @IgnorePrefix} together with {@code @Key} are similar to {@link FallbackKey}, but the main
  * difference is the {@code @FallbackKey} first checks the standard keys, and then falls back to the key specified as
  * its parameter.
- * </p>
+ * <p>
  * <b>Example usage:</b>
  * <pre>
  * &#064;Key("connection")

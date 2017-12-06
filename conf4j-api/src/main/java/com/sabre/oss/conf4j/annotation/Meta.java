@@ -40,7 +40,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * For example it can be used to specify a property file the configuration values source
  * should use. Of course there must be a logic in configuration values source implementation class which understands
  * such meta-attribute.
- * </p>
  * <pre>
  * public interface ConnectionConfiguration {
  *    &#064;Meta(name="file", value="connection.properties")
@@ -50,7 +49,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p>
  * When {@code @Meta} annotation is applied to configuration type it will be inherited
  * by all configuration properties.
- * </p>
  * <pre>
  * &#064;Meta(name="file", value="connection.properties")
  * public interface ConnectionConfiguration {
@@ -80,11 +78,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * define custom meta-data in more expressive way.
  * <p>
  * There are three possible forms of custom meta-data annotations.
- * </p>
  * <p>
  * The custom annotation has fixed set of meta-data attributes assigned. it is annotated
  * with any number of {@code @Meta} annotations and cannot declare any attribute.
- * </p>
  * <pre>
  * &#064;Meta(name="file", value="application.properties")
  * &#064;Retention(RUNTIME)
@@ -108,7 +104,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * nor <em>another annotation</em>. In most cases the type is {@code String}, but enumerations and primitive types
  * like {@code boolean} or {@code integer} are supported. {@code toString()} method is used to convert annotation's
  * attribute value to {@code String}.
- * </p>
  * <pre>
  * &#064;Meta(name="file")
  * &#064;Retention(RUNTIME)
@@ -130,7 +125,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * defining multiple meta-data attributes by one annotation. All attributes of the custom annotation must
  * be annotated with {@code @Meta} and, as in previous option, it is not allowed to specify value by {@code @Meta}
  * nor declare an attribute which type is <em>Class</em>, <em>array</em> nor <em>another annotation</em>.
- * </p>
  * <pre>
  * &#064;Retention(RUNTIME)
  * &#064;Target({TYPE, METHOD})
@@ -176,7 +170,6 @@ public @interface Meta {
      * It should be used in conjunction with Java 8's support for <em>repeatable annotations</em>,
      * where {@link Meta} can simply be declared several times on the same
      * {@linkplain ElementType#TYPE type}, implicitly generating this container annotation.
-     * </p>
      */
     @Retention(RUNTIME)
     @Target({TYPE, METHOD})

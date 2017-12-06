@@ -30,7 +30,6 @@ import com.sabre.oss.conf4j.source.ConfigurationSource;
  * This class creates a configuration instance and binds it to the value source.
  * <p>
  * Configuration factory implementation must be thread-safe.
- * </p>
  */
 public interface ConfigurationFactory {
     /**

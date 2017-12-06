@@ -34,7 +34,6 @@ import java.lang.annotation.*;
  * Registers specified configuration type(s) in the spring context.
  * <p>
  * <b>Example usage:</b>
- * </p>
  * <pre>
  * &#064;Component
  * public interface ConnectionConfiguration {
@@ -55,7 +54,7 @@ import java.lang.annotation.*;
  * <p>
  * There is a corresponding {@code <conf4j:configuration .../>} tag for xml based spring configurations
  * in <i>http://www.sabre.com/schema/oss/conf4j</i> namespace.
- * </p>
+ * <p>
  * When there is a need to discover all configuration types in the specified packages, use {@link ConfigurationScan}.
  *
  * @see ConfigurationScan

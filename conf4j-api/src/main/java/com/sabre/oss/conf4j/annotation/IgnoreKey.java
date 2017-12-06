@@ -41,7 +41,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * If the property is annotated with {@link Key @Key}, {@code @IgnoreKey} should not be used.
  * {@code @Key} explicitly associates the key with the property,
  * but {@code @IgnoreKey} indicates such key should be ignored.
- * </p>
+ * <p>
  * <b>Example usage:</b>
  * <pre>
  * &#064;Key("connection")

@@ -44,7 +44,6 @@ import static java.util.Collections.emptyMap;
  * <p>
  * <b>Note:</b> This configuration factory is using JDK proxies. Because JDK proxy supports only interfaces,
  * configuration types based on abstract classes are not supported.
- * </p>
  *
  * @see ConfigurationFactory
  */

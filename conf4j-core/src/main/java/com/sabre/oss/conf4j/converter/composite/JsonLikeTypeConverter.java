@@ -48,11 +48,9 @@ import static org.apache.commons.lang3.StringEscapeUtils.UNESCAPE_JSON;
  * numbers, booleans etc.) {@link #innerTypeConverter} has to be registered.
  * <p>
  * <b>NOTE:</b> JSON must not contain whitespaces.
- * </p>
  * <p>
  * Due to limitations of the JSON format to directly represent Java {@link Map}s as JSON Objects (as JSON Object's property names
  * are limited to JSON String), the format was enhanced to support JSON Objects with <b>any</b> JSON as the property name. For example:
- * </p>
  * <pre>
  *  {
  *     null : "value2",                                         // Valid JSON and JSON-like (after removing whitespaces) entry
@@ -60,10 +58,9 @@ import static org.apache.commons.lang3.StringEscapeUtils.UNESCAPE_JSON;
  *     {"key3" : ["item3", "item4"]} : ["value3.1", "value3.2"] // Invalid JSON but valid JSON-like entry with structured "property name"
  *  }
  * </pre>
- * <p>
  * Another enhancement to the JSON format is a {@link #defaultCompactMode}, i.e. mode, is that double-quotes
  * can be omitted (double-quotes in compat. mode does not have any special meaning and is treated like the double-quote character).
- * </p>
+ * <p>
  * The above example can be converted into a compacted JSON-like format:
  * <pre>{\@null:value1,[key2part1,key2part2]:[\@empty],{key3:[item3,item4]}:[value3.1,value3.2]}</pre>
  *
@@ -78,7 +75,7 @@ import static org.apache.commons.lang3.StringEscapeUtils.UNESCAPE_JSON;
  * <p>
  * {@code JsonLikeTypeConverter} supports {@value FORMAT} meta-attribute which can be used to override
  * {@link #defaultCompactMode} in {@link #fromString(Type, String, Map)} and {@link #toString(Type, Object, Map)}.
- * </p>
+ * <p>
  * When {@value FORMAT} meta-attribute value is:
  * <ul>
  * <li>{@value COMPACT} - compact format is used.</li>

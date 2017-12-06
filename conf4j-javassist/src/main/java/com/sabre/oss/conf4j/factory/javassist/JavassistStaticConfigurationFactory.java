@@ -45,13 +45,11 @@ import static java.util.Collections.emptyMap;
  * <p>
  * Once the configuration instance is created, {@link ConfigurationSource} associated with the factory
  * is never accessed again.
- * </p>
  * <p>
  * The generated configuration class implements {@link java.io.Serializable} which allows configuration instance
  * to be serialized using standard java serialization. It requires that all of the configuration property values
  * provided by {@link TypeConverter} be serializable. The framework does not currently validate these values;
  * though, this may change in the future.
- * </p>
  *
  * @see ConfigurationFactory
  */

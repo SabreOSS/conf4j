@@ -45,10 +45,8 @@ import static java.util.Objects.requireNonNull;
  * <p>
  * The converter supports {@value #FORMAT} attribute (provided in the attributes map) which specifies
  * the format used during conversion. The format is compliant with {@link DateTimeFormatter}.
- * </p>
  * <p>
  * When the format is not specified, {@link DateTimeFormatter#ISO_LOCAL_DATE_TIME} is used.
- * </p>
  */
 public class LocalDateTimeConverter implements TypeConverter<LocalDateTime> {
     /**

@@ -31,7 +31,6 @@ import java.util.Map;
  * This class converts {@link Integer} to/from string.
  * <p>
  * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
- * </p>
  */
 public class IntegerConverter extends AbstractNumberConverter<Integer> {
 

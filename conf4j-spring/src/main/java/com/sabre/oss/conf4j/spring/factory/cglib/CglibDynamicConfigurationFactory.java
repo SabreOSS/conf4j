@@ -43,7 +43,6 @@ import static java.util.Collections.emptyMap;
  * and then the value is converted to the configuration property type by the {@link TypeConverter}.
  * <p>
  * <b>Note:</b> This configuration factory is using CGLIB proxies.
- * </p>
  *
  * @see ConfigurationFactory
  */

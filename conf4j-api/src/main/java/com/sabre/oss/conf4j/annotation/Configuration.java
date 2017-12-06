@@ -39,22 +39,19 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <i>Note:</i> Using this annotation is optional. It is required only when the type (or any of the type's method)
  * is not annotated with any annotation from the {@link com.sabre.oss.conf4j.annotation} package.
  * Otherwise the framework recognizes the type as a configuration.
- * </p>
  * <p>
  * Configuration consists of a set of properties. A property can be any type; however, there must be an appropriate
  * {@link TypeConverter} capable of converting type from string. The framework out-of-the-box handles properties
  * of configuration type or a list of configuration types (such configurations are called sub-configurations).
  * Cycles (direct nor indirect) between configurations are not supported.
- * </p>
  * <p>
  * Each configuration property must follow JavaBeans naming conventions,
  * and must be {@code public} and {@code abstract} (which is always true for configurations based on the interface)
  * and optionally annotated with @{@link Key}.
- * </p>
  * <p>
  * <i>Note:</i> {@code @Key} may be required for value configuration property by <i>strict</i>
  * configuration model providers (when default <i>non-strict</i> provider is used).
- * </p>
+ * <p>
  * <b>Example configurations:</b>
  * <pre>
  * // Using &#064;Configuration annotation is optional, because the type is annotated

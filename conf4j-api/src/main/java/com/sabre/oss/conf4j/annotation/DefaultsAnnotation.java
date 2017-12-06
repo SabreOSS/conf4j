@@ -31,7 +31,7 @@ import java.lang.annotation.*;
  * This annotation allows you to define default values for the configuration when the configuration is used
  * as a sub-configuration. {@code @DefaultsAnnotation} does not define the defaults directly, it simply specifies
  * which annotation should be used for that purpose.
- * <p>Usage of this annotation requires the following steps:</p>
+ * <p>Usage of this annotation requires the following steps:
  * <ol>
  * <li>Create an auxiliary annotation which holds the default values for the configuration.
  * The target must be {@code @Target(METHOD)} and the retention policy {@code @Retention(RUNTIME)}.
@@ -51,7 +51,7 @@ import java.lang.annotation.*;
  * </ol>
  * Use {@link #NULL} constant to declare default value {@code null}.
  * Use {@link #SKIP} constant to skip overriding default value declared on the sub-configuration.
- * <p><b>Example usage:</b></p>
+ * <p><b>Example usage:</b>
  * <pre>
  * // Sub-configuration default values can be changed by &#064;DefaultTimeout and &#064;DefaultTimeouts annotations
  * &#064;DefaultsAnnotation(DefaultTimeout.class)
@@ -126,7 +126,7 @@ import java.lang.annotation.*;
 public @interface DefaultsAnnotation {
     /**
      * Used to specify the default value {@code null}.
-     * <p>For a type that doesn't support {@code null} like primitives, using {@code NULL} is a bug.</p>
+     * <p>For a type that doesn't support {@code null} like primitives, using {@code NULL} is a bug.
      *
      * @see DefaultValue#NULL
      */

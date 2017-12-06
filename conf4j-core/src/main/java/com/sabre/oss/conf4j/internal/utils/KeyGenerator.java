@@ -37,7 +37,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
 
 /**
  * Utility which simplifies generating configuration keys. A key consists of string blocks separated by a dot.
- * <p>This class is immutable; appending a new block creates a new instance.</p>
+ * <p>This class is immutable; appending a new block creates a new instance.
  */
 public final class KeyGenerator {
     public static final String DELIMITER = ".";

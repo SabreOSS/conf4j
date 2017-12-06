@@ -41,7 +41,7 @@ import com.sabre.oss.conf4j.source.PropertiesConfigurationSource;
  * constraints, respectively {@link IntegerConstraints} and {@link StringConstraints}. Both constraints extends the
  * {@link MinMaxConstraints} interface, which provides common properties
  * {@link MinMaxConstraints#getMin() min} and {@link MinMaxConstraints#getMax() max}.
- * </p>
+ * <p>
  * Because {@link MinMaxConstraints} is also parametrized, the actual type of {@code min} and {@code max} properties
  * is defined by concrete constraint e.g. <pre>{@code public interface IntegerConstraints extends MinMaxConstraint<Integer> {...}}</pre>
  */

@@ -33,7 +33,6 @@ import static java.util.Objects.requireNonNull;
  * <p>
  * Classes which process configuration may extend this class and implement {@code process...} methods
  * to perform required logic.
- * </p>
  */
 public abstract class AbstractConfigurationModelVisitor {
     /**
