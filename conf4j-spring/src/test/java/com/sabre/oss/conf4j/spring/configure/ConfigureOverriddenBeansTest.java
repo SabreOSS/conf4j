@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.spring.configure;
 
-import com.sabre.oss.conf4j.converter.standard.StringConverter;
+import com.sabre.oss.conf4j.converter.StringConverter;
 import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyDynamicConfigurationFactory;
 import com.sabre.oss.conf4j.source.MapConfigurationSource;
 import com.sabre.oss.conf4j.spring.AbstractContextTest;

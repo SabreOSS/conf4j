@@ -48,7 +48,7 @@
     </bean>
 
     <!-- override type converter -->
-    <bean id="com.sabre.oss.conf4j.typeConverter" class="com.sabre.oss.conf4j.converter.standard.StringConverter">
+    <bean id="com.sabre.oss.conf4j.typeConverter" class="com.sabre.oss.conf4j.converter.StringConverter">
         <constructor-arg name="escape" value="false"/>
     </bean>
 </beans>

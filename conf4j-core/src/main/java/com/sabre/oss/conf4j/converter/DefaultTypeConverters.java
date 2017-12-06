@@ -24,10 +24,6 @@
 
 package com.sabre.oss.conf4j.converter;
 
-import com.sabre.oss.conf4j.converter.composite.JsonLikeTypeConverter;
-import com.sabre.oss.conf4j.converter.standard.*;
-import com.sabre.oss.conf4j.converter.xml.JaxbConverter;
-
 import java.util.List;
 
 import static java.util.Arrays.asList;

@@ -25,9 +25,9 @@
 package com.sabre.oss.conf4j.factory;
 
 import com.sabre.oss.conf4j.annotation.*;
-import com.sabre.oss.conf4j.converter.standard.BooleanConverter;
-import com.sabre.oss.conf4j.converter.standard.IntegerConverter;
-import com.sabre.oss.conf4j.converter.standard.StringConverter;
+import com.sabre.oss.conf4j.converter.BooleanConverter;
+import com.sabre.oss.conf4j.converter.IntegerConverter;
+import com.sabre.oss.conf4j.converter.StringConverter;
 import com.sabre.oss.conf4j.factory.model.ConfigurationWithIncompatibleAbstractMethod;
 import com.sabre.oss.conf4j.factory.model.ConfigurationWithNoDefaultValue;
 import com.sabre.oss.conf4j.factory.model.ValidConfiguration;
