@@ -49,12 +49,12 @@ function perform_release_build() {
 
 function setup() {
 
-    validate
-
     # *** DEFAULTS
     _GIT_DRY_RUN=${_GIT_DRY_RUN:-"false"}
     _OSSRH_AUTO_RELEASE=${_OSSRH_AUTO_RELEASE:-"true"}
     GPG_EXECUTABLE=${GPG_EXECUTABLE:-"gpg"}
+
+    validate
 
     # *** GIT
     git config user.name "${GIT_CONFIG_USERNAME}"
@@ -105,7 +105,8 @@ function validate() {
             OSSRH_USER OSSRH_PASSWORD
             GIT_CONFIG_USERNAME GIT_CONFIG_EMAIL
             SSH_SECRET_KEYS
-            GPG_SECRET_KEYS GPG_OWNERTRUST GPG_PASSPHRASE GPG_KEY_NAME )
+            GPG_SECRET_KEYS GPG_OWNERTRUST GPG_PASSPHRASE GPG_KEY_NAME GPG_EXECUTABLE
+            _GIT_DRY_RUN _OSSRH_AUTO_RELEASE )
     local code=0
     for variable_name in "${variable_names[@]}"; do
         value="$(eval "echo \${${variable_name}}")"
@@ -117,8 +118,8 @@ function validate() {
     if [ ${code} -ne 0 ]; then
         echo
         echo "Required environment variables:"
-        echo "    releaseVersion          conf4j release version"
-        echo "    developmentVersion      conf4j new version after release"
+        echo "    releaseVersion          conf4j release version (see ./travis/release.properties file)"
+        echo "    developmentVersion      conf4j new version after release (see ./travis/release.properties file)"
         echo "    OSSRH_USER              OSSRH username (authentication token recommended) - base64 encoded"
         echo "    OSSRH_PASSWORD          OSSRH password (authentication token recommended) - base64 encoded"
         echo "    GIT_CONFIG_USERNAME     username used to set git user.name setting (can be anything)"
@@ -129,7 +130,7 @@ function validate() {
         echo "    GPG_PASSPHRASE          GPG passphrase - base64 encoded"
         echo "    GPG_KEY_NAME            GPG key name"
         echo
-        echo "Optional environment variables:"
+        echo "Required environment variables with default values:"
         echo "    GPG_EXECUTABLE          gpg executable command. Default value is 'gpg'"
         echo "    _GIT_DRY_RUN            related to the release-maven-plugin:prepare \${dryRun} property. Default value is false"
         echo "    _OSSRH_AUTO_RELEASE     related to the nexus-staging-maven-plugin:deploy \${autoReleaseAfterClose}. Default value is true"
