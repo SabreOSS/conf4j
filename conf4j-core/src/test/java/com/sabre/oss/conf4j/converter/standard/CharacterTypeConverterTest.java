@@ -31,11 +31,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CharacterTypeConverterTest {
-    private CharacterTypeConverter converter;
+    private CharacterConverter converter;
 
     @Before
     public void setUp() {
-        converter = new CharacterTypeConverter();
+        converter = new CharacterConverter();
     }
 
     @Test

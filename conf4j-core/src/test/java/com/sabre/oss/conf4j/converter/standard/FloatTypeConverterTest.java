@@ -37,11 +37,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FloatTypeConverterTest {
-    private FloatTypeConverter floatTypeConverter;
+    private FloatConverter floatTypeConverter;
 
     @Before
     public void setUp() {
-        floatTypeConverter = new FloatTypeConverter();
+        floatTypeConverter = new FloatConverter();
     }
 
     @Test

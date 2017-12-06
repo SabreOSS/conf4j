@@ -36,17 +36,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.fail;
 
 public class BigDecimalTypeConverterTest {
-    private BigDecimalTypeConverter bigDecimalTypeConverter;
+    private BigDecimalConverter converter;
 
     @Before
     public void setUp() {
-        bigDecimalTypeConverter = new BigDecimalTypeConverter();
+        converter = new BigDecimalConverter();
     }
 
     @Test
     public void shouldBeApplicableToBigDecimal() {
         // when
-        boolean applicable = bigDecimalTypeConverter.isApplicable(BigDecimal.class, null);
+        boolean applicable = converter.isApplicable(BigDecimal.class, null);
 
         // then
         assertThat(applicable).isTrue();
@@ -55,7 +55,7 @@ public class BigDecimalTypeConverterTest {
     @Test
     public void shouldNotBeApplicableToNonBigDecimal() {
         // when
-        boolean applicable = bigDecimalTypeConverter.isApplicable(Object.class, null);
+        boolean applicable = converter.isApplicable(Object.class, null);
 
         // then
         assertThat(applicable).isFalse();
@@ -67,7 +67,7 @@ public class BigDecimalTypeConverterTest {
         String stringValue = "100.13";
 
         // when
-        BigDecimal bigDecimal = bigDecimalTypeConverter.fromString(BigDecimal.class, stringValue, null);
+        BigDecimal bigDecimal = converter.fromString(BigDecimal.class, stringValue, null);
 
         // then
         assertThat(bigDecimal).isEqualTo(BigDecimal.valueOf(10013, 2));
@@ -81,7 +81,7 @@ public class BigDecimalTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        BigDecimal bigDecimal = bigDecimalTypeConverter.fromString(BigDecimal.class, stringValue, attributes);
+        BigDecimal bigDecimal = converter.fromString(BigDecimal.class, stringValue, attributes);
 
         // then
         assertThat(bigDecimal).isEqualTo(BigDecimal.valueOf(100130, 3));
@@ -94,7 +94,7 @@ public class BigDecimalTypeConverterTest {
 
         // when
         try {
-            bigDecimalTypeConverter.fromString(BigDecimal.class, stringValue, null);
+            converter.fromString(BigDecimal.class, stringValue, null);
             fail("Expected exception");
         } catch (IllegalArgumentException e) {
 
@@ -109,7 +109,7 @@ public class BigDecimalTypeConverterTest {
         BigDecimal bigDecimal = BigDecimal.valueOf(123, 1);
 
         // when
-        String asString = bigDecimalTypeConverter.toString(BigDecimal.class, bigDecimal, null);
+        String asString = converter.toString(BigDecimal.class, bigDecimal, null);
 
         // then
         assertThat(asString).isEqualTo("12.3");
@@ -123,7 +123,7 @@ public class BigDecimalTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        String asString = bigDecimalTypeConverter.toString(BigDecimal.class, bigDecimal, attributes);
+        String asString = converter.toString(BigDecimal.class, bigDecimal, attributes);
 
         // then
         assertThat(asString).isEqualTo("12.30");
@@ -132,7 +132,7 @@ public class BigDecimalTypeConverterTest {
     @Test
     public void shouldWriteNullValueAsString() {
         // when
-        String asString = bigDecimalTypeConverter.toString(BigDecimal.class, null, null);
+        String asString = converter.toString(BigDecimal.class, null, null);
 
         // then
         assertThat(asString).isNull();
@@ -141,7 +141,7 @@ public class BigDecimalTypeConverterTest {
     @Test
     public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
         // when
-        BigDecimal fromConversion = bigDecimalTypeConverter.fromString(BigDecimal.class, null, null);
+        BigDecimal fromConversion = converter.fromString(BigDecimal.class, null, null);
 
         // then
         assertThat(fromConversion).isNull();
@@ -155,7 +155,7 @@ public class BigDecimalTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> bigDecimalTypeConverter.fromString(BigDecimal.class, bigDecimalAsString, attributes))
+        assertThatThrownBy(() -> converter.fromString(BigDecimal.class, bigDecimalAsString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("The value doesn't match specified format");
     }

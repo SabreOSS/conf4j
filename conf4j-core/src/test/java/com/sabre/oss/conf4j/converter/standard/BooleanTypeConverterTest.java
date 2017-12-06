@@ -36,11 +36,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BooleanTypeConverterTest {
-    private BooleanTypeConverter booleanTypeConverter;
+    private BooleanConverter booleanTypeConverter;
 
     @Before
     public void setUp() {
-        booleanTypeConverter = new BooleanTypeConverter();
+        booleanTypeConverter = new BooleanConverter();
     }
 
     @Test

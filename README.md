@@ -35,6 +35,10 @@ In _conf4j_ configuration is represented as an interface or abstract class optio
 public interface ConnectionConfiguration {
    String getUrl();
 
+   String getUser();
+
+   String getPassword();
+
    @DefaultValue("60")
    int getConnectionTimeout();
 
@@ -62,6 +66,8 @@ Example _configuration.properties_ is as follows:
 
 ```properties
 connection.url=https://github.com/SabreOss/conf4j
+connection.user=john
+connection.password=secret
 connection.connectionTimeout=45
 ```
 

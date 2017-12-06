@@ -51,7 +51,7 @@ import static org.apache.commons.lang3.time.DurationFormatUtils.formatDuration;
  * When the format is not specified, {@link Objects#toString() } method is used.
  * </p>
  */
-public class DurationTypeConverter implements TypeConverter<Duration> {
+public class DurationConverter implements TypeConverter<Duration> {
 
     /**
      * Format attribute name.

@@ -26,7 +26,7 @@ package com.sabre.oss.conf4j.converter;
 
 import com.sabre.oss.conf4j.converter.composite.JsonLikeTypeConverter;
 import com.sabre.oss.conf4j.converter.standard.*;
-import com.sabre.oss.conf4j.converter.xml.JaxbTypeConverter;
+import com.sabre.oss.conf4j.converter.xml.JaxbConverter;
 
 import java.util.List;
 
@@ -59,23 +59,23 @@ public final class DefaultTypeConverters {
      */
     private static TypeConverter<Object> prepareDefaultTypeConverter() {
         TypeConverter<Object> simpleTypeConverters = new ChainedTypeConverter(asList(
-                new StringTypeConverter(),
-                new BooleanTypeConverter(),
-                new CharacterTypeConverter(),
-                new IntegerTypeConverter(),
-                new DoubleTypeConverter(),
-                new FloatTypeConverter(),
-                new ByteTypeConverter(),
-                new ShortTypeConverter(),
-                new LongTypeConverter(),
-                new EnumTypeConverter(),
-                new DurationTypeConverter(),
-                new LocalDateTimeTypeConverter(),
-                new PeriodTypeConverter(),
-                new BigDecimalTypeConverter(),
-                new PatternTypeConverter(),
-                new UrlTypeConverter(),
-                new JaxbTypeConverter<>()
+                new StringConverter(),
+                new BooleanConverter(),
+                new CharacterConverter(),
+                new IntegerConverter(),
+                new DoubleConverter(),
+                new FloatConverter(),
+                new ByteConverter(),
+                new ShortConverter(),
+                new LongConverter(),
+                new EnumConverter(),
+                new DurationConverter(),
+                new LocalDateTimeConverter(),
+                new PeriodConverter(),
+                new BigDecimalConverter(),
+                new PatternConverter(),
+                new UrlConverter(),
+                new JaxbConverter<>()
         ));
 
         JsonLikeTypeConverter jsonLikeTypeConverter = new JsonLikeTypeConverter(simpleTypeConverters);

@@ -47,7 +47,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  *
  * @see XmlRootElement
  */
-public class JaxbTypeConverter<T> implements TypeConverter<T> {
+public class JaxbConverter<T> implements TypeConverter<T> {
 
     // Since there is only one instance of this object created, we want to be sure it is capable of handling all kinds of
     // Jaxb objects used in conf4j classes; thus there will be a separate JaxbPool for each distinct Jaxb class.

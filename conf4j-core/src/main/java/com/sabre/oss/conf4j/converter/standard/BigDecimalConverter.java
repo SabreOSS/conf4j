@@ -38,7 +38,7 @@ import static java.lang.String.format;
  * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
  * </p>
  */
-public class BigDecimalTypeConverter extends AbstractNumberConverter<BigDecimal> {
+public class BigDecimalConverter extends AbstractNumberConverter<BigDecimal> {
     /**
      * {@inheritDoc}
      */

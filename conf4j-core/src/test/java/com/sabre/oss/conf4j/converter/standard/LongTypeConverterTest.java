@@ -36,11 +36,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class LongTypeConverterTest {
-    private LongTypeConverter longTypeConverter;
+    private LongConverter longTypeConverter;
 
     @Before
     public void setUp() {
-        longTypeConverter = new LongTypeConverter();
+        longTypeConverter = new LongConverter();
     }
 
     @Test

@@ -27,35 +27,28 @@ package com.sabre.oss.conf4j.converter.standard;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import static java.lang.String.format;
-
 /**
- * Converts {@link Byte} to/from string.
+ * This class converts {@link Long} to/from string.
  * <p>
  * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
  * </p>
  */
-public class ByteTypeConverter extends AbstractNumberConverter<Byte> {
-
+public class LongConverter extends AbstractNumberConverter<Long> {
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
-        return isApplicable(type, Byte.class, Byte.TYPE);
+        return isApplicable(type, Long.class, Long.TYPE);
     }
 
     @Override
-    protected Byte parseWithoutFormat(String value) {
-        return Byte.valueOf(value);
+    protected Long parseWithoutFormat(String value) {
+        return Long.valueOf(value);
     }
 
     @Override
-    protected Byte convertResult(Number value) {
-        long longVale = value.longValue();
-        if (longVale > Byte.MAX_VALUE || longVale < Byte.MIN_VALUE) {
-            throw new IllegalArgumentException(format("Provided value: %d is out of Byte type range.", longVale));
-        }
-        return value.byteValue();
+    protected Long convertResult(Number value) {
+        return value.longValue();
     }
 }

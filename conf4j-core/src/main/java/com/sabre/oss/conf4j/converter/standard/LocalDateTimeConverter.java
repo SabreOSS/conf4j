@@ -50,7 +50,7 @@ import static java.util.Objects.requireNonNull;
  * When the format is not specified, {@link DateTimeFormatter#ISO_LOCAL_DATE_TIME} is used.
  * </p>
  */
-public class LocalDateTimeTypeConverter implements TypeConverter<LocalDateTime> {
+public class LocalDateTimeConverter implements TypeConverter<LocalDateTime> {
     /**
      * Format attribute name.
      */

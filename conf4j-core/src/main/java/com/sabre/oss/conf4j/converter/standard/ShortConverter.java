@@ -28,27 +28,32 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
- * This class converts {@link Long} to/from string.
+ * This class converts {@link Short} to/from string.
  * <p>
  * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
  * </p>
  */
-public class LongTypeConverter extends AbstractNumberConverter<Long> {
+public class ShortConverter extends AbstractNumberConverter<Short> {
+
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
-        return isApplicable(type, Long.class, Long.TYPE);
+        return isApplicable(type, Short.class, Short.TYPE);
     }
 
     @Override
-    protected Long parseWithoutFormat(String value) {
-        return Long.valueOf(value);
+    protected Short parseWithoutFormat(String value) {
+        return Short.valueOf(value);
     }
 
     @Override
-    protected Long convertResult(Number value) {
-        return value.longValue();
+    protected Short convertResult(Number value) {
+        long longValue = value.longValue();
+        if (longValue > Short.MAX_VALUE || longValue < Short.MIN_VALUE) {
+            throw new IllegalArgumentException(String.format("Provided value: %d is out of Short type range.", longValue));
+        }
+        return value.shortValue();
     }
 }

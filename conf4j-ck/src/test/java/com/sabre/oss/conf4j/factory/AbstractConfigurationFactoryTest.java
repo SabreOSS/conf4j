@@ -25,9 +25,9 @@
 package com.sabre.oss.conf4j.factory;
 
 import com.sabre.oss.conf4j.annotation.*;
-import com.sabre.oss.conf4j.converter.standard.BooleanTypeConverter;
-import com.sabre.oss.conf4j.converter.standard.IntegerTypeConverter;
-import com.sabre.oss.conf4j.converter.standard.StringTypeConverter;
+import com.sabre.oss.conf4j.converter.standard.BooleanConverter;
+import com.sabre.oss.conf4j.converter.standard.IntegerConverter;
+import com.sabre.oss.conf4j.converter.standard.StringConverter;
 import com.sabre.oss.conf4j.factory.model.ConfigurationWithIncompatibleAbstractMethod;
 import com.sabre.oss.conf4j.factory.model.ConfigurationWithNoDefaultValue;
 import com.sabre.oss.conf4j.factory.model.ValidConfiguration;
@@ -537,7 +537,7 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
         when(source.getValue("configuration.stringProperty", null)).thenReturn(present("string"));
         when(source.getValue("configuration.booleanProperty", null)).thenReturn(present("true"));
         // set converter which doesn't support String nor boolean
-        factory.setTypeConverter(new IntegerTypeConverter());
+        factory.setTypeConverter(new IntegerConverter());
 
         // when
         CustomConfiguration config = factory.createConfiguration(CustomConfiguration.class, source);
@@ -550,11 +550,11 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
     @Key("configuration")
     public interface CustomConfiguration {
         @Key
-        @Converter(StringTypeConverter.class)
+        @Converter(StringConverter.class)
         String getStringProperty();
 
         @Key
-        @Converter(BooleanTypeConverter.class)
+        @Converter(BooleanConverter.class)
         boolean isBooleanProperty();
     }
 

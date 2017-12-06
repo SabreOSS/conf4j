@@ -75,6 +75,7 @@ _conf4j_ version.
 In _conf4j_, a configuration is expressed as a public interface or public abstract class annotated with _conf4j_ annotations.
 
 ```java
+@Key("connection")
 public interface ConnectionConfiguration {
    String getUrl();
 
@@ -82,11 +83,9 @@ public interface ConnectionConfiguration {
 }
 
 public interface TimeoutConfiguration {
-    @Key
     @DefaultValue("60")
     int getConnectionTimeout();
 
-    @Key
     @DefaultValue("30")
     int getReadTimeout();
 }
@@ -135,7 +134,7 @@ The _conf4j_ library provides type converters for all primitive types (like `boo
 primitive wrapper types (like `Boolean`, `Integer`, `Double`), _enumerations_ and many other types which are frequently
 used (like `BigDecimal`). More complex types are also supported - there is a dedicated converter for `List<E>` and `Map<K, V>`
 which is able to convert even very complex types like `Map<String, Map<Integer, List<Double>>>`. Because lists and maps
-are quite complex, the data must be encoded to be represented as a string. Currently `JsonLikeTypeConverter` is used
+are quite complex, the data must be encoded to be represented as a string. Currently `JsonLikeConverter` is used
 as a default implementation. It encodes `List` and `Map` as _JSON_, but by default _compact mode_ is activated to make
 the encoded string more user friendly.
 
@@ -143,7 +142,7 @@ For example `List<String>` in compact mode is represented as `[one,two,tree]` in
 Map<String, List<String>> in compact mode: `{key1:[val11,val12],key2:[val21,val22]}` in JSON: `{"key1":["val11","val12"],"key2":["val21","val22"]}`.
 Because quotation mark `"` must be escaped in _java_, JSON format is very inconvenient for specifying default value in `@DefaultValue`.
 
-Please consult javadoc for `JsonLikeTypeConverter` class to get more information about the format.
+Please consult javadoc for `JsonLikeConverter` class to get more information about the format.
 
 Of course there is possibility to provide custom implementation of `TypeConverter`.
 For details, see the [Type Converters](#type-converters) section.
@@ -165,10 +164,8 @@ Then annotate the root configuration with _Spring Framework_ `@Component` annota
 ```java
 @Component
 public interface ConnectionConfiguration {
-   @Key
    String getUrl();
 
-   @Key
    String getUser();
 }
 ```
@@ -197,7 +194,6 @@ public class Application {
 
     @Key("connection")
     public interface ConnectionConfiguration {
-       @Key
        String getUrl();
 
        @Key("user")
@@ -258,7 +254,6 @@ _Key set_ is constructed based on _conf4j_ annotations.
 
 ```java
 public interface ConnectionConfiguration {
-   @Key
    String getUrl();
 
    @Key("user")
@@ -283,7 +278,6 @@ Please note the prefix and key are joined by `.` (dot) character which is a deli
 ```java
 @Key({"connection", "alternateConnection"})
 public interface ConnectionConfiguration {
-   @Key
    String getUrl();
 
    @Key("user")
@@ -300,7 +294,6 @@ Here is a more complex scenario with configuration and sub-configurations involv
 ```java
 @Key({"connection", "alternateConnection"})
 public interface ConnectionConfiguration {
-   @Key
    String getUrl();
 
    @Key("user")
@@ -394,21 +387,19 @@ Even exotic types are supported: `Map<List<String>, List<Map<Integer, Double>>`.
 
 `TypeConverter` specifies the format of the string representation of a type. For some types like `int` the natural
 string representation is already defined, e.g., by `toString()` method. On the other hand, you may wish to change
-the format slightly. For example, `EscapingStringTypeConverter` replaces new line separator with `\n`
+the format slightly. For example, `StringConverter` replaces new line separator with `\n`
 character or tab with `\t` - in general, it uses the same rules for escaping as _Java_.
 
 `ConfigurationFactory` is pre-configured with wide range of converters (it may be can be altered by `setTypeConverter()`).
 In case there is a need to use a type converter which is not known by `ConfigurationFactory` or the type converter
 registered in the factory is not appropriate (e.g. you would like to convert `Integer` to hexadecimal value)
-'@Converter` annotation can be used as shown below:
+`@Converter` annotation can be used as shown below:
 
 ```java
 public interface DateRange {
-  @Key
   @Converter(DateTimeConverter.class)
   DateTime getStart();
 
-  @Key
   @Converter(DateTimeConverter.class)
   DateTime getEnd();
 }
@@ -448,7 +439,7 @@ formatting applied.
 dedicated annotation like in the example below:
 
 ```java
-@Meta(name = "format", value="#.000")
+@Meta(name = "format")
 @Retention(RUNTIME)
 @Target(METHOD)
 @Documented
@@ -470,16 +461,16 @@ The table below contains the list of available type converters and the format th
 
 | Converter | Supported format |
 | --- | --- |
-| BooleanTypeConverter | _{true value}/{false value}_, for example: _true/false_ or _yes/no_ |
-| ByteTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| ShortTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| IntegerTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| LongTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| FloatTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| DoubleTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
-| BigDecimalTypeConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html) |
-| LocalDateTimeTypeConverter | As defined by [`DateTimeFormatter`](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html) |
-| DurationTypeConverter | As defined by [`DurationFormatUtils`](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/time/DurationFormatUtils.html) |
+| BooleanConverter | _{true value}/{false value}_, for example: _true/false_ or _yes/no_ |
+| ByteConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| ShortConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| IntegerConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| LongConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| FloatConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| DoubleConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
+| BigDecimalConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html) |
+| LocalDateTimeConverter | As defined by [`DateTimeFormatter`](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html) |
+| DurationConverter | As defined by [`DurationFormatUtils`](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/time/DurationFormatUtils.html) |
 
 ## Configuration Types with Generics
 
@@ -492,10 +483,8 @@ with simple properties _name_, _enabled_ and customizable property _constraints_
 @AbstractConfiguration
 @Key
 public interface ValidatorConfiguration<C> {
-    @Key
     String getName();
 
-    @Key
     boolean isEnabled();
 
     C getConstraints();
@@ -505,10 +494,8 @@ public interface IntegerValidatorConfiguration extends ValidatorConfiguration<In
 }
 
 public interface IntegerConstraints {
-    @Key
     Integer getMin();
 
-    @Key
     Integer getMax();
 }
 
@@ -516,7 +503,6 @@ public interface StringValidatorConfiguration extends ValidatorConfiguration<Str
 }
 
 public interface StringConstraints  {
-    @Key
     Pattern getPattern();
 }
 ```
@@ -536,10 +522,8 @@ Generics can be used not only for sub-configurations properties but for value pr
 @AbstractConfiguration
 @Key
 public interface MinMax<T extends Comparable<T>> {
-    @Key
     T getMin();
 
-    @Key
     T getMax();
 }
 
@@ -547,7 +531,6 @@ public interface IntegerConstraint extends MinMax<Integer> {
 }
 
 public interface StringConstraint extends MinMax<String> {
-    @Key
     Pattern getPattern();
 }
 ```
@@ -558,7 +541,6 @@ More unusual generic usages for value properties are also possible.
 @AbstractConfiguration
 @Key
 public interface AbstractExoticConfiguration<K, V> {
-    @Key
     List<Map<K, List<V>>> getProperty();
 }
 
@@ -721,7 +703,6 @@ public class SampleConfiguration {
 
 @Component
 public interface ConnectionConfiguration {
-   @Key
    String getUrl();
    // ...
 }
@@ -739,13 +720,11 @@ public class SampleConfiguration {
 }
 
 public interface ConnectionConfiguration {
-   @Key
    String getUrl();
    // ...
 }
 
 public interface UserConfiguration {
-   @Key
    String getLogin();
    // ...
 }
@@ -796,7 +775,6 @@ public class SimpleBootApplication implements CommandLineRunner {
     @Component
     @Key("connection")
     public interface ConnectionConfiguration {
-        @Key
         String getUrl();
         // ...
     }

@@ -38,11 +38,11 @@ public class EnumTypeConverterTest {
         FIRST, SECOND_VALUE
     }
 
-    private EnumTypeConverter enumTypeAdapter;
+    private EnumConverter enumTypeAdapter;
 
     @Before
     public void setUp() {
-        enumTypeAdapter = new EnumTypeConverter();
+        enumTypeAdapter = new EnumConverter();
     }
 
     @Test

@@ -35,7 +35,7 @@ import static java.lang.String.format;
  * It supports {@value #FORMAT} and {@value #LOCALE} meta-attributes, for more details see {@link AbstractNumberConverter}.
  * </p>
  */
-public class FloatTypeConverter extends AbstractNumberConverter<Float> {
+public class FloatConverter extends AbstractNumberConverter<Float> {
 
     /**
      * {@inheritDoc}

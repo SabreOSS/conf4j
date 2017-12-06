@@ -36,11 +36,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ByteTypeConverterTest {
-    private ByteTypeConverter byteTypeConverter;
+    private ByteConverter byteTypeConverter;
 
     @Before
     public void setUp() {
-        byteTypeConverter = new ByteTypeConverter();
+        byteTypeConverter = new ByteConverter();
     }
 
     @Test
