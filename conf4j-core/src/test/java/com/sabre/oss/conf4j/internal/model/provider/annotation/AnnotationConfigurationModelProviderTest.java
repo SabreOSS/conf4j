@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.internal.model.provider.annotation;
 
 import com.sabre.oss.conf4j.annotation.*;
-import com.sabre.oss.conf4j.converter.standard.StringConverter;
+import com.sabre.oss.conf4j.converter.StringConverter;
 import com.sabre.oss.conf4j.internal.model.*;
 import org.junit.Test;
 

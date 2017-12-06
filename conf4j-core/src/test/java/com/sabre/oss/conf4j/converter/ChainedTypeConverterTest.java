@@ -24,8 +24,6 @@
 
 package com.sabre.oss.conf4j.converter;
 
-import com.sabre.oss.conf4j.converter.standard.IntegerConverter;
-import com.sabre.oss.conf4j.converter.standard.StringConverter;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
