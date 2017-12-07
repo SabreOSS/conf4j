@@ -24,11 +24,11 @@
 
 package com.sabre.oss.conf4j.factory.model.parameterized;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 
 public interface IdConfiguration {
     @Key("id")
-    @DefaultValue("-1")
+    @Default("-1")
     Integer getId();
 }

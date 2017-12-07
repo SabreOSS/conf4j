@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.spring.model.cache;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import org.springframework.stereotype.Component;
 
@@ -34,10 +34,10 @@ import java.util.Map;
 @Key("cachedSpringBeanConfigurationPrefix")
 public interface CachedSpringBeanConfiguration {
     @Key
-    @DefaultValue("defaultValue")
+    @Default("defaultValue")
     String getString();
 
     @Key
-    @DefaultValue("{1:{a:b,c:d}}")
+    @Default("{1:{a:b,c:d}}")
     Map<String, Map<String, String>> getComplexMap();
 }

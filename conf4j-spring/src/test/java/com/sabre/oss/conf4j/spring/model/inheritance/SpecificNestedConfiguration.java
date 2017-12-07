@@ -24,11 +24,11 @@
 
 package com.sabre.oss.conf4j.spring.model.inheritance;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 
 public abstract class SpecificNestedConfiguration extends CommonNestedConfiguration {
     @Key
-    @DefaultValue("specific")
+    @Default("specific")
     public abstract String getSpecificProperty();
 }

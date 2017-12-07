@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.example.config.connection;
 
 import com.sabre.oss.conf4j.annotation.Configuration;
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Description;
 import com.sabre.oss.conf4j.annotation.Key;
 
@@ -46,7 +46,7 @@ public interface Connection {
     String getPassword();
 
     @Key
-    @DefaultValue("true")
+    @Default("true")
     @Description("Indicates if compression is enabled.")
     boolean isCompressionEnabled();
 

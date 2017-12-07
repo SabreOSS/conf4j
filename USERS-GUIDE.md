@@ -83,10 +83,10 @@ public interface ConnectionConfiguration {
 }
 
 public interface TimeoutConfiguration {
-    @DefaultValue("60")
+    @Default("60")
     int getConnectionTimeout();
 
-    @DefaultValue("30")
+    @Default("30")
     int getReadTimeout();
 }
 ```
@@ -104,7 +104,7 @@ The rules that govern how the _configuration key set_ is constructed are covered
 When a value related to a configuration property is required, it is retrieved from the `ConfigurationSource`.
 Each key associated with the property is checked in the sequence until the value associated with the key is found
 in the _configuration source_. It is also possible to specify a default value for the property via the
-`@DefaultValue` annotation and `@DefaultsAnnotation` meta-annotations. See _javadoc_ for details.
+`@Default` annotation and `@DefaultsAnnotation` meta-annotations. See _javadoc_ for details.
 
 The configuration type is like a template. Before you begin accessing the configuration, a configuration instance
 must first be created and bound to the _configuration source_. This can be done via `ConfigurationFactory.createConfiguration()`
@@ -140,7 +140,7 @@ the encoded string more user friendly.
 
 For example `List<String>` in compact mode is represented as `[one,two,tree]` in JSON mode as `["one","two","three"]`.
 Map<String, List<String>> in compact mode: `{key1:[val11,val12],key2:[val21,val22]}` in JSON: `{"key1":["val11","val12"],"key2":["val21","val22"]}`.
-Because quotation mark `"` must be escaped in _java_, JSON format is very inconvenient for specifying default value in `@DefaultValue`.
+Because quotation mark `"` must be escaped in _java_, JSON format is very inconvenient for specifying default value in `@Default`.
 
 Please consult javadoc for `JsonLikeConverter` class to get more information about the format.
 

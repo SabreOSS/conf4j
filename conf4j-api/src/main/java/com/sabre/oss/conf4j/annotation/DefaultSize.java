@@ -45,11 +45,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * &#064;DefaultsAnnotation(DefaultTimeout.class)
  * public interface TimeoutConfiguration {
  *     &#064;Key("connect")
- *     &#064;DefaultValue("10000")
+ *     &#064;Default("10000")
  *     int getConnectTimeout();
  *
  *     &#064;Key("read")
- *     &#064;DefaultValue("5000")
+ *     &#064;Default("5000")
  *     int getReadTimeout();
  * }
  *

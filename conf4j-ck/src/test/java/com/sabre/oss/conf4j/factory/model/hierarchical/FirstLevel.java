@@ -24,18 +24,18 @@
 
 package com.sabre.oss.conf4j.factory.model.hierarchical;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.IgnoreKey;
 import com.sabre.oss.conf4j.annotation.Key;
 
 @Key("L1")
 public interface FirstLevel extends FirstLevelBase {
     @Override
-    @DefaultValue("FA1")
+    @Default("FA1")
     String getA();
 
     @Override
-    @DefaultValue("FB1")
+    @Default("FB1")
     String getB();
 
     @IgnoreKey

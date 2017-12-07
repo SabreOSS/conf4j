@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory.model.ignoreprefix;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.IgnorePrefix;
 import com.sabre.oss.conf4j.annotation.Key;
 
@@ -33,7 +33,7 @@ import java.util.List;
 @Key("subConfigurationClass")
 public interface SubConfiguration {
     @Key
-    @DefaultValue("-1")
+    @Default("-1")
     Integer getPropertyA();
 
     @IgnorePrefix

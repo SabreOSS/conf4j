@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.spring.model.keyprefix;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 public interface SpringBeanConfigurationWithoutKeyPrefix {
 
     @Key("configurationWithoutKeyPrefix.propertyName")
-    @DefaultValue("DEFAULT")
+    @Default("DEFAULT")
     String getPropertyName();
 
 }

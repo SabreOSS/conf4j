@@ -40,10 +40,10 @@ public interface ConnectionConfiguration {
 
    String getPassword();
 
-   @DefaultValue("60")
+   @Default("60")
    int getConnectionTimeout();
 
-   @DefaultValue("30")
+   @Default("30")
    int getReadTimeout();
 }
 ```

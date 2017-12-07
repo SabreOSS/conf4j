@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.example.config.connection;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Description;
 import com.sabre.oss.conf4j.annotation.Key;
 
@@ -32,13 +32,13 @@ import java.util.List;
 
 public interface Retry {
     @Key
-    @DefaultValue("4")
+    @Default("4")
     @Description("Maximum number of retries.")
     Integer getMaxRetries();
 
 
     @Key
-    @DefaultValue("[100,1000,30000,10000]")
+    @Default("[100,1000,30000,10000]")
     @Description("Retry delays in milliseconds. Before each retry, application will wait specified time.")
     List<Integer> getDelays();
 }

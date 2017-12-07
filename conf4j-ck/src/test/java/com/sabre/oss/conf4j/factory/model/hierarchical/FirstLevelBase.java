@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.factory.model.hierarchical;
 
 import com.sabre.oss.conf4j.annotation.AbstractConfiguration;
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 
 @AbstractConfiguration
@@ -34,10 +34,10 @@ public interface FirstLevelBase {
     String getA();
 
     @Key
-    @DefaultValue("FB0")
+    @Default("FB0")
     String getB();
 
     @Key
-    @DefaultValue("FC0")
+    @Default("FC0")
     String getC();
 }

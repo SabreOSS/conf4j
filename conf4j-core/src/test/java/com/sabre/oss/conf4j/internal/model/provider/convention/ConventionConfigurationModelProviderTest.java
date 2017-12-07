@@ -195,7 +195,7 @@ public class ConventionConfigurationModelProviderTest {
     public interface AnnotatedConnectionConfiguration {
         @Key("connectionUrl")
         @FallbackKey("fallbackConnectionUrl")
-        @DefaultValue("http://sabre.com")
+        @Default("http://sabre.com")
         @Description("url")
         @Encrypted("default")
         @Converter(StringConverter.class)
@@ -212,10 +212,10 @@ public class ConventionConfigurationModelProviderTest {
 
     @DefaultsAnnotation(DefaultTimeout.class)
     public interface AnnotatedTimeoutConfiguration {
-        @DefaultValue("100")
+        @Default("100")
         int getConnectTimeout();
 
-        @DefaultValue("200")
+        @Default("200")
         int getReadTimeout();
 
         @Target(METHOD)

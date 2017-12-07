@@ -222,14 +222,14 @@ public class AnnotationMetadataExtractor implements MetadataExtractor {
 
     @Override
     public OptionalValue<String> getDefaultValue(Class<?> configurationType, Method method) {
-        DefaultValue defaultValueAnnotation = findMethodAnnotation(configurationType, method, DefaultValue.class);
+        Default defaultValueAnnotation = findMethodAnnotation(configurationType, method, Default.class);
         if (defaultValueAnnotation == null) {
             Class<?> returnType = method.getReturnType();
             return returnType.isPrimitive() ? present(Objects.toString(ReflectionUtils.getDefaultValue(returnType), null)) : absent();
         }
 
         String value = defaultValueAnnotation.value();
-        return present(DefaultValue.NULL.equals(value) ? null : value);
+        return present(Default.NULL.equals(value) ? null : value);
     }
 
     @Override

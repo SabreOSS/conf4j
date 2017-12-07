@@ -24,12 +24,12 @@
 
 package com.sabre.oss.conf4j.factory.model.parameterized;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 
 @Key
 public interface ConfigurationWithIdSubConfiguration extends ParameterizedConfiguration<IdConfiguration> {
     @Key
-    @DefaultValue("defaultValue")
+    @Default("defaultValue")
     String getProperty();
 }

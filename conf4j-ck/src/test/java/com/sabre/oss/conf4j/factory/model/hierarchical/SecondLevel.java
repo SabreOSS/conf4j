@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory.model.hierarchical;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.FallbackKey;
 import com.sabre.oss.conf4j.annotation.IgnoreKey;
 import com.sabre.oss.conf4j.annotation.Key;
@@ -33,7 +33,7 @@ import com.sabre.oss.conf4j.factory.model.hierarchical.ThirdLevel.TargetAnnotati
 @Key("L2")
 public interface SecondLevel extends SecondLevelBase {
     @Override
-    @DefaultValue("SC1")
+    @Default("SC1")
     String getC();
 
     @FallbackKey("fallback.key")

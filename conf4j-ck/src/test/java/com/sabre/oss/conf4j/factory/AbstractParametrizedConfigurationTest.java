@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.factory;
 
 import com.sabre.oss.conf4j.annotation.AbstractConfiguration;
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.source.OptionalValue;
@@ -77,7 +77,7 @@ public abstract class AbstractParametrizedConfigurationTest<F extends AbstractCo
         String getValidationName();
 
         @Key
-        @DefaultValue("true")
+        @Default("true")
         boolean isMandatory();
 
         T getValidationRule();
@@ -170,7 +170,7 @@ public abstract class AbstractParametrizedConfigurationTest<F extends AbstractCo
         Map<K, List<V>> getMapOfLists();
 
         @Key
-        @DefaultValue("[{[a,b]:{[c,d]:{e:[1,2]}}}]")
+        @Default("[{[a,b]:{[c,d]:{e:[1,2]}}}]")
         List<Map<List<K>, Map<List<K>, Map<K, List<V>>>>> getComplexProperty();
     }
 

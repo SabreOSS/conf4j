@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.spring.model;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.DefaultsAnnotation;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.spring.model.SpringItemConfiguration.SpringItemConfigurationSource;
@@ -52,10 +52,10 @@ public interface SpringItemConfiguration {
     }
 
     @Key
-    @DefaultValue("property1DefaultValue")
+    @Default("property1DefaultValue")
     String getProperty1();
 
     @Key
-    @DefaultValue("property2DefaultValue")
+    @Default("property2DefaultValue")
     String getProperty2();
 }

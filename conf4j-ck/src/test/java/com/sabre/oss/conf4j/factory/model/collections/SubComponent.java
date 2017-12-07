@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory.model.collections;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.DefaultsAnnotation;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.factory.model.collections.SubComponent.SubComponentConfigurationSource;
@@ -51,10 +51,10 @@ public interface SubComponent {
     }
 
     @Key
-    @DefaultValue("A")
+    @Default("A")
     String getPropertyA();
 
     @Key
-    @DefaultValue("B")
+    @Default("B")
     String getPropertyB();
 }

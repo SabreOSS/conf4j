@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.spring.model;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.spring.model.SpringItemConfiguration.SpringItemConfigurationSource;
 import com.sabre.oss.conf4j.spring.model.SpringItemConfiguration.SpringItemsConfigurationSource;
@@ -39,43 +39,43 @@ import java.util.SortedMap;
 public abstract class SpringBeanConfiguration {
 
     @Key
-    @DefaultValue("defaultValue01")
+    @Default("defaultValue01")
     public abstract String getString01();
 
     @Key
-    @DefaultValue("defaultValue02")
+    @Default("defaultValue02")
     public abstract String getString02();
 
     @Key
-    @DefaultValue("false")
+    @Default("false")
     public abstract boolean getBooleanPrimitive();
 
     @Key
-    @DefaultValue("false")
+    @Default("false")
     public abstract boolean getDefaultBooleanPrimitive();
 
     @Key
-    @DefaultValue("false")
+    @Default("false")
     public abstract Boolean getBooleanObject();
 
     @Key
-    @DefaultValue("false")
+    @Default("false")
     public abstract Boolean getDefaultBooleanObject();
 
     @Key("list")
-    @DefaultValue("[A,B]")
+    @Default("[A,B]")
     public abstract List<String> getListOfStrings();
 
     @Key("map")
-    @DefaultValue("{A:B,C:D}")
+    @Default("{A:B,C:D}")
     public abstract Map<String, String> getMapOfStringToString();
 
     @Key
-    @DefaultValue("{C:D,E:F,A:B}")
+    @Default("{C:D,E:F,A:B}")
     public abstract SortedMap<String, String> getSortedMap();
 
     @Key("hidden")
-    @DefaultValue("hiddenValue")
+    @Default("hiddenValue")
     protected abstract String getHiddenProperty();
 
     public String getComplexProperty() {
@@ -83,15 +83,15 @@ public abstract class SpringBeanConfiguration {
     }
 
     @Key("url")
-    @DefaultValue("http://127.0.0.1")
+    @Default("http://127.0.0.1")
     public abstract String getURL();
 
     @Key("mapWithListAsValue")
-    @DefaultValue("{1:[a,b],2:[a,b,c]}")
+    @Default("{1:[a,b],2:[a,b,c]}")
     public abstract Map<String, List<String>> getComplexListMap();
 
     @Key("mapWithMapAsValue")
-    @DefaultValue("{1:{a:b,c:d},2:{e:f,g:h}}")
+    @Default("{1:{a:b,c:d},2:{e:f,g:h}}")
     public abstract Map<String, Map<String, String>> getComplexMap();
 
     @Key("springItems")

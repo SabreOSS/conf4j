@@ -24,18 +24,18 @@
 
 package com.sabre.oss.conf4j.factory.model.ignoreprefix;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.FallbackKey;
 import com.sabre.oss.conf4j.annotation.Key;
 
 @Key("subSubConfigurationClass")
 public interface SubSubConfiguration {
     @Key
-    @DefaultValue("-1")
+    @Default("-1")
     Integer getPropertyA();
 
     @Key
     @FallbackKey("fallback.key.propertyB")
-    @DefaultValue("-1")
+    @Default("-1")
     Integer getPropertyB();
 }
