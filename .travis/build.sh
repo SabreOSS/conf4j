@@ -33,7 +33,7 @@ function perform_regular_build() {
 }
 
 function perform_release_build() {
-    echo "Performing release ${releaseVersion}' ..."
+    echo "Performing release '${releaseVersion}' ..."
 
     setup
 
