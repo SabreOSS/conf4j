@@ -24,12 +24,12 @@
 
 package com.sabre.oss.conf4j.factory.model;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 
 public interface ValidAbstractConfiguration {
     @Key("int.property")
-    @DefaultValue("123")
+    @Default("123")
     int getIntegerProperty();
 
     String getImplementedProperty();

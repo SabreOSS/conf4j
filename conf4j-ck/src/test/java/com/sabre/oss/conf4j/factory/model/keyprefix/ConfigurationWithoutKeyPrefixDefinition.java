@@ -24,11 +24,11 @@
 
 package com.sabre.oss.conf4j.factory.model.keyprefix;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 
 public interface ConfigurationWithoutKeyPrefixDefinition {
-    @DefaultValue("defaultValue")
+    @Default("defaultValue")
     @Key("a.b.c")
     String getProperty();
 }

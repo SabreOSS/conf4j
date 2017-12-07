@@ -48,7 +48,7 @@ public class AnnotationValuePropertyMethodParser extends AbstractAnnotationPrope
             Key.class,
             FallbackKey.class,
             IgnorePrefix.class,
-            DefaultValue.class,
+            Default.class,
             Converter.class,
             Encrypted.class,
             Description.class,

@@ -98,7 +98,7 @@ public class AnnotationConfigurationModelProviderTest {
     public interface ConnectionConfiguration {
         @Key("url")
         @FallbackKey("fallback.url")
-        @DefaultValue("http://url.com")
+        @Default("http://url.com")
         @Description("target url")
         @Encrypted("secured")
         @Converter(StringConverter.class)

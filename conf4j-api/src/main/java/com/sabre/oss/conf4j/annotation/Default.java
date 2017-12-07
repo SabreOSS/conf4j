@@ -44,11 +44,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <pre>
  * public interface ConnectionConfiguration {
  *    &#064;Key("name")
- *    &#064;DefaultValue("http://www.sabre.com")
+ *    &#064;Default("http://www.sabre.com")
  *    String getUrl();
  *
  *    &#064;Key("timeout")
- *    &#064;DefaultValue("10000")
+ *    &#064;Default("10000")
  *    int getTimeout();
  * }
  * </pre>
@@ -56,10 +56,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target(METHOD)
 @Documented
-public @interface DefaultValue {
+public @interface Default {
     /**
      * Used to specify the default value {@code null}. Using {@code NULL} is equivalent to not applying
-     * {@code DefaultValue} annotation, but it may be useful to explicitly specify (for documentation purposes)
+     * {@code Default} annotation, but it may be useful to explicitly specify (for documentation purposes)
      * the default value as {@code null}.
      * <p>
      * For types that do not support {@code null}, such as primitives, using {@code NULL} is not supported.

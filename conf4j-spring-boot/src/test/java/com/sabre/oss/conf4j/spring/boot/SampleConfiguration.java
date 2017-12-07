@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.spring.boot;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import org.springframework.stereotype.Component;
 
@@ -34,19 +34,19 @@ import java.util.List;
 @Key("com.sabre.configuration.conf4j")
 public interface SampleConfiguration {
 
-    @DefaultValue("DEFAULT")
+    @Default("DEFAULT")
     @Key("stringWithDefaultValueFromAnnotation")
     String getStringWithDefaultValueFromAnnotation();
 
-    @DefaultValue("DEFAULT")
+    @Default("DEFAULT")
     @Key("stringWithValueFromValueSource")
     String getStringWithValueFromConfigurableEnvironmentValueSource();
 
-    @DefaultValue("[DEFAULT,DEFAULT]")
+    @Default("[DEFAULT,DEFAULT]")
     @Key("listOfStringsWithDefaultValue")
     List<String> getListOfStringsWithDefaultValueFromAnnotation();
 
-    @DefaultValue("[DEFAULT,DEFAULT]")
+    @Default("[DEFAULT,DEFAULT]")
     @Key("listOfStringsWithValuesFromValueSource")
     List<String> getListOfStringsWithValuesFromConfigurableEnvironmentValueSource();
 }

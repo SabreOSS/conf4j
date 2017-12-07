@@ -28,7 +28,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Internal;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.factory.model.collections.Component;
@@ -225,18 +225,18 @@ public abstract class AbstractDynamicConfigurationFactoryTest<F extends Abstract
     public interface CompositeParametrisedCollectionsConfiguration {
 
         @Key
-        @DefaultValue("{1:[a],2:[a,b]}")
+        @Default("{1:[a],2:[a,b]}")
         Map<String, List<String>> getMapStringToListOfStrings();
 
         @Key
-        @DefaultValue("{1:{a:b},2:{c:d,e:f}}")
+        @Default("{1:{a:b},2:{c:d,e:f}}")
         Map<String, Map<String, String>> getMapStringToMapStringToString();
     }
 
     @Key("keyPrefix")
     public interface Configuration {
         @Key
-        @DefaultValue("defaultValue")
+        @Default("defaultValue")
         String getSomeProperty();
     }
 

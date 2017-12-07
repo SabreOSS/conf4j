@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory.model.keyprefix;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.factory.model.collections.Component;
 import com.sabre.oss.conf4j.factory.model.collections.Component.ComponentAnnotationSources;
@@ -35,7 +35,7 @@ import java.util.List;
 public interface ComponentsConfiguration {
 
     @Key
-    @DefaultValue("1")
+    @Default("1")
     Integer getId();
 
     @Key("default")

@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.spring.converter;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.converter.DefaultTypeConverters;
 import com.sabre.oss.conf4j.converter.TypeConverter;
@@ -165,7 +165,7 @@ public class CachingTypeConverterTest {
 
     public interface SampleConfiguration {
         @Key
-        @DefaultValue("10")
+        @Default("10")
         Long getValue();
     }
 }

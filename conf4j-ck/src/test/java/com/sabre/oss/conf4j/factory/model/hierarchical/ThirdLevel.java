@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory.model.hierarchical;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.DefaultsAnnotation;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.factory.model.hierarchical.ThirdLevel.TargetAnnotationTest;
@@ -47,6 +47,6 @@ public interface ThirdLevel extends ThirdLevelBase {
     }
 
     @Override
-    @DefaultValue("TE1")
+    @Default("TE1")
     String getE();
 }

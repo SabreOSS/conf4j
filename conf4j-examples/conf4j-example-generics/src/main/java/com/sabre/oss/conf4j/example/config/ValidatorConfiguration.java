@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.example.config;
 
 import com.sabre.oss.conf4j.annotation.AbstractConfiguration;
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Description;
 import com.sabre.oss.conf4j.annotation.Key;
 
@@ -45,7 +45,7 @@ public interface ValidatorConfiguration<C> {
     String getName();
 
     @Key
-    @DefaultValue("true")
+    @Default("true")
     @Description("Indicates if the validator is enabled.")
     boolean isEnabled();
 

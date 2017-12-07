@@ -45,7 +45,7 @@ class AnnotationNonAbstractMethodParser implements PropertyMethodParser<Property
             Converter.class,
             DefaultsAnnotation.class,
             DefaultSize.class,
-            DefaultValue.class,
+            Default.class,
             Encrypted.class,
             FallbackKey.class,
             Key.class,

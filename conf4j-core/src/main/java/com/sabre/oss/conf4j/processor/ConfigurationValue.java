@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.processor;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 
 import java.util.Map;
 
@@ -45,7 +45,7 @@ public class ConfigurationValue {
      * Constructs configuration value.
      *
      * @param configurationKey   configuration key the value was retrieved. It may be {@code null} when the key
-     *                           is unavailable (for example when the value is fetched from {@link DefaultValue} annotation.
+     *                           is unavailable (for example when the value is fetched from {@link Default} annotation.
      * @param value              configuration value.
      * @param defaultValue       indicates the value is default value assigned with configuration key.
      * @param encryptionProvider encryption provider name, or {@code null} when value is not encrypted.
@@ -97,7 +97,7 @@ public class ConfigurationValue {
 
 
     /**
-     * Indicates the value is fetched from the default e.g. {@link DefaultValue} annotation.
+     * Indicates the value is fetched from the default e.g. {@link Default} annotation.
      *
      * @return {@code true} when the value is fetched from default.
      */

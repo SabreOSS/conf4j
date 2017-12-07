@@ -24,14 +24,14 @@
 
 package com.sabre.oss.conf4j.spring.configscan.model;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import org.springframework.stereotype.Component;
 
 @Component
 public interface RootConfiguration {
     @Key
-    @DefaultValue("defaultName")
+    @Default("defaultName")
     String getName();
 
     SubConfiguration getSubConfiguration();

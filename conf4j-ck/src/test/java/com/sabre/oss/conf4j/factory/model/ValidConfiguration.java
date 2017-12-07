@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory.model;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.FallbackKey;
 import com.sabre.oss.conf4j.annotation.Key;
 
@@ -33,47 +33,47 @@ import java.util.List;
 @Key("configuration.under.test")
 public interface ValidConfiguration {
     @Key("boolean.property")
-    @DefaultValue("true")
+    @Default("true")
     boolean isSimpleBooleanProperty();
 
     @Key("Boolean.property")
-    @DefaultValue("true")
+    @Default("true")
     Boolean getBooleanProperty();
 
     @Key("int.property")
-    @DefaultValue("1")
+    @Default("1")
     int getSimpleIntegerProperty();
 
     @Key("Integer.property")
-    @DefaultValue("-1")
+    @Default("-1")
     Integer getIntegerProperty();
 
     @Key("long.property")
-    @DefaultValue("1")
+    @Default("1")
     long getSimpleLongProperty();
 
     @Key("Long.property")
-    @DefaultValue("-1")
+    @Default("-1")
     Long getLongProperty();
 
     @Key("double.property")
-    @DefaultValue("0.1")
+    @Default("0.1")
     double getSimpleDoubleProperty();
 
     @Key("Double.property")
-    @DefaultValue("-0.1")
+    @Default("-0.1")
     Double getDoubleProperty();
 
     @Key("String.property")
-    @DefaultValue("defaultValue")
+    @Default("defaultValue")
     String getStringProperty();
 
     @Key("List.property")
-    @DefaultValue("[defaultValue1,defaultValue2]")
+    @Default("[defaultValue1,defaultValue2]")
     List<String> getStringListProperty();
 
     @Key("enumList.property")
-    @DefaultValue("[VALUE_1,VALUE_2]")
+    @Default("[VALUE_1,VALUE_2]")
     List<SimpleEnum> getEnumListProperty();
 
     enum SimpleEnum {
@@ -82,17 +82,17 @@ public interface ValidConfiguration {
 
     @Key("property")
     @FallbackKey("fallback.property")
-    @DefaultValue("defaultValue")
+    @Default("defaultValue")
     String getGlobalFallbackProperty();
 
     @Key("List.defaultEmpty")
-    @DefaultValue("[]")
+    @Default("[]")
     List<String> getStringListPropertyWithEmptyDefault();
 
     @Key("List.withoutDefault")
     List<String> getStringListPropertyWithoutDefault();
 
     @Key("List.defaultNull")
-    @DefaultValue(DefaultValue.NULL)
+    @Default(Default.NULL)
     List<String> getStringListPropertyWithNullDefault();
 }

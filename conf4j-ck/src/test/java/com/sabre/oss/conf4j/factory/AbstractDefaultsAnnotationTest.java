@@ -24,8 +24,8 @@
 
 package com.sabre.oss.conf4j.factory;
 
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.DefaultSize;
-import com.sabre.oss.conf4j.annotation.DefaultValue;
 import com.sabre.oss.conf4j.annotation.DefaultsAnnotation;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
@@ -230,11 +230,11 @@ public abstract class AbstractDefaultsAnnotationTest<F extends AbstractConfigura
     @DefaultsAnnotation(SubConfigDefault.class)
     public interface SubConfig {
         @Key("int")
-        @DefaultValue("1")
+        @Default("1")
         int getIntProperty();
 
         @Key("string")
-        @DefaultValue("default")
+        @Default("default")
         String getStringProperty();
     }
 
@@ -258,7 +258,7 @@ public abstract class AbstractDefaultsAnnotationTest<F extends AbstractConfigura
     // sub-configurations without default annotations can also be used in the lists
     public interface SubConfigWithoutDefaultsAnnotation {
         @Key
-        @DefaultValue("value")
+        @Default("value")
         String getValue();
     }
 }

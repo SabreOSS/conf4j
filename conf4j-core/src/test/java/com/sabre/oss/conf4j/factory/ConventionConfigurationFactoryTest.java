@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyDynamicConfigurationFactory;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
@@ -102,11 +102,11 @@ public class ConventionConfigurationFactoryTest {
 
     public interface TimeoutConfiguration {
         @Key
-        @DefaultValue("0")
+        @Default("0")
         int getConnectTimeout();
 
         @Key
-        @DefaultValue("0")
+        @Default("0")
         int getReadTimeout();
     }
 }

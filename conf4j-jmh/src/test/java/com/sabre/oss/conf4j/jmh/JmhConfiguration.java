@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.jmh;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import org.springframework.stereotype.Component;
 
@@ -34,42 +34,42 @@ import java.util.List;
 @Key("jmh")
 public interface JmhConfiguration {
     @Key("boolean.property")
-    @DefaultValue("false")
+    @Default("false")
     boolean isSimpleBooleanProperty();
 
     @Key("Boolean.property")
-    @DefaultValue("false")
+    @Default("false")
     Boolean getBooleanProperty();
 
     @Key("int.property")
-    @DefaultValue("1")
+    @Default("1")
     int getSimpleIntegerProperty();
 
     @Key("Integer.property")
-    @DefaultValue("1")
+    @Default("1")
     Integer getIntegerProperty();
 
     @Key("long.property")
-    @DefaultValue("1")
+    @Default("1")
     long getSimpleLongProperty();
 
     @Key("Long.property")
-    @DefaultValue("1")
+    @Default("1")
     Long getLongProperty();
 
     @Key("double.property")
-    @DefaultValue("1.0")
+    @Default("1.0")
     double getSimpleDoubleProperty();
 
     @Key("Double.property")
-    @DefaultValue("1.0")
+    @Default("1.0")
     Double getDoubleProperty();
 
     @Key("String.property")
-    @DefaultValue("defaultValue")
+    @Default("defaultValue")
     String getStringProperty();
 
     @Key("List.property")
-    @DefaultValue("[defaultValue,defaultValue]")
+    @Default("[defaultValue,defaultValue]")
     List<String> getListOfStringsProperty();
 }

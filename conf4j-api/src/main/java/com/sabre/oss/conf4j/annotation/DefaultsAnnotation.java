@@ -57,11 +57,11 @@ import java.lang.annotation.*;
  * &#064;DefaultsAnnotation(DefaultTimeout.class)
  * public interface TimeoutConfiguration {
  *     &#064;Key("connect")
- *     &#064;DefaultValue("10000")
+ *     &#064;Default("10000")
  *     int getConnectTimeout();
  *
  *     &#064;Key("read")
- *     &#064;DefaultValue("5000")
+ *     &#064;Default("5000")
  *     int getReadTimeout();
  * }
  *
@@ -94,7 +94,7 @@ import java.lang.annotation.*;
  *    &#064;Key("url")
  *    String getUrl();
  *
- *    // Default values are defined in TimeoutConfiguration by &#064;DefaultValue
+ *    // Default values are defined in TimeoutConfiguration by &#064;Default
  *    &#064;Key("standard")
  *    TimeoutConfiguration getStandardTimeout();
  *
@@ -108,7 +108,7 @@ import java.lang.annotation.*;
  *    // to reduce or enhance the number of elements in the list. In the latter case, default values are fetched from
  *    // the sub-configuration.
  *    // SKIP in the second &#064;DefaultTimeout annotation indicates the default value is fetched from
- *    // the &#064;DefaultValue applied on TimeoutConfiguration.getReadTimeout.
+ *    // the &#064;Default applied on TimeoutConfiguration.getReadTimeout.
  *    &#064;Key("otherTimeouts")
  *    &#064;DefaultTimeout(connectTimeout = "100", readTimeout = "200")
  *    &#064;DefaultTimeout(connectTimeout = "1000", readTimeout = SKIP)
@@ -117,7 +117,7 @@ import java.lang.annotation.*;
  * }
  * </pre>
  *
- * @see DefaultValue
+ * @see Default
  * @see DefaultSize
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -128,15 +128,15 @@ public @interface DefaultsAnnotation {
      * Used to specify the default value {@code null}.
      * <p>For a type that doesn't support {@code null} like primitives, using {@code NULL} is a bug.
      *
-     * @see DefaultValue#NULL
+     * @see Default#NULL
      */
-    String NULL = DefaultValue.NULL;
+    String NULL = Default.NULL;
 
     /**
      * Used to specify the default value declared in the sub-configuration should not be overridden.
      *
      * @see #NULL
-     * @see DefaultValue#NULL
+     * @see Default#NULL
      */
     String SKIP = Constants.SKIP;
 

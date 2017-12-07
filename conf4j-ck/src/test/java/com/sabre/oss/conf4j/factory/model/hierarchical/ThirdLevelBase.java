@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory.model.hierarchical;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 
 public interface ThirdLevelBase {
@@ -32,6 +32,6 @@ public interface ThirdLevelBase {
     String getE();
 
     @Key
-    @DefaultValue("TF0")
+    @Default("TF0")
     String getF();
 }

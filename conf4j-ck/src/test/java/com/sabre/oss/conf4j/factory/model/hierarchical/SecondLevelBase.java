@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory.model.hierarchical;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 
 public interface SecondLevelBase {
@@ -32,6 +32,6 @@ public interface SecondLevelBase {
     String getC();
 
     @Key
-    @DefaultValue("SD0")
+    @Default("SD0")
     String getD();
 }

@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.factory.model.collections;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.DefaultsAnnotation;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.factory.model.collections.Component.ComponentAnnotationSource;
@@ -34,7 +34,7 @@ import com.sabre.oss.conf4j.factory.model.collections.SubComponent.SubComponents
 import java.lang.annotation.*;
 import java.util.List;
 
-import static com.sabre.oss.conf4j.annotation.DefaultValue.NULL;
+import static com.sabre.oss.conf4j.annotation.Default.NULL;
 
 @Key
 @DefaultsAnnotation(ComponentAnnotationSource.class)
@@ -54,7 +54,7 @@ public interface Component {
     }
 
     @Key
-    @DefaultValue("defaultName")
+    @Default("defaultName")
     String getName();
 
     @Key

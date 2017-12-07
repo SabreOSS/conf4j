@@ -24,19 +24,19 @@
 
 package com.sabre.oss.conf4j.example.config.connection;
 
-import com.sabre.oss.conf4j.annotation.DefaultValue;
+import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Description;
 import com.sabre.oss.conf4j.annotation.Key;
 
 @Description("Represents connection timeout.")
 public interface Timeout {
     @Key
-    @DefaultValue("60000")
+    @Default("60000")
     @Description("Connect timeout in milliseconds.")
     int getConnectTimeout();
 
     @Key
-    @DefaultValue("30000")
+    @Default("30000")
     @Description("Read timeout in milliseconds.")
     int getReadTimeout();
 }
