@@ -33,7 +33,7 @@ function perform_regular_build() {
 }
 
 function perform_release_build() {
-    echo "Performing release ${releaseVersion}' ..."
+    echo "Performing release '${releaseVersion}' ..."
 
     setup
 
@@ -141,6 +141,7 @@ function validate() {
 function build() {
     # Determine build type. If commit message matches "Release ${releaseVersion}"
     # then release build is performed, otherwise regular build.
+    echo "Commit message: ${TRAVIS_COMMIT_MESSAGE}"
     local release_commit_message_pattern="^Release ${releaseVersion}$"
     if [[ "${TRAVIS_COMMIT_MESSAGE}" =~ ${release_commit_message_pattern} ]]; then
         perform_release_build

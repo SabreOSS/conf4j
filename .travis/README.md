@@ -81,7 +81,7 @@
     generator a better chance to gain enough entropy.
     +++++
     .+++++
-    gpg: key 06B6E508 marked as ultimately trusted
+    gpg: key 01234567 marked as ultimately trusted
     public and secret key created and signed.
     
     gpg: checking the trustdb
@@ -102,6 +102,10 @@
 * export GPG ownertrust to **gpg_ownertrust.b64** file:
 
     `$ gpg --export-ownertrust | base64 -w 0 > gpg_ownertrust.b64`
+    
+* distribute GPG Public Key to publicly accessible key server
+
+    `$ gpg --keyserver hkp://pgp.mit.edu --send-keys conf4j.oss@sabre.com`
 
 ### Generating SSH Keys
 
