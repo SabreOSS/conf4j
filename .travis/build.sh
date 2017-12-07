@@ -142,6 +142,7 @@ function build() {
     # Determine build type. If commit message matches "Release ${releaseVersion}"
     # then release build is performed, otherwise regular build.
     local release_commit_message_pattern="^Release ${releaseVersion}$"
+    echo "Commit message: ${TRAVIS_COMMIT_MESSAGE}"
     if [[ "${TRAVIS_COMMIT_MESSAGE}" =~ ${release_commit_message_pattern} ]]; then
         perform_release_build
     else
