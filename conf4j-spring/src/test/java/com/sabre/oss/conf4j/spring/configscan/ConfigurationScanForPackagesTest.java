@@ -30,14 +30,13 @@ import com.sabre.oss.conf4j.spring.configscan.model.ConfigurationWithName;
 import com.sabre.oss.conf4j.spring.configscan.model.RootConfiguration;
 import com.sabre.oss.conf4j.spring.configscan.model.SubConfiguration;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-
-import javax.annotation.Resource;
 
 @ConfigurationScan("com.sabre.oss.conf4j.spring.configscan.model")
 @ContextConfiguration(classes = ConfigurationScanForPackagesTest.class)
 public class ConfigurationScanForPackagesTest extends AbstractConfigurationScanTest {
-    @Resource
+    @Autowired
     private RootConfiguration rootConfiguration;
 
     @Test

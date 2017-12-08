@@ -31,17 +31,16 @@ import com.sabre.oss.conf4j.spring.ConfigurationBeanFactoryPostProcessor;
 import com.sabre.oss.conf4j.spring.configscan.model.RootConfiguration;
 import com.sabre.oss.conf4j.spring.source.PropertySourceConfigurationSource;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
-
-import javax.annotation.Resource;
 
 import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.*;
 
 @ContextConfiguration(classes = ConfigureCustomConfigurationFactoryTest.class)
 @ImportResource("classpath:configure/configure-custom-configuration-factory.spring.test.xml")
 public class ConfigureCustomConfigurationFactoryTest extends AbstractContextTest {
-    @Resource
+    @Autowired
     protected RootConfiguration rootConfiguration;
 
     @Test

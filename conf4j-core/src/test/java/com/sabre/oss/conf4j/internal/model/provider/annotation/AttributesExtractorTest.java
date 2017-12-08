@@ -26,6 +26,8 @@ package com.sabre.oss.conf4j.internal.model.provider.annotation;
 
 import com.sabre.oss.conf4j.annotation.Configuration;
 import com.sabre.oss.conf4j.annotation.Meta;
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -35,6 +37,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractor.getMetaAttributes;
 import static java.lang.annotation.ElementType.METHOD;
@@ -305,9 +308,10 @@ public class AttributesExtractorTest {
     public void shouldFailIfNotAllAttributesAreAnnotated() {
         // expect
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage(
-                "All @com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$NotAllAttributesAreAnnotated(annotated=annotatedValue, notAnnotated=notAnnotatedValue) " +
-                        "annotations attributes must be annotated with @com.sabre.oss.conf4j.annotation.Meta.");
+        exception.expectMessage(new MatchesPattern(
+                "All @com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest\\$NotAllAttributesAreAnnotated(.*) " +
+                        "annotations attributes must be annotated with @com.sabre.oss.conf4j.annotation.Meta."
+        ));
         // when
         getMetaAttributes(NotAllAttributesAreAnnotatedUsage.class);
     }
@@ -331,10 +335,11 @@ public class AttributesExtractorTest {
     public void shouldFailIfMoreThanAttributeIsDefined() {
         // expect
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage(
-                "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$TooManyAttributes(attribute=attribute, anotherAttribute=anotherAttribute) " +
+        exception.expectMessage(new MatchesPattern(
+                "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest\\$TooManyAttributes(.*) " +
                         "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and define more than one attribute: " +
-                        "anotherAttribute, attribute ");
+                        "anotherAttribute, attribute "
+        ));
 
         // when
         getMetaAttributes(TooManyAttributesUsage.class);
@@ -359,10 +364,12 @@ public class AttributesExtractorTest {
     public void shouldFailIfInvalidAttributeType() {
         // expect
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage(
-                "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$InvalidAttributeType(attribute=[1, 2]) " +
+        exception.expectMessage(new MatchesPattern(
+                "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest\\$InvalidAttributeType(.*]" +
+                        ") " +
                         "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and its attribute 'attribute' " +
-                        "type is [Ljava.lang.String;. Only scalar, simple types are supported.");
+                        "type is [Ljava.lang.String;. Only scalar, simple types are supported."
+        ));
         // when
         getMetaAttributes(InvalidAttributeTypeUsage.class);
     }
@@ -386,5 +393,23 @@ public class AttributesExtractorTest {
             throw new IllegalArgumentException("Class " + clazz.getName() + " doesn't declare parameterless method " + methodName);
         }
 
+    }
+
+    private static final class MatchesPattern extends TypeSafeMatcher<String> {
+        private final Pattern pattern;
+
+        private MatchesPattern(String pattern) {
+            this.pattern = Pattern.compile(pattern);
+        }
+
+        @Override
+        protected boolean matchesSafely(String item) {
+            return pattern.matcher(item).matches();
+        }
+
+        @Override
+        public void describeTo(Description description) {
+            description.appendText("a string matching the pattern '" + pattern + '\'');
+        }
     }
 }

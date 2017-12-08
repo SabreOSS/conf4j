@@ -32,10 +32,8 @@ import com.sabre.oss.conf4j.internal.model.PropertyModel;
 import com.sabre.oss.conf4j.internal.model.SubConfigurationListPropertyModel;
 import com.sabre.oss.conf4j.internal.model.SubConfigurationPropertyModel;
 
-
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles.Lookup;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -44,13 +42,12 @@ import java.util.Set;
 
 import static com.sabre.oss.conf4j.internal.Constants.LIST_SUFFIX;
 import static com.sabre.oss.conf4j.internal.Constants.METADATA_SUFFIX;
+import static com.sabre.oss.conf4j.internal.factory.jdkproxy.DefaultMethodUtils.getLookup;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toSet;
 
 abstract class AbstractJdkProxyConfigurationInvocationHandler implements InvocationHandler, Serializable, ConfigurationPropertiesAccessor {
     private static final long serialVersionUID = 1L;
-
-    private static final Constructor<Lookup> lookupConstructor = getLookupConstructor();
 
     /**
      * Holds properties.
@@ -93,7 +90,9 @@ abstract class AbstractJdkProxyConfigurationInvocationHandler implements Invocat
 
         if (method.isDefault()) {
             Class<?> declaringClass = method.getDeclaringClass();
-            return lookupConstructor.newInstance(declaringClass, Lookup.PRIVATE)
+            Lookup lookup = getLookup(declaringClass);
+
+            return lookup
                     .unreflectSpecial(method, declaringClass)
                     .bindTo(proxy)
                     .invokeWithArguments(args);
@@ -163,15 +162,4 @@ abstract class AbstractJdkProxyConfigurationInvocationHandler implements Invocat
     public void setSubConfigurationListProperty(String propertyName, SubConfigurationList list) {
         properties.put(propertyName + LIST_SUFFIX, list);
     }
-
-    private static Constructor<Lookup> getLookupConstructor() {
-        try {
-            Constructor<Lookup> constructor = Lookup.class.getDeclaredConstructor(Class.class, int.class);
-            constructor.setAccessible(true);
-            return constructor;
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }
