@@ -142,9 +142,14 @@ function build() {
     # Determine build type. If commit message matches "Release ${releaseVersion}"
     # then release build is performed, otherwise regular build.
     echo "Commit message: ${TRAVIS_COMMIT_MESSAGE}"
+    echo "Travis jdk version: ${TRAVIS_JDK_VERSION}"
     local release_commit_message_pattern="^Release ${releaseVersion}$"
     if [[ "${TRAVIS_COMMIT_MESSAGE}" =~ ${release_commit_message_pattern} ]]; then
-        perform_release_build
+        if [[ "${TRAVIS_JDK_VERSION}" -eq "oraclejdk8" ]]; then
+            perform_release_build
+        else
+            echo "Skipping release build for Travis jdk version ${TRAVIS_JDK_VERSION}, only oraclejdk8 is supported."
+        fi
     else
         perform_regular_build
     fi

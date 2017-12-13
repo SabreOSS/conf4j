@@ -30,20 +30,19 @@ import com.sabre.oss.conf4j.spring.model.inheritance.SpecificConfiguration;
 import com.sabre.oss.conf4j.spring.model.inheritance.SpecificNestedConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.annotation.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:CovariantOverridingWithOverriddenPropertiesTest/bean-overriding.spring.test.xml")
 public class CovariantOverridingWithOverriddenPropertiesTest extends AbstractJUnit4SpringContextTests {
-    @Resource(type = SpecificConfiguration.class)
+    @Autowired
     private SpecificConfiguration specificConfiguration;
-    @Resource(type = CommonConfiguration.class, name = "commonConfiguration")
+    @Autowired
     private CommonConfiguration commonConfiguration;
 
     @Test

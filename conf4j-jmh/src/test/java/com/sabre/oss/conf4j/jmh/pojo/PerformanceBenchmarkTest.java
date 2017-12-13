@@ -61,7 +61,6 @@ public class PerformanceBenchmarkTest {
                 .syncIterations(true)
                 .shouldFailOnError(true)
                 .shouldDoGC(false)
-                .jvm(System.getProperty("java.home") + "/../bin/java")
                 .jvmArgs("-Xms1G", "-Xmx1G", "-XX:MaxGCPauseMillis=10", "-XX:GCPauseIntervalMillis=100")
                 .build();
         new Runner(opt).run();

@@ -34,10 +34,9 @@ import com.sabre.oss.conf4j.spring.configscan.model.RootConfiguration;
 import com.sabre.oss.conf4j.spring.configscan.model.SubConfiguration;
 import com.sabre.oss.conf4j.spring.source.PropertySourceConfigurationSource;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
-
-import javax.annotation.Resource;
 
 import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = ConfigureTest.class)
 @ImportResource("classpath:configure/configure.spring.test.xml")
 public class ConfigureTest extends AbstractContextTest {
-    @Resource
+    @Autowired
     protected RootConfiguration rootConfiguration;
 
     @Test
@@ -64,6 +63,4 @@ public class ConfigureTest extends AbstractContextTest {
         isNotRegistered(SubConfiguration.class);
         assertThat(rootConfiguration.getName()).isEqualTo("defaultName");
     }
-
-
 }
