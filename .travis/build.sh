@@ -143,7 +143,7 @@ function build() {
     # then release build is performed, otherwise regular build.
     echo "Commit message: ${TRAVIS_COMMIT_MESSAGE}"
     local release_commit_message_pattern="^Release ${releaseVersion}$"
-    if [[ "${TRAVIS_COMMIT_MESSAGE}" =~ ${release_commit_message_pattern} ]]; then
+    if [[ "${TRAVIS_COMMIT_MESSAGE}" =~ ${release_commit_message_pattern} ]] && [[ "${TRAVIS_JDK_VERSION}" =~ "1\.8\.0.*" ]]; then
         perform_release_build
     else
         perform_regular_build
