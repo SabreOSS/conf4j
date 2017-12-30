@@ -72,6 +72,12 @@
         </dependency>
         <!-- Test only dependencies -->
         <dependency>
+            <groupId>com.sabre.oss.conf4j</groupId>
+            <artifactId>conf4j-ck</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>

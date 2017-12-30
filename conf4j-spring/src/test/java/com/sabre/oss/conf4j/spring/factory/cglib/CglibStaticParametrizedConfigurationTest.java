@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.spring.factory.cglib;
 
-import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyStaticConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractParametrizedConfigurationTest;
 
-public class JdkProxyStaticParametrizedConfigurationTest extends AbstractParametrizedConfigurationTest<JdkProxyStaticConfigurationFactory> {
+public class CglibStaticParametrizedConfigurationTest extends AbstractParametrizedConfigurationTest<CglibStaticConfigurationFactory> {
     @Override
-    protected JdkProxyStaticConfigurationFactory createConfigurationFactory() {
-        return new JdkProxyStaticConfigurationFactory();
+    protected CglibStaticConfigurationFactory createConfigurationFactory() {
+        return new CglibStaticConfigurationFactory();
     }
 }

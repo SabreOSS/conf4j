@@ -22,13 +22,15 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.factory.javassist;
 
-import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyDynamicConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractIgnorePrefixTest;
 
-public class JdkProxyDynamicParametrizedConfigurationTest extends AbstractParametrizedConfigurationTest<JdkProxyDynamicConfigurationFactory> {
+public class JavassistDynamicIgnorePrefixTest extends AbstractIgnorePrefixTest<JavassistDynamicConfigurationFactory> {
     @Override
-    protected JdkProxyDynamicConfigurationFactory createConfigurationFactory() {
-        return new JdkProxyDynamicConfigurationFactory();
+    protected JavassistDynamicConfigurationFactory createConfigurationFactory() {
+        return new JavassistDynamicConfigurationFactory();
     }
 }
+
+

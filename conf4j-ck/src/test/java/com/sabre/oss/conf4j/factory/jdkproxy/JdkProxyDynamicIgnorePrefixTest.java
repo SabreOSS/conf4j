@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.factory.jdkproxy;
 
-import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyDynamicConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractIgnorePrefixTest;
 
 public class JdkProxyDynamicIgnorePrefixTest extends AbstractIgnorePrefixTest<JdkProxyDynamicConfigurationFactory> {
     @Override

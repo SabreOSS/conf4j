@@ -22,16 +22,13 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.factory.javassist;
 
-import com.sabre.oss.conf4j.factory.javassist.JavassistStaticConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractParametrizedConfigurationTest;
 
-public class JavassistStaticDefaultsAnnotationTest extends AbstractDefaultsAnnotationTest<JavassistStaticConfigurationFactory> {
+public class JavassistDynamicParametrizedConfigurationTest extends AbstractParametrizedConfigurationTest<JavassistDynamicConfigurationFactory> {
     @Override
-    protected JavassistStaticConfigurationFactory createConfigurationFactory() {
-        return new JavassistStaticConfigurationFactory();
+    protected JavassistDynamicConfigurationFactory createConfigurationFactory() {
+        return new JavassistDynamicConfigurationFactory();
     }
 }
-
-
-
