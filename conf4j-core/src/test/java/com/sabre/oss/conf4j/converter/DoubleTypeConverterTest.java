@@ -24,8 +24,8 @@
 
 package com.sabre.oss.conf4j.converter;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class DoubleTypeConverterTest {
     private DoubleConverter doubleTypeConverter;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp() {
         doubleTypeConverter = new DoubleConverter();
     }

@@ -24,8 +24,8 @@
 
 package com.sabre.oss.conf4j.converter;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.lang.reflect.Type;
 import java.time.Duration;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.mock;
 public class DurationTypeConverterTest {
     private DurationConverter converter;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp() {
         converter = new DurationConverter();
     }

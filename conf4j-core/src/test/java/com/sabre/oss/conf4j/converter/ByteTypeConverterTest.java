@@ -24,8 +24,8 @@
 
 package com.sabre.oss.conf4j.converter;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class ByteTypeConverterTest {
     private ByteConverter byteTypeConverter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         byteTypeConverter = new ByteConverter();
     }

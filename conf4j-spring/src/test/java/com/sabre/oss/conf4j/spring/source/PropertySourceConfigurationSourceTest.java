@@ -25,9 +25,9 @@
 package com.sabre.oss.conf4j.spring.source;
 
 import com.sabre.oss.conf4j.source.ConfigurationSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.sabre.oss.conf4j.spring.AbstractContextTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
@@ -36,8 +36,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ContextConfiguration(locations = "classpath*:META-INF/com/sabre/oss/conf4j/conf4j.xml")
 @TestPropertySource({
-        "classpath:PropertySourceConfigurationValuesSourceTest/a.properties",
-        "classpath:PropertySourceConfigurationValuesSourceTest/b.properties"})
+        "classpath:PropertySourceConfigurationSourceTest/a.properties",
+        "classpath:PropertySourceConfigurationSourceTest/b.properties"})
 public class PropertySourceConfigurationSourceTest extends AbstractContextTest {
     @Autowired
     private ConfigurationSource source;

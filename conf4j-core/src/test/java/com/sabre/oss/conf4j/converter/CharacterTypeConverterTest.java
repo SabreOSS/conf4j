@@ -24,8 +24,8 @@
 
 package com.sabre.oss.conf4j.converter;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class CharacterTypeConverterTest {
     private CharacterConverter converter;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp() {
         converter = new CharacterConverter();
     }
