@@ -22,15 +22,16 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.factory.javassist;
 
-import com.sabre.oss.conf4j.factory.jdkproxy.JdkProxyStaticConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractDefaultsAnnotationTest;
 
-public class JdkProxyStaticIgnorePrefixTest extends AbstractIgnorePrefixTest<JdkProxyStaticConfigurationFactory> {
+public class JavassistStaticDefaultsAnnotationTest extends AbstractDefaultsAnnotationTest<JavassistStaticConfigurationFactory> {
     @Override
-    protected JdkProxyStaticConfigurationFactory createConfigurationFactory() {
-        return new JdkProxyStaticConfigurationFactory();
+    protected JavassistStaticConfigurationFactory createConfigurationFactory() {
+        return new JavassistStaticConfigurationFactory();
     }
 }
+
 
 

@@ -22,13 +22,15 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.factory.javassist;
 
-import com.sabre.oss.conf4j.spring.factory.cglib.CglibStaticConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractIgnorePrefixTest;
 
-public class CglibStaticParametrizedConfigurationTest extends AbstractParametrizedConfigurationTest<CglibStaticConfigurationFactory> {
+public class JavassistStaticIgnorePrefixTest extends AbstractIgnorePrefixTest<JavassistStaticConfigurationFactory> {
     @Override
-    protected CglibStaticConfigurationFactory createConfigurationFactory() {
-        return new CglibStaticConfigurationFactory();
+    protected JavassistStaticConfigurationFactory createConfigurationFactory() {
+        return new JavassistStaticConfigurationFactory();
     }
 }
+
+

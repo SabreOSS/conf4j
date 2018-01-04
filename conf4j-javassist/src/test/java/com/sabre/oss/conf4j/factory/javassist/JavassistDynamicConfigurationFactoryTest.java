@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.factory.javassist;
 
 import com.sabre.oss.conf4j.converter.TypeConverter;
-import com.sabre.oss.conf4j.factory.javassist.JavassistDynamicConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractDynamicConfigurationFactoryTest;
 import com.sabre.oss.conf4j.internal.config.PropertyMetadata;
 import com.sabre.oss.conf4j.source.ConfigurationSource;
 import org.junit.Test;

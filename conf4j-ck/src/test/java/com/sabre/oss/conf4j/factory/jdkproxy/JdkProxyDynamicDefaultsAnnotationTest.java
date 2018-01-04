@@ -22,13 +22,16 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.factory.jdkproxy;
 
-import com.sabre.oss.conf4j.spring.factory.cglib.CglibDynamicConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractDefaultsAnnotationTest;
 
-public class CglibDynamicConfigurationFactoryTest extends AbstractDynamicConfigurationFactoryTest<CglibDynamicConfigurationFactory> {
+public class JdkProxyDynamicDefaultsAnnotationTest extends AbstractDefaultsAnnotationTest<JdkProxyDynamicConfigurationFactory> {
     @Override
-    protected CglibDynamicConfigurationFactory createConfigurationFactory() {
-        return new CglibDynamicConfigurationFactory();
+    protected JdkProxyDynamicConfigurationFactory createConfigurationFactory() {
+        return new JdkProxyDynamicConfigurationFactory();
     }
 }
+
+
+

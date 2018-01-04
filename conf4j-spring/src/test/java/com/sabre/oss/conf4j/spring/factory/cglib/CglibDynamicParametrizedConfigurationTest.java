@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.spring.factory.cglib;
 
-import com.sabre.oss.conf4j.factory.javassist.JavassistDynamicConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractParametrizedConfigurationTest;
 
-public class JavassistDynamicParametrizedConfigurationTest extends AbstractParametrizedConfigurationTest<JavassistDynamicConfigurationFactory> {
+public class CglibDynamicParametrizedConfigurationTest extends AbstractParametrizedConfigurationTest<CglibDynamicConfigurationFactory> {
     @Override
-    protected JavassistDynamicConfigurationFactory createConfigurationFactory() {
-        return new JavassistDynamicConfigurationFactory();
+    protected CglibDynamicConfigurationFactory createConfigurationFactory() {
+        return new CglibDynamicConfigurationFactory();
     }
 }

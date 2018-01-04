@@ -22,13 +22,32 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.factory.javassist;
 
-import com.sabre.oss.conf4j.factory.javassist.JavassistStaticConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractStaticConfigurationFactoryTest;
+import com.sabre.oss.conf4j.factory.model.ValidAbstractConfigurationImpl;
+import org.junit.Test;
 
-public class JavassistStaticParametrizedConfigurationTest extends AbstractParametrizedConfigurationTest<JavassistStaticConfigurationFactory> {
+import static com.sabre.oss.conf4j.source.OptionalValue.absent;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+public class JavassistStaticConfigurationFactoryTest extends AbstractStaticConfigurationFactoryTest<JavassistStaticConfigurationFactory> {
     @Override
     protected JavassistStaticConfigurationFactory createConfigurationFactory() {
         return new JavassistStaticConfigurationFactory();
+    }
+
+    @Test
+    public void shouldAllowToBuildConfigurationWithImplementedMethods() {
+        // when
+        when(source.getValue(anyString(), any())).thenReturn(absent());
+
+        ValidAbstractConfigurationImpl configInstance = factory.createConfiguration(ValidAbstractConfigurationImpl.class, source);
+        // then
+        assertThat(configInstance.getIntegerProperty()).isEqualTo(123);
+        assertThat(configInstance.getImplementedProperty()).isEqualTo("value from non abstract method");
     }
 }

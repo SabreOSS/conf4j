@@ -22,16 +22,20 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.factory;
+package com.sabre.oss.conf4j.spring.factory.cglib;
 
-import com.sabre.oss.conf4j.spring.factory.cglib.CglibDynamicConfigurationFactory;
+import com.sabre.oss.conf4j.factory.AbstractStaticConfigurationFactoryTest;
 
-public class CglibDynamicDefaultsAnnotationTest extends AbstractDefaultsAnnotationTest<CglibDynamicConfigurationFactory> {
+import java.lang.reflect.Field;
+
+public class CglibStaticConfigurationFactoryTest extends AbstractStaticConfigurationFactoryTest<CglibStaticConfigurationFactory> {
     @Override
-    protected CglibDynamicConfigurationFactory createConfigurationFactory() {
-        return new CglibDynamicConfigurationFactory();
+    protected CglibStaticConfigurationFactory createConfigurationFactory() {
+        return new CglibStaticConfigurationFactory();
+    }
+
+    @Override
+    protected boolean includeFieldForComparison(Field field) {
+        return super.includeFieldForComparison(field) && !field.getName().startsWith("CGLIB$");
     }
 }
-
-
-
