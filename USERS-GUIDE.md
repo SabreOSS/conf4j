@@ -470,6 +470,7 @@ The table below contains the list of available type converters and the format th
 | DoubleConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html) |
 | BigDecimalConverter | As defined by [`DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html) |
 | LocalDateTimeConverter | As defined by [`DateTimeFormatter`](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html) |
+| InstantConverter | As defined by [`DateTimeFormatter`](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html) |
 | DurationConverter | As defined by [`DurationFormatUtils`](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/time/DurationFormatUtils.html) |
 
 ## Configuration Types with Generics

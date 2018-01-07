@@ -67,6 +67,7 @@ public final class DefaultTypeConverters {
                 new EnumConverter(),
                 new DurationConverter(),
                 new LocalDateTimeConverter(),
+                new InstantConverter(),
                 new PeriodConverter(),
                 new BigDecimalConverter(),
                 new PatternConverter(),
