@@ -24,14 +24,5 @@
 
 package com.sabre.oss.conf4j.spring.handler;
 
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-
-import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.ConfigurationIndicator.MANUAL;
-import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.addConf4jConfigurationIndicator;
-
-public class ConfigurationBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
-    @Override
-    protected void addMetadata(BeanDefinitionBuilder builder) {
-        addConf4jConfigurationIndicator(builder.getRawBeanDefinition(), MANUAL);
-    }
+public class ConverterBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
 }

@@ -22,16 +22,18 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.spring.handler;
+package com.sabre.oss.conf4j.converter;
 
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+/**
+ * Creates {@link TypeConverter} delegating calls to given {@link TypeConverter}.
+ */
+public interface DelegatingConverterFactory {
 
-import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.ConfigurationIndicator.MANUAL;
-import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.addConf4jConfigurationIndicator;
-
-public class ConfigurationBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
-    @Override
-    protected void addMetadata(BeanDefinitionBuilder builder) {
-        addConf4jConfigurationIndicator(builder.getRawBeanDefinition(), MANUAL);
-    }
+    /**
+     * Create {@link TypeConverter} delegating calls to {@code delegate}.
+     *
+     * @param delegate converter used as a delegate for the result {@link TypeConverter}.
+     * @return delegating converter.
+     */
+    TypeConverter<?> create(TypeConverter<?> delegate);
 }

@@ -22,16 +22,18 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.spring.handler;
+package com.sabre.oss.conf4j.spring.converter;
 
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import com.sabre.oss.conf4j.spring.AbstractContextTest;
+import org.junit.Test;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.test.context.ContextConfiguration;
 
-import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.ConfigurationIndicator.MANUAL;
-import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.addConf4jConfigurationIndicator;
-
-public class ConfigurationBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
-    @Override
-    protected void addMetadata(BeanDefinitionBuilder builder) {
-        addConf4jConfigurationIndicator(builder.getRawBeanDefinition(), MANUAL);
+@ContextConfiguration(classes = RegisterDelegatingConverterFactoryTest.class)
+@ImportResource("classpath:converter/register-delegating-converter-factory.spring.test.xml")
+public class RegisterDelegatingConverterFactoryTest extends AbstractContextTest {
+    @Test
+    public void shouldRegisterDelegatingConverterFactoryUnderDefaultName() {
+        isRegistered(JsonLikeTypeDelegatingConverterFactory.class, JsonLikeTypeDelegatingConverterFactory.class.getName());
     }
 }

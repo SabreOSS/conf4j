@@ -579,7 +579,7 @@ used simultaneously.
 ### XML Schema-based Configuration
 
 _conf4j_ provides custom configuration schema `http://www.sabre.com/schema/oss/conf4j` which exposes three custom tags:
-`<conf4j:configure/>`, `<conf4j:configuration/>` and `<conf4j:configuration-scan/>`.
+`<conf4j:configure/>`, `<conf4j:configuration/>`, `<conf4j:converter/>`, `<conf4j:delegatingConverterFactory/>` and `<conf4j:configuration-scan/>`.
 
 `<conf4j:configure/>` is used for activating _conf4j_ integration with _Spring Framework_. It registers several infrastructure
 beans (like `ConfigurationFactory`, `ConfigurationSource` or `TypeConverter`) and post processors. Such beans are used
@@ -592,6 +592,24 @@ possible to specify the bean name using `id` attribute (by default fully qualifi
 ```xml
 <conf4j:configuration
     class="com.your.organization.configuration.package.ConnectionConfiguration"/>
+```
+
+`<conf4j:converter/>` registers in the context a type converter.
+This tag expects one attribute `class` which specifies fully qualified name of the converter class. It is also
+possible to specify the bean name using `id` attribute (by default fully qualified class name is used).
+
+```xml
+<conf4j:converter
+    class="com.your.organization.configuration.package.CustomConverter"/>
+```
+
+`<conf4j:delegatingConverterFactory/>` registers in the context a delegating converter factory.
+This tag expects one attribute `class` which specifies fully qualified name of the delegating converter factory class. 
+It is also possible to specify the bean name using `id` attribute (by default fully qualified class name is used).
+
+```xml
+<conf4j:delegatingConverterFactory
+    class="com.your.organization.configuration.package.CustomDelegatingConverterFactory"/>
 ```
 
 `<conf4:configuration-scan>` is very similar to `<context:component-scan/>` provided by _Spring Framework_.

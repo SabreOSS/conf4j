@@ -22,16 +22,25 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.spring.handler;
+package com.sabre.oss.conf4j.spring.converter;
 
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import com.sabre.oss.conf4j.converter.IntegerConverter;
+import com.sabre.oss.conf4j.converter.LongConverter;
+import com.sabre.oss.conf4j.spring.AbstractContextTest;
+import org.junit.Test;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.test.context.ContextConfiguration;
 
-import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.ConfigurationIndicator.MANUAL;
-import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.addConf4jConfigurationIndicator;
+@ContextConfiguration(classes = RegisterConverterTest.class)
+@ImportResource("classpath:converter/register-converter.spring.test.xml")
+public class RegisterConverterTest extends AbstractContextTest {
+    @Test
+    public void shouldRegisterConverterUnderDefaultName() {
+        isRegistered(IntegerConverter.class, IntegerConverter.class.getName());
+    }
 
-public class ConfigurationBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
-    @Override
-    protected void addMetadata(BeanDefinitionBuilder builder) {
-        addConf4jConfigurationIndicator(builder.getRawBeanDefinition(), MANUAL);
+    @Test
+    public void shouldRegisterConverterUnderProvidedName() {
+        isRegistered(LongConverter.class, "customConverterName");
     }
 }

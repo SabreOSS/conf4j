@@ -25,15 +25,44 @@
 package com.sabre.oss.conf4j.converter;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableList;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A utility class which configures {@link TypeConverter} with the default set of type converters.
  */
 public final class DefaultTypeConverters {
+    private static final List<TypeConverter<?>> DEFAULT_BASE_CONVERTERS = unmodifiableList(asList(
+            new StringConverter(),
+            new BooleanConverter(),
+            new CharacterConverter(),
+            new IntegerConverter(),
+            new DoubleConverter(),
+            new FloatConverter(),
+            new ByteConverter(),
+            new ShortConverter(),
+            new LongConverter(),
+            new EnumConverter(),
+            new DurationConverter(),
+            new LocalDateTimeConverter(),
+            new InstantConverter(),
+            new OffsetDateTimeConverter(),
+            new PeriodConverter(),
+            new BigDecimalConverter(),
+            new PatternConverter(),
+            new UrlConverter(),
+            new CurrencyConverter()
+    ));
 
-    private static final TypeConverter<Object> DEFAULT_AGGREGATE_TYPE_CONVERTER = prepareDefaultTypeConverter();
+    private static final List<DelegatingConverterFactory> DEFAULT_DELEGATING_CONVERTER_FACTORIES = unmodifiableList(singletonList(
+            createDelegatingFactory(JsonLikeTypeConverter::new)
+    ));
+
+    private static final TypeConverter<Object> DEFAULT_AGGREGATE_CONVERTER = prepareDefaultTypeConverter();
 
     private DefaultTypeConverters() {
     }
@@ -44,7 +73,61 @@ public final class DefaultTypeConverters {
      * @return {@link TypeConverter}
      */
     public static TypeConverter<Object> getDefaultTypeConverter() {
-        return DEFAULT_AGGREGATE_TYPE_CONVERTER;
+        return DEFAULT_AGGREGATE_CONVERTER;
+    }
+
+    /**
+     * Return list of standard, base {@link TypeConverter}.
+     *
+     * @return list of base converters.
+     */
+    public static List<TypeConverter<?>> getDefaultBaseConverters() {
+        return DEFAULT_BASE_CONVERTERS;
+    }
+
+    /**
+     * Return list of standard {@link DelegatingConverterFactory}.
+     *
+     * @return list of delegating converter factories.
+     */
+    public static List<DelegatingConverterFactory> getDefaultDelegatingConverterFactories() {
+        return DEFAULT_DELEGATING_CONVERTER_FACTORIES;
+    }
+
+    /**
+     * Create composite converter.
+     * Each converter in {@code delegatingConverterFactories} delegates conversion to its
+     * successor in the list.
+     * The last converter delegates to {@link ChainedTypeConverter} composed of {@code baseConverters}.
+     *
+     * @param baseConverters               base type converters.
+     * @param delegatingConverterFactories delegating converter factories.
+     * @return composite converter.
+     */
+    public static TypeConverter<Object> createCompositeConverter(
+            List<TypeConverter<?>> baseConverters,
+            List<DelegatingConverterFactory> delegatingConverterFactories) {
+        requireNonNull(baseConverters, "baseConverters cannot be null");
+        requireNonNull(delegatingConverterFactories, "delegatingConverterFactories cannot be null");
+
+        TypeConverter<?> typeConverter = new ChainedTypeConverter(baseConverters);
+
+        for (DelegatingConverterFactory factory : delegatingConverterFactories) {
+            typeConverter = factory.create(typeConverter);
+        }
+
+        return (TypeConverter<Object>) typeConverter;
+    }
+
+    /**
+     * Creates delegating converter factory as {@link ChainedTypeConverter} composed of parameter
+     * and {@code delegate} applied to this parameter.
+     *
+     * @param delegate function creating delegating converter.
+     * @return delegating converter factory.
+     */
+    public static DelegatingConverterFactory createDelegatingFactory(Function<TypeConverter<?>, TypeConverter<?>> delegate) {
+        return (f) -> new ChainedTypeConverter(asList(f, delegate.apply(f)));
     }
 
     /**
@@ -54,31 +137,10 @@ public final class DefaultTypeConverters {
      * @return aggregated {@link TypeConverter}<{@link Object}>
      */
     private static TypeConverter<Object> prepareDefaultTypeConverter() {
-        TypeConverter<Object> simpleTypeConverters = new ChainedTypeConverter(asList(
-                new StringConverter(),
-                new BooleanConverter(),
-                new CharacterConverter(),
-                new IntegerConverter(),
-                new DoubleConverter(),
-                new FloatConverter(),
-                new ByteConverter(),
-                new ShortConverter(),
-                new LongConverter(),
-                new EnumConverter(),
-                new DurationConverter(),
-                new LocalDateTimeConverter(),
-                new InstantConverter(),
-                new OffsetDateTimeConverter(),
-                new PeriodConverter(),
-                new BigDecimalConverter(),
-                new PatternConverter(),
-                new UrlConverter(),
-                new CurrencyConverter()
-        ));
-
-        JsonLikeTypeConverter jsonLikeTypeConverter = new JsonLikeTypeConverter(simpleTypeConverters);
-        return new ChainedTypeConverter(asList(
-                simpleTypeConverters,
-                jsonLikeTypeConverter));
+        List<TypeConverter<?>> defaultBaseTypeConverters = getDefaultBaseConverters();
+        List<DelegatingConverterFactory> defaultDelegatingTypeConverters = getDefaultDelegatingConverterFactories();
+        return createCompositeConverter(
+                defaultBaseTypeConverters,
+                defaultDelegatingTypeConverters);
     }
 }

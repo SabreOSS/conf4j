@@ -35,5 +35,7 @@ public class Conf4jNamespaceHandler extends NamespaceHandlerSupport {
         registerBeanDefinitionParser("configure", new ConfigureBeanDefinitionParser());
         registerBeanDefinitionParser("configuration-scan", new ConfigurationScanBeanDefinitionParser());
         registerBeanDefinitionParser("configuration", new ConfigurationBeanDefinitionParser());
+        registerBeanDefinitionParser("converter", new ConverterBeanDefinitionParser());
+        registerBeanDefinitionParser("delegatingConverterFactory", new ConverterBeanDefinitionParser());
     }
 }

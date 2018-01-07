@@ -24,10 +24,10 @@
 
 package com.sabre.oss.conf4j.spring.handler;
 
-import com.sabre.oss.conf4j.converter.DefaultTypeConverters;
 import com.sabre.oss.conf4j.factory.javassist.JavassistDynamicConfigurationFactory;
 import com.sabre.oss.conf4j.internal.model.provider.convention.ConventionConfigurationModelProvider;
 import com.sabre.oss.conf4j.spring.ConfigurationBeanFactoryPostProcessor;
+import com.sabre.oss.conf4j.spring.converter.AggregatedConverter;
 import com.sabre.oss.conf4j.spring.factory.cglib.CglibDynamicConfigurationFactory;
 import com.sabre.oss.conf4j.spring.source.PropertySourceConfigurationSource;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -42,6 +42,7 @@ import org.w3c.dom.Element;
 
 import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.*;
 import static java.lang.String.format;
+import static org.springframework.beans.factory.support.AbstractBeanDefinition.AUTOWIRE_BY_TYPE;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
 public class ConfigureBeanDefinitionParser extends AbstractBeanDefinitionParser {
@@ -55,10 +56,11 @@ public class ConfigureBeanDefinitionParser extends AbstractBeanDefinitionParser 
     protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
         BeanDefinitionRegistry registry = parserContext.getRegistry();
         if (!registry.containsBeanDefinition(CONF4J_TYPE_CONVERTER)) {
-            BeanDefinitionBuilder builder = genericBeanDefinition(DefaultTypeConverters.class)
+            BeanDefinitionBuilder builder = genericBeanDefinition(AggregatedConverter.class)
                     .setRole(BeanDefinition.ROLE_INFRASTRUCTURE)
-                    .setLazyInit(true)
-                    .setFactoryMethod("getDefaultTypeConverter");
+                    .setInitMethodName("initialize")
+                    .setAutowireMode(AUTOWIRE_BY_TYPE)
+                    .setLazyInit(true);
             registry.registerBeanDefinition(CONF4J_TYPE_CONVERTER, builder.getBeanDefinition());
         }
 

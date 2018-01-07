@@ -22,16 +22,16 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.spring.handler;
+package com.sabre.oss.conf4j.spring.converter;
 
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import com.sabre.oss.conf4j.converter.DelegatingConverterFactory;
+import com.sabre.oss.conf4j.converter.JsonLikeTypeConverter;
+import com.sabre.oss.conf4j.converter.TypeConverter;
 
-import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.ConfigurationIndicator.MANUAL;
-import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.addConf4jConfigurationIndicator;
+public class JsonLikeTypeDelegatingConverterFactory implements DelegatingConverterFactory {
 
-public class ConfigurationBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
     @Override
-    protected void addMetadata(BeanDefinitionBuilder builder) {
-        addConf4jConfigurationIndicator(builder.getRawBeanDefinition(), MANUAL);
+    public TypeConverter<?> create(TypeConverter<?> delegate) {
+        return new JsonLikeTypeConverter(delegate);
     }
 }
