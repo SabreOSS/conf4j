@@ -68,6 +68,7 @@ public final class DefaultTypeConverters {
                 new DurationConverter(),
                 new LocalDateTimeConverter(),
                 new InstantConverter(),
+                new OffsetDateTimeConverter(),
                 new PeriodConverter(),
                 new BigDecimalConverter(),
                 new PatternConverter(),
