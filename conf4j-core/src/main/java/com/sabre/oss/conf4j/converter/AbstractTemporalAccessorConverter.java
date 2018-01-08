@@ -48,7 +48,6 @@ import static java.util.Objects.requireNonNull;
  *
  * @param <T> actual temporal accessor type
  */
-
 public abstract class AbstractTemporalAccessorConverter<T extends TemporalAccessor> implements TypeConverter<T> {
     /**
      * Format attribute name.
@@ -71,7 +70,7 @@ public abstract class AbstractTemporalAccessorConverter<T extends TemporalAccess
      *                   If present, the value for {@value #FORMAT} key will be used during conversion
      *                   as a formatting pattern.
      * @return value converted to {@code T}
-     * @throws IllegalArgumentException when {@code value} cannot be converted to {{@code T} because of
+     * @throws IllegalArgumentException when {@code value} cannot be converted to {@code T} because of
      *                                  invalid format of {@code value} string or invalid formatting pattern.
      * @throws NullPointerException     when {@code type} is {@code null}.
      */
@@ -128,11 +127,11 @@ public abstract class AbstractTemporalAccessorConverter<T extends TemporalAccess
         }
     }
 
-    DateTimeFormatter getFormatterForPattern(String pattern) {
+    protected DateTimeFormatter getFormatterForPattern(String pattern) {
         return pattern == null ? getDefaultFormatter() : cache.computeIfAbsent(pattern, DateTimeFormatter::ofPattern);
     }
 
-    String getSimpleClassName(Type type) {
+    protected String getSimpleClassName(Type type) {
         return ((Class<?>) type).getSimpleName();
     }
 }
