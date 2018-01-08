@@ -78,6 +78,7 @@
         <module>conf4j-ck</module>
         <module>conf4j-jmh</module>
         <module>conf4j-examples</module>
+        <module>conf4j-extras</module>
     </modules>
 
     <scm>
@@ -136,6 +137,12 @@
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
                 <version>3.21.0-GA</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>1.19</version>
             </dependency>
 
             <dependency>
@@ -198,6 +205,13 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
                 <version>${junit-jupiter.version}</version>
                 <scope>test</scope>
             </dependency>

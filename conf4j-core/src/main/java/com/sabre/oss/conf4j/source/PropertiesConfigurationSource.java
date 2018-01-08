@@ -27,14 +27,13 @@ package com.sabre.oss.conf4j.source;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Configuration value source backed by {@code Properties}.
@@ -84,7 +83,10 @@ public class PropertiesConfigurationSource implements IterableConfigurationSourc
      */
     @Override
     public Iterable<ConfigurationEntry> getAllConfigurationEntries() {
-        return new PropertiesIterable(source);
+        Map<String, String> map = source.entrySet().stream()
+                .filter(e -> e.getValue() instanceof String)
+                .collect(toMap(Object::toString, e -> (String) e.getValue()));
+        return new MapIterable(map);
     }
 
     protected static Properties loadFromFile(String propertyFile) {
@@ -96,32 +98,4 @@ public class PropertiesConfigurationSource implements IterableConfigurationSourc
             throw new UncheckedIOException(e);
         }
     }
-
-    private static final class PropertiesIterable implements Iterable<ConfigurationEntry> {
-        private final Properties properties;
-
-        private PropertiesIterable(Properties properties) {
-            this.properties = properties;
-        }
-
-        @Override
-        public Iterator<ConfigurationEntry> iterator() {
-            Iterator<Entry<Object, Object>> iterator = properties.entrySet().iterator();
-            return new Iterator<ConfigurationEntry>() {
-                @Override
-                public boolean hasNext() {
-                    return iterator.hasNext();
-                }
-
-                @Override
-                public ConfigurationEntry next() {
-                    Entry<Object, Object> next = iterator.next();
-                    Object key = next.getKey();
-                    Object value = next.getValue();
-                    return new ConfigurationEntry(key.toString(), value instanceof String ? (String) value : null);
-                }
-            };
-        }
-    }
-
 }
