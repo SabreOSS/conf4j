@@ -70,7 +70,8 @@ public final class DefaultTypeConverters {
                 new PeriodConverter(),
                 new BigDecimalConverter(),
                 new PatternConverter(),
-                new UrlConverter()
+                new UrlConverter(),
+                new CurrencyConverter()
         ));
 
         JsonLikeTypeConverter jsonLikeTypeConverter = new JsonLikeTypeConverter(simpleTypeConverters);
