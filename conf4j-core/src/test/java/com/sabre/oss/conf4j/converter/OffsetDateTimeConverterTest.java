@@ -120,7 +120,7 @@ public class OffsetDateTimeConverterTest {
         Clock clock = Clock.fixed(Instant.EPOCH, ZoneId.of("Z"));
         OffsetDateTime toConvert = OffsetDateTime.now(clock);
         String format = "invalid format";
-        Map<String, String> attributes = singletonMap("format", format);
+        Map<String, String> attributes = singletonMap(FORMAT, format);
 
         // then
         assertThatThrownBy(() -> offsetDateTimeConverter.toString(OffsetDateTime.class, toConvert, attributes))
