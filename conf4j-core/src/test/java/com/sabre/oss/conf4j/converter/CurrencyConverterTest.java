@@ -29,15 +29,12 @@ import org.junit.Test;
 
 import java.lang.reflect.Type;
 import java.util.Currency;
-import java.util.Map;
 
 import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CurrencyConverterTest {
-
     private CurrencyConverter converter;
 
     @Before
@@ -78,7 +75,7 @@ public class CurrencyConverterTest {
     }
 
     @Test
-    public void shouldConvertToStringWhenLocaleNotSpecified() {
+    public void shouldConvertToString() {
         // given
         Currency toConvert = Currency.getInstance("USD");
 
@@ -86,33 +83,7 @@ public class CurrencyConverterTest {
         String converted = converter.toString(Currency.class, toConvert, emptyMap());
 
         // then
-        assertThat(converted).isEqualTo("US Dollar");
-    }
-
-    @Test
-    public void shouldConvertToStringWhenLocaleSpecified() {
-        // given
-        Currency toConvert = Currency.getInstance("USD");
-        Map<String, String> attributes = singletonMap("locale", "DE");
-
-        // when
-        String converted = converter.toString(Currency.class, toConvert, attributes);
-
-        // then
-        assertThat(converted).isEqualTo("US-Dollar");
-    }
-
-    @Test
-    public void shouldConvertToStringWithoutLocaleWhenInvalidLocaleSpecified() {
-        // given
-        Currency toConvert = Currency.getInstance("USD");
-        Map<String, String> attributes = singletonMap("locale", "invalid");
-
-        // when
-        String converted = converter.toString(Currency.class, toConvert, attributes);
-
-        // then
-        assertThat(converted).isEqualTo("US Dollar");
+        assertThat(converted).isEqualTo("USD");
     }
 
     @Test

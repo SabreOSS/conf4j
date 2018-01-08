@@ -26,22 +26,14 @@ package com.sabre.oss.conf4j.converter;
 
 import java.lang.reflect.Type;
 import java.util.Currency;
-import java.util.Locale;
 import java.util.Map;
 
-import static java.util.Locale.forLanguageTag;
 import static java.util.Objects.requireNonNull;
 
 /**
  * This class converts {@link Currency} to/from string.
  */
 public class CurrencyConverter implements TypeConverter<Currency> {
-
-    /**
-     * Locale meta-attribute name.
-     */
-    public static final String LOCALE = "locale";
-
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
@@ -49,18 +41,6 @@ public class CurrencyConverter implements TypeConverter<Currency> {
         return type instanceof Class<?> && Currency.class.isAssignableFrom((Class<?>) type);
     }
 
-    /**
-     * Converts String to {@link Currency}.
-     *
-     * @param type       actual type.
-     * @param value      string representation of the value which is converted to {@link Currency}.
-     *                   In case it is {@code null}, the converter returns {@code null}.
-     * @param attributes additional meta-data attributes. It can be {@code null}.
-     * @return value converted to {@link Currency}
-     * @throws IllegalArgumentException when {@code value} cannot be converted to {@link Currency} because of
-     *                                  invalid format of {@code value} string.
-     * @throws NullPointerException     when {@code type} is {@code null}.
-     */
     @Override
     public Currency fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
@@ -70,28 +50,12 @@ public class CurrencyConverter implements TypeConverter<Currency> {
                 : Currency.getInstance(value);
     }
 
-    /**
-     * Converts value from {@link Currency} to String
-     *
-     * @param type       actual type.
-     * @param value      value that needs to be converted to string.
-     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
-     *                   If present, the value for {@value #LOCALE} key will be used as locale during conversion.
-     *                   The locale must be a ISO 639. If not specified or invalid, {@link Locale#US} locale is used.
-     * @return string representation of the {@code value}
-     * @throws NullPointerException when {@code type} is {@code null}.
-     */
     @Override
     public String toString(Type type, Currency value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        if (value == null) {
-            return null;
-        }
-
-        Locale locale = attributes != null && attributes.containsKey(LOCALE)
-                ? forLanguageTag(attributes.get(LOCALE))
-                : Locale.US;
-        return value.getDisplayName(locale);
+        return value == null
+                ? null
+                : value.getCurrencyCode();
     }
 }
