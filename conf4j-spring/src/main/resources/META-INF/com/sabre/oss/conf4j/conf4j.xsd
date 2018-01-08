@@ -181,6 +181,13 @@
         <xsd:complexType>
             <xsd:complexContent>
                 <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="order" type="xsd:int">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                The order of the converter.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
                     <xsd:attribute name="class" type="xsd:string">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -208,6 +215,13 @@
         <xsd:complexType>
             <xsd:complexContent>
                 <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="order" type="xsd:int">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                The order of the delegating converter factory.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
                     <xsd:attribute name="class" type="xsd:string">
                         <xsd:annotation>
                             <xsd:documentation>

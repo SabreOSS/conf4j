@@ -24,14 +24,47 @@
 
 package com.sabre.oss.conf4j.spring.handler;
 
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
+import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.util.StringUtils;
+import org.w3c.dom.Element;
 
 import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.ConfigurationIndicator.MANUAL;
 import static com.sabre.oss.conf4j.spring.ConfigurationBeanDefinitionHelper.addConf4jConfigurationIndicator;
 
-public class ConfigurationBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
+public class ConfigurationBeanDefinitionParser extends AbstractBeanDefinitionParser {
+    private static final String CLASS_ATTRIBUTE = "class";
+
     @Override
-    protected void addMetadata(BeanDefinitionBuilder builder) {
+    protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
+        BeanDefinitionRegistry registry = parserContext.getRegistry();
+        String configurationType = element.getAttribute(CLASS_ATTRIBUTE);
+        if (!StringUtils.hasText(configurationType)) {
+            parserContext.getReaderContext().error("Attribute 'class' must not be empty", element);
+            return null;
+        }
+
+        BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(configurationType);
+        builder.getRawBeanDefinition().setSource(parserContext.extractSource(element));
+
         addConf4jConfigurationIndicator(builder.getRawBeanDefinition(), MANUAL);
+
+        AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
+        String beanName = resolveId(element, beanDefinition, parserContext);
+        registry.registerBeanDefinition(beanName, beanDefinition);
+
+        return beanDefinition;
+    }
+
+    @Override
+    protected String resolveId(Element element, AbstractBeanDefinition definition, ParserContext parserContext) {
+        String id = super.resolveId(element, definition, parserContext);
+        if (!StringUtils.hasText(id)) {
+            id = element.getAttribute(CLASS_ATTRIBUTE);
+        }
+        return id;
     }
 }

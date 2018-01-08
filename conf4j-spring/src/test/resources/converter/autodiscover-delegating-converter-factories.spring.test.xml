@@ -35,6 +35,6 @@
     <!-- Register custom delegating type converter factories in the context, they should be autowired to AggregatedConverter. -->
 
     <conf4j:delegatingConverterFactory
-            class="com.sabre.oss.conf4j.spring.converter.JsonLikeTypeDelegatingConverterFactory"/>
+            class="com.sabre.oss.conf4j.spring.converter.JsonLikeTypeDelegatingConverterFactory" order="1"/>
 
 </beans>

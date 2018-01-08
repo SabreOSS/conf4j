@@ -34,8 +34,8 @@
 
     <!-- Register custom converters in the context, they should be autowired to AggregatedConverter. -->
 
-    <conf4j:converter class="com.sabre.oss.conf4j.converter.IntegerConverter"/>
+    <conf4j:converter class="com.sabre.oss.conf4j.converter.IntegerConverter" order="1"/>
 
-    <conf4j:converter id="customConverterName" class="com.sabre.oss.conf4j.converter.LongConverter"/>
+    <conf4j:converter id="customConverterName" class="com.sabre.oss.conf4j.converter.LongConverter" order="2"/>
 
 </beans>
