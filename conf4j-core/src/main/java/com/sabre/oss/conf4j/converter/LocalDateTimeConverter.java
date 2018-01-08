@@ -24,18 +24,11 @@
 
 package com.sabre.oss.conf4j.converter;
 
-import com.sabre.oss.conf4j.internal.utils.spring.ConcurrentReferenceHashMap;
-
 import java.lang.reflect.Type;
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 
-import static java.lang.String.format;
-import static java.time.LocalDateTime.parse;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static java.util.Objects.requireNonNull;
 
@@ -46,14 +39,10 @@ import static java.util.Objects.requireNonNull;
  * the format used during conversion. The format is compliant with {@link DateTimeFormatter}.
  * <p>
  * When the format is not specified, {@link DateTimeFormatter#ISO_LOCAL_DATE_TIME} is used.
+ * <p>
+ * For more details see {@link AbstractTemporalAccessorConverter}
  */
-public class LocalDateTimeConverter implements TypeConverter<LocalDateTime> {
-    /**
-     * Format attribute name.
-     */
-    public static final String FORMAT = "format";
-
-    private static final ConcurrentMap<String, DateTimeFormatter> cache = new ConcurrentReferenceHashMap<>();
+public class LocalDateTimeConverter extends AbstractTemporalAccessorConverter<LocalDateTime> {
 
     @Override
     public boolean isApplicable(Type type, Map<String, String> attributes) {
@@ -62,74 +51,13 @@ public class LocalDateTimeConverter implements TypeConverter<LocalDateTime> {
         return type instanceof Class<?> && LocalDateTime.class.isAssignableFrom((Class<?>) type);
     }
 
-    /**
-     * Converts String to {@link LocalDateTime}.
-     *
-     * @param type       actual type definition.
-     * @param value      string representation of the value which is converted to {@link LocalDateTime}.
-     *                   In case it is {@code null}, the converter should return either {@code null} or a value
-     *                   that is equivalent (for example an empty list).
-     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
-     *                   If present, the value for {@value #FORMAT} key will be used during conversion
-     *                   as a formatting pattern.
-     * @return value converted to {@link LocalDateTime}
-     * @throws IllegalArgumentException when {@code value} cannot be converted to {@link LocalDateTime} because of
-     *                                  invalid format of {@code value} string or invalid formatting pattern.
-     * @throws NullPointerException     when {@code type} is {@code null}.
-     */
     @Override
-    public LocalDateTime fromString(Type type, String value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        if (value == null) {
-            return null;
-        }
-
-        String format = (attributes == null) ? null : attributes.get(FORMAT);
-        try {
-            return parse(value, getFormatterForPattern(format));
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException(format("Unable to convert to LocalDateTime: %s. " +
-                    "The value doesn't match specified format %s.", value, format), e);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(format("Unable to convert to LocalDateTime: %s. " +
-                    "Invalid format: '%s'", value, format), e);
-        }
+    protected LocalDateTime parse(String value, DateTimeFormatter formatterForPattern) {
+        return LocalDateTime.parse(value, formatterForPattern);
     }
 
-    /**
-     * Converts value from {@link LocalDateTime} to String.
-     *
-     * @param type       actual type definition.
-     * @param value      value that needs to be converted to string.
-     * @param attributes additional meta-data attributes which may be used by converter. It can be {@code null}.
-     *                   If present, value for "format" key will be used as formatting pattern.
-     * @return string representation of the {@code value}.
-     * @throws IllegalArgumentException when {@code value} cannot be converted to String because of
-     *                                  invalid formatting pattern or error during printing.
-     * @throws NullPointerException     when {@code type} is {@code null}.
-     */
     @Override
-    public String toString(Type type, LocalDateTime value, Map<String, String> attributes) {
-        requireNonNull(type, "type cannot be null");
-
-        if (value == null) {
-            return null;
-        }
-
-        String format = (attributes == null) ? null : attributes.get(FORMAT);
-        try {
-            return format == null ? value.toString() : value.format(getFormatterForPattern(format));
-        } catch (DateTimeException e) {
-            throw new IllegalArgumentException("Unable to convert LocalDateTime to String. " +
-                    "Error occurred during printing.", e);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(format("Unable to convert LocalDateTime to String. " +
-                    "Invalid format: '%s'", format), e);
-        }
-    }
-
-    private DateTimeFormatter getFormatterForPattern(String pattern) {
-        return pattern == null ? ISO_LOCAL_DATE_TIME : cache.computeIfAbsent(pattern, DateTimeFormatter::ofPattern);
+    protected DateTimeFormatter getDefaultFormatter() {
+        return ISO_LOCAL_DATE_TIME;
     }
 }
