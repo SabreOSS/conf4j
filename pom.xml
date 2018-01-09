@@ -157,12 +157,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-expression</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
                 <version>${spring.boot.version}</version>
@@ -209,15 +203,11 @@
             </dependency>
 
             <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-surefire-provider</artifactId>
-                <version>${junit-platform.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit-jupiter.version}</version>
+                <groupId>org.apiguardian</groupId>
+                <artifactId>apiguardian-api</artifactId>
+                <version>1.0.0</version>
+                <scope>test</scope>
+                <optional>true</optional>
             </dependency>
 
             <dependency>
@@ -238,6 +228,7 @@
                 <groupId>name.falgout.jeffrey.testing.junit5</groupId>
                 <artifactId>mockito-extension</artifactId>
                 <version>1.0.0</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -286,13 +277,6 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-jcl</artifactId>
                 <version>${log4j.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-core</artifactId>
-                <version>1.3</version>
                 <scope>test</scope>
             </dependency>
 

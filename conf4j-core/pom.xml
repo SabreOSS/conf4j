@@ -65,8 +65,8 @@
             <artifactId>junit-jupiter-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
+            <groupId>org.apiguardian</groupId>
+            <artifactId>apiguardian-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
@@ -91,7 +91,6 @@
         <dependency>
             <groupId>name.falgout.jeffrey.testing.junit5</groupId>
             <artifactId>mockito-extension</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
