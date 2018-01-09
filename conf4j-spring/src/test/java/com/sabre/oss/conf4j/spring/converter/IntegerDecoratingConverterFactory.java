@@ -24,14 +24,13 @@
 
 package com.sabre.oss.conf4j.spring.converter;
 
-import com.sabre.oss.conf4j.converter.DelegatingConverterFactory;
-import com.sabre.oss.conf4j.converter.JsonLikeTypeConverter;
+import com.sabre.oss.conf4j.converter.DecoratingConverterFactory;
+import com.sabre.oss.conf4j.converter.IntegerConverter;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
-public class JsonLikeTypeDelegatingConverterFactory implements DelegatingConverterFactory {
-
+public class IntegerDecoratingConverterFactory implements DecoratingConverterFactory {
     @Override
     public TypeConverter<?> create(TypeConverter<?> delegate) {
-        return new JsonLikeTypeConverter(delegate);
+        return new IntegerConverter();
     }
 }

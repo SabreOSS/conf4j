@@ -58,7 +58,7 @@ public final class DefaultTypeConverters {
             new CurrencyConverter()
     ));
 
-    private static final List<DelegatingConverterFactory> DEFAULT_DELEGATING_CONVERTER_FACTORIES = unmodifiableList(singletonList(
+    private static final List<DecoratingConverterFactory> DEFAULT_DELEGATING_CONVERTER_FACTORIES = unmodifiableList(singletonList(
             createDelegatingFactory(JsonLikeTypeConverter::new)
     ));
 
@@ -86,11 +86,11 @@ public final class DefaultTypeConverters {
     }
 
     /**
-     * Return list of standard {@link DelegatingConverterFactory}.
+     * Return list of standard {@link DecoratingConverterFactory}.
      *
      * @return list of delegating converter factories.
      */
-    public static List<DelegatingConverterFactory> getDefaultDelegatingConverterFactories() {
+    public static List<DecoratingConverterFactory> getDefaultDelegatingConverterFactories() {
         return DEFAULT_DELEGATING_CONVERTER_FACTORIES;
     }
 
@@ -106,13 +106,13 @@ public final class DefaultTypeConverters {
      */
     public static TypeConverter<Object> createCompositeConverter(
             List<TypeConverter<?>> baseConverters,
-            List<DelegatingConverterFactory> delegatingConverterFactories) {
+            List<DecoratingConverterFactory> delegatingConverterFactories) {
         requireNonNull(baseConverters, "baseConverters cannot be null");
         requireNonNull(delegatingConverterFactories, "delegatingConverterFactories cannot be null");
 
         TypeConverter<?> typeConverter = new ChainedTypeConverter(baseConverters);
 
-        for (DelegatingConverterFactory factory : delegatingConverterFactories) {
+        for (DecoratingConverterFactory factory : delegatingConverterFactories) {
             typeConverter = factory.create(typeConverter);
         }
 
@@ -126,7 +126,7 @@ public final class DefaultTypeConverters {
      * @param delegate function creating delegating converter.
      * @return delegating converter factory.
      */
-    public static DelegatingConverterFactory createDelegatingFactory(Function<TypeConverter<?>, TypeConverter<?>> delegate) {
+    public static DecoratingConverterFactory createDelegatingFactory(Function<TypeConverter<?>, TypeConverter<?>> delegate) {
         return (f) -> new ChainedTypeConverter(asList(f, delegate.apply(f)));
     }
 
@@ -138,7 +138,7 @@ public final class DefaultTypeConverters {
      */
     private static TypeConverter<Object> prepareDefaultTypeConverter() {
         List<TypeConverter<?>> defaultBaseTypeConverters = getDefaultBaseConverters();
-        List<DelegatingConverterFactory> defaultDelegatingTypeConverters = getDefaultDelegatingConverterFactories();
+        List<DecoratingConverterFactory> defaultDelegatingTypeConverters = getDefaultDelegatingConverterFactories();
         return createCompositeConverter(
                 defaultBaseTypeConverters,
                 defaultDelegatingTypeConverters);

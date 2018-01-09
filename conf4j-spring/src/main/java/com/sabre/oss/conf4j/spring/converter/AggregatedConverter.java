@@ -24,8 +24,8 @@
 
 package com.sabre.oss.conf4j.spring.converter;
 
+import com.sabre.oss.conf4j.converter.DecoratingConverterFactory;
 import com.sabre.oss.conf4j.converter.DefaultTypeConverters;
-import com.sabre.oss.conf4j.converter.DelegatingConverterFactory;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.lang.reflect.Type;
@@ -47,19 +47,19 @@ public class AggregatedConverter implements TypeConverter<Object> {
     private TypeConverter<Object> converter;
 
     private List<TypeConverter<?>> autowired;
-    private List<DelegatingConverterFactory> autowiredFactories;
+    private List<DecoratingConverterFactory> autowiredFactories;
 
     public void setAutowired(List<TypeConverter<?>> autowired) {
         this.autowired = autowired;
     }
 
-    public void setAutowiredFactories(List<DelegatingConverterFactory> autowiredFactories) {
+    public void setAutowiredFactories(List<DecoratingConverterFactory> autowiredFactories) {
         this.autowiredFactories = autowiredFactories;
     }
 
     public void initialize() {
         List<TypeConverter<?>> allBaseConverters = prepareBaseConverters();
-        List<DelegatingConverterFactory> allDelegatingConverterFactories = prepareDelegatingConverterFactories();
+        List<DecoratingConverterFactory> allDelegatingConverterFactories = prepareDelegatingConverterFactories();
         converter = createCompositeConverter(allBaseConverters, allDelegatingConverterFactories);
     }
 
@@ -87,8 +87,8 @@ public class AggregatedConverter implements TypeConverter<Object> {
         return allConverters;
     }
 
-    private List<DelegatingConverterFactory> prepareDelegatingConverterFactories() {
-        List<DelegatingConverterFactory> allConverters = new ArrayList<>();
+    private List<DecoratingConverterFactory> prepareDelegatingConverterFactories() {
+        List<DecoratingConverterFactory> allConverters = new ArrayList<>();
         if (autowiredFactories != null) {
             allConverters.addAll(autowiredFactories);
         }

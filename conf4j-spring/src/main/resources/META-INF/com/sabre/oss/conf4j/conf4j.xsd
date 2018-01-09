@@ -184,7 +184,7 @@
                     <xsd:attribute name="order" type="xsd:int">
                         <xsd:annotation>
                             <xsd:documentation>
-                                The order of the converter.
+                                The order of the converter. See `org.springframework.core.annotation.Order.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:attribute>
@@ -206,10 +206,10 @@
         </xsd:complexType>
     </xsd:element>
 
-    <xsd:element name="delegatingConverterFactory">
+    <xsd:element name="converter-decorator">
         <xsd:annotation>
             <xsd:documentation>
-                Registers a delegating type converter factory to the context.
+                Registers a converter decorator to the context.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>
@@ -218,19 +218,35 @@
                     <xsd:attribute name="order" type="xsd:int">
                         <xsd:annotation>
                             <xsd:documentation>
-                                The order of the delegating converter factory.
+                                The order of the converter-decorator. See `org.springframework.core.annotation.Order.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:attribute>
                     <xsd:attribute name="class" type="xsd:string">
                         <xsd:annotation>
                             <xsd:documentation>
-                                The fully qualified name of the delegating converter factory type class.
+                                The fully qualified name of the type converter. It must provide a constructor with
+                                'com.sabre.oss.conf4j.converter.TypeConverter' parameter type.
                             </xsd:documentation>
                             <xsd:appinfo>
                                 <tool:annotation>
                                     <tool:expected-type type="java.lang.Class"/>
-                                    <tool:exports type="com.sabre.oss.conf4j.converter.DelegatingConverterFactory"/>
+                                    <tool:exports type="com.sabre.oss.conf4j.converter.TypeConverter"/>
+                                </tool:annotation>
+                            </xsd:appinfo>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="factory" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                The fully qualified name of the decorating converter factory. If it is not provided,
+                                `com.sabre.oss.conf4j.spring.converter.DefaultDecoratingConverterFactory` with `class`
+                                attribute injected will be used.
+                            </xsd:documentation>
+                            <xsd:appinfo>
+                                <tool:annotation>
+                                    <tool:expected-type type="java.lang.Class"/>
+                                    <tool:exports type="com.sabre.oss.conf4j.converter.DecoratingConverterFactory"/>
                                 </tool:annotation>
                             </xsd:appinfo>
                         </xsd:annotation>

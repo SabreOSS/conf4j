@@ -24,36 +24,35 @@
 
 package com.sabre.oss.conf4j.spring.converter;
 
-import com.sabre.oss.conf4j.converter.ByteConverter;
 import com.sabre.oss.conf4j.converter.IntegerConverter;
-import com.sabre.oss.conf4j.converter.LongConverter;
-import com.sabre.oss.conf4j.converter.TypeConverter;
+import com.sabre.oss.conf4j.converter.JsonLikeTypeConverter;
 import com.sabre.oss.conf4j.spring.AbstractContextTest;
 import org.junit.Test;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.util.List;
-
-import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.CONF4J_TYPE_CONVERTER;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.util.ReflectionTestUtils.getField;
 
-@ContextConfiguration(classes = AutodiscoverConvertersFromCustomNamespaceTest.class)
-@ImportResource("classpath:converter/autodiscover-converters.spring.test.xml")
-public class AutodiscoverConvertersFromCustomNamespaceTest extends AbstractContextTest {
+@ContextConfiguration(classes = RegisterConverterDecoratorTest.class)
+@ImportResource("classpath:converter/register-delegating-converter-factory.spring.test.xml")
+public class RegisterConverterDecoratorTest extends AbstractContextTest {
     @Test
-    public void shouldAutodiscoverAllConvertersRegisteredInContext() {
-        isRegistered(AggregatedConverter.class, CONF4J_TYPE_CONVERTER);
-        AggregatedConverter converter = applicationContext.getBean(AggregatedConverter.class);
+    public void shouldRegisterFactoryWhenAvailableAndNoClassSpecified() {
+        Class<IntegerDecoratingConverterFactory> expectedFactory = IntegerDecoratingConverterFactory.class;
 
-        assertThat(converter).isNotNull();
-        List<TypeConverter<?>> autowired = (List<TypeConverter<?>>) getField(converter, "autowired");
+        isRegistered(expectedFactory, expectedFactory.getName());
 
-        assertThat(autowired)
-                .hasSize(3)
-                .containsExactly(applicationContext.getBean(LongConverter.class),
-                        applicationContext.getBean(IntegerConverter.class),
-                        applicationContext.getBean(ByteConverter.class));
+        IntegerDecoratingConverterFactory converterFactory = applicationContext.getBean(IntegerDecoratingConverterFactory.class);
+        assertThat(converterFactory.create(new IntegerConverter())).isExactlyInstanceOf(IntegerConverter.class);
+    }
+
+    @Test
+    public void shouldRegisterDefaultDecoratingConverterFactoryWhenNoFactorySpecified() {
+        Class<DefaultDecoratingConverterFactory> expectedFactory = DefaultDecoratingConverterFactory.class;
+
+        isRegistered(expectedFactory, JsonLikeTypeConverter.class.getName() + "Factory");
+
+        DefaultDecoratingConverterFactory converterFactory = applicationContext.getBean(expectedFactory);
+        assertThat(converterFactory.create(new IntegerConverter())).isExactlyInstanceOf(JsonLikeTypeConverter.class);
     }
 }

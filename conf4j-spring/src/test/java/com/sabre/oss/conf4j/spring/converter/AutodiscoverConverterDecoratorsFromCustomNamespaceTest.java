@@ -24,15 +24,10 @@
 
 package com.sabre.oss.conf4j.spring.converter;
 
-import com.sabre.oss.conf4j.converter.ByteConverter;
-import com.sabre.oss.conf4j.converter.IntegerConverter;
-import com.sabre.oss.conf4j.converter.LongConverter;
-import com.sabre.oss.conf4j.converter.TypeConverter;
+import com.sabre.oss.conf4j.converter.DecoratingConverterFactory;
 import com.sabre.oss.conf4j.spring.AbstractContextTest;
-import com.sabre.oss.conf4j.spring.annotation.EnableConf4j;
 import org.junit.Test;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
@@ -41,39 +36,22 @@ import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.CONF4J_TYPE_CONV
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 
-@ContextConfiguration(classes = AutodiscoverConvertersAnnotationsBasedTest.class)
-@EnableConf4j
-public class AutodiscoverConvertersAnnotationsBasedTest extends AbstractContextTest {
+@ContextConfiguration(classes = AutodiscoverConverterDecoratorsFromCustomNamespaceTest.class)
+@ImportResource("classpath:converter/autodiscover-delegating-converter-factories.spring.test.xml")
+public class AutodiscoverConverterDecoratorsFromCustomNamespaceTest extends AbstractContextTest {
     @Test
     public void shouldAutodiscoverAllConvertersRegisteredInContext() {
         isRegistered(AggregatedConverter.class, CONF4J_TYPE_CONVERTER);
         AggregatedConverter converter = applicationContext.getBean(AggregatedConverter.class);
 
         assertThat(converter).isNotNull();
-        List<TypeConverter<?>> autowired = (List<TypeConverter<?>>) getField(converter, "autowired");
+        List<DecoratingConverterFactory> autowired =
+                (List<DecoratingConverterFactory>) getField(converter, "autowiredFactories");
 
         assertThat(autowired)
                 .hasSize(3)
-                .containsSequence(applicationContext.getBean(LongConverter.class),
-                        applicationContext.getBean(IntegerConverter.class),
-                        applicationContext.getBean(ByteConverter.class));
-    }
-
-    @Bean
-    @Order(2)
-    public IntegerConverter integerConverter() {
-        return new IntegerConverter();
-    }
-
-    @Bean
-    @Order(3)
-    public ByteConverter byteConverter() {
-        return new ByteConverter();
-    }
-
-    @Bean
-    @Order(1)
-    public LongConverter longConverter() {
-        return new LongConverter();
+                .containsExactly(applicationContext.getBean(IntegerDecoratingConverterFactory.class),
+                        applicationContext.getBean(LongDecoratingConverterFactory.class),
+                        applicationContext.getBean(DefaultDecoratingConverterFactory.class));
     }
 }

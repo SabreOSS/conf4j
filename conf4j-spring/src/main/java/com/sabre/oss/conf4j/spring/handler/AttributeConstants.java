@@ -22,18 +22,16 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.spring.converter;
+package com.sabre.oss.conf4j.spring.handler;
 
-import com.sabre.oss.conf4j.spring.AbstractContextTest;
-import org.junit.Test;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.test.context.ContextConfiguration;
+final class AttributeConstants {
 
-@ContextConfiguration(classes = RegisterDelegatingConverterFactoryTest.class)
-@ImportResource("classpath:converter/register-delegating-converter-factory.spring.test.xml")
-public class RegisterDelegatingConverterFactoryTest extends AbstractContextTest {
-    @Test
-    public void shouldRegisterDelegatingConverterFactoryUnderDefaultName() {
-        isRegistered(JsonLikeTypeDelegatingConverterFactory.class, JsonLikeTypeDelegatingConverterFactory.class.getName());
+    private AttributeConstants() {
     }
+
+    static final String CLASS_ATTRIBUTE = "class";
+
+    static final String FACTORY_ATTRIBUTE = "factory";
+
+    static final String ORDER_ATTRIBUTE = "order";
 }

@@ -32,10 +32,12 @@
 
     <conf4j:configure/>
 
-    <!-- Register custom converters in the context, they should be autowired to AggregatedConverter. -->
+    <!-- Register custom converters in the context, they should be autowired to AggregatedConverter regarding order. -->
 
-    <conf4j:converter class="com.sabre.oss.conf4j.converter.IntegerConverter" order="1"/>
+    <conf4j:converter class="com.sabre.oss.conf4j.converter.IntegerConverter" order="2"/>
 
-    <conf4j:converter id="customConverterName" class="com.sabre.oss.conf4j.converter.LongConverter" order="2"/>
+    <conf4j:converter class="com.sabre.oss.conf4j.converter.ByteConverter" order="3"/>
+
+    <conf4j:converter id="customConverterName" class="com.sabre.oss.conf4j.converter.LongConverter" order="1"/>
 
 </beans>

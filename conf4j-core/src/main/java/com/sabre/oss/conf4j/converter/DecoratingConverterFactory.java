@@ -27,7 +27,7 @@ package com.sabre.oss.conf4j.converter;
 /**
  * Creates {@link TypeConverter} delegating calls to given {@link TypeConverter}.
  */
-public interface DelegatingConverterFactory {
+public interface DecoratingConverterFactory {
 
     /**
      * Create {@link TypeConverter} delegating calls to {@code delegate}.

@@ -31,7 +31,10 @@
        default-lazy-init="true">
 
     <!-- Register custom delegating converter factory.-->
-    <conf4j:delegatingConverterFactory
-            class="com.sabre.oss.conf4j.spring.converter.JsonLikeTypeDelegatingConverterFactory"/>
+    <conf4j:converter-decorator
+            class="com.sabre.oss.conf4j.converter.JsonLikeTypeConverter"/>
+
+    <conf4j:converter-decorator
+            factory="com.sabre.oss.conf4j.spring.converter.IntegerDecoratingConverterFactory"/>
 
 </beans>
