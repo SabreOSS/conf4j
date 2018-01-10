@@ -36,6 +36,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = RegisterConverterDecoratorTest.class)
 @ImportResource("classpath:converter/register-delegating-converter-factory.spring.test.xml")
 public class RegisterConverterDecoratorTest extends AbstractContextTest {
+    private static final String CONF4J_DECORATING_CONVERTER_FACTORY_SUFFIX = "$Conf4jDecoratingConverterFactory";
+
     @Test
     public void shouldRegisterFactoryWhenAvailableAndNoClassSpecified() {
         Class<IntegerDecoratingConverterFactory> expectedFactory = IntegerDecoratingConverterFactory.class;
@@ -50,8 +52,7 @@ public class RegisterConverterDecoratorTest extends AbstractContextTest {
     public void shouldRegisterDefaultDecoratingConverterFactoryWhenNoFactorySpecified() {
         Class<DefaultDecoratingConverterFactory> expectedFactory = DefaultDecoratingConverterFactory.class;
 
-        String suffix = "$Conf4jDecoratingConverterFactory";
-        isRegistered(expectedFactory, JsonLikeTypeConverter.class.getName() + suffix);
+        isRegistered(expectedFactory, JsonLikeTypeConverter.class.getName() + CONF4J_DECORATING_CONVERTER_FACTORY_SUFFIX);
 
         DefaultDecoratingConverterFactory converterFactory = applicationContext.getBean(expectedFactory);
         assertThat(converterFactory.create(new IntegerConverter())).isExactlyInstanceOf(JsonLikeTypeConverter.class);

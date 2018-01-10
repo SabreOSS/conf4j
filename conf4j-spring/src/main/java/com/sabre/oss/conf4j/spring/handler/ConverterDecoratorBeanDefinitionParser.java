@@ -38,8 +38,7 @@ import static org.springframework.util.StringUtils.hasText;
 public class ConverterDecoratorBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
     private static final String DEFAULT_DECORATING_CONVERTER_FACTORY =
             "com.sabre.oss.conf4j.spring.converter.DefaultDecoratingConverterFactory";
-    private static final String CONF4J_DECORATING_CONVERTER_FACTORY_SUFFIX =
-            "$Conf4jDecoratingConverterFactory";
+    private static final String CONF4J_DECORATING_CONVERTER_FACTORY_SUFFIX = "$Conf4jDecoratingConverterFactory";
     private static final OrderingProxy proxy = new OrderingProxy();
 
     @Override
