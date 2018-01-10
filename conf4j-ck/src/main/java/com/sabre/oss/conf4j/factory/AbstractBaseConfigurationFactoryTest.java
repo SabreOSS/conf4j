@@ -26,21 +26,16 @@ package com.sabre.oss.conf4j.factory;
 
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.source.ConfigurationSource;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 
 public abstract class AbstractBaseConfigurationFactoryTest<F extends AbstractConfigurationFactory> {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
     protected F factory;
     protected ConfigurationSource source = Mockito.spy(TestConfigurationSource.class);
 
     protected abstract F createConfigurationFactory();
 
-    @Before
+    @BeforeEach
     public void before() {
         factory = createConfigurationFactory();
     }

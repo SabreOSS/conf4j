@@ -28,25 +28,22 @@ import com.sabre.oss.conf4j.spring.annotation.ConfigurationScan;
 import com.sabre.oss.conf4j.spring.annotation.ConfigurationType;
 import com.sabre.oss.conf4j.spring.annotation.EnableConf4j;
 import com.sabre.oss.conf4j.spring.configuration.model.InvalidConfiguration;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.support.BeanDefinitionValidationException;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class ConfigurationTypeInvalidConfigurationTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void shouldReportErrorWhenInvalidConfigurationIsRegisteredManually() {
-        exception.expect(BeanDefinitionValidationException.class);
-        exception.expectMessage("not recognized as configuration type");
-
-        new AnnotationConfigApplicationContext(RegisterManually.class).close();
+        assertThrows(BeanDefinitionValidationException.class, () -> {
+            new AnnotationConfigApplicationContext(RegisterManually.class).close();
+        }, "not recognized as configuration type");
     }
 
     @Configuration

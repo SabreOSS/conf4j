@@ -32,7 +32,7 @@ import com.sabre.oss.conf4j.internal.model.provider.annotation.AnnotationConfigu
 import com.sabre.oss.conf4j.internal.model.provider.convention.ConventionConfigurationModelProvider;
 import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.source.TestConfigurationSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;

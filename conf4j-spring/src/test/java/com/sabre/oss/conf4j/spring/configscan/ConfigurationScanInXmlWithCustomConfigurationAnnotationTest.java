@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.spring.configscan;
 
 import com.sabre.oss.conf4j.spring.configscan.model.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 

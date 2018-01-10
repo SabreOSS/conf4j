@@ -36,8 +36,8 @@ import com.sabre.oss.conf4j.factory.model.ignoreprefix.BaseConfiguration;
 import com.sabre.oss.conf4j.internal.config.DynamicConfiguration;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.source.ConfigurationSource;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
@@ -48,14 +48,14 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public abstract class AbstractDynamicConfigurationFactoryTest<F extends AbstractConfigurationFactory> extends AbstractConfigurationFactoryTest<F> {
     protected final ConfigurationSource mutationSource = spy(TestConfigurationSource.class);
 
     @Override
-    @Before
+    @BeforeEach
     public void before() {
         super.before();
         when(source.getValue(anyString(), any())).thenReturn(absent());

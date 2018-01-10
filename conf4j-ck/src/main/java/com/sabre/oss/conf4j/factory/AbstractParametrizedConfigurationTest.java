@@ -29,7 +29,7 @@ import com.sabre.oss.conf4j.annotation.Default;
 import com.sabre.oss.conf4j.annotation.Key;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
 import com.sabre.oss.conf4j.source.OptionalValue;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
@@ -40,9 +40,7 @@ import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public abstract class AbstractParametrizedConfigurationTest<F extends AbstractConfigurationFactory> extends AbstractBaseConfigurationFactoryTest<F> {
     @Test

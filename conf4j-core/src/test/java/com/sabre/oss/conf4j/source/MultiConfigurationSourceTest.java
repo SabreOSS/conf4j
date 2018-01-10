@@ -24,8 +24,8 @@
 
 package com.sabre.oss.conf4j.source;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.sabre.oss.conf4j.internal.utils.MapUtils.of;
 import static java.util.Arrays.asList;
@@ -37,7 +37,7 @@ public class MultiConfigurationSourceTest {
 
     private MultiConfigurationSource source;
 
-    @Before
+    @BeforeEach
     public void before() {
         source = new MultiConfigurationSource(asList(
                 new MapConfigurationSource(of(A_KEY, A_KEY)),

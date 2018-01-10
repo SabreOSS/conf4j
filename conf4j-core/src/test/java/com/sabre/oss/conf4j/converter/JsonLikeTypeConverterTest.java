@@ -25,8 +25,8 @@
 package com.sabre.oss.conf4j.converter;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Type;
@@ -40,9 +40,7 @@ import static com.sabre.oss.conf4j.internal.utils.MapUtils.of;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("ConstantConditions")
 public class JsonLikeTypeConverterTest {
@@ -70,7 +68,7 @@ public class JsonLikeTypeConverterTest {
 
     private JsonLikeTypeConverter typeConverter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         typeConverter = createConverter(true);
     }

@@ -24,9 +24,7 @@
 
 package com.sabre.oss.conf4j.internal.utils;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,10 +33,9 @@ import static com.sabre.oss.conf4j.internal.utils.AttributesUtils.attributes;
 import static com.sabre.oss.conf4j.internal.utils.AttributesUtils.mergeAttributes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AttributesUtilsTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void shouldReturnNullWhenPropertiesAreNull() {
@@ -67,11 +64,9 @@ public class AttributesUtilsTest {
 
     @Test
     public void shouldBeImmutable() {
-        // expect
-        exception.expect(UnsupportedOperationException.class);
-
-        // when
-        attributes(MapUtils.of("key", "value")).put("anything", "value");
+        assertThrows(UnsupportedOperationException.class, () -> {
+            attributes(MapUtils.of("key", "value")).put("anything", "value");
+        });
     }
 
     @Test

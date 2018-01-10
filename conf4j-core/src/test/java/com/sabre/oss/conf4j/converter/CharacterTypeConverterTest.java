@@ -24,16 +24,16 @@
 
 package com.sabre.oss.conf4j.converter;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CharacterTypeConverterTest {
     private CharacterConverter converter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         converter = new CharacterConverter();
     }
@@ -64,13 +64,11 @@ public class CharacterTypeConverterTest {
 
     @Test
     public void shouldThrowExceptionWhenReadingIllegalValuesFromString() {
-        // given
         String stringValue = "longer then just on character string";
 
-        // when
-        assertThatThrownBy(() -> converter.fromString(Character.class, stringValue, null))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to convert to a Character:");
+        assertThrows(IllegalArgumentException.class, () -> {
+            converter.fromString(Character.class, stringValue, null);
+        }, "Unable to convert to a Character: " + stringValue);
     }
 
     @Test
@@ -122,14 +120,12 @@ public class CharacterTypeConverterTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenReadingFromStringAndInvalidEscapedString() {
-        // given
+    public void shouldEscapedString() {
         String invalidEncodedCharacter = "\\u001";
 
-        // when
-        assertThatThrownBy(() -> converter.fromString(Character.class, invalidEncodedCharacter, null))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to convert to a Character:");
+        assertThrows(IllegalArgumentException.class, () -> {
+            converter.fromString(Character.class, invalidEncodedCharacter, null);
+        }, "Unable to convert to a Character: " + invalidEncodedCharacter);
     }
 
     @Test

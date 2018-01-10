@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.internal.model.provider;
 
 import com.sabre.oss.conf4j.internal.model.provider.MethodsProvider.MethodWrapper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;

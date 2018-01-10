@@ -30,10 +30,9 @@ import com.sabre.oss.conf4j.spring.model.SpringBean;
 import com.sabre.oss.conf4j.spring.model.SpringBeanConfiguration;
 import com.sabre.oss.conf4j.spring.model.inheritance.CommonConfiguration;
 import com.sabre.oss.conf4j.spring.model.keyprefix.SpringBeanConfigurationWithoutKeyPrefix;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
 @ContextConfiguration(locations = "classpath:SpringConfigurationFactoryTest/conf4j.spring.test.xml")
-public class SpringConfigurationFactoryTest extends AbstractJUnit4SpringContextTests {
+public class SpringConfigurationFactoryTest extends AbstractContextTest {
 
     @Test
     public void shouldHandleStandardPropertiesForSpringBeanGeneration() {

@@ -28,7 +28,7 @@ import com.sabre.oss.conf4j.spring.AbstractContextTest;
 import com.sabre.oss.conf4j.spring.annotation.ConfigurationType;
 import com.sabre.oss.conf4j.spring.annotation.EnableConf4j;
 import com.sabre.oss.conf4j.spring.configuration.model.SomeConfiguration;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 

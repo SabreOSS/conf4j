@@ -26,7 +26,7 @@ package com.sabre.oss.conf4j.factory;
 
 import com.sabre.oss.conf4j.factory.model.ValidConfiguration;
 import com.sabre.oss.conf4j.internal.factory.AbstractConfigurationFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -35,9 +35,7 @@ import java.util.Arrays;
 import static com.sabre.oss.conf4j.internal.Constants.METADATA_SUFFIX;
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public abstract class AbstractStaticConfigurationFactoryTest<F extends AbstractConfigurationFactory> extends AbstractConfigurationFactoryTest<F> {
     protected boolean includeFieldForComparison(Field field) {

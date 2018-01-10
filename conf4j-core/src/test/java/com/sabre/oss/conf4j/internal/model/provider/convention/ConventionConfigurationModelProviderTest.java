@@ -29,9 +29,7 @@ import com.sabre.oss.conf4j.converter.StringConverter;
 import com.sabre.oss.conf4j.internal.model.*;
 import com.sabre.oss.conf4j.internal.model.provider.convention.ConventionConfigurationModelProviderTest.AnnotatedTimeoutConfiguration.DefaultTimeout;
 import com.sabre.oss.conf4j.internal.utils.MapUtils;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Repeatable;
@@ -44,12 +42,10 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ConventionConfigurationModelProviderTest {
     private final ConfigurationModelProvider provider = ConventionConfigurationModelProvider.getInstance();
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void shouldGenerateModelBasedOnConvention() {
@@ -238,8 +234,9 @@ public class ConventionConfigurationModelProviderTest {
 
     @Test
     public void shouldDetectDisallowedAnnotations() {
-        exception.expectMessage("InvalidAnnotatedConfiguration.getValue() method is annotated with disallowed annotation(s): @IgnoreKey.");
-        provider.getConfigurationModel(InvalidAnnotatedConfiguration.class);
+        assertThrows(Exception.class, () -> {
+            provider.getConfigurationModel(InvalidAnnotatedConfiguration.class);
+        }, "InvalidAnnotatedConfiguration.getValue() method is annotated with disallowed annotation(s): @IgnoreKey.");
     }
 
     public interface InvalidAnnotatedConfiguration {

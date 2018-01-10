@@ -24,8 +24,8 @@
 
 package com.sabre.oss.conf4j.converter;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
 import java.time.Period;
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.mock;
 public class PeriodTypeConverterTest {
     private PeriodConverter converter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         converter = new PeriodConverter();
     }

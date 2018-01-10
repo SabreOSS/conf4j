@@ -24,8 +24,8 @@
 
 package com.sabre.oss.conf4j.converter;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -33,12 +33,12 @@ import java.util.Map;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class BigDecimalTypeConverterTest {
     private BigDecimalConverter converter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         converter = new BigDecimalConverter();
     }

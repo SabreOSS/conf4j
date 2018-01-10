@@ -29,7 +29,7 @@ import com.sabre.oss.conf4j.factory.javassist.JavassistDynamicConfigurationFacto
 import com.sabre.oss.conf4j.jmh.JmhConfiguration;
 import com.sabre.oss.conf4j.source.ConfigurationSource;
 import com.sabre.oss.conf4j.source.MapConfigurationSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
