@@ -209,7 +209,8 @@
     <xsd:element name="converter-decorator">
         <xsd:annotation>
             <xsd:documentation>
-                Registers a converter decorator to the context.
+                Registers a converter decorator to the context. Converter decorator is a converter providing high level
+                conversion policy and delegating low level details to the inner converter.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>
