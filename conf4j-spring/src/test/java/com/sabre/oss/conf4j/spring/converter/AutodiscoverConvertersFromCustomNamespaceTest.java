@@ -29,7 +29,7 @@ import com.sabre.oss.conf4j.converter.IntegerConverter;
 import com.sabre.oss.conf4j.converter.LongConverter;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 import com.sabre.oss.conf4j.spring.AbstractContextTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 

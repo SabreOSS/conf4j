@@ -27,7 +27,7 @@ package com.sabre.oss.conf4j.spring.converter;
 import com.sabre.oss.conf4j.converter.DecoratingConverterFactory;
 import com.sabre.oss.conf4j.spring.AbstractContextTest;
 import com.sabre.oss.conf4j.spring.annotation.EnableConf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,7 +38,7 @@ import static com.sabre.oss.conf4j.spring.Conf4jSpringConstants.CONF4J_TYPE_CONV
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 
-@ContextConfiguration(classes = AutodiscoverConverterDecoratorsAnnotationsBasedTest.class)
+@ContextConfiguration(classes = AutodiscoverConverterDecoratorsAnnotationsBasedTest.TestConfiguration.class)
 @EnableConf4j
 public class AutodiscoverConverterDecoratorsAnnotationsBasedTest extends AbstractContextTest {
     @Test
@@ -57,21 +57,23 @@ public class AutodiscoverConverterDecoratorsAnnotationsBasedTest extends Abstrac
                         JsonLikeDecoratingConverterFactory.class));
     }
 
-    @Bean
-    @Order(2)
-    public DecoratingConverterFactory longDecoratingConverterFactory() {
-        return new LongDecoratingConverterFactory();
-    }
+    public static class TestConfiguration {
+        @Bean
+        @Order(2)
+        public DecoratingConverterFactory longDecoratingConverterFactory() {
+            return new LongDecoratingConverterFactory();
+        }
 
-    @Bean
-    @Order(3)
-    public DecoratingConverterFactory jsonLikeDecoratingConverterFactory() {
-        return new JsonLikeDecoratingConverterFactory();
-    }
+        @Bean
+        @Order(3)
+        public DecoratingConverterFactory jsonLikeDecoratingConverterFactory() {
+            return new JsonLikeDecoratingConverterFactory();
+        }
 
-    @Bean
-    @Order(1)
-    public DecoratingConverterFactory integerDecoratingConverterFactory() {
-        return new IntegerDecoratingConverterFactory();
+        @Bean
+        @Order(1)
+        public DecoratingConverterFactory integerDecoratingConverterFactory() {
+            return new IntegerDecoratingConverterFactory();
+        }
     }
 }
