@@ -50,7 +50,8 @@ public class RegisterConverterDecoratorTest extends AbstractContextTest {
     public void shouldRegisterDefaultDecoratingConverterFactoryWhenNoFactorySpecified() {
         Class<DefaultDecoratingConverterFactory> expectedFactory = DefaultDecoratingConverterFactory.class;
 
-        isRegistered(expectedFactory, JsonLikeTypeConverter.class.getName() + "Factory");
+        String suffix = "$Conf4jDecoratingConverterFactory";
+        isRegistered(expectedFactory, JsonLikeTypeConverter.class.getName() + suffix);
 
         DefaultDecoratingConverterFactory converterFactory = applicationContext.getBean(expectedFactory);
         assertThat(converterFactory.create(new IntegerConverter())).isExactlyInstanceOf(JsonLikeTypeConverter.class);

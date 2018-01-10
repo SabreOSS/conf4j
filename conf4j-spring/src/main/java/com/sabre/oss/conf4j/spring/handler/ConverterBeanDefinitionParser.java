@@ -32,7 +32,7 @@ import static java.lang.Integer.valueOf;
 import static org.springframework.util.StringUtils.hasText;
 
 public class ConverterBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
-    private final OrderingProxy proxy = new OrderingProxy();
+    private static final OrderingProxy proxy = new OrderingProxy();
 
     @Override
     protected String getBeanClassName(Element element, ParserContext parserContext) {
@@ -43,7 +43,8 @@ public class ConverterBeanDefinitionParser extends AbstractClassBeanDefinitionPa
 
         String order = element.getAttribute(ORDER_ATTRIBUTE);
         if (hasText(order)) {
-            beanClassName = proxy.create(beanClassName, valueOf(order));
+            ClassLoader classLoader = parserContext.getReaderContext().getBeanClassLoader();
+            beanClassName = proxy.create(beanClassName, valueOf(order), classLoader);
         }
 
         return beanClassName;

@@ -36,14 +36,16 @@ import static java.lang.Integer.valueOf;
 import static org.springframework.util.StringUtils.hasText;
 
 public class ConverterDecoratorBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
-    private static final String DEFAULT_DECORATING_CONVERTER_FACTORY = "com.sabre.oss.conf4j.spring.converter.DefaultDecoratingConverterFactory";
-
-    private final OrderingProxy proxy = new OrderingProxy();
+    private static final String DEFAULT_DECORATING_CONVERTER_FACTORY =
+            "com.sabre.oss.conf4j.spring.converter.DefaultDecoratingConverterFactory";
+    private static final String CONF4J_DECORATING_CONVERTER_FACTORY_SUFFIX =
+            "$Conf4jDecoratingConverterFactory";
+    private static final OrderingProxy proxy = new OrderingProxy();
 
     @Override
     protected BeanDefinitionBuilder getBeanDefinitionBuilder(Element element, ParserContext parserContext) {
         String beanClassName = element.getAttribute(FACTORY_ATTRIBUTE);
-        boolean createFactory = false;
+        boolean defaultFactory = false;
         if (!hasText(beanClassName)) {
             beanClassName = element.getAttribute(CLASS_ATTRIBUTE);
             if (!hasText(beanClassName)) {
@@ -51,18 +53,19 @@ public class ConverterDecoratorBeanDefinitionParser extends AbstractClassBeanDef
                 return null;
             }
             beanClassName = DEFAULT_DECORATING_CONVERTER_FACTORY;
-            createFactory = true;
+            defaultFactory = true;
         }
 
         String order = element.getAttribute(ORDER_ATTRIBUTE);
         if (hasText(order)) {
-            beanClassName = proxy.create(beanClassName, valueOf(order));
+            ClassLoader classLoader = parserContext.getReaderContext().getBeanClassLoader();
+            beanClassName = proxy.create(beanClassName, valueOf(order), classLoader);
         }
 
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(beanClassName);
         builder.getRawBeanDefinition().setSource(parserContext.extractSource(element));
 
-        if (createFactory) {
+        if (defaultFactory) {
             builder.addPropertyValue("converterClass", element.getAttribute(CLASS_ATTRIBUTE));
         }
 
@@ -77,8 +80,7 @@ public class ConverterDecoratorBeanDefinitionParser extends AbstractClassBeanDef
         }
         String factoryId = element.getAttribute(FACTORY_ATTRIBUTE);
         if (!hasText(factoryId)) {
-            // TODO Discuss naming convention for converter decorators created using DefaultDecoratingConverterFactory
-            return classId + "Factory";
+            return classId + CONF4J_DECORATING_CONVERTER_FACTORY_SUFFIX;
         }
         return factoryId;
     }

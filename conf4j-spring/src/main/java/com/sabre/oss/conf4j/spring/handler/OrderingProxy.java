@@ -27,23 +27,22 @@ package com.sabre.oss.conf4j.spring.handler;
 import org.springframework.cglib.proxy.*;
 import org.springframework.core.Ordered;
 
-import static java.lang.Class.forName;
 import static java.lang.String.format;
 import static org.springframework.cglib.proxy.Enhancer.registerStaticCallbacks;
+import static org.springframework.util.ClassUtils.forName;
 
 public class OrderingProxy {
     private static final String GET_ORDER_METHOD = "getOrder";
 
-    public String create(String configurationType, int order) {
+    public String create(String superClassName, int order, ClassLoader classLoader) {
         Enhancer enhancer = new Enhancer();
         enhancer.setCallbackFilter(getGetOrderMethodFilter());
         enhancer.setCallbackTypes(new Class[]{OrderingCallBack.class, NoOp.class});
         enhancer.setInterfaces(new Class[]{Ordered.class});
-        // TODO Proper String->Class resolving
         try {
-            enhancer.setSuperclass(forName(configurationType));
+            enhancer.setSuperclass(forName(superClassName, classLoader));
         } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException(format("No %s class.", configurationType), e);
+            throw new IllegalArgumentException(format("Class %s not found.", superClassName), e);
         }
         Class<?> enhancerClass = enhancer.createClass();
         registerStaticCallbacks(enhancerClass, new Callback[]{new OrderingCallBack(order), NoOp.INSTANCE});
@@ -56,7 +55,7 @@ public class OrderingProxy {
                 m.getParameterCount() == 0 ? 0 : 1;
     }
 
-    private final class OrderingCallBack implements FixedValue {
+    private static final class OrderingCallBack implements FixedValue {
         private final int order;
 
         private OrderingCallBack(int order) {
@@ -64,7 +63,7 @@ public class OrderingProxy {
         }
 
         @Override
-        public Object loadObject() throws Exception {
+        public Object loadObject() {
             return order;
         }
     }
