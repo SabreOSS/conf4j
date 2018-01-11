@@ -88,7 +88,7 @@ public final class DefaultTypeConverters {
     /**
      * Return list of standard {@link DecoratingConverterFactory}.
      *
-     * @return list of delegating converter factories.
+     * @return list of decorating converter factories.
      */
     public static List<DecoratingConverterFactory> getDefaultDelegatingConverterFactories() {
         return DEFAULT_DELEGATING_CONVERTER_FACTORIES;
@@ -96,23 +96,22 @@ public final class DefaultTypeConverters {
 
     /**
      * Create composite converter.
-     * Each converter in {@code delegatingConverterFactories} delegates conversion to its
-     * successor in the list.
-     * The last converter delegates to {@link ChainedTypeConverter} composed of {@code baseConverters}.
+     * Each converter in {@code decoratingConverterFactories} decorates its successor in the list.
+     * The last converter decorates {@link ChainedTypeConverter} composed of {@code baseConverters}.
      *
      * @param baseConverters               base type converters.
-     * @param delegatingConverterFactories delegating converter factories.
+     * @param decoratingConverterFactories decorating converter factories.
      * @return composite converter.
      */
     public static TypeConverter<Object> createCompositeConverter(
             List<TypeConverter<?>> baseConverters,
-            List<DecoratingConverterFactory> delegatingConverterFactories) {
+            List<DecoratingConverterFactory> decoratingConverterFactories) {
         requireNonNull(baseConverters, "baseConverters cannot be null");
-        requireNonNull(delegatingConverterFactories, "delegatingConverterFactories cannot be null");
+        requireNonNull(decoratingConverterFactories, "decoratingConverterFactories cannot be null");
 
         TypeConverter<?> typeConverter = new ChainedTypeConverter(baseConverters);
 
-        for (DecoratingConverterFactory factory : delegatingConverterFactories) {
+        for (DecoratingConverterFactory factory : decoratingConverterFactories) {
             typeConverter = factory.create(typeConverter);
         }
 
@@ -120,11 +119,11 @@ public final class DefaultTypeConverters {
     }
 
     /**
-     * Creates delegating converter factory as {@link ChainedTypeConverter} composed of parameter
+     * Creates decorating converter factory as {@link ChainedTypeConverter} composed of parameter
      * and {@code delegate} applied to this parameter.
      *
-     * @param delegate function creating delegating converter.
-     * @return delegating converter factory.
+     * @param delegate function creating converter decorator.
+     * @return decorating converter factory.
      */
     public static DecoratingConverterFactory createDelegatingFactory(Function<TypeConverter<?>, TypeConverter<?>> delegate) {
         return (f) -> new ChainedTypeConverter(asList(f, delegate.apply(f)));
