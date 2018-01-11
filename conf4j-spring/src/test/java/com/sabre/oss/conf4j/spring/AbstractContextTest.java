@@ -34,7 +34,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Fail.fail;
 
 @ExtendWith(SpringExtension.class)
 public abstract class AbstractContextTest {
@@ -52,10 +52,10 @@ public abstract class AbstractContextTest {
         } catch (BeansException e) {
             String[] beanNames = applicationContext.getBeanNamesForType(beanClass);
             if (beanNames.length == 0) {
-                fail("Bean of type " + beanClass.getName() + " not found in the context.");
+                fail("Bean of type " + beanClass.getName() + " not found in the context.", e);
             } else {
                 fail("Bean of type " + beanClass.getName() + " with name " + expectedName + " not found in the context, " +
-                        "but following bean(s) is/are found " + Arrays.toString(beanNames));
+                        "but following bean(s) is/are found " + Arrays.toString(beanNames), e);
             }
         }
     }

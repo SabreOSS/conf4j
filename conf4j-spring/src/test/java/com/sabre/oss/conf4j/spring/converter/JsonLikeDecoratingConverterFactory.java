@@ -22,20 +22,15 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.spring.handler;
+package com.sabre.oss.conf4j.spring.converter;
 
-import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+import com.sabre.oss.conf4j.converter.DecoratingConverterFactory;
+import com.sabre.oss.conf4j.converter.JsonLikeTypeConverter;
+import com.sabre.oss.conf4j.converter.TypeConverter;
 
-/**
- * Registers configuration parser.
- */
-public class Conf4jNamespaceHandler extends NamespaceHandlerSupport {
+public class JsonLikeDecoratingConverterFactory implements DecoratingConverterFactory {
     @Override
-    public void init() {
-        registerBeanDefinitionParser("configure", new ConfigureBeanDefinitionParser());
-        registerBeanDefinitionParser("configuration-scan", new ConfigurationScanBeanDefinitionParser());
-        registerBeanDefinitionParser("configuration", new ConfigurationBeanDefinitionParser());
-        registerBeanDefinitionParser("converter", new ConverterBeanDefinitionParser());
-        registerBeanDefinitionParser("converter-decorator", new ConverterDecoratorBeanDefinitionParser());
+    public TypeConverter<?> create(TypeConverter<?> delegate) {
+        return new JsonLikeTypeConverter(delegate);
     }
 }

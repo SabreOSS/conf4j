@@ -22,20 +22,25 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.spring.handler;
+package com.sabre.oss.conf4j.spring.converter;
 
-import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+import com.sabre.oss.conf4j.converter.IntegerConverter;
+import com.sabre.oss.conf4j.converter.LongConverter;
+import com.sabre.oss.conf4j.spring.AbstractContextTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.test.context.ContextConfiguration;
 
-/**
- * Registers configuration parser.
- */
-public class Conf4jNamespaceHandler extends NamespaceHandlerSupport {
-    @Override
-    public void init() {
-        registerBeanDefinitionParser("configure", new ConfigureBeanDefinitionParser());
-        registerBeanDefinitionParser("configuration-scan", new ConfigurationScanBeanDefinitionParser());
-        registerBeanDefinitionParser("configuration", new ConfigurationBeanDefinitionParser());
-        registerBeanDefinitionParser("converter", new ConverterBeanDefinitionParser());
-        registerBeanDefinitionParser("converter-decorator", new ConverterDecoratorBeanDefinitionParser());
+@ContextConfiguration(classes = RegisterConverterTest.class)
+@ImportResource("classpath:converter/register-converter.spring.test.xml")
+public class RegisterConverterTest extends AbstractContextTest {
+    @Test
+    public void shouldRegisterConverterUnderDefaultName() {
+        isRegistered(IntegerConverter.class, IntegerConverter.class.getName());
+    }
+
+    @Test
+    public void shouldRegisterConverterUnderProvidedName() {
+        isRegistered(LongConverter.class, "customConverterName");
     }
 }

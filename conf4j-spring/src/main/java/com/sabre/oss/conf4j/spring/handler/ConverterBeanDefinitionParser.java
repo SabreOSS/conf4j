@@ -24,18 +24,29 @@
 
 package com.sabre.oss.conf4j.spring.handler;
 
-import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+import org.springframework.beans.factory.xml.ParserContext;
+import org.w3c.dom.Element;
 
-/**
- * Registers configuration parser.
- */
-public class Conf4jNamespaceHandler extends NamespaceHandlerSupport {
+import static com.sabre.oss.conf4j.spring.handler.AttributeConstants.ORDER_ATTRIBUTE;
+import static java.lang.Integer.valueOf;
+import static org.springframework.util.StringUtils.hasText;
+
+public class ConverterBeanDefinitionParser extends AbstractClassBeanDefinitionParser {
+    private static final OrderingProxy proxy = new OrderingProxy();
+
     @Override
-    public void init() {
-        registerBeanDefinitionParser("configure", new ConfigureBeanDefinitionParser());
-        registerBeanDefinitionParser("configuration-scan", new ConfigurationScanBeanDefinitionParser());
-        registerBeanDefinitionParser("configuration", new ConfigurationBeanDefinitionParser());
-        registerBeanDefinitionParser("converter", new ConverterBeanDefinitionParser());
-        registerBeanDefinitionParser("converter-decorator", new ConverterDecoratorBeanDefinitionParser());
+    protected String getBeanClassName(Element element, ParserContext parserContext) {
+        String beanClassName = super.getBeanClassName(element, parserContext);
+        if (beanClassName == null) {
+            return null;
+        }
+
+        String order = element.getAttribute(ORDER_ATTRIBUTE);
+        if (hasText(order)) {
+            ClassLoader classLoader = parserContext.getReaderContext().getBeanClassLoader();
+            beanClassName = proxy.create(beanClassName, valueOf(order), classLoader);
+        }
+
+        return beanClassName;
     }
 }

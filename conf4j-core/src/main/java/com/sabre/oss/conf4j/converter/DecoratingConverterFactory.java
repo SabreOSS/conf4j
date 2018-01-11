@@ -22,20 +22,21 @@
  * SOFTWARE.
  */
 
-package com.sabre.oss.conf4j.spring.handler;
-
-import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+package com.sabre.oss.conf4j.converter;
 
 /**
- * Registers configuration parser.
+ * Creates {@link TypeConverter} decorator.
+ * <p>
+ * {@link JsonLikeTypeConverter} is an example of a converter decorator. It provides high level JSON formatting, but delegates
+ * conversion of concrete elements to the inner {@link TypeConverter}.
  */
-public class Conf4jNamespaceHandler extends NamespaceHandlerSupport {
-    @Override
-    public void init() {
-        registerBeanDefinitionParser("configure", new ConfigureBeanDefinitionParser());
-        registerBeanDefinitionParser("configuration-scan", new ConfigurationScanBeanDefinitionParser());
-        registerBeanDefinitionParser("configuration", new ConfigurationBeanDefinitionParser());
-        registerBeanDefinitionParser("converter", new ConverterBeanDefinitionParser());
-        registerBeanDefinitionParser("converter-decorator", new ConverterDecoratorBeanDefinitionParser());
-    }
+public interface DecoratingConverterFactory {
+
+    /**
+     * Create {@link TypeConverter} decorating {@code delegate}.
+     *
+     * @param delegate converter which behaviour will be decorated by the new-created decorator converter.
+     * @return converter decorator.
+     */
+    TypeConverter<?> create(TypeConverter<?> delegate);
 }

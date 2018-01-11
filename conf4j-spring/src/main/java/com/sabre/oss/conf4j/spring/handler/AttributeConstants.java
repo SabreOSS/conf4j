@@ -24,18 +24,14 @@
 
 package com.sabre.oss.conf4j.spring.handler;
 
-import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+final class AttributeConstants {
 
-/**
- * Registers configuration parser.
- */
-public class Conf4jNamespaceHandler extends NamespaceHandlerSupport {
-    @Override
-    public void init() {
-        registerBeanDefinitionParser("configure", new ConfigureBeanDefinitionParser());
-        registerBeanDefinitionParser("configuration-scan", new ConfigurationScanBeanDefinitionParser());
-        registerBeanDefinitionParser("configuration", new ConfigurationBeanDefinitionParser());
-        registerBeanDefinitionParser("converter", new ConverterBeanDefinitionParser());
-        registerBeanDefinitionParser("converter-decorator", new ConverterDecoratorBeanDefinitionParser());
+    private AttributeConstants() {
     }
+
+    static final String CLASS_ATTRIBUTE = "class";
+
+    static final String FACTORY_ATTRIBUTE = "factory";
+
+    static final String ORDER_ATTRIBUTE = "order";
 }

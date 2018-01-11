@@ -29,8 +29,7 @@
             xmlns:context="http://www.springframework.org/schema/context"
             xmlns:beans="http://www.springframework.org/schema/beans"
             version="1.0.0"
-            elementFormDefault="qualified"
-            attributeFormDefault="unqualified">
+            elementFormDefault="qualified">
 
     <xsd:import namespace="http://www.springframework.org/schema/context"
                 schemaLocation="http://www.springframework.org/schema/context/spring-context.xsd"/>
@@ -164,6 +163,91 @@
                                 <tool:annotation>
                                     <tool:expected-type type="java.lang.Class"/>
                                     <tool:exports type="com.sabre.oss.conf4j.spring.ConfigurationFactoryBean"/>
+                                </tool:annotation>
+                            </xsd:appinfo>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="converter">
+        <xsd:annotation>
+            <xsd:documentation>
+                Registers a type converter to the context.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="order" type="xsd:int">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                The order of the converter. See `org.springframework.core.annotation.Order.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="class" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                The fully qualified name of the converter type class.
+                            </xsd:documentation>
+                            <xsd:appinfo>
+                                <tool:annotation>
+                                    <tool:expected-type type="java.lang.Class"/>
+                                    <tool:exports type="com.sabre.oss.conf4j.converter.TypeConverter"/>
+                                </tool:annotation>
+                            </xsd:appinfo>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="converter-decorator">
+        <xsd:annotation>
+            <xsd:documentation>
+                Registers a converter decorator to the context. Converter decorator is a converter providing high level
+                conversion policy and delegating low level details to the inner converter.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="order" type="xsd:int">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                The order of the converter-decorator. See `org.springframework.core.annotation.Order.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="class" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                The fully qualified name of the type converter. It must provide a constructor with
+                                'com.sabre.oss.conf4j.converter.TypeConverter' parameter type.
+                            </xsd:documentation>
+                            <xsd:appinfo>
+                                <tool:annotation>
+                                    <tool:expected-type type="java.lang.Class"/>
+                                    <tool:exports type="com.sabre.oss.conf4j.converter.TypeConverter"/>
+                                </tool:annotation>
+                            </xsd:appinfo>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="factory" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                The fully qualified name of the decorating converter factory. If it is not provided,
+                                `com.sabre.oss.conf4j.spring.converter.DefaultDecoratingConverterFactory` with `class`
+                                attribute injected will be used.
+                            </xsd:documentation>
+                            <xsd:appinfo>
+                                <tool:annotation>
+                                    <tool:expected-type type="java.lang.Class"/>
+                                    <tool:exports type="com.sabre.oss.conf4j.converter.DecoratingConverterFactory"/>
                                 </tool:annotation>
                             </xsd:appinfo>
                         </xsd:annotation>

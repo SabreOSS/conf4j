@@ -579,7 +579,7 @@ used simultaneously.
 ### XML Schema-based Configuration
 
 _conf4j_ provides custom configuration schema `http://www.sabre.com/schema/oss/conf4j` which exposes three custom tags:
-`<conf4j:configure/>`, `<conf4j:configuration/>` and `<conf4j:configuration-scan/>`.
+`<conf4j:configure/>`, `<conf4j:configuration/>`, `<conf4j:converter/>`, `<conf4j:converter-decorator/>` and `<conf4j:configuration-scan/>`.
 
 `<conf4j:configure/>` is used for activating _conf4j_ integration with _Spring Framework_. It registers several infrastructure
 beans (like `ConfigurationFactory`, `ConfigurationSource` or `TypeConverter`) and post processors. Such beans are used
@@ -592,6 +592,45 @@ possible to specify the bean name using `id` attribute (by default fully qualifi
 ```xml
 <conf4j:configuration
     class="com.your.organization.configuration.package.ConnectionConfiguration"/>
+```
+
+`<conf4j:converter/>` registers in the context a type converter.
+This tag expects one attribute `class` which specifies fully qualified name of the converter class. It is also
+possible to specify the bean name using `id` attribute (by default fully qualified class name is used). 
+Moreover this tag supports `order` attribute, which is XML equivalent of the `org.springframework.core.annotation.Order` annotation in Java 
+based Spring configuration.
+
+```xml
+<conf4j:converter
+    class="com.your.organization.configuration.package.CustomConverter"
+    order="1"/>
+```
+
+`<conf4j:converter-decorator/>` registers in the context a decorating converter factory.
+Converter decorator is a converter providing high level conversion policy and delegating low level details to
+the inner converter. As an example consider converter for arrays. Its responsibility would be adding brackets
+and separating elements with commas. Although conversion of each element would be delegated to the inner converter.
+This tag allows to specify the bean name using `id` attribute. By default, if `factory` attribute is provided, 
+fully qualified factory name is used. Otherwise the bean name will be fully qualified class name with 
+`$Conf4jDecoratingConverterFactory` suffix. 
+Attribute `factory` specifies fully qualified name of of the `com.sabre.oss.conf4j.converter.DecoratingConverterFactory` 
+implementation.  If it is not provided, `com.sabre.oss.conf4j.spring.converter.DefaultDecoratingConverterFactory` with 
+`class` attribute injected will be used. 
+Attribute `class` states fully qualified name of the converter class. This class must provide a constructor with 
+`com.sabre.oss.conf4j.converter.TypeConverter` parameter type. 
+Moreover this tag supports `order` attribute, which is XML equivalent of the `org.springframework.core.annotation.Order` 
+annotation in Java based Spring configuration.
+
+```xml
+<conf4j:converter-decorator
+    class="com.your.organization.configuration.package.CustomConverterDecorator"
+    order="2"/>
+```
+
+```xml
+<conf4j:converter-decorator
+    factory="com.your.organization.configuration.package.CustomDecoratingConverterFactory"
+    order="3"/>
 ```
 
 `<conf4:configuration-scan>` is very similar to `<context:component-scan/>` provided by _Spring Framework_.
