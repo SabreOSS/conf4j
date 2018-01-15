@@ -101,11 +101,8 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
     public YamlConfigurationSource(InputStream inputStream) {
         requireNonNull(inputStream, "inputStream cannot be null");
 
-        Reader reader = new UnicodeReader(inputStream);
-        this.properties = createProperties(reader);
-        try {
-            reader.close();
-            inputStream.close();
+        try (Reader reader = new UnicodeReader(inputStream)) {
+            this.properties = createProperties(reader);
         } catch (IOException e) {
             throw new UncheckedIOException("Unable to release resource.", e);
         }
@@ -120,8 +117,8 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
     public YamlConfigurationSource(Reader reader) {
         requireNonNull(reader, "reader cannot be null");
 
-        this.properties = createProperties(reader);
         try {
+            this.properties = createProperties(reader);
             reader.close();
         } catch (IOException e) {
             throw new UncheckedIOException("Unable to release resource.", e);
@@ -138,11 +135,8 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
     public YamlConfigurationSource(File file) {
         requireNonNull(file, "file cannot be null");
 
-        Reader reader;
-        try {
-            reader = new FileReader(file);
+        try (Reader reader = new FileReader(file)) {
             this.properties = createProperties(reader);
-            reader.close();
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Provided file does not exist.", e);
         } catch (IOException e) {

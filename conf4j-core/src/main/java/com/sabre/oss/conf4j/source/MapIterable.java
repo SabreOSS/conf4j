@@ -26,21 +26,26 @@ package com.sabre.oss.conf4j.source;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import static java.util.Objects.requireNonNull;
 
 /**
- * Utility class making Map&lt;String, String &gt; iterable by lazily transforming {@link Map.Entry}s
+ * Utility class making Map&lt;String, String &gt; iterable by lazily transforming {@link Entry}s
  * into {@link ConfigurationEntry}s.
  */
 public class MapIterable implements Iterable<ConfigurationEntry> {
     private final Map<String, String> map;
 
     public MapIterable(Map<String, String> map) {
+        requireNonNull(map, "map cannot be null");
+
         this.map = map;
     }
 
     @Override
     public Iterator<ConfigurationEntry> iterator() {
-        Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+        Iterator<Entry<String, String>> iterator = map.entrySet().iterator();
         return new Iterator<ConfigurationEntry>() {
             @Override
             public boolean hasNext() {
@@ -49,7 +54,7 @@ public class MapIterable implements Iterable<ConfigurationEntry> {
 
             @Override
             public ConfigurationEntry next() {
-                Map.Entry<String, String> next = iterator.next();
+                Entry<String, String> next = iterator.next();
                 return new ConfigurationEntry(next.getKey(), next.getValue());
             }
         };
