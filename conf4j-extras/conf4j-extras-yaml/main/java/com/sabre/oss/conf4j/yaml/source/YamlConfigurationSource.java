@@ -32,13 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.reader.UnicodeReader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.UncheckedIOException;
+import java.io.*;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,9 +42,62 @@ import static com.sabre.oss.conf4j.source.OptionalValue.present;
 import static java.util.Collections.singletonMap;
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Configuration source created by reading YAML source. It flattens YAML structure to String property values.
+ * <p>
+ * Hierarchical objects are exposed by nested paths.
+ * <b>For example:</b>
+ * <p>
+ * <pre class="code">
+ * users:
+ * admin:
+ * name: John Smith
+ * age: 30
+ * country: USA
+ * </pre>
+ * <p>
+ * is transformed into these properties:
+ * <p>
+ * <pre class="code">
+ * users.admin.name=John Smith
+ * users.admin.age=30
+ * users.admin.country=USA
+ * </pre>
+ * <p>
+ * <code>[]</code> dereferencers are used to split lists into property keys.
+ * <b>For example:</b>
+ * <pre class="code">
+ * continents:
+ * - Asia
+ * - Africa
+ * - North America
+ * - South America
+ * - Antarctica
+ * - Europe
+ * - Australia
+ * </pre>
+ * <p>
+ * is transformed into these properties:
+ * <p>
+ * <pre class="code">
+ * continents[0]=Asia
+ * continents[1]=Africa
+ * continents[2]=North America
+ * continents[3]=South America
+ * continents[4]=Antarctica
+ * continents[5]=Europe
+ * continents[6]=Australia
+ * </pre>
+ */
 public class YamlConfigurationSource implements IterableConfigurationSource {
     private final Map<String, String> properties;
 
+    /**
+     * Create YamlConfigurationSource instance.
+     *
+     * @param inputStream input stream of YAML source.
+     * @throws UncheckedIOException when unable to properly close {@param inputStream}.
+     */
     public YamlConfigurationSource(InputStream inputStream) {
         requireNonNull(inputStream, "inputStream cannot be null");
 
@@ -64,6 +111,12 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
         }
     }
 
+    /**
+     * Create YamlConfigurationSource instance.
+     *
+     * @param reader reader for YAML source.
+     * @throws UncheckedIOException when unable to properly close {@param reader}.
+     */
     public YamlConfigurationSource(Reader reader) {
         requireNonNull(reader, "reader cannot be null");
 
@@ -75,6 +128,13 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
         }
     }
 
+    /**
+     * Create YamlConfigurationSource instance.
+     *
+     * @param file file representing YAML source.
+     * @throws IllegalArgumentException when provided file not found.
+     * @throws UncheckedIOException     when unable to properly close {@link FileReader} for {@param file}.
+     */
     public YamlConfigurationSource(File file) {
         requireNonNull(file, "file cannot be null");
 

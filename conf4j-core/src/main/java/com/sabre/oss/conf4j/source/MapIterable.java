@@ -27,6 +27,10 @@ package com.sabre.oss.conf4j.source;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * Utility class making Map&lt;String, String &gt; iterable by lazily transforming {@link Map.Entry}s
+ * into {@link ConfigurationEntry}s.
+ */
 public class MapIterable implements Iterable<ConfigurationEntry> {
     private final Map<String, String> map;
 

@@ -26,7 +26,6 @@ package com.sabre.oss.conf4j.yaml.converter;
 
 import com.sabre.oss.conf4j.converter.TypeConverter;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -36,23 +35,32 @@ import static com.sabre.oss.conf4j.yaml.converter.Yaml.CONVERTER;
 import static com.sabre.oss.conf4j.yaml.converter.Yaml.YAML;
 import static java.util.Objects.requireNonNull;
 
-
-//todo javadoc
-
 /**
  * Type converter which supports object conversion to/from YAML.
  * <p>
- * The converter is applied when there is no {@value com.sabre.oss.conf4j.yaml.converter.Yaml#CONVERTER} meta-attribute
- * or this meta-attribute exists and its value is {@value com.sabre.oss.conf4j.yaml.converter.Yaml#YAML}.
+ * If the converter ignores converter attribute, it is always applied.
+ * Otherwise {@link com.sabre.oss.conf4j.yaml.converter.Yaml#CONVERTER} meta-attribute with
+ * {@link com.sabre.oss.conf4j.yaml.converter.Yaml#YAML} value must be provided.
+ *
+ * @see com.sabre.oss.conf4j.yaml.converter.Yaml
  */
 public class YamlConverter<T> implements TypeConverter<T> {
     private final boolean ignoreConverterAttribute;
 
-    // todo javadoc
+    /**
+     * Create YamlConverter instance. By default the converter is not ignoring
+     * {@link com.sabre.oss.conf4j.yaml.converter.Yaml#CONVERTER} attribute. See class javadoc for more details.
+     */
     public YamlConverter() {
         this(false);
     }
 
+    /**
+     * Create YamlConverter instance.
+     *
+     * @param ignoreConverterAttribute flag indicating whether {@link com.sabre.oss.conf4j.yaml.converter.Yaml#CONVERTER}
+     *                                 should be ignored. See class javadoc for more details.
+     */
     public YamlConverter(boolean ignoreConverterAttribute) {
         this.ignoreConverterAttribute = ignoreConverterAttribute;
     }
@@ -87,7 +95,7 @@ public class YamlConverter<T> implements TypeConverter<T> {
             return null;
         }
 
-        Yaml yaml = new Yaml(new Constructor((Class<?>) type));
+        Yaml yaml = new Yaml();
         return yaml.dumpAsMap(value);
     }
 }

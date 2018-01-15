@@ -35,7 +35,19 @@ import static com.sabre.oss.conf4j.yaml.converter.Yaml.YAML;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-// todo javadoc
+/**
+ * Indicates that {@link YamlConverter} should be used to convert a configuration property value to a property type.
+ * <p>
+ * <b>Example usage:</b>
+ * <pre>
+ * public interface YamlConfiguration {
+ *     &#064;@Yaml
+ *     ComplexType getComplexType();
+ * }
+ * </pre>
+ *
+ * @see YamlConverter
+ */
 @Retention(RUNTIME)
 @Target(METHOD)
 @Documented
