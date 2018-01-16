@@ -31,8 +31,7 @@ import java.util.Map.Entry;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Utility class making Map&lt;String, String &gt; iterable by lazily transforming {@link Entry}s
- * into {@link ConfigurationEntry}s.
+ * This class adapts Map&lt;String, String&gt; to {@link Iterable} of {@link ConfigurationEntry}.
  */
 public class MapIterable implements Iterable<ConfigurationEntry> {
     private final Map<String, String> map;

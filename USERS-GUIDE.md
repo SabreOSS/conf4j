@@ -31,6 +31,7 @@
 * [Type Converters](#type-converters)
 * [Configuration Types with Generics](#configuration-types-with-generics)
 * [Spring Framework Integration](#spring-framework-integration)
+* [Extras](#extras)
 
 ## Overview
 
@@ -722,7 +723,7 @@ dependencies {
 
 ### Annotation-based Configuration
 
-_conf4_ provides the following annotations which can be used with _Spring Framework_ and _Spring Boot_:
+_conf4j_ provides the following annotations which can be used with _Spring Framework_ and _Spring Boot_:
 `@EnableConf4j`, `@ConfigurationScan`, `@ConfigurationType`.
 
 The `@EnableConf4j` enables _conf4j_ integration and works as `<conf4j:configure/>` tag.
@@ -823,3 +824,98 @@ public class SimpleBootApplication implements CommandLineRunner {
 ```
 
 If you want to use _javassist_ based configuration factories, don't forget to add dependency to `com.sabre.oss.conf4j:conf4j-javassist`.
+
+## Extras
+
+The modules grouped under _conf4j-extras_ provides integration with additional frameworks and data formats, for example YAML.
+
+### YAML
+
+_conf4j-extras-yaml_ module provides integration with YAML format.
+
+In order to use it, just add a dependency to `com.sabre.oss.conf4j:conf4j-extras-yaml` module.
+
+_Maven_
+```xml
+<dependency>
+  <groupId>com.sabre.oss.conf4j</groupId>
+  <artifactId>conf4j-extras-yaml</artifactId>
+  <version>${conf4j.version}</version>
+</dependency>
+```
+
+_Gradle_
+```groovy
+dependencies {
+  compile "com.sabre.oss.conf4j:conf4j-extras-yaml:$conf4jVersion"
+}
+```
+
+`com.sabre.oss.conf4j.yaml.converter.YamlConverter` is capable of converting POJO from/to YAML document.
+By default, this converter can be applied only to the properties which have _converter_ meta-attribute value set to _yaml_.
+For conveniences, this attribute can assigned with `com.sabre.oss.conf4j.yaml.converter.Yaml` annotation
+(as shown below), but you can use regular `@Meta` as well.
+
+```java
+public interface YamlConfiguration {
+    @Yaml
+    ComplexType getComplexType();
+}
+```
+
+_Note:_ The class converted by `YamlConverter` must be compliant with
+_JavaBeans_ specification.
+
+`com.sabre.oss.conf4j.yaml.source.YamlConfigurationSource` supports reading
+configuration values from YAML document. Because YAML can be hierarchical
+it must be flattened to key and value set.
+
+For example:
+
+```yaml
+users:
+    admin:
+       name: John Smith
+       age: 30
+       country: USA
+    jane:
+       name: Jane Doe
+       age: 25
+       country: PL
+```
+
+is flattened to:
+
+```properties
+users.admin.name=John Smith
+users.admin.age=30
+users.admin.country=USA
+users.jane.name=Jane Doe
+users.jane.age=25
+users.jane.country=PL
+```
+
+and:
+
+```yaml 
+continents:
+    - Asia
+    - Africa
+    - North America
+    - South America
+    - Antarctica
+    - Europe
+    - Australia
+```
+
+is flattened to:
+
+```properties
+continents[0]=Asia
+continents[1]=Africa
+continents[2]=North America
+continents[3]=South America
+continents[4]=Antarctica
+continents[5]=Europe
+continents[6]=Australia
+```

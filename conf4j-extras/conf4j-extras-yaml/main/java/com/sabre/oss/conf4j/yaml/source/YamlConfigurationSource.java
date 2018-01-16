@@ -39,46 +39,43 @@ import java.util.Map;
 
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
+import static java.lang.String.format;
 import static java.util.Collections.singletonMap;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Configuration source created by reading YAML source. It flattens YAML structure to String property values.
+ * Configuration source which supports YAML. It flattens the YAML structure to key-value properties.
  * <p>
  * Hierarchical objects are exposed by nested paths.
- * <b>For example:</b>
  * <p>
+ * For example:
  * <pre class="code">
- * users:
- * admin:
- * name: John Smith
- * age: 30
- * country: USA
+ * &nbsp; users:
+ * &nbsp;   admin:
+ * &nbsp;     name: John Smith
+ * &nbsp;     age: 30
+ * &nbsp;     country: USA
  * </pre>
- * <p>
  * is transformed into these properties:
- * <p>
  * <pre class="code">
  * users.admin.name=John Smith
  * users.admin.age=30
  * users.admin.country=USA
  * </pre>
+ * {@code []} brackets are used to split lists into property keys.
  * <p>
- * <code>[]</code> dereferencers are used to split lists into property keys.
- * <b>For example:</b>
+ * For example:
  * <pre class="code">
  * continents:
- * - Asia
- * - Africa
- * - North America
- * - South America
- * - Antarctica
- * - Europe
- * - Australia
+ * &nbsp;  - Asia
+ * &nbsp;  - Africa
+ * &nbsp;  - North America
+ * &nbsp;  - South America
+ * &nbsp;  - Antarctica
+ * &nbsp;  - Europe
+ * &nbsp;  - Australia
  * </pre>
- * <p>
  * is transformed into these properties:
- * <p>
  * <pre class="code">
  * continents[0]=Asia
  * continents[1]=Africa
@@ -90,13 +87,30 @@ import static java.util.Objects.requireNonNull;
  * </pre>
  */
 public class YamlConfigurationSource implements IterableConfigurationSource {
+    /**
+     * Property name used when YAML does not represent map.
+     * <p>
+     * For example:
+     * <pre class="code">
+     * some string
+     * </pre>
+     * is transformed into:
+     * <pre class="code">
+     * document=some string
+     * </pre>
+     */
+    public static final String DEFAULT_PROPERTY = "document";
+
     private final Map<String, String> properties;
 
     /**
-     * Create YamlConfigurationSource instance.
+     * Constructs value source from {@link InputStream}.
+     * <p>
+     * <em>Note:</em> YAML is loaded and processed in the constructor and {@code inputStream} is closed
+     * at the end of processing.
      *
-     * @param inputStream input stream of YAML source.
-     * @throws UncheckedIOException when unable to properly close {@param inputStream}.
+     * @param inputStream input stream which provides YAML.
+     * @throws UncheckedIOException when {@link IOException} is thrown during processing.
      */
     public YamlConfigurationSource(InputStream inputStream) {
         requireNonNull(inputStream, "inputStream cannot be null");
@@ -104,15 +118,18 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
         try (Reader reader = new UnicodeReader(inputStream)) {
             this.properties = createProperties(reader);
         } catch (IOException e) {
-            throw new UncheckedIOException("Unable to release resource.", e);
+            throw new UncheckedIOException("Unable to process YAML.", e);
         }
     }
 
     /**
-     * Create YamlConfigurationSource instance.
+     * Constructs value source from {@link Reader}.
+     * <p>
+     * <em>Note:</em> YAML is loaded and processed in the constructor and {@code inputStream} is closed
+     * at the end of processing.
      *
-     * @param reader reader for YAML source.
-     * @throws UncheckedIOException when unable to properly close {@param reader}.
+     * @param reader reader which provides YAML source.
+     * @throws UncheckedIOException when {@link IOException} is thrown during processing.
      */
     public YamlConfigurationSource(Reader reader) {
         requireNonNull(reader, "reader cannot be null");
@@ -121,29 +138,30 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
             this.properties = createProperties(reader);
             reader.close();
         } catch (IOException e) {
-            throw new UncheckedIOException("Unable to release resource.", e);
+            throw new UncheckedIOException("Unable to process YAML.", e);
         }
     }
 
     /**
-     * Create YamlConfigurationSource instance.
+     * Constructs value source from {@link File}.
      *
-     * @param file file representing YAML source.
+     * @param file file which contains YAML source.
      * @throws IllegalArgumentException when provided file not found.
-     * @throws UncheckedIOException     when unable to properly close {@link FileReader} for {@param file}.
+     * @throws UncheckedIOException when {@link IOException} is thrown during processing.
      */
     public YamlConfigurationSource(File file) {
         requireNonNull(file, "file cannot be null");
 
         try (Reader reader = new FileReader(file)) {
             this.properties = createProperties(reader);
-        } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Provided file does not exist.", e);
         } catch (IOException e) {
-            throw new UncheckedIOException("Unable to release resource.", e);
+            throw new UncheckedIOException(format("Unable to process '%s'.", file), e);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
         return properties.containsKey(key)
@@ -151,6 +169,9 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
                 : absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterable<ConfigurationEntry> getAllConfigurationEntries() {
         return new MapIterable(properties);
@@ -168,7 +189,7 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
     private Map<String, Object> createMap(Object object) {
         Map<String, Object> result = new LinkedHashMap<>();
         if (!(object instanceof Map)) {
-            result.put("document", object);
+            result.put(DEFAULT_PROPERTY, object);
             return result;
         }
 

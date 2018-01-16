@@ -36,11 +36,7 @@ import static com.sabre.oss.conf4j.yaml.converter.Yaml.YAML;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Type converter which supports object conversion to/from YAML.
- * <p>
- * If the converter ignores converter attribute, it is always applied.
- * Otherwise {@link com.sabre.oss.conf4j.yaml.converter.Yaml#CONVERTER} meta-attribute with
- * {@link com.sabre.oss.conf4j.yaml.converter.Yaml#YAML} value must be provided.
+ * Type converter which supports object conversion to/from YAML. Converted type must be valid JavaBeans.
  *
  * @see com.sabre.oss.conf4j.yaml.converter.Yaml
  */
@@ -48,18 +44,21 @@ public class YamlConverter<T> implements TypeConverter<T> {
     private final boolean ignoreConverterAttribute;
 
     /**
-     * Create YamlConverter instance. By default the converter is not ignoring
-     * {@link com.sabre.oss.conf4j.yaml.converter.Yaml#CONVERTER} attribute. See class javadoc for more details.
+     * Creates YamlConverter instance which is applied to the properties which has {@value com.sabre.oss.conf4j.yaml.converter.Yaml#CONVERTER}
+     * meta-attribute with value {@value com.sabre.oss.conf4j.yaml.converter.Yaml#YAML} assigned.
+     *
+     * @see com.sabre.oss.conf4j.yaml.converter.Yaml
      */
     public YamlConverter() {
         this(false);
     }
 
     /**
-     * Create YamlConverter instance.
+     * Creates YamlConverter instance.
      *
-     * @param ignoreConverterAttribute flag indicating whether {@link com.sabre.oss.conf4j.yaml.converter.Yaml#CONVERTER}
-     *                                 should be ignored. See class javadoc for more details.
+     * @param ignoreConverterAttribute flag indicating whether {@value com.sabre.oss.conf4j.yaml.converter.Yaml#CONVERTER}
+     *                                 meta-attribute should be ignored (when {@code true}) or checked (when {@code false}).
+     * @see com.sabre.oss.conf4j.yaml.converter.Yaml
      */
     public YamlConverter(boolean ignoreConverterAttribute) {
         this.ignoreConverterAttribute = ignoreConverterAttribute;

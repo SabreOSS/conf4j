@@ -36,12 +36,13 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Indicates that {@link YamlConverter} should be used to convert a configuration property value to a property type.
+ * Indicates the {@link YamlConverter} should be used for converting a configuration property value to a property type.
+ * It applies only when {@link YamlConverter} is registered in the configuration factory.
  * <p>
  * <b>Example usage:</b>
  * <pre>
  * public interface YamlConfiguration {
- *     &#064;@Yaml
+ *     &#064;Yaml
  *     ComplexType getComplexType();
  * }
  * </pre>
