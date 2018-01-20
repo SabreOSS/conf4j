@@ -956,5 +956,11 @@ public interface JaxbConfiguration {
 
 _Note:_ The class converted by `JaxbConverter` must be annotated with `@XmlRootElement`, for example:
 ```java
-@XmlRootElement(name = "RootElement")
+@XmlRootElement(name = "book")
+public class Book {
+    public String name;
+    public String author;
+    public String publisher;
+    public String isbn;
+}
 ```
