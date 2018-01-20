@@ -942,6 +942,7 @@ dependencies {
 }
 ```
 
+<<<<<<< HEAD
 `com.sabre.oss.conf4j.json.converter.JsonConverter` is capable of converting POJO from/to JSON document.
 By default, this converter can be applied only to the properties which have _converter_ meta-attribute value set to _json_.
 For conveniences, this attribute can assigned with `com.sabre.oss.conf4j.json.converter.Json` annotation
