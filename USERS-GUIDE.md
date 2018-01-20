@@ -943,18 +943,8 @@ dependencies {
 ```
 
 `com.sabre.oss.conf4j.yaml.converter.JaxbConverter` is capable of converting POJO from/to XML document.
-By default, this converter can be applied only to the properties which have _converter_ meta-attribute value set to _jaxb_.
-For conveniences, this attribute can assigned with `com.sabre.oss.conf4j.jaxb.converter.Jaxb` annotation
-(as shown below), but you can use regular `@Meta` as well.
 
-```java
-public interface JaxbConfiguration {
-    @Jaxb
-    ComplexType getComplexType();
-}
-```
-
-_Note:_ The class converted by `JaxbConverter` must be annotated with `@XmlRootElement`, for example:
+The class converted by `JaxbConverter` must be annotated with `@XmlRootElement`, for example:
 ```java
 @XmlRootElement(name = "book")
 public class Book {
