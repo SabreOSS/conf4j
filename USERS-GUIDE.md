@@ -919,3 +919,42 @@ continents[4]=Antarctica
 continents[5]=Europe
 continents[6]=Australia
 ```
+
+### JAXB
+
+_conf4j-extras-jaxb_ module provides integration with XML format, using JAXB library.
+
+In order to use it, just add a dependency to `com.sabre.oss.conf4j:conf4j-extras-jaxb` module.
+
+_Maven_
+```xml
+<dependency>
+  <groupId>com.sabre.oss.conf4j</groupId>
+  <artifactId>conf4j-extras-jaxb</artifactId>
+  <version>${conf4j.version}</version>
+</dependency>
+```
+
+_Gradle_
+```groovy
+dependencies {
+  compile "com.sabre.oss.conf4j:conf4j-extras-jaxb:$conf4jVersion"
+}
+```
+
+`com.sabre.oss.conf4j.yaml.converter.JaxbConverter` is capable of converting POJO from/to XML document.
+By default, this converter can be applied only to the properties which have _converter_ meta-attribute value set to _jaxb_.
+For conveniences, this attribute can assigned with `com.sabre.oss.conf4j.jaxb.converter.Jaxb` annotation
+(as shown below), but you can use regular `@Meta` as well.
+
+```java
+public interface JaxbConfiguration {
+    @Jaxb
+    ComplexType getComplexType();
+}
+```
+
+_Note:_ The class converted by `JaxbConverter` must be annotated with `@XmlRootElement`, for example:
+```java
+@XmlRootElement(name = "RootElement")
+```
