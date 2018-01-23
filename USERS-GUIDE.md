@@ -920,6 +920,116 @@ continents[5]=Europe
 continents[6]=Australia
 ```
 
+### JSON
+
+_conf4j-extras-json_ module provides integration with JSON format.
+
+In order to use it, just add a dependency to `com.sabre.oss.conf4j:conf4j-extras-json` module.
+
+_Maven_
+```xml
+<dependency>
+  <groupId>com.sabre.oss.conf4j</groupId>
+  <artifactId>conf4j-extras-json</artifactId>
+  <version>${conf4j.version}</version>
+</dependency>
+```
+
+_Gradle_
+```groovy
+dependencies {
+  compile "com.sabre.oss.conf4j:conf4j-extras-json:$conf4jVersion"
+}
+```
+
+`com.sabre.oss.conf4j.json.converter.JsonConverter` is capable of converting POJO from/to JSON document.
+By default, this converter can be applied only to the properties which have _converter_ meta-attribute value set to _json_.
+For conveniences, this attribute can assigned with `com.sabre.oss.conf4j.json.converter.Json` annotation
+(as shown below), but you can use regular `@Meta` as well.
+
+```java
+public interface JsonConfiguration {
+    @Json
+    ComplexType getComplexType();
+}
+```
+
+`com.sabre.oss.conf4j.json.source.JsonConfigurationSource` supports reading
+configuration values from JSON document. Because JSON can be hierarchical
+it must be flattened to key and value set.
+
+For example:
+
+```json
+{
+  "teams": {
+    "ferrari": {
+      "engine": "ferrari",
+      "score": 522,
+      "private": false
+    },
+    "williams": {
+      "engine": "mercedes",
+      "score": 83,
+      "private": true
+    }
+  }
+}
+```
+
+is flattened to:
+
+```properties
+teams.ferrari.engine=ferrari
+teams.ferrari.score=522
+teams.ferrari.private=false
+teams.williams.engine=mercedes
+teams.williams.score=83
+teams.williams.private=true
+```
+
+and:
+
+```json
+{
+  "months": {
+    "odd": [
+      "January",
+      "March",
+      "May",
+      "July",
+      "August",
+      "October",
+      "December"
+    ],
+    "even": [
+      "April",
+      "June",
+      "September",
+      "November"
+    ],
+    "both": "February"
+  }
+}
+```
+
+is flattened to:
+
+```properties
+months.odd[0]=January
+months.odd[1]=March
+months.odd[2]=May
+months.odd[3]=July
+months.odd[4]=August
+months.odd[5]=October
+months.odd[6]=December
+months.even[0]=April
+months.even[1]=June
+months.even[2]=September
+months.even[3]=November
+months.both=February
+```
+
 ### JAXB
 
 _conf4j-extras-jaxb_ module provides integration with XML format, using JAXB library.
