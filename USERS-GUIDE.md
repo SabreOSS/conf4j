@@ -1058,9 +1058,23 @@ The class converted by `JaxbConverter` must be annotated with `@XmlRootElement`,
 ```java
 @XmlRootElement(name = "book")
 public class Book {
-    public String name;
-    public String author;
-    public String publisher;
-    public String isbn;
+    private String name;
+    private String author;
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name){
+        this.name = name;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public void setAuthor(String author){
+        this.author = author;
+    }
 }
 ```
