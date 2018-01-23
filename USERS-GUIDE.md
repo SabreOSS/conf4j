@@ -1029,3 +1029,38 @@ months.even[2]=September
 months.even[3]=November
 months.both=February
 ```
+
+### JAXB
+
+_conf4j-extras-jaxb_ module provides integration with XML format, using JAXB library.
+
+In order to use it, just add a dependency to `com.sabre.oss.conf4j:conf4j-extras-jaxb` module.
+
+_Maven_
+```xml
+<dependency>
+  <groupId>com.sabre.oss.conf4j</groupId>
+  <artifactId>conf4j-extras-jaxb</artifactId>
+  <version>${conf4j.version}</version>
+</dependency>
+```
+
+_Gradle_
+```groovy
+dependencies {
+  compile "com.sabre.oss.conf4j:conf4j-extras-jaxb:$conf4jVersion"
+}
+```
+
+`com.sabre.oss.conf4j.yaml.converter.JaxbConverter` is capable of converting POJO from/to XML document.
+
+The class converted by `JaxbConverter` must be annotated with `@XmlRootElement`, for example:
+```java
+@XmlRootElement(name = "book")
+public class Book {
+    public String name;
+    public String author;
+    public String publisher;
+    public String isbn;
+}
+```
