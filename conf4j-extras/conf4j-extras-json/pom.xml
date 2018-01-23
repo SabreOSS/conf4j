@@ -31,16 +31,47 @@
 
     <parent>
         <groupId>com.sabre.oss.conf4j</groupId>
-        <artifactId>conf4j</artifactId>
+        <artifactId>conf4j-extras</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>conf4j-extras</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>conf4j-extras-json</artifactId>
 
-    <modules>
-        <module>conf4j-extras-json</module>
-        <module>conf4j-extras-yaml</module>
-    </modules>
+    <dependencies>
+        <!-- Internal dependencies -->
+        <dependency>
+            <groupId>com.sabre.oss.conf4j</groupId>
+            <artifactId>conf4j-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- External dependencies -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Test only dependencies -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apiguardian</groupId>
+            <artifactId>apiguardian-api</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
