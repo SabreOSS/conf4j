@@ -36,7 +36,7 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class StringTypeConverterTest {
+public class StringConverterTest {
     private StringConverter converter;
 
     @BeforeEach

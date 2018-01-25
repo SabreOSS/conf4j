@@ -35,7 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.sabre.oss.conf4j.converter.JsonLikeTypeConverter.*;
+import static com.sabre.oss.conf4j.converter.JsonLikeConverter.*;
 import static com.sabre.oss.conf4j.internal.utils.MapUtils.of;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -43,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("ConstantConditions")
-public class JsonLikeTypeConverterTest {
+public class JsonLikeConverterTest {
 
     public static final List<String> LIST_SIGNATURE = null;
     public static final Map<String, String> MAP_SIGNATURE = null;
@@ -66,7 +66,7 @@ public class JsonLikeTypeConverterTest {
     public static final String TEXT1 = "/n/r/b/t\\/,:}]";
     public static final String TEXT2 = "\"[{";
 
-    private JsonLikeTypeConverter typeConverter;
+    private JsonLikeConverter typeConverter;
 
     @BeforeEach
     public void setUp() {
@@ -266,7 +266,7 @@ public class JsonLikeTypeConverterTest {
 
     private static Type getFieldGenericType(String fieldName) {
         try {
-            return JsonLikeTypeConverterTest.class.getDeclaredField(fieldName).getGenericType();
+            return JsonLikeConverterTest.class.getDeclaredField(fieldName).getGenericType();
         } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
@@ -294,7 +294,7 @@ public class JsonLikeTypeConverterTest {
         return JsonLikeEscapeUtils.ESCAPE_COMPACT_JSON.translate(text);
     }
 
-    private JsonLikeTypeConverter createConverter(boolean compactMode) {
-        return new JsonLikeTypeConverter(new StringConverter(false), compactMode);
+    private JsonLikeConverter createConverter(boolean compactMode) {
+        return new JsonLikeConverter(new StringConverter(false), compactMode);
     }
 }

@@ -28,65 +28,73 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
+import java.time.Period;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 
-public class EnumTypeConverterTest {
-
-    private enum TestEnum {
-        FIRST, SECOND_VALUE
-    }
-
-    private EnumConverter enumTypeAdapter;
+public class PeriodConverterTest {
+    private PeriodConverter converter;
 
     @BeforeEach
     public void setUp() {
-        enumTypeAdapter = new EnumConverter();
+        converter = new PeriodConverter();
     }
 
     @Test
-    public void shouldAcceptEnumType() {
+    public void shouldConvertFromString() {
         // given
-        Type type = TestEnum.class;
+        Period period = Period.ofDays(123);
 
         // when
-        boolean isApplicable = enumTypeAdapter.isApplicable(type, null);
+        Period readPeriod = converter.fromString(Period.class, "P123D", null);
+
+        // then
+        assertThat(readPeriod).isEqualTo(period);
+    }
+
+    @Test
+    public void shouldConvertToString() {
+        // given
+        Period period = Period.ofDays(123);
+
+        // when
+        String asString = converter.toString(Period.class, period, null);
+
+        // then
+        assertThat(asString).isEqualTo("P123D");
+    }
+
+    @Test
+    public void shouldAcceptPeriodType() {
+        // given
+        Type type = Period.class;
+
+        // when
+        boolean isApplicable = converter.isApplicable(type, null);
 
         // then
         assertThat(isApplicable).isTrue();
     }
 
     @Test
-    public void shouldConvertFromString() {
-        // given enumTypeAdapter
-
+    public void shouldNotAcceptUnknownType() {
         // when
-        Enum<?> testEnum = enumTypeAdapter.fromString(TestEnum.class, "FIRST", null);
+        boolean isApplicable = converter.isApplicable(mock(Type.class), null);
 
         // then
-        assertThat(testEnum).isEqualTo(TestEnum.FIRST);
+        assertThat(isApplicable).isFalse();
     }
 
     @Test
     public void shouldThrowExceptionWhenConvertingFromStringAndWrongValue() {
-        // when
-        String value = "WRONG_VALUE";
+        // given
+        String toConvert = "XXXXX";
 
         // then
-        assertThatThrownBy(() -> enumTypeAdapter.fromString(TestEnum.class, value, null))
+        assertThatThrownBy(() -> converter.fromString(Period.class, toConvert, null))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to convert a value to an enumeration:");
-    }
-
-    @Test
-    public void shouldConvertToString() {
-        // given enumTypeAdapter
-
-        // when
-        String value = enumTypeAdapter.toString(TestEnum.class, TestEnum.SECOND_VALUE, null);
-
-        // then
-        assertThat(value).isEqualTo(TestEnum.SECOND_VALUE.name());
+                .hasMessage("Unable to convert to a Period: XXXXX");
     }
 }

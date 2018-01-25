@@ -28,10 +28,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
-import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Collections.emptyMap;
@@ -39,34 +37,33 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class LocalDateTimeTypeConverterTest {
-
-    private LocalDateTimeConverter localDateTimeTypeConverter;
+public class InstantConverterTest {
+    private InstantConverter instantConverter;
 
     @BeforeEach
     public void setUp() {
-        localDateTimeTypeConverter = new LocalDateTimeConverter();
+        instantConverter = new InstantConverter();
     }
 
     @Test
-    public void shouldBeApplicableWhenLocalDateTimeType() {
+    public void shouldBeApplicableWhenInstantType() {
         // given
-        Type type = LocalDateTime.class;
+        Type type = Instant.class;
 
         // when
-        boolean applicable = localDateTimeTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = instantConverter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isTrue();
     }
 
     @Test
-    public void shouldNotBeApplicableWhenNotLocalDateTimeType() {
+    public void shouldNotBeApplicableWhenNotInstantType() {
         // given
         Type type = Boolean.class;
 
         // when
-        boolean applicable = localDateTimeTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = instantConverter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isFalse();
@@ -75,7 +72,7 @@ public class LocalDateTimeTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenCheckingIfApplicableAndTypeIsNull() {
         // then
-        assertThatThrownBy(() -> localDateTimeTypeConverter.isApplicable(null, emptyMap()))
+        assertThatThrownBy(() -> instantConverter.isApplicable(null, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -83,35 +80,65 @@ public class LocalDateTimeTypeConverterTest {
     @Test
     public void shouldConvertToStringWhenFormatNotSpecified() {
         // given
-        Clock clock = Clock.fixed(Instant.EPOCH, ZoneId.of("Z"));
-        LocalDateTime toConvert = LocalDateTime.now(clock);
+        Instant toConvert = Instant.EPOCH;
 
         // when
-        String converted = localDateTimeTypeConverter.toString(LocalDateTime.class, toConvert, emptyMap());
+        String converted = instantConverter.toString(Instant.class, toConvert, emptyMap());
 
         // then
-        assertThat(converted).isEqualTo("1970-01-01T00:00");
+        assertThat(converted).isEqualTo("1970-01-01T00:00:00Z");
     }
 
     @Test
-    public void shouldConvertToStringWhenFormatSpecified() {
+    public void shouldConvertToStringWhenFormatSpecifiedAndDefaultZone() {
         // given
-        Clock clock = Clock.fixed(Instant.EPOCH, ZoneId.of("Z"));
-        LocalDateTime toConvert = LocalDateTime.now(clock);
+        Instant toConvert = Instant.EPOCH;
         String format = "yyyy MM dd HH:mm";
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        String converted = localDateTimeTypeConverter.toString(LocalDateTime.class, toConvert, attributes);
+        String converted = instantConverter.toString(Instant.class, toConvert, attributes);
 
         // then
-        assertThat(converted).isEqualTo("1970 01 01 00:00");
+        assertThat(converted).isEqualTo("1969 12 31 18:00");
+    }
+
+    @Test
+    public void shouldConvertToStringWhenFormatAndZoneSpecified() {
+        // given
+        Instant toConvert = Instant.EPOCH;
+        String format = "yyyy MM dd HH:mm";
+        Map<String, String> attributes = new HashMap<>();
+        attributes.put("format", format);
+        attributes.put("zone", "Europe/London");
+
+        // when
+        String converted = instantConverter.toString(Instant.class, toConvert, attributes);
+
+        // then
+        assertThat(converted).isEqualTo("1970 01 01 01:00");
+    }
+
+    @Test
+    public void shouldConvertToStringWhenFormatSpecifiedAndWrongZone() {
+        // given
+        Instant toConvert = Instant.EPOCH;
+        String format = "yyyy MM dd HH:mm";
+        Map<String, String> attributes = new HashMap<>();
+        attributes.put("zone", "null");
+        attributes.put("format", format);
+
+        // when
+        String converted = instantConverter.toString(Instant.class, toConvert, attributes);
+
+        // then
+        assertThat(converted).isEqualTo("1969 12 31 18:00");
     }
 
     @Test
     public void shouldReturnNullWhenConvertingToStringAndValueToConvertIsNull() {
         // when
-        String converted = localDateTimeTypeConverter.toString(LocalDateTime.class, null, emptyMap());
+        String converted = instantConverter.toString(Instant.class, null, emptyMap());
 
         // then
         assertThat(converted).isNull();
@@ -120,25 +147,23 @@ public class LocalDateTimeTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenConvertingToStringAndWrongFormat() {
         // given
-        Clock clock = Clock.fixed(Instant.EPOCH, ZoneId.of("Z"));
-        LocalDateTime toConvert = LocalDateTime.now(clock);
+        Instant toConvert = Instant.EPOCH;
         String format = "invalid format";
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> localDateTimeTypeConverter.toString(LocalDateTime.class, toConvert, attributes))
+        assertThatThrownBy(() -> instantConverter.toString(Instant.class, toConvert, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Unable to convert LocalDateTime to String. Invalid format: 'invalid format'");
+                .hasMessage("Unable to convert Instant to String. Invalid format: 'invalid format'");
     }
 
     @Test
     public void shouldThrowExceptionWhenConvertingToStringAndTypeIsNull() {
         // given
-        Clock clock = Clock.fixed(Instant.EPOCH, ZoneId.of("Z"));
-        LocalDateTime toConvert = LocalDateTime.now(clock);
+        Instant toConvert = Instant.EPOCH;
 
         // then
-        assertThatThrownBy(() -> localDateTimeTypeConverter.toString(null, toConvert, emptyMap()))
+        assertThatThrownBy(() -> instantConverter.toString(null, toConvert, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -146,36 +171,35 @@ public class LocalDateTimeTypeConverterTest {
     @Test
     public void shouldConvertFromStringWhenFormatNotSpecified() {
         // given
-        String dateInString = "1970-01-01T00:00";
+        String dateInString = "1970-01-01T00:00:00Z";
 
         // when
-        LocalDateTime fromConversion = localDateTimeTypeConverter.fromString(LocalDateTime.class, dateInString, emptyMap());
+        Instant fromConversion = instantConverter.fromString(Instant.class, dateInString, emptyMap());
 
         // then
-        Clock clock = Clock.fixed(Instant.EPOCH, ZoneId.of("Z"));
-        LocalDateTime expected = LocalDateTime.now(clock);
+        Instant expected = Instant.EPOCH;
         assertThat(fromConversion).isEqualTo(expected);
     }
 
     @Test
     public void shouldConvertFromStringWhenFormatSpecified() {
         // given
-        String dateInString = "1970 01 01 00:00";
-        String format = "yyyy MM dd HH:mm";
+        String dateInString = "19700101 00:00:00 +00";
+        String format = "yyyyMMdd HH:mm:ss x";
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        LocalDateTime fromConversion = localDateTimeTypeConverter.fromString(LocalDateTime.class, dateInString, attributes);
+        Instant fromConversion = instantConverter.fromString(Instant.class, dateInString, attributes);
 
         // then
-        LocalDateTime expected = LocalDateTime.of(1970, 1, 1, 0, 0);
+        Instant expected = Instant.EPOCH;
         assertThat(fromConversion).isEqualTo(expected);
     }
 
     @Test
     public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
         // when
-        LocalDateTime fromConversion = localDateTimeTypeConverter.fromString(LocalDateTime.class, null, emptyMap());
+        Instant fromConversion = instantConverter.fromString(Instant.class, null, emptyMap());
 
         // then
         assertThat(fromConversion).isNull();
@@ -187,32 +211,31 @@ public class LocalDateTimeTypeConverterTest {
         String dateInString = "invalid value string";
 
         // then
-        assertThatThrownBy(() -> localDateTimeTypeConverter.fromString(LocalDateTime.class, dateInString, emptyMap()))
+        assertThatThrownBy(() -> instantConverter.fromString(Instant.class, dateInString, emptyMap()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Unable to convert to LocalDateTime: invalid value string. The value doesn't match specified format null.");
+                .hasMessage("Unable to convert to Instant: invalid value string. The value doesn't match specified format null.");
     }
 
     @Test
     public void shouldThrowExceptionWhenConvertingFromStringAndWrongFormat() {
         // given
-        String dateInString = "1970 01 01 00:00";
+        String dateInString = "1970 01 01 00:00 Z";
         String format = "invalid format";
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> localDateTimeTypeConverter.fromString(LocalDateTime.class, dateInString, attributes))
+        assertThatThrownBy(() -> instantConverter.fromString(Instant.class, dateInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Unable to convert to LocalDateTime: 1970 01 01 00:00. Invalid format: 'invalid format'");
+                .hasMessage("Unable to convert to Instant: 1970 01 01 00:00 Z. Invalid format: 'invalid format'");
     }
 
     @Test
     public void shouldThrowExceptionWhenConvertingFromStringAndTypeIsNull() {
         // given
-        Clock clock = Clock.fixed(Instant.EPOCH, ZoneId.of("Z"));
-        LocalDateTime toConvert = LocalDateTime.now(clock);
+        Instant toConvert = Instant.EPOCH;
 
         // then
-        assertThatThrownBy(() -> localDateTimeTypeConverter.toString(null, toConvert, emptyMap()))
+        assertThatThrownBy(() -> instantConverter.toString(null, toConvert, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }

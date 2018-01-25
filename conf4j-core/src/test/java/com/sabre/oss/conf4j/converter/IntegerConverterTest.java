@@ -35,33 +35,33 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class ShortTypeConverterTest {
-    private ShortConverter shortTypeConverter;
+public class IntegerConverterTest {
+    private IntegerConverter converter;
 
     @BeforeEach
     public void setUp() {
-        shortTypeConverter = new ShortConverter();
+        converter = new IntegerConverter();
     }
 
     @Test
-    public void shouldBeApplicableWhenShortType() {
+    public void shouldBeApplicableWhenIntegerType() {
         // given
-        Type type = Short.class;
+        Type type = Integer.class;
 
         // when
-        boolean applicable = shortTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = converter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isTrue();
     }
 
     @Test
-    public void shouldNotBeApplicableWhenNotShortType() {
+    public void shouldNotBeApplicableWhenNotIntegerType() {
         // given
         Type type = Boolean.class;
 
         // when
-        boolean applicable = shortTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = converter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isFalse();
@@ -70,7 +70,7 @@ public class ShortTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenCheckingIfApplicableAndTypeIsNull() {
         // then
-        assertThatThrownBy(() -> shortTypeConverter.isApplicable(null, emptyMap()))
+        assertThatThrownBy(() -> converter.isApplicable(null, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -78,10 +78,10 @@ public class ShortTypeConverterTest {
     @Test
     public void shouldConvertToStringWhenFormatNotSpecified() {
         // given
-        Short sh = (short) 1234;
+        Integer i = 1234;
 
         // when
-        String converted = shortTypeConverter.toString(Short.class, sh, emptyMap());
+        String converted = converter.toString(Integer.class, i, emptyMap());
 
         // then
         assertThat(converted).isEqualTo("1234");
@@ -90,12 +90,12 @@ public class ShortTypeConverterTest {
     @Test
     public void shouldConvertToStringWhenFormatSpecified() {
         // given
-        Short sh = (short) 1234;
+        Integer i = 1234;
         String format = "000000";
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        String converted = shortTypeConverter.toString(Short.class, sh, attributes);
+        String converted = converter.toString(Integer.class, i, attributes);
 
         // then
         assertThat(converted).isEqualTo("001234");
@@ -104,7 +104,7 @@ public class ShortTypeConverterTest {
     @Test
     public void shouldReturnNullWhenConvertingToStringAndValueToConvertIsNull() {
         // when
-        String converted = shortTypeConverter.toString(Short.class, null, emptyMap());
+        String converted = converter.toString(Integer.class, null, emptyMap());
 
         // then
         assertThat(converted).isNull();
@@ -113,10 +113,10 @@ public class ShortTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenConvertingToStringAndTypeIsNull() {
         // given
-        Short sh = (short) 1234;
+        Integer i = 1234;
 
         // then
-        assertThatThrownBy(() -> shortTypeConverter.toString(null, sh, emptyMap()))
+        assertThatThrownBy(() -> converter.toString(null, i, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -124,33 +124,46 @@ public class ShortTypeConverterTest {
     @Test
     public void shouldConvertFromStringWhenFormatNotSpecified() {
         // given
-        String shortInString = "1234";
+        String integerInString = "1234";
 
         // when
-        Short fromConversion = shortTypeConverter.fromString(Short.class, shortInString, emptyMap());
+        Integer fromConversion = converter.fromString(Integer.class, integerInString, emptyMap());
 
         // then
-        assertThat(fromConversion).isEqualTo((short) 1234);
+        assertThat(fromConversion).isEqualTo(1234);
     }
 
     @Test
     public void shouldConvertFromStringWhenFormatSpecified() {
         // given
-        String shortInString = "1.23E2";
+        String integerInString = "1.234E3";
         String format = "0.##E0";
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        Short fromConversion = shortTypeConverter.fromString(Short.class, shortInString, attributes);
+        Integer fromConversion = converter.fromString(Integer.class, integerInString, attributes);
 
         // then
-        assertThat(fromConversion).isEqualTo((short) 123);
+        assertThat(fromConversion).isEqualTo(1234);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenConvertingFromStringAndOutOfRange() {
+        // given
+        String integerInString = "2147483648";
+        String format = "#";
+        Map<String, String> attributes = singletonMap("format", format);
+
+        // then
+        assertThatThrownBy(() -> converter.fromString(Integer.class, integerInString, attributes))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Provided value: 2147483648 is out of Integer type range.");
     }
 
     @Test
     public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
         // when
-        Short fromConversion = shortTypeConverter.fromString(Short.class, null, emptyMap());
+        Integer fromConversion = converter.fromString(Integer.class, null, emptyMap());
 
         // then
         assertThat(fromConversion).isNull();
@@ -159,36 +172,23 @@ public class ShortTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenConvertingFromStringAndWrongValue() {
         // given
-        String shortInString = "12,350.22";
+        String integerInString = "12,350.22";
         String format = "%x";
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> shortTypeConverter.fromString(Short.class, shortInString, attributes))
+        assertThatThrownBy(() -> converter.fromString(Integer.class, integerInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to convert to Short");
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenConvertingFromStringAndOutOfRange() {
-        // given
-        String shortInString = "35000";
-        String format = "#";
-        Map<String, String> attributes = singletonMap("format", format);
-
-        // then
-        assertThatThrownBy(() -> shortTypeConverter.fromString(Short.class, shortInString, attributes))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Provided value: 35000 is out of Short type range.");
+                .hasMessageContaining("Unable to convert to Integer");
     }
 
     @Test
     public void shouldThrowExceptionWhenConvertingFromStringAndTypeIsNull() {
         // given
-        String shortInString = "1234";
+        String integerInString = "1234";
 
         // then
-        assertThatThrownBy(() -> shortTypeConverter.fromString(null, shortInString, emptyMap()))
+        assertThatThrownBy(() -> converter.fromString(null, integerInString, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }

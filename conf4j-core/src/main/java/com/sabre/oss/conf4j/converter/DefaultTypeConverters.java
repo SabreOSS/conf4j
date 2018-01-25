@@ -59,7 +59,7 @@ public final class DefaultTypeConverters {
     ));
 
     private static final List<DecoratingConverterFactory> DEFAULT_DELEGATING_CONVERTER_FACTORIES = unmodifiableList(singletonList(
-            createDelegatingFactory(JsonLikeTypeConverter::new)
+            createDelegatingFactory(JsonLikeConverter::new)
     ));
 
     private static final TypeConverter<Object> DEFAULT_AGGREGATE_CONVERTER = prepareDefaultTypeConverter();

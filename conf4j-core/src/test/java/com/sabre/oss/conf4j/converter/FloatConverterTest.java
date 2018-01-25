@@ -36,33 +36,33 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class DoubleTypeConverterTest {
-    private DoubleConverter doubleTypeConverter;
+public class FloatConverterTest {
+    private FloatConverter converter;
 
     @BeforeEach
     public void setUp() {
-        doubleTypeConverter = new DoubleConverter();
+        converter = new FloatConverter();
     }
 
     @Test
-    public void shouldBeApplicableWhenDoubleType() {
+    public void shouldBeApplicableWhenFloatType() {
         // given
-        Type type = Double.class;
+        Type type = Float.class;
 
         // when
-        boolean applicable = doubleTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = converter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isTrue();
     }
 
     @Test
-    public void shouldNotBeApplicableWhenNotDoubleType() {
+    public void shouldNotBeApplicableWhenNotFloatType() {
         // given
         Type type = Boolean.class;
 
         // when
-        boolean applicable = doubleTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = converter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isFalse();
@@ -71,7 +71,7 @@ public class DoubleTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenCheckingIfApplicableAndTypeIsNull() {
         // then
-        assertThatThrownBy(() -> doubleTypeConverter.isApplicable(null, emptyMap()))
+        assertThatThrownBy(() -> converter.isApplicable(null, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -79,33 +79,33 @@ public class DoubleTypeConverterTest {
     @Test
     public void shouldConvertToStringWhenFormatNotSpecified() {
         // given
-        Double d = 12.3456;
+        Float fl = (float) 12.345;
 
         // when
-        String converted = doubleTypeConverter.toString(Double.class, d, emptyMap());
+        String converted = converter.toString(Float.class, fl, emptyMap());
 
         // then
-        assertThat(converted).isEqualTo("12.3456");
+        assertThat(converted).isEqualTo("12.345");
     }
 
     @Test
-    public void shouldConvertToStringWhenFormatSpecifiedWithDefaultLocale() {
+    public void shouldConvertToStringWhenFormatSpecifiedWithoutLocale() {
         // given
-        Double d = 12.3456;
+        Float fl = (float) 12.345;
         String format = "#.00";
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        String converted = doubleTypeConverter.toString(Double.class, d, attributes);
+        String converted = converter.toString(Float.class, fl, attributes);
 
         // then
         assertThat(converted).isEqualTo("12.35");
     }
 
     @Test
-    public void shouldConvertToStringWhenFormatSpecifiedWithCustomLocale() {
+    public void shouldConvertToStringWhenFormatSpecifiedWithLocale() {
         // given
-        Double d = 12.3456;
+        Float fl = (float) 12.345;
         String format = "#.00";
         String locale = "de";
         Map<String, String> attributes = new HashMap<>();
@@ -113,7 +113,7 @@ public class DoubleTypeConverterTest {
         attributes.put("locale", locale);
 
         // when
-        String converted = doubleTypeConverter.toString(Double.class, d, attributes);
+        String converted = converter.toString(Float.class, fl, attributes);
 
         // then
         assertThat(converted).isEqualTo("12,35");
@@ -122,7 +122,7 @@ public class DoubleTypeConverterTest {
     @Test
     public void shouldReturnNullWhenConvertingToStringAndValueToConvertIsNull() {
         // when
-        String converted = doubleTypeConverter.toString(Double.class, null, emptyMap());
+        String converted = converter.toString(Float.class, null, emptyMap());
 
         // then
         assertThat(converted).isNull();
@@ -131,10 +131,10 @@ public class DoubleTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenConvertingToStringAndTypeIsNull() {
         // given
-        Double d = 12.3456;
+        Float fl = (float) 12.345;
 
         // then
-        assertThatThrownBy(() -> doubleTypeConverter.toString(null, d, emptyMap()))
+        assertThatThrownBy(() -> converter.toString(null, fl, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -142,33 +142,33 @@ public class DoubleTypeConverterTest {
     @Test
     public void shouldConvertFromStringWhenFormatNotSpecified() {
         // given
-        String doubleInString = "12.3456";
+        String floatInString = "12.345";
 
         // when
-        Double fromConversion = doubleTypeConverter.fromString(Double.class, doubleInString, emptyMap());
+        Float fromConversion = converter.fromString(Float.class, floatInString, emptyMap());
 
         // then
-        assertThat(fromConversion).isEqualTo((Double) 12.3456);
+        assertThat(fromConversion).isEqualTo((float) 12.345);
     }
 
     @Test
-    public void shouldConvertFromStringWhenFormatSpecifiedWithoutLocale() {
+    public void shouldConvertFromStringWhenFormatSpecifiedWithDefaultLocale() {
         // given
-        String doubleInString = "12.35";
+        String floatInString = "12.35";
         String format = "#.00";
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        Double fromConversion = doubleTypeConverter.fromString(Double.class, doubleInString, attributes);
+        Float fromConversion = converter.fromString(Float.class, floatInString, attributes);
 
         // then
-        assertThat(fromConversion).isEqualTo((Double) 12.35);
+        assertThat(fromConversion).isEqualTo((float) 12.35);
     }
 
     @Test
-    public void shouldConvertFromStringWhenFormatSpecifiedWithLocale() {
+    public void shouldConvertFromStringWhenFormatSpecifiedWithCustomLocale() {
         // given
-        String doubleInString = "12,35";
+        String floatInString = "12,35";
         String format = "#.00";
         String locale = "de";
         Map<String, String> attributes = new HashMap<>();
@@ -176,52 +176,54 @@ public class DoubleTypeConverterTest {
         attributes.put("locale", locale);
 
         // when
-        Double fromConversion = doubleTypeConverter.fromString(Double.class, doubleInString, attributes);
+        Float fromConversion = converter.fromString(Float.class, floatInString, attributes);
 
         // then
-        assertThat(fromConversion).isEqualTo((Double) 12.35);
+        assertThat(fromConversion).isEqualTo((float) 12.35);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenConvertingFromStringAndOutOfRange() {
+        // given
+        String floatInString = "10.7976931348623157E308";
+        String format = "#.#";
+        Map<String, String> attributes = singletonMap("format", format);
+
+        // then
+        assertThatThrownBy(() -> converter.fromString(Float.class, floatInString, attributes))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Provided value: Infinity is out of Float type range.");
     }
 
     @Test
     public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
         // when
-        Double fromConversion = doubleTypeConverter.fromString(Double.class, null, emptyMap());
+        Float fromConversion = converter.fromString(Float.class, null, emptyMap());
 
         // then
         assertThat(fromConversion).isNull();
     }
 
     @Test
-    public void shouldThrowExceptionWhenConvertingFromStringWithFormatAndWrongValue() {
+    public void shouldThrowExceptionWhenConvertingFromStringAndWrongValue() {
         // given
-        String doubleInString = "wrong value";
+        String floatInString = "wrong value";
         String format = "format";
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> doubleTypeConverter.fromString(Double.class, doubleInString, attributes))
+        assertThatThrownBy(() -> converter.fromString(Float.class, floatInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to convert to Double. The value doesn't match specified format:");
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenConvertingFromStringAndWrongValue() {
-        // given
-        String doubleInString = "12,350.22";
-
-        // then
-        assertThatThrownBy(() -> doubleTypeConverter.fromString(Double.class, doubleInString, null))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to convert to Double:");
+                .hasMessageContaining("Unable to convert to Float. The value doesn't match specified format:");
     }
 
     @Test
     public void shouldThrowExceptionWhenConvertingFromStringAndTypeIsNull() {
         // given
-        String doubleInString = "12.3456";
+        String floatInString = "12.345";
 
         // then
-        assertThatThrownBy(() -> doubleTypeConverter.fromString(null, doubleInString, emptyMap()))
+        assertThatThrownBy(() -> converter.fromString(null, floatInString, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }

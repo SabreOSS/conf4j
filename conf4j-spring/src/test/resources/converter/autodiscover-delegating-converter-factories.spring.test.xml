@@ -38,7 +38,7 @@
     <conf4j:converter-decorator factory="com.sabre.oss.conf4j.spring.converter.LongDecoratingConverterFactory"
                                 order="2"/>
 
-    <conf4j:converter-decorator class="com.sabre.oss.conf4j.converter.JsonLikeTypeConverter"
+    <conf4j:converter-decorator class="com.sabre.oss.conf4j.converter.JsonLikeConverter"
                                 order="3"/>
 
     <conf4j:converter-decorator id="customConverterDecorator"

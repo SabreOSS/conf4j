@@ -35,33 +35,33 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class IntegerTypeConverterTest {
-    private IntegerConverter integerTypeConverter;
+public class LongConverterTest {
+    private LongConverter longTypeConverter;
 
     @BeforeEach
     public void setUp() {
-        integerTypeConverter = new IntegerConverter();
+        longTypeConverter = new LongConverter();
     }
 
     @Test
-    public void shouldBeApplicableWhenIntegerType() {
+    public void shouldBeApplicableWhenLongType() {
         // given
-        Type type = Integer.class;
+        Type type = Long.class;
 
         // when
-        boolean applicable = integerTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = longTypeConverter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isTrue();
     }
 
     @Test
-    public void shouldNotBeApplicableWhenNotIntegerType() {
+    public void shouldNotBeApplicableWhenNotLongType() {
         // given
         Type type = Boolean.class;
 
         // when
-        boolean applicable = integerTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = longTypeConverter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isFalse();
@@ -70,7 +70,7 @@ public class IntegerTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenCheckingIfApplicableAndTypeIsNull() {
         // then
-        assertThatThrownBy(() -> integerTypeConverter.isApplicable(null, emptyMap()))
+        assertThatThrownBy(() -> longTypeConverter.isApplicable(null, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -78,10 +78,10 @@ public class IntegerTypeConverterTest {
     @Test
     public void shouldConvertToStringWhenFormatNotSpecified() {
         // given
-        Integer i = 1234;
+        Long aLong = (long) 1234;
 
         // when
-        String converted = integerTypeConverter.toString(Integer.class, i, emptyMap());
+        String converted = longTypeConverter.toString(Long.class, aLong, emptyMap());
 
         // then
         assertThat(converted).isEqualTo("1234");
@@ -90,12 +90,12 @@ public class IntegerTypeConverterTest {
     @Test
     public void shouldConvertToStringWhenFormatSpecified() {
         // given
-        Integer i = 1234;
+        Long aLong = (long) 1234;
         String format = "000000";
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        String converted = integerTypeConverter.toString(Integer.class, i, attributes);
+        String converted = longTypeConverter.toString(Long.class, aLong, attributes);
 
         // then
         assertThat(converted).isEqualTo("001234");
@@ -104,7 +104,7 @@ public class IntegerTypeConverterTest {
     @Test
     public void shouldReturnNullWhenConvertingToStringAndValueToConvertIsNull() {
         // when
-        String converted = integerTypeConverter.toString(Integer.class, null, emptyMap());
+        String converted = longTypeConverter.toString(Long.class, null, emptyMap());
 
         // then
         assertThat(converted).isNull();
@@ -113,10 +113,10 @@ public class IntegerTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenConvertingToStringAndTypeIsNull() {
         // given
-        Integer i = 1234;
+        Long aLong = (long) 1234;
 
         // then
-        assertThatThrownBy(() -> integerTypeConverter.toString(null, i, emptyMap()))
+        assertThatThrownBy(() -> longTypeConverter.toString(null, aLong, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -124,46 +124,33 @@ public class IntegerTypeConverterTest {
     @Test
     public void shouldConvertFromStringWhenFormatNotSpecified() {
         // given
-        String integerInString = "1234";
+        String longInString = "1234";
 
         // when
-        Integer fromConversion = integerTypeConverter.fromString(Integer.class, integerInString, emptyMap());
+        Long fromConversion = longTypeConverter.fromString(Long.class, longInString, emptyMap());
 
         // then
-        assertThat(fromConversion).isEqualTo(1234);
+        assertThat(fromConversion).isEqualTo((long) 1234);
     }
 
     @Test
     public void shouldConvertFromStringWhenFormatSpecified() {
         // given
-        String integerInString = "1.234E3";
-        String format = "0.##E0";
+        String longInString = "1.2345E6";
+        String format = "0.####E0";
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        Integer fromConversion = integerTypeConverter.fromString(Integer.class, integerInString, attributes);
+        Long fromConversion = longTypeConverter.fromString(Long.class, longInString, attributes);
 
         // then
-        assertThat(fromConversion).isEqualTo(1234);
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenConvertingFromStringAndOutOfRange() {
-        // given
-        String integerInString = "2147483648";
-        String format = "#";
-        Map<String, String> attributes = singletonMap("format", format);
-
-        // then
-        assertThatThrownBy(() -> integerTypeConverter.fromString(Integer.class, integerInString, attributes))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Provided value: 2147483648 is out of Integer type range.");
+        assertThat(fromConversion).isEqualTo(1234500);
     }
 
     @Test
     public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
         // when
-        Integer fromConversion = integerTypeConverter.fromString(Integer.class, null, emptyMap());
+        Long fromConversion = longTypeConverter.fromString(Long.class, null, emptyMap());
 
         // then
         assertThat(fromConversion).isNull();
@@ -172,23 +159,23 @@ public class IntegerTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenConvertingFromStringAndWrongValue() {
         // given
-        String integerInString = "12,350.22";
+        String longInString = "12,350.22";
         String format = "%x";
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> integerTypeConverter.fromString(Integer.class, integerInString, attributes))
+        assertThatThrownBy(() -> longTypeConverter.fromString(Long.class, longInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to convert to Integer");
+                .hasMessageContaining("Unable to convert to Long");
     }
 
     @Test
     public void shouldThrowExceptionWhenConvertingFromStringAndTypeIsNull() {
         // given
-        String integerInString = "1234";
+        String longInString = "1234";
 
         // then
-        assertThatThrownBy(() -> integerTypeConverter.fromString(null, integerInString, emptyMap()))
+        assertThatThrownBy(() -> longTypeConverter.fromString(null, longInString, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }

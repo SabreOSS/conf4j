@@ -33,15 +33,15 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import static com.sabre.oss.conf4j.converter.JsonLikeEscapeUtils.*;
-import static com.sabre.oss.conf4j.converter.TypeConversionUtils.NOT_FOUND;
-import static com.sabre.oss.conf4j.converter.TypeConversionUtils.notEscapedIndexOf;
+import static com.sabre.oss.conf4j.converter.TypeConverterUtils.NOT_FOUND;
+import static com.sabre.oss.conf4j.converter.TypeConverterUtils.notEscapedIndexOf;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringEscapeUtils.ESCAPE_JSON;
 import static org.apache.commons.lang3.StringEscapeUtils.UNESCAPE_JSON;
 
 /**
- * {@code JsonLikeTypeConverter} is a {@link TypeConverter} that is able to parse and generate JSON-like representation
+ * {@code JsonLikeConverter} is a {@link TypeConverter} that is able to parse and generate JSON-like representation
  * of structured JSON types (JSON Arrays and JSON Objects). For support of value types (e.g. strings,
  * numbers, booleans etc.) {@link #innerTypeConverter} has to be registered.
  * <p>
@@ -71,7 +71,7 @@ import static org.apache.commons.lang3.StringEscapeUtils.UNESCAPE_JSON;
  * In contrast to JSON special characters escapes, in compact mode, double-quote must not be escaped. The characters
  * must be: ','(comma), ':'(colon), '}'(right curly brace) and ']'(right square bracket).
  *
- * {@code JsonLikeTypeConverter} supports {@value FORMAT} meta-attribute which can be used to override
+ * {@code JsonLikeConverter} supports {@value FORMAT} meta-attribute which can be used to override
  * {@link #defaultCompactMode} in {@link #fromString(Type, String, Map)} and {@link #toString(Type, Object, Map)}.
  *
  * When {@value FORMAT} meta-attribute value is:
@@ -80,7 +80,7 @@ import static org.apache.commons.lang3.StringEscapeUtils.UNESCAPE_JSON;
  * <li>{@value JSON} - JSON-like format is used.</li>
  * </ul>
  */
-public class JsonLikeTypeConverter implements TypeConverter<Object> {
+public class JsonLikeConverter implements TypeConverter<Object> {
     public static final String FORMAT = "format";
     public static final String COMPACT = "compact";
     public static final String JSON = "json";
@@ -108,11 +108,11 @@ public class JsonLikeTypeConverter implements TypeConverter<Object> {
     private final boolean defaultCompactMode;
 
     @SuppressWarnings("unchecked")
-    public JsonLikeTypeConverter(TypeConverter<?> innerTypeConverter) {
+    public JsonLikeConverter(TypeConverter<?> innerTypeConverter) {
         this(innerTypeConverter, true);
     }
 
-    public JsonLikeTypeConverter(TypeConverter<?> innerTypeConverter, boolean compactMode) {
+    public JsonLikeConverter(TypeConverter<?> innerTypeConverter, boolean compactMode) {
         this.innerTypeConverter = (TypeConverter<Object>) requireNonNull(innerTypeConverter, "innerTypeConverter must not be null");
         this.defaultCompactMode = compactMode;
     }

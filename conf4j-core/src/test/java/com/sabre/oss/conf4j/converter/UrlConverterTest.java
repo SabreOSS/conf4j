@@ -35,7 +35,7 @@ import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
 
-public class UrlTypeConverterTest {
+public class UrlConverterTest {
 
     private UrlConverter converter;
 

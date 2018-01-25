@@ -35,12 +35,12 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class BooleanTypeConverterTest {
-    private BooleanConverter booleanTypeConverter;
+public class BooleanConverterTest {
+    private BooleanConverter converter;
 
     @BeforeEach
     public void setUp() {
-        booleanTypeConverter = new BooleanConverter();
+        converter = new BooleanConverter();
     }
 
     @Test
@@ -49,7 +49,7 @@ public class BooleanTypeConverterTest {
         Type type = Boolean.class;
 
         // when
-        boolean applicable = booleanTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = converter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isTrue();
@@ -61,7 +61,7 @@ public class BooleanTypeConverterTest {
         Type type = Integer.class;
 
         // when
-        boolean applicable = booleanTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = converter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isFalse();
@@ -70,7 +70,7 @@ public class BooleanTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenCheckingIfApplicableAndTypeIsNull() {
         // then
-        assertThatThrownBy(() -> booleanTypeConverter.isApplicable(null, emptyMap()))
+        assertThatThrownBy(() -> converter.isApplicable(null, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -81,7 +81,7 @@ public class BooleanTypeConverterTest {
         Boolean b = true;
 
         // when
-        String converted = booleanTypeConverter.toString(Boolean.class, b, emptyMap());
+        String converted = converter.toString(Boolean.class, b, emptyMap());
 
         // then
         assertThat(converted).isEqualTo("true");
@@ -93,7 +93,7 @@ public class BooleanTypeConverterTest {
         Boolean b = false;
 
         // when
-        String converted = booleanTypeConverter.toString(Boolean.class, b, emptyMap());
+        String converted = converter.toString(Boolean.class, b, emptyMap());
 
         // then
         assertThat(converted).isEqualTo("false");
@@ -107,7 +107,7 @@ public class BooleanTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        String converted = booleanTypeConverter.toString(Boolean.class, b, attributes);
+        String converted = converter.toString(Boolean.class, b, attributes);
 
         // then
         assertThat(converted).isEqualTo("yes");
@@ -121,7 +121,7 @@ public class BooleanTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        String converted = booleanTypeConverter.toString(Boolean.class, b, attributes);
+        String converted = converter.toString(Boolean.class, b, attributes);
 
         // then
         assertThat(converted).isEqualTo("no");
@@ -130,7 +130,7 @@ public class BooleanTypeConverterTest {
     @Test
     public void shouldReturnNullWhenConvertingToStringAndValueToConvertIsNull() {
         // when
-        String converted = booleanTypeConverter.toString(Boolean.class, null, emptyMap());
+        String converted = converter.toString(Boolean.class, null, emptyMap());
 
         // then
         assertThat(converted).isNull();
@@ -144,7 +144,7 @@ public class BooleanTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> booleanTypeConverter.toString(Boolean.class, toConvert, attributes))
+        assertThatThrownBy(() -> converter.toString(Boolean.class, toConvert, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessageEndingWith("Invalid 'format' meta-attribute value, it must contain '/' separator character. Provided value is 'wrong format'.");
     }
@@ -155,7 +155,7 @@ public class BooleanTypeConverterTest {
         String aString = "wrong value";
 
         // then
-        assertThatThrownBy(() -> booleanTypeConverter.fromString(Boolean.class, aString, null))
+        assertThatThrownBy(() -> converter.fromString(Boolean.class, aString, null))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Unable to convert to Boolean. Unknown value:");
     }
@@ -166,7 +166,7 @@ public class BooleanTypeConverterTest {
         Boolean b = true;
 
         // then
-        assertThatThrownBy(() -> booleanTypeConverter.toString(null, b, emptyMap()))
+        assertThatThrownBy(() -> converter.toString(null, b, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -177,7 +177,7 @@ public class BooleanTypeConverterTest {
         String booleanInString = "true";
 
         // when
-        Boolean fromConversion = booleanTypeConverter.fromString(Boolean.class, booleanInString, emptyMap());
+        Boolean fromConversion = converter.fromString(Boolean.class, booleanInString, emptyMap());
 
         // then
         assertThat(fromConversion).isEqualTo(true);
@@ -189,7 +189,7 @@ public class BooleanTypeConverterTest {
         String booleanInString = "false";
 
         // when
-        Boolean fromConversion = booleanTypeConverter.fromString(Boolean.class, booleanInString, emptyMap());
+        Boolean fromConversion = converter.fromString(Boolean.class, booleanInString, emptyMap());
 
         // then
         assertThat(fromConversion).isEqualTo(false);
@@ -203,7 +203,7 @@ public class BooleanTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        Boolean fromConversion = booleanTypeConverter.fromString(Boolean.class, booleanInString, attributes);
+        Boolean fromConversion = converter.fromString(Boolean.class, booleanInString, attributes);
 
         // then
         assertThat(fromConversion).isEqualTo(true);
@@ -217,7 +217,7 @@ public class BooleanTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        Boolean fromConversion = booleanTypeConverter.fromString(Boolean.class, booleanInString, attributes);
+        Boolean fromConversion = converter.fromString(Boolean.class, booleanInString, attributes);
 
         // then
         assertThat(fromConversion).isEqualTo(false);
@@ -226,7 +226,7 @@ public class BooleanTypeConverterTest {
     @Test
     public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
         // when
-        Boolean fromConversion = booleanTypeConverter.fromString(Boolean.class, null, emptyMap());
+        Boolean fromConversion = converter.fromString(Boolean.class, null, emptyMap());
 
         // then
         assertThat(fromConversion).isNull();
@@ -240,7 +240,7 @@ public class BooleanTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> booleanTypeConverter.fromString(Boolean.class, booleanInString, attributes))
+        assertThatThrownBy(() -> converter.fromString(Boolean.class, booleanInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessageEndingWith("Invalid 'format' meta-attribute value, it must contain '/' separator character. Provided value is 'wrong format'.");
     }
@@ -253,7 +253,7 @@ public class BooleanTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> booleanTypeConverter.fromString(Boolean.class, booleanInString, attributes))
+        assertThatThrownBy(() -> converter.fromString(Boolean.class, booleanInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessageEndingWith("Unable to convert to Boolean, values must be either 'yes' or 'no' but provided value is 'wrong value'.");
     }
@@ -264,7 +264,7 @@ public class BooleanTypeConverterTest {
         String booleanInString = "on";
 
         // then
-        assertThatThrownBy(() -> booleanTypeConverter.fromString(null, booleanInString, emptyMap()))
+        assertThatThrownBy(() -> converter.fromString(null, booleanInString, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }

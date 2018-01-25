@@ -32,7 +32,7 @@
 
     <!-- Register custom delegating converter factory.-->
     <conf4j:converter-decorator
-            class="com.sabre.oss.conf4j.converter.JsonLikeTypeConverter"/>
+            class="com.sabre.oss.conf4j.converter.JsonLikeConverter"/>
 
     <conf4j:converter-decorator
             factory="com.sabre.oss.conf4j.spring.converter.IntegerDecoratingConverterFactory"/>
