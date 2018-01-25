@@ -28,19 +28,19 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TypeConversionUtilsTest {
+public class TypeConverterUtilsTest {
 
     @Test
     public void shouldProperlyReturnNotEscapedIndexOf() {
-        assertThat(TypeConversionUtils.notEscapedIndexOf("abcb", 0, 'b')).isEqualTo(1);
-        assertThat(TypeConversionUtils.notEscapedIndexOf("a\\bcb", 0, 'b')).isEqualTo(4);
-        assertThat(TypeConversionUtils.notEscapedIndexOf("a\\b\\\\bcb", 0, 'b')).isEqualTo(5);
+        assertThat(TypeConverterUtils.notEscapedIndexOf("abcb", 0, 'b')).isEqualTo(1);
+        assertThat(TypeConverterUtils.notEscapedIndexOf("a\\bcb", 0, 'b')).isEqualTo(4);
+        assertThat(TypeConverterUtils.notEscapedIndexOf("a\\b\\\\bcb", 0, 'b')).isEqualTo(5);
     }
 
     @Test
     public void shouldProperlyReturnNotEscapedIndexOfMultiArgs() {
-        assertThat(TypeConversionUtils.notEscapedIndexOf("abcb", 0, 'b', 'a')).isEqualTo(0);
-        assertThat(TypeConversionUtils.notEscapedIndexOf("a\\bcb", 0, 'b', 'c')).isEqualTo(3);
-        assertThat(TypeConversionUtils.notEscapedIndexOf("a\\b\\\\cb", 0, 'b', 'c')).isEqualTo(5);
+        assertThat(TypeConverterUtils.notEscapedIndexOf("abcb", 0, 'b', 'a')).isEqualTo(0);
+        assertThat(TypeConverterUtils.notEscapedIndexOf("a\\bcb", 0, 'b', 'c')).isEqualTo(3);
+        assertThat(TypeConverterUtils.notEscapedIndexOf("a\\b\\\\cb", 0, 'b', 'c')).isEqualTo(5);
     }
 }

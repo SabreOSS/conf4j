@@ -28,12 +28,12 @@ import java.util.Objects;
 
 import static java.lang.Math.max;
 
-final class TypeConversionUtils {
+final class TypeConverterUtils {
     static final int NOT_FOUND = -1;
 
     private static final char ESCAPE_CHAR = '\\';
 
-    private TypeConversionUtils() {
+    private TypeConverterUtils() {
     }
 
     static int notEscapedIndexOf(CharSequence value, int startPos, char character) {

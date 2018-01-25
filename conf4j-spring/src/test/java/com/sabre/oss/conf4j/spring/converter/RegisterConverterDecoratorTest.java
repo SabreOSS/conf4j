@@ -25,7 +25,7 @@
 package com.sabre.oss.conf4j.spring.converter;
 
 import com.sabre.oss.conf4j.converter.IntegerConverter;
-import com.sabre.oss.conf4j.converter.JsonLikeTypeConverter;
+import com.sabre.oss.conf4j.converter.JsonLikeConverter;
 import com.sabre.oss.conf4j.spring.AbstractContextTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.ImportResource;
@@ -52,9 +52,9 @@ public class RegisterConverterDecoratorTest extends AbstractContextTest {
     public void shouldRegisterDefaultDecoratingConverterFactoryWhenNoFactorySpecified() {
         Class<DefaultDecoratingConverterFactory> expectedFactory = DefaultDecoratingConverterFactory.class;
 
-        isRegistered(expectedFactory, JsonLikeTypeConverter.class.getName() + CONF4J_DECORATING_CONVERTER_FACTORY_SUFFIX);
+        isRegistered(expectedFactory, JsonLikeConverter.class.getName() + CONF4J_DECORATING_CONVERTER_FACTORY_SUFFIX);
 
         DefaultDecoratingConverterFactory converterFactory = applicationContext.getBean(expectedFactory);
-        assertThat(converterFactory.create(new IntegerConverter())).isExactlyInstanceOf(JsonLikeTypeConverter.class);
+        assertThat(converterFactory.create(new IntegerConverter())).isExactlyInstanceOf(JsonLikeConverter.class);
     }
 }

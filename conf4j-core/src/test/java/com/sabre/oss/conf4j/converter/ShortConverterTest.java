@@ -35,33 +35,33 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class LongTypeConverterTest {
-    private LongConverter longTypeConverter;
+public class ShortConverterTest {
+    private ShortConverter shortTypeConverter;
 
     @BeforeEach
     public void setUp() {
-        longTypeConverter = new LongConverter();
+        shortTypeConverter = new ShortConverter();
     }
 
     @Test
-    public void shouldBeApplicableWhenLongType() {
+    public void shouldBeApplicableWhenShortType() {
         // given
-        Type type = Long.class;
+        Type type = Short.class;
 
         // when
-        boolean applicable = longTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = shortTypeConverter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isTrue();
     }
 
     @Test
-    public void shouldNotBeApplicableWhenNotLongType() {
+    public void shouldNotBeApplicableWhenNotShortType() {
         // given
         Type type = Boolean.class;
 
         // when
-        boolean applicable = longTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = shortTypeConverter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isFalse();
@@ -70,7 +70,7 @@ public class LongTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenCheckingIfApplicableAndTypeIsNull() {
         // then
-        assertThatThrownBy(() -> longTypeConverter.isApplicable(null, emptyMap()))
+        assertThatThrownBy(() -> shortTypeConverter.isApplicable(null, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -78,10 +78,10 @@ public class LongTypeConverterTest {
     @Test
     public void shouldConvertToStringWhenFormatNotSpecified() {
         // given
-        Long aLong = (long) 1234;
+        Short sh = (short) 1234;
 
         // when
-        String converted = longTypeConverter.toString(Long.class, aLong, emptyMap());
+        String converted = shortTypeConverter.toString(Short.class, sh, emptyMap());
 
         // then
         assertThat(converted).isEqualTo("1234");
@@ -90,12 +90,12 @@ public class LongTypeConverterTest {
     @Test
     public void shouldConvertToStringWhenFormatSpecified() {
         // given
-        Long aLong = (long) 1234;
+        Short sh = (short) 1234;
         String format = "000000";
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        String converted = longTypeConverter.toString(Long.class, aLong, attributes);
+        String converted = shortTypeConverter.toString(Short.class, sh, attributes);
 
         // then
         assertThat(converted).isEqualTo("001234");
@@ -104,7 +104,7 @@ public class LongTypeConverterTest {
     @Test
     public void shouldReturnNullWhenConvertingToStringAndValueToConvertIsNull() {
         // when
-        String converted = longTypeConverter.toString(Long.class, null, emptyMap());
+        String converted = shortTypeConverter.toString(Short.class, null, emptyMap());
 
         // then
         assertThat(converted).isNull();
@@ -113,10 +113,10 @@ public class LongTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenConvertingToStringAndTypeIsNull() {
         // given
-        Long aLong = (long) 1234;
+        Short sh = (short) 1234;
 
         // then
-        assertThatThrownBy(() -> longTypeConverter.toString(null, aLong, emptyMap()))
+        assertThatThrownBy(() -> shortTypeConverter.toString(null, sh, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -124,33 +124,33 @@ public class LongTypeConverterTest {
     @Test
     public void shouldConvertFromStringWhenFormatNotSpecified() {
         // given
-        String longInString = "1234";
+        String shortInString = "1234";
 
         // when
-        Long fromConversion = longTypeConverter.fromString(Long.class, longInString, emptyMap());
+        Short fromConversion = shortTypeConverter.fromString(Short.class, shortInString, emptyMap());
 
         // then
-        assertThat(fromConversion).isEqualTo((long) 1234);
+        assertThat(fromConversion).isEqualTo((short) 1234);
     }
 
     @Test
     public void shouldConvertFromStringWhenFormatSpecified() {
         // given
-        String longInString = "1.2345E6";
-        String format = "0.####E0";
+        String shortInString = "1.23E2";
+        String format = "0.##E0";
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        Long fromConversion = longTypeConverter.fromString(Long.class, longInString, attributes);
+        Short fromConversion = shortTypeConverter.fromString(Short.class, shortInString, attributes);
 
         // then
-        assertThat(fromConversion).isEqualTo(1234500);
+        assertThat(fromConversion).isEqualTo((short) 123);
     }
 
     @Test
     public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
         // when
-        Long fromConversion = longTypeConverter.fromString(Long.class, null, emptyMap());
+        Short fromConversion = shortTypeConverter.fromString(Short.class, null, emptyMap());
 
         // then
         assertThat(fromConversion).isNull();
@@ -159,23 +159,36 @@ public class LongTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenConvertingFromStringAndWrongValue() {
         // given
-        String longInString = "12,350.22";
+        String shortInString = "12,350.22";
         String format = "%x";
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> longTypeConverter.fromString(Long.class, longInString, attributes))
+        assertThatThrownBy(() -> shortTypeConverter.fromString(Short.class, shortInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to convert to Long");
+                .hasMessageContaining("Unable to convert to Short");
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenConvertingFromStringAndOutOfRange() {
+        // given
+        String shortInString = "35000";
+        String format = "#";
+        Map<String, String> attributes = singletonMap("format", format);
+
+        // then
+        assertThatThrownBy(() -> shortTypeConverter.fromString(Short.class, shortInString, attributes))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Provided value: 35000 is out of Short type range.");
     }
 
     @Test
     public void shouldThrowExceptionWhenConvertingFromStringAndTypeIsNull() {
         // given
-        String longInString = "1234";
+        String shortInString = "1234";
 
         // then
-        assertThatThrownBy(() -> longTypeConverter.fromString(null, longInString, emptyMap()))
+        assertThatThrownBy(() -> shortTypeConverter.fromString(null, shortInString, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }

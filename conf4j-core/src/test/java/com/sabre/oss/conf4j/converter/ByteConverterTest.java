@@ -35,12 +35,12 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class ByteTypeConverterTest {
-    private ByteConverter byteTypeConverter;
+public class ByteConverterTest {
+    private ByteConverter converter;
 
     @BeforeEach
     public void setUp() {
-        byteTypeConverter = new ByteConverter();
+        converter = new ByteConverter();
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ByteTypeConverterTest {
         Type type = Byte.class;
 
         // when
-        boolean applicable = byteTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = converter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isTrue();
@@ -61,7 +61,7 @@ public class ByteTypeConverterTest {
         Type type = Boolean.class;
 
         // when
-        boolean applicable = byteTypeConverter.isApplicable(type, emptyMap());
+        boolean applicable = converter.isApplicable(type, emptyMap());
 
         // then
         assertThat(applicable).isFalse();
@@ -70,7 +70,7 @@ public class ByteTypeConverterTest {
     @Test
     public void shouldThrowExceptionWhenCheckingIfApplicableAndTypeIsNull() {
         // then
-        assertThatThrownBy(() -> byteTypeConverter.isApplicable(null, emptyMap()))
+        assertThatThrownBy(() -> converter.isApplicable(null, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -81,7 +81,7 @@ public class ByteTypeConverterTest {
         Byte b = (byte) 123;
 
         // when
-        String converted = byteTypeConverter.toString(Byte.class, b, emptyMap());
+        String converted = converter.toString(Byte.class, b, emptyMap());
 
         // then
         assertThat(converted).isEqualTo("123");
@@ -95,7 +95,7 @@ public class ByteTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        String converted = byteTypeConverter.toString(Byte.class, b, attributes);
+        String converted = converter.toString(Byte.class, b, attributes);
 
         // then
         assertThat(converted).isEqualTo("00123");
@@ -104,7 +104,7 @@ public class ByteTypeConverterTest {
     @Test
     public void shouldReturnNullWhenConvertingToStringAndValueToConvertIsNull() {
         // when
-        String converted = byteTypeConverter.toString(Byte.class, null, emptyMap());
+        String converted = converter.toString(Byte.class, null, emptyMap());
 
         // then
         assertThat(converted).isNull();
@@ -116,7 +116,7 @@ public class ByteTypeConverterTest {
         Byte b = (byte) 123;
 
         // then
-        assertThatThrownBy(() -> byteTypeConverter.toString(null, b, emptyMap()))
+        assertThatThrownBy(() -> converter.toString(null, b, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -127,7 +127,7 @@ public class ByteTypeConverterTest {
         String byteInString = "123";
 
         // when
-        Byte fromConversion = byteTypeConverter.fromString(Byte.class, byteInString, emptyMap());
+        Byte fromConversion = converter.fromString(Byte.class, byteInString, emptyMap());
 
         // then
         assertThat(fromConversion).isEqualTo((byte) 123);
@@ -141,7 +141,7 @@ public class ByteTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // when
-        Byte fromConversion = byteTypeConverter.fromString(Byte.class, byteInString, attributes);
+        Byte fromConversion = converter.fromString(Byte.class, byteInString, attributes);
 
         // then
         assertThat(fromConversion).isEqualTo((byte) 123);
@@ -150,7 +150,7 @@ public class ByteTypeConverterTest {
     @Test
     public void shouldReturnNullWhenConvertingFromStringAndValueToConvertIsNull() {
         // when
-        Byte fromConversion = byteTypeConverter.fromString(Byte.class, null, emptyMap());
+        Byte fromConversion = converter.fromString(Byte.class, null, emptyMap());
 
         // then
         assertThat(fromConversion).isNull();
@@ -164,7 +164,7 @@ public class ByteTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> byteTypeConverter.fromString(Byte.class, byteInString, attributes))
+        assertThatThrownBy(() -> converter.fromString(Byte.class, byteInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Unable to convert to Byte. The value doesn't match specified format:");
     }
@@ -177,7 +177,7 @@ public class ByteTypeConverterTest {
         Map<String, String> attributes = singletonMap("format", format);
 
         // then
-        assertThatThrownBy(() -> byteTypeConverter.fromString(Byte.class, byteInString, attributes))
+        assertThatThrownBy(() -> converter.fromString(Byte.class, byteInString, attributes))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Provided value: 512 is out of Byte type range.");
     }
@@ -188,7 +188,7 @@ public class ByteTypeConverterTest {
         String byteInString = "123";
 
         // then
-        assertThatThrownBy(() -> byteTypeConverter.fromString(null, byteInString, emptyMap()))
+        assertThatThrownBy(() -> converter.fromString(null, byteInString, emptyMap()))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }

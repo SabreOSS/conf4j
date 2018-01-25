@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
-public class DurationTypeConverterTest {
+public class DurationConverterTest {
     private DurationConverter converter;
 
     @BeforeEach

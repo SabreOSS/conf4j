@@ -27,7 +27,7 @@ package com.sabre.oss.conf4j.converter;
 /**
  * Creates {@link TypeConverter} decorator.
  * <p>
- * {@link JsonLikeTypeConverter} is an example of a converter decorator. It provides high level JSON formatting, but delegates
+ * {@link JsonLikeConverter} is an example of a converter decorator. It provides high level JSON formatting, but delegates
  * conversion of concrete elements to the inner {@link TypeConverter}.
  */
 public interface DecoratingConverterFactory {
