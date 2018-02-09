@@ -86,13 +86,9 @@ public class JaxbConverterTest {
         // given - "ConfigurationVer" element is inconsistent with the schema
         String resource = loadXml("/JaxbTypeAdapterTest/XmlRootConfiguration01.invalid.xml");
 
-        // when
-        jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource, null);
-
         // then
-        assertThatThrownBy(
-                () -> jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource, null)
-        ).hasRootCauseInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> jaxbTypeConverter.fromString(XmlRootConfiguration01.class, resource, null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
