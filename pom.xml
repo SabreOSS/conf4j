@@ -29,7 +29,7 @@
 
     <groupId>com.sabre.oss.conf4j</groupId>
     <artifactId>conf4j</artifactId>
-    <version>1.0.RC2</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>conf4j</name>
@@ -84,7 +84,7 @@
     <scm>
         <connection>scm:git:ssh://git@github.com/SabreOSS/conf4j.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/SabreOSS/conf4j.git</developerConnection>
-        <tag>1.0.RC2</tag>
+        <tag>HEAD</tag>
         <url>http://github.com/SabreOSS/conf4j/tree/master</url>
     </scm>
     <issueManagement>
