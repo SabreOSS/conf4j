@@ -45,16 +45,4 @@ public class JaxbPoolTest {
         // then
         assertThat(schema).isNull();
     }
-
-    @Test
-    public void shouldReturnNullSchemaWhenPackageInfoIsNotAvailable() throws Exception {
-        // given
-        JaxbPool jaxbPool = new JaxbPool(XmlRootConfiguration01.class);
-
-        // when
-        Schema schema = jaxbPool.readXsdSchema(XmlRootConfiguration01.class);
-
-        // then
-        assertThat(schema).isNotNull();
-    }
 }
