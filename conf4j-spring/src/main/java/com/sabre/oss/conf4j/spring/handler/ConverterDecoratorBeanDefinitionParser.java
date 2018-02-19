@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2017 Sabre GLBL Inc.
+ * Copyright 2017-2018 Sabre GLBL Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,7 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 
-import static com.sabre.oss.conf4j.spring.handler.AttributeConstants.CLASS_ATTRIBUTE;
-import static com.sabre.oss.conf4j.spring.handler.AttributeConstants.FACTORY_ATTRIBUTE;
-import static com.sabre.oss.conf4j.spring.handler.AttributeConstants.ORDER_ATTRIBUTE;
+import static com.sabre.oss.conf4j.spring.handler.AttributeConstants.*;
 import static java.lang.Integer.valueOf;
 import static org.springframework.util.StringUtils.hasText;
 
