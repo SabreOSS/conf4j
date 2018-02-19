@@ -56,6 +56,7 @@ public class JavassistDynamicConfigurationInstanceCreator extends AbstractJavass
         /*
          * Used by javassist. Do not remove.
          */
+        @SuppressWarnings("unchecked")
         public static OptionalValue<Object> getConfigurationValue(Object configuration, PropertyMetadata metadata) {
             DynamicConfiguration dynamicConfiguration = (DynamicConfiguration) configuration;
             ConfigurationSource configurationSource = dynamicConfiguration.getConfigurationSource();

@@ -33,6 +33,7 @@ import java.io.Serializable;
 
 public class CglibStaticConfigurationInstanceCreator implements ConfigurationInstanceCreator {
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T createInstance(ConfigurationModel configurationModel, ClassLoader classLoader) {
         Class<?> configurationType = configurationModel.getConfigurationType();
 

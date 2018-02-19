@@ -45,6 +45,7 @@ public class AutodiscoverConverterDecoratorsFromCustomNamespaceTest extends Abst
         AggregatedConverter converter = applicationContext.getBean(AggregatedConverter.class);
 
         assertThat(converter).isNotNull();
+        @SuppressWarnings("unchecked")
         List<DecoratingConverterFactory> autowired =
                 (List<DecoratingConverterFactory>) getField(converter, "autowiredFactories");
 

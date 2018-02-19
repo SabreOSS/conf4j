@@ -26,8 +26,6 @@ package com.sabre.oss.conf4j.internal.model.provider.annotation;
 
 import com.sabre.oss.conf4j.annotation.Configuration;
 import com.sabre.oss.conf4j.annotation.Meta;
-import org.hamcrest.Description;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Documented;
@@ -35,7 +33,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import static com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractor.getMetaAttributes;
 import static java.lang.annotation.ElementType.METHOD;
@@ -376,23 +373,5 @@ public class AttributesExtractorTest {
             throw new IllegalArgumentException("Class " + clazz.getName() + " doesn't declare parameterless method " + methodName);
         }
 
-    }
-
-    private static final class MatchesPattern extends TypeSafeMatcher<String> {
-        private final Pattern pattern;
-
-        private MatchesPattern(String pattern) {
-            this.pattern = Pattern.compile(pattern);
-        }
-
-        @Override
-        protected boolean matchesSafely(String item) {
-            return pattern.matcher(item).matches();
-        }
-
-        @Override
-        public void describeTo(Description description) {
-            description.appendText("a string matching the pattern '" + pattern + '\'');
-        }
     }
 }

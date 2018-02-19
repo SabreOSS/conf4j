@@ -103,6 +103,7 @@ public final class DefaultTypeConverters {
      * @param decoratingConverterFactories decorating converter factories.
      * @return composite converter.
      */
+    @SuppressWarnings("unchecked")
     public static TypeConverter<Object> createCompositeConverter(
             List<TypeConverter<?>> baseConverters,
             List<DecoratingConverterFactory> decoratingConverterFactories) {

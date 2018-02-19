@@ -174,6 +174,7 @@ public class CachingTypeConverter<T> implements TypeConverter<T>, InitializingBe
      * @throws IllegalArgumentException when {@code value} cannot be converted to {@code T}.
      * @throws NullPointerException     when {@code type} is {@code null}.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public T fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");

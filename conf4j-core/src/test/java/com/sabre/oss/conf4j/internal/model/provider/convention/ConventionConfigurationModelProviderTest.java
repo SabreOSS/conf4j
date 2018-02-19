@@ -245,6 +245,7 @@ public class ConventionConfigurationModelProviderTest {
         String getValue();
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends PropertyModel> T property(ConfigurationModel configurationModel, String property) {
         return configurationModel.getProperties().stream()
                 .filter(p -> p.getPropertyName().equals(property))

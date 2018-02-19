@@ -79,6 +79,7 @@ public class ConfigurationScanBeanDefinitionParser extends ComponentScanBeanDefi
         return configurationAnnotationClasses;
     }
 
+    @SuppressWarnings("unchecked")
     private Class<? extends Annotation> getAnnotationClasses(String className, ClassLoader classLoader) {
         Class<?> clazz;
         try {

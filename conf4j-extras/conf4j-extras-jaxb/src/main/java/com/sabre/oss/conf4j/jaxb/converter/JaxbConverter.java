@@ -70,6 +70,7 @@ public class JaxbConverter<T> implements TypeConverter<T> {
     private final ConcurrentMap<Class<T>, JaxbPool> jaxbPoolMap = new ConcurrentHashMap<>();
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
@@ -84,6 +85,7 @@ public class JaxbConverter<T> implements TypeConverter<T> {
             return null;
         }
 
+        @SuppressWarnings("unchecked")
         Class<T> targetClazz = (Class<T>) type;
         JaxbPool jaxbPool = getJaxbPool(targetClazz);
         try (Handle<Unmarshaller> handle = jaxbPool.borrowUnmarshaller()) {
@@ -101,6 +103,7 @@ public class JaxbConverter<T> implements TypeConverter<T> {
             return null;
         }
 
+        @SuppressWarnings("unchecked")
         JaxbPool jaxbPool = getJaxbPool((Class<T>) type);
         try (Handle<Marshaller> handle = jaxbPool.borrowMarshaller()) {
             Marshaller marshaller = handle.get();
@@ -148,7 +151,6 @@ public class JaxbConverter<T> implements TypeConverter<T> {
          *
          * @param clazz class to read schema
          * @return XSD schema or null
-         * @throws SAXException
          */
         Schema readXsdSchema(Class<?> clazz) throws SAXException {
             XmlSchema xmlSchema = clazz.getPackage().getAnnotation(XmlSchema.class);

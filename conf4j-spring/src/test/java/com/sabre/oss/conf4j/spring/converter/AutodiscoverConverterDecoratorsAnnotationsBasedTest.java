@@ -47,6 +47,7 @@ public class AutodiscoverConverterDecoratorsAnnotationsBasedTest extends Abstrac
         AggregatedConverter converter = applicationContext.getBean(AggregatedConverter.class);
 
         assertThat(converter).isNotNull();
+        @SuppressWarnings("unchecked")
         List<DecoratingConverterFactory> autowired =
                 (List<DecoratingConverterFactory>) getField(converter, "autowiredFactories");
 

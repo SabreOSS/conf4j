@@ -194,6 +194,7 @@ public class AnnotationMetadataExtractor implements MetadataExtractor {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Class<TypeConverter<?>> getTypeConverter(Class<?> configurationType, Method method) {
         Converter converterAnnotation = findAnnotation(method, Converter.class);
         return converterAnnotation == null ? null : (Class<TypeConverter<?>>) converterAnnotation.value();
@@ -238,6 +239,7 @@ public class AnnotationMetadataExtractor implements MetadataExtractor {
             return emptyMap();
         }
         Class<?> defaultsAnnotation = findAnnotation(method.getReturnType(), DefaultsAnnotation.class).value();
+        @SuppressWarnings("unchecked")
         Annotation annotation = findAnnotation(method, (Class<? extends Annotation>) defaultsAnnotation);
         return getDefaultValues(annotation);
     }

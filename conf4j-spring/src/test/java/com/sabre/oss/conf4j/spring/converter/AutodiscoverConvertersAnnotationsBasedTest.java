@@ -45,6 +45,7 @@ import static org.springframework.test.util.ReflectionTestUtils.getField;
 @EnableConf4j
 public class AutodiscoverConvertersAnnotationsBasedTest extends AbstractContextTest {
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldAutodiscoverAllConvertersRegisteredInContext() {
         isRegistered(AggregatedConverter.class, CONF4J_TYPE_CONVERTER);
         AggregatedConverter converter = applicationContext.getBean(AggregatedConverter.class);

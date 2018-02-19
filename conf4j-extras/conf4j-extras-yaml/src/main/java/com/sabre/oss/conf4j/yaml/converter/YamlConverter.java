@@ -74,6 +74,7 @@ public class YamlConverter<T> implements TypeConverter<T> {
         return ignoreConverterAttribute || Objects.equals(converter, YAML);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");

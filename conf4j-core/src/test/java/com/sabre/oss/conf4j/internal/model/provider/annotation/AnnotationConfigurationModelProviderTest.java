@@ -86,11 +86,13 @@ public class AnnotationConfigurationModelProviderTest {
         assertThat(allTimeoutsProperty.getDefaultValues()).isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends PropertyModel> T property(ConfigurationModel configurationModel, String property) {
         return configurationModel.getProperties().stream()
                 .filter(p -> p.getPropertyName().equals(property))
                 .map(p -> (T) p)
-                .findAny().get();
+                .findAny()
+                .get();
     }
 
     @Key("connection")

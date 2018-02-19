@@ -25,9 +25,9 @@
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:conf4j="http://www.sabre.com/schema/oss/conf4j" xmlns:mockito="http://www.mockito.org/spring/mockito"
+       xmlns:conf4j="http://www.sabre.com/schema/oss/conf4j"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.sabre.com/schema/oss/conf4j http://www.sabre.com/schema/oss/conf4j/conf4j.xsd http://www.mockito.org/spring/mockito http://www.mockito.org/spring/mockito.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.sabre.com/schema/oss/conf4j http://www.sabre.com/schema/oss/conf4j/conf4j.xsd   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
        default-lazy-init="true">
 
     <conf4j:configure/>
@@ -37,9 +37,5 @@
     <context:property-placeholder location="classpath:SpringConfigurationFactoryTest/conf4j.test.properties"/>
 
     <bean class="com.sabre.oss.conf4j.spring.model.SpringBean"/>
-
-    <!-- Test specific extensions -->
-    <mockito:spy beanName="com.sabre.oss.conf4j.configurationSource"/>
-    <mockito:spy beanName="com.sabre.oss.conf4j.typeConverter"/>
 
 </beans>

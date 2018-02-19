@@ -48,6 +48,7 @@ public class AutodiscoverConvertersFromCustomNamespaceTest extends AbstractConte
         AggregatedConverter converter = applicationContext.getBean(AggregatedConverter.class);
 
         assertThat(converter).isNotNull();
+        @SuppressWarnings("unchecked")
         List<TypeConverter<?>> autowired = (List<TypeConverter<?>>) getField(converter, "autowired");
 
         assertThat(autowired)

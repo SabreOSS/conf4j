@@ -178,6 +178,7 @@ public final class CachedAnnotationUtils {
 
         private final ConcurrentMap<MultiKey, Object> cache = new ConcurrentHashMap<>();
 
+        @SuppressWarnings("unchecked")
         public V get(Supplier<? super V> supplier, Object... params) {
             MultiKey key = new MultiKey(params);
             Object value = cache.get(key);

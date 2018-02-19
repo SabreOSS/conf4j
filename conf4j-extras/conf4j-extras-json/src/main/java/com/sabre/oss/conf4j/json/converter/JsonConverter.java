@@ -89,6 +89,7 @@ public class JsonConverter<T> implements TypeConverter<T> {
         }
 
         try {
+            @SuppressWarnings("unchecked")
             ObjectReader objectReader = objectMapper.readerFor((Class<T>) type);
             return objectReader.readValue(value);
         } catch (IOException e) {
