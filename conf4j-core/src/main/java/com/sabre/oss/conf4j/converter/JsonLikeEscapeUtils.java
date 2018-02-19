@@ -24,7 +24,12 @@
 
 package com.sabre.oss.conf4j.converter;
 
-import org.apache.commons.lang3.text.translate.*;
+import org.apache.commons.text.translate.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.util.Collections.unmodifiableMap;
 
 final class JsonLikeEscapeUtils {
     static final char COMMA = ',';
@@ -38,24 +43,29 @@ final class JsonLikeEscapeUtils {
     private JsonLikeEscapeUtils() {
     }
 
-    static final String[][] COMPACT_JSON_STRING_ESCAPE = {
-            {"\\", "\\\\"},
-            {"/", "\\/"},
-            {"" + COMMA, "\\" + COMMA},
-            {"" + COLON, "\\" + COLON},
-            {"" + RIGHT_CURLY_BRACE, "\\" + RIGHT_CURLY_BRACE},
-            {"" + RIGHT_SQUARE_BRACKET, "\\" + RIGHT_SQUARE_BRACKET}
-    };
+    static final Map<CharSequence, CharSequence> COMPACT_JSON_STRING_ESCAPE;
+
+    static {
+        Map<CharSequence, CharSequence> initialMap = new HashMap<>();
+        initialMap.put("\\", "\\\\");
+        initialMap.put("/", "\\/");
+        initialMap.put(Character.toString(COMMA), "\\" + COMMA);
+        initialMap.put(Character.toString(COLON), "\\" + COLON);
+        initialMap.put(Character.toString(RIGHT_CURLY_BRACE), "\\" + RIGHT_CURLY_BRACE);
+        initialMap.put(Character.toString(RIGHT_SQUARE_BRACKET), "\\" + RIGHT_SQUARE_BRACKET);
+        COMPACT_JSON_STRING_ESCAPE = unmodifiableMap(initialMap);
+    }
 
     static final CharSequenceTranslator ESCAPE_COMPACT_JSON =
             new AggregateTranslator(
                     new LookupTranslator(COMPACT_JSON_STRING_ESCAPE),
-                    new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE()),
+                    new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE),
                     JavaUnicodeEscaper.outsideOf(32, 0x7f));
 
     static final CharSequenceTranslator UNESCAPE_COMPACT_JSON =
             new AggregateTranslator(
                     new UnicodeUnescaper(),
-                    new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_UNESCAPE()),
-                    new LookupTranslator(EntityArrays.invert(COMPACT_JSON_STRING_ESCAPE)));
+                    new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_UNESCAPE),
+                    new LookupTranslator(EntityArrays.invert(COMPACT_JSON_STRING_ESCAPE))
+            );
 }

@@ -30,8 +30,8 @@ import java.util.Objects;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.StringEscapeUtils.escapeJava;
-import static org.apache.commons.lang3.StringEscapeUtils.unescapeJava;
+import static org.apache.commons.text.StringEscapeUtils.escapeJava;
+import static org.apache.commons.text.StringEscapeUtils.unescapeJava;
 
 /**
  * This class converts {@link String} to/from string.

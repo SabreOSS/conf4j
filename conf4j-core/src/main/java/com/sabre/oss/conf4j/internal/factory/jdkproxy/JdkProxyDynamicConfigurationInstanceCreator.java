@@ -45,6 +45,7 @@ public class JdkProxyDynamicConfigurationInstanceCreator implements Configuratio
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> Class<T> generateClass(ConfigurationModel configurationModel, ClassLoader classLoader) {
         Class<?> configurationType = configurationModel.getConfigurationType();
         return (Class<T>) Proxy.getProxyClass(classLoader, configurationType, DynamicConfiguration.class);

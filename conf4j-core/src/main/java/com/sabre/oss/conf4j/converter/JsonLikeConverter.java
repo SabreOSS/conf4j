@@ -37,8 +37,8 @@ import static com.sabre.oss.conf4j.converter.TypeConverterUtils.NOT_FOUND;
 import static com.sabre.oss.conf4j.converter.TypeConverterUtils.notEscapedIndexOf;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.StringEscapeUtils.ESCAPE_JSON;
-import static org.apache.commons.lang3.StringEscapeUtils.UNESCAPE_JSON;
+import static org.apache.commons.text.StringEscapeUtils.ESCAPE_JSON;
+import static org.apache.commons.text.StringEscapeUtils.UNESCAPE_JAVA;
 
 /**
  * {@code JsonLikeConverter} is a {@link TypeConverter} that is able to parse and generate JSON-like representation
@@ -96,7 +96,7 @@ public class JsonLikeConverter implements TypeConverter<Object> {
     private static final String MSG_UNEXPECTED_EXTRA_DATA = "Object successfully constructed but not all characters have been consumed";
     private static final String MSG_UNEXPECTED_END_OF_DATA = "Unexpected end of string: %s";
 
-    private static final StringEscaper JSON_ESCAPER = new StringEscaper(ESCAPE_JSON::translate, UNESCAPE_JSON::translate);
+    private static final StringEscaper JSON_ESCAPER = new StringEscaper(ESCAPE_JSON::translate, UNESCAPE_JAVA::translate);
     private static final StringEscaper COMPACT_JSON_ESCAPER = new StringEscaper(ESCAPE_COMPACT_JSON::translate, UNESCAPE_COMPACT_JSON::translate);
 
     private final TypeConverter<Object> innerTypeConverter;
@@ -112,6 +112,7 @@ public class JsonLikeConverter implements TypeConverter<Object> {
         this(innerTypeConverter, true);
     }
 
+    @SuppressWarnings("unchecked")
     public JsonLikeConverter(TypeConverter<?> innerTypeConverter, boolean compactMode) {
         this.innerTypeConverter = (TypeConverter<Object>) requireNonNull(innerTypeConverter, "innerTypeConverter must not be null");
         this.defaultCompactMode = compactMode;

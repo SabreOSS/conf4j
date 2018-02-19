@@ -98,6 +98,7 @@ class ConfigurationScanRegistrar implements ImportBeanDefinitionRegistrar, Envir
         return packagesToScan.isEmpty() ? singleton(getPackageName(metadata.getClassName())) : packagesToScan;
     }
 
+    @SuppressWarnings("unchecked")
     private Set<Class<? extends Annotation>> getConfigurationAnnotationClasses(AnnotationMetadata metadata) {
         AnnotationAttributes attributes = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(ConfigurationScan.class.getName()));
         Class<?>[] configurationAnnotations = attributes.getClassArray("configurationAnnotations");

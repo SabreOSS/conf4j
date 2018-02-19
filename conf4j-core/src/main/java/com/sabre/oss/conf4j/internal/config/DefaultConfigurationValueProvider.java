@@ -74,6 +74,7 @@ public class DefaultConfigurationValueProvider implements ConfigurationValueProv
         String resolvedValue = value.get();
         String val = applyProcessors(new ConfigurationValue(resolvedKey, resolvedValue, fromDefaultValue, metadata.getEncryptionProvider(), attributes));
 
+        @SuppressWarnings("unchecked")
         TypeConverter<T> currentTypeConverter = defaultIfNull((TypeConverter<T>) metadata.getTypeConverter(), typeConverter);
         return present(currentTypeConverter.fromString(metadata.getType(), val, attributes));
     }

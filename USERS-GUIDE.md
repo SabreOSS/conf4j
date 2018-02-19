@@ -47,7 +47,9 @@ _Configuration_ is represented as an interface or abstract class optionally anno
 * Integrated with [Spring Framework](https://projects.spring.io/spring-framework) and
   and [Spring Boot](http://projects.spring.io/spring-boot).
 * High level _API_ for accessing configuration values.
-* Minimum set of dependencies: [SLF4J](http://slf4j.org) and [commons-lang](https://commons.apache.org/proper/commons-lang).
+* Minimum set of dependencies: [SLF4J](http://slf4j.org),
+  [commons-lang](https://commons.apache.org/proper/commons-lang) and
+  [commons-text](https://commons.apache.org/proper/commons-text).
 
 ## Getting Started
 

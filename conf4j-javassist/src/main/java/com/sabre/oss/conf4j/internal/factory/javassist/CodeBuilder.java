@@ -24,7 +24,7 @@
 
 package com.sabre.oss.conf4j.internal.factory.javassist;
 
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StrSubstitutor;
 
 import java.util.HashMap;
 import java.util.Map;
