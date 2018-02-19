@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2017 Sabre GLBL Inc.
+ * Copyright 2017-2018 Sabre GLBL Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,9 @@ package com.sabre.oss.conf4j.spring;
 
 import com.sabre.oss.conf4j.spring.model.inheritance.CommonConfiguration;
 import com.sabre.oss.conf4j.spring.model.inheritance.SpecificConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 

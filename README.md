@@ -1,7 +1,7 @@
 <!--
   MIT License
 
-  Copyright 2017 Sabre GLBL Inc.
+  Copyright 2017-2018 Sabre GLBL Inc.
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -90,6 +90,6 @@ See [CONTRIBUTING](CONTRIBUTING.md) document for more details.
 
 ## License
 
-Copyright 2017 Sabre GLBL Inc.
+Copyright 2017-2018 Sabre GLBL Inc.
 
 Code is under the [MIT license](LICENSE).

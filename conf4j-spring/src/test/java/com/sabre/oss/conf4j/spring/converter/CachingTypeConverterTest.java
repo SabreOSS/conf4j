@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2017 Sabre GLBL Inc.
+ * Copyright 2017-2018 Sabre GLBL Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,10 +45,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CachingTypeConverterTest {

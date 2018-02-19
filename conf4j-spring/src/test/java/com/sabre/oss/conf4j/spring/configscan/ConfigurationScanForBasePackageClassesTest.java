@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2017 Sabre GLBL Inc.
+ * Copyright 2017-2018 Sabre GLBL Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@ import com.sabre.oss.conf4j.spring.configscan.model.Bean;
 import com.sabre.oss.conf4j.spring.configscan.model.ConfigurationWithName;
 import com.sabre.oss.conf4j.spring.configscan.model.RootConfiguration;
 import com.sabre.oss.conf4j.spring.configscan.model.SubConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 @ConfigurationScan(basePackageClasses = RootConfiguration.class)

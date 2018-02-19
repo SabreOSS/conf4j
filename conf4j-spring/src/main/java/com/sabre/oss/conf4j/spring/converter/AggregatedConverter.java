@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2017 Sabre GLBL Inc.
+ * Copyright 2017-2018 Sabre GLBL Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,9 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.sabre.oss.conf4j.converter.DefaultTypeConverters.createCompositeConverter;
-import static com.sabre.oss.conf4j.converter.DefaultTypeConverters.getDefaultBaseConverters;
-import static com.sabre.oss.conf4j.converter.DefaultTypeConverters.getDefaultDelegatingConverterFactories;
+import static com.sabre.oss.conf4j.converter.DefaultTypeConverters.*;
 
 /**
  * Aggregates all {@link TypeConverter}s available in the context
