@@ -77,7 +77,7 @@
         <module>conf4j-spring-boot</module>
         <module>conf4j-extras</module>
         <module>conf4j-ck</module>
-        <module>conf4j-jmh</module>
+        <module>conf4j-performance</module>
         <module>conf4j-examples</module>
     </modules>
 
