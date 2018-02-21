@@ -37,6 +37,7 @@
 
     <dependencies>
         <!-- Internal modules-->
+
         <dependency>
             <groupId>com.sabre.oss.conf4j</groupId>
             <artifactId>conf4j-example-configuration</artifactId>
@@ -89,10 +90,12 @@
         </dependency>
 
         <!-- Test only -->
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
         </dependency>
+        
         <dependency>
             <groupId>org.apiguardian</groupId>
             <artifactId>apiguardian-api</artifactId>

@@ -37,6 +37,7 @@
 
     <dependencies>
         <!-- Internal modules-->
+
         <dependency>
             <groupId>com.sabre.oss.conf4j</groupId>
             <artifactId>conf4j-spring</artifactId>
@@ -44,12 +45,14 @@
         </dependency>
 
         <!-- External dependencies -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
         <!-- Test only dependencies -->
+
         <dependency>
             <groupId>com.sabre.oss.conf4j</groupId>
             <artifactId>conf4j-javassist</artifactId>
