@@ -37,29 +37,37 @@
 
     <dependencies>
         <!-- Internal dependencies -->
+
         <dependency>
             <groupId>com.sabre.oss.conf4j</groupId>
             <artifactId>conf4j-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <!-- External dependencies -->
+
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
         </dependency>
+
         <!-- Test only dependencies -->
+
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.apiguardian</groupId>
             <artifactId>apiguardian-api</artifactId>
@@ -87,6 +95,7 @@
                             </compilerArgs>
                         </configuration>
                     </plugin>
+
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
