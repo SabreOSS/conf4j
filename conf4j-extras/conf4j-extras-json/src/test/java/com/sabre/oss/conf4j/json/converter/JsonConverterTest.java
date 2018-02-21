@@ -31,6 +31,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -99,8 +100,8 @@ class JsonConverterTest {
 
         // then
         assertThatThrownBy(() -> typeConverter.fromString(TestClass.class, toConvert, emptyMap()))
-                .isExactlyInstanceOf(AssertionError.class)
-                .hasMessage("An IOException occurred when this was assumed to be impossible.");
+                .isExactlyInstanceOf(IllegalStateException.class)
+                .hasCauseInstanceOf(IOException.class);
     }
 
     @Test
@@ -113,8 +114,8 @@ class JsonConverterTest {
 
         // then
         assertThatThrownBy(() -> typeConverter.fromString(TestClass.class, toConvert, emptyMap()))
-                .isExactlyInstanceOf(AssertionError.class)
-                .hasMessage("An IOException occurred when this was assumed to be impossible.");
+                .isExactlyInstanceOf(IllegalStateException.class)
+                .hasCauseInstanceOf(IOException.class);
     }
 
     @Test
