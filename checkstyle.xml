@@ -102,6 +102,7 @@
         <module name="CommentsIndentation"/>
         <module name="Indentation">
             <property name="arrayInitIndent" value="8"/>
+            <property name="lineWrappingIndentation" value="8"/>
         </module>
         <module name="UpperEll"/>
 
@@ -155,3 +156,4 @@
         <module name="WhitespaceAround"/>
     </module>
 </module>
+
