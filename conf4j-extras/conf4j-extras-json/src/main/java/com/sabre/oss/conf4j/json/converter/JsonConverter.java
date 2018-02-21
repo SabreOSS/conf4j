@@ -93,7 +93,8 @@ public class JsonConverter<T> implements TypeConverter<T> {
             ObjectReader objectReader = objectMapper.readerFor((Class<T>) type);
             return objectReader.readValue(value);
         } catch (IOException e) {
-            throw new AssertionError("An IOException occurred when this was assumed to be impossible.", e);
+            // should never happen
+            throw new IllegalStateException(e);
         }
     }
 

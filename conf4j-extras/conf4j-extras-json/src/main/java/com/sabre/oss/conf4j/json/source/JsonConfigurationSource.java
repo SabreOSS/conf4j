@@ -30,18 +30,20 @@ import com.sabre.oss.conf4j.source.ConfigurationEntry;
 import com.sabre.oss.conf4j.source.IterableConfigurationSource;
 import com.sabre.oss.conf4j.source.MapIterable;
 import com.sabre.oss.conf4j.source.OptionalValue;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
 import static java.lang.String.format;
 import static java.util.Collections.singletonMap;
 import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * Configuration source which supports JSON. It flattens the JSON structure to key-value properties.
@@ -239,48 +241,44 @@ public class JsonConfigurationSource implements IterableConfigurationSource {
         }
 
         Map<Object, Object> map = (Map<Object, Object>) object;
-        for (Map.Entry<Object, Object> entry : map.entrySet()) {
-            Object value = entry.getValue();
+        map.forEach((key, value) -> {
             if (value instanceof Map) {
                 value = createMap(value);
             }
-            Object key = entry.getKey();
-            if (key instanceof String) {
-                result.put(key.toString(), value);
-            } else {
-                result.put('[' + key.toString() + ']', value);
-            }
-        }
+
+            String mapKey = key instanceof Number
+                    ? keyIndex(((Number) key).intValue())
+                    : key.toString();
+
+            result.put(mapKey, value);
+        });
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     private void buildFlattenedMap(Map<String, String> result, Map<String, Object> source, String path) {
-        for (Map.Entry<String, Object> entry : source.entrySet()) {
-            String key = entry.getKey();
-            if (!StringUtils.isEmpty(path)) {
-                if (key.charAt(0) == '[') {
-                    key = path + key;
-                } else {
-                    key = path + '.' + key;
-                }
+        source.forEach((key, value) -> {
+            if (isNotEmpty(path)) {
+                key = (key.charAt(0) == '[') ? (path + key) : (path + '.' + key);
             }
-            Object value = entry.getValue();
             if (value instanceof String) {
                 result.put(key, (String) value);
             } else if (value instanceof Map) {
-                @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) value;
                 buildFlattenedMap(result, map, key);
             } else if (value instanceof Collection) {
-                @SuppressWarnings("unchecked")
                 Collection<Object> collection = (Collection<Object>) value;
-                int count = 0;
+                int idx = 0;
                 for (Object object : collection) {
-                    buildFlattenedMap(result, singletonMap("[" + (count++) + ']', object), key);
+                    buildFlattenedMap(result, singletonMap(keyIndex(idx++), object), key);
                 }
             } else {
-                result.put(key, (value != null ? value.toString() : ""));
+                result.put(key, Objects.toString(value, EMPTY));
             }
-        }
+        });
+    }
+
+    private String keyIndex(int idx) {
+        return "[" + idx + ']';
     }
 }
