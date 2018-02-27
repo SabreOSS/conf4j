@@ -92,7 +92,7 @@ class JsonConverterTest {
     }
 
     @Test
-    void shouldSupportLists() {
+    void shouldConvertListFromString() {
         // given
         String toConvert = "" +
                 "[" +
@@ -116,12 +116,11 @@ class JsonConverterTest {
                 .hasSize(2)
                 .containsSequence(
                         new TestClass(1, "test-1"),
-                        new TestClass(2, "test-2")
-                );
+                        new TestClass(2, "test-2"));
     }
 
     @Test
-    void shouldSupportMaps() {
+    void shouldConvertMapFromString() {
         // given
         String toConvert = "" +
                 "{" +
@@ -145,8 +144,7 @@ class JsonConverterTest {
                 .hasSize(2)
                 .containsExactly(
                         entry("one", new TestClass(1, "test-1")),
-                        entry("two", new TestClass(2, "test-2"))
-                );
+                        entry("two", new TestClass(2, "test-2")));
     }
 
     @Test
@@ -247,10 +245,10 @@ class JsonConverterTest {
         private Integer integer;
         private String string;
 
-        public TestClass() {
+        TestClass() {
         }
 
-        public TestClass(Integer integer, String string) {
+        TestClass(Integer integer, String string) {
             this.integer = integer;
             this.string = string;
         }
