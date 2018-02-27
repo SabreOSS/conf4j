@@ -129,12 +129,12 @@ public class JsonLikeConverter implements TypeConverter<Object> {
                 Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                 if (List.class.isAssignableFrom(rawType) && actualTypeArguments.length == 1) {
                     Type itemType = actualTypeArguments[0];
-                    return isApplicable(itemType, attributes) || innerTypeConverter.isApplicable(itemType, null);
+                    return isApplicable(itemType, attributes) || innerTypeConverter.isApplicable(itemType, attributes);
                 } else if (Map.class.isAssignableFrom(rawType) && actualTypeArguments.length == 2) {
                     Type keyType = actualTypeArguments[0];
                     Type valueType = actualTypeArguments[1];
-                    return (isApplicable(keyType, attributes) || innerTypeConverter.isApplicable(keyType, null))
-                            && (isApplicable(valueType, attributes) || innerTypeConverter.isApplicable(valueType, null));
+                    return (isApplicable(keyType, attributes) || innerTypeConverter.isApplicable(keyType, attributes))
+                            && (isApplicable(valueType, attributes) || innerTypeConverter.isApplicable(valueType, attributes));
                 }
             }
         }
