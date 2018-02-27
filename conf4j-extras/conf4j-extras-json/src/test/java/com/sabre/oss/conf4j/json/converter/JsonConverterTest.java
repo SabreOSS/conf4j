@@ -32,15 +32,17 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.sabre.oss.conf4j.json.converter.Json.CONVERTER;
 import static com.sabre.oss.conf4j.json.converter.Json.JSON;
-import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.apache.commons.lang3.reflect.TypeUtils.parameterize;
+import static org.assertj.core.api.Assertions.*;
 
 class JsonConverterTest {
     private TypeConverter<TestClass> typeConverter;
@@ -52,12 +54,12 @@ class JsonConverterTest {
 
     @ParameterizedTest
     @MethodSource("checkApplicable")
-    void shouldCheckIfApplicable(boolean ignoreConverterAttribute, Map<String, String> attributes, boolean expected) {
+    void shouldCheckIfApplicable(Type type, boolean ignoreConverterAttribute, Map<String, String> attributes, boolean expected) {
         // given
-        TypeConverter<TestClass> typeConverter = new JsonConverter<>(ignoreConverterAttribute);
+        typeConverter = new JsonConverter<>(ignoreConverterAttribute);
 
         // when
-        boolean result = typeConverter.isApplicable(Integer.class, attributes);
+        boolean result = typeConverter.isApplicable(type, attributes);
 
         // then
         assertThat(result).isEqualTo(expected);
@@ -66,7 +68,7 @@ class JsonConverterTest {
     @Test
     void shouldThrowExceptionWhenTypeIsNullAndIsApplicable() {
         // then
-        assertThatThrownBy(() -> typeConverter.isApplicable(null, emptyMap()))
+        assertThatThrownBy(() -> typeConverter.isApplicable(null, null))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -81,12 +83,70 @@ class JsonConverterTest {
                 "}";
 
         // when
-        TestClass converted = typeConverter.fromString(TestClass.class, toConvert, emptyMap());
+        TestClass converted = typeConverter.fromString(TestClass.class, toConvert, null);
 
         // then
         assertThat(converted).isNotNull();
         assertThat(converted.integer).isEqualTo(10);
         assertThat(converted.string).isEqualTo("test");
+    }
+
+    @Test
+    void shouldSupportLists() {
+        // given
+        String toConvert = "" +
+                "[" +
+                "   {" +
+                "     \"integer\": \"1\"," +
+                "     \"string\": \"test-1\"" +
+                "   }," +
+                "   {" +
+                "     \"integer\": \"2\"," +
+                "     \"string\": \"test-2\"" +
+                "   }" +
+                "]";
+
+        TypeConverter<List<TestClass>> listConverter = new JsonConverter<>();
+
+        // when
+        List<TestClass> converted = listConverter.fromString(parameterize(List.class, TestClass.class), toConvert, null);
+
+        // then
+        assertThat(converted)
+                .hasSize(2)
+                .containsSequence(
+                        new TestClass(1, "test-1"),
+                        new TestClass(2, "test-2")
+                );
+    }
+
+    @Test
+    void shouldSupportMaps() {
+        // given
+        String toConvert = "" +
+                "{" +
+                "   \"one\": {" +
+                "     \"integer\": \"1\"," +
+                "     \"string\": \"test-1\"" +
+                "   }," +
+                "   \"two\": {" +
+                "     \"integer\": \"2\"," +
+                "     \"string\": \"test-2\"" +
+                "   }" +
+                "}";
+
+        TypeConverter<Map<String, TestClass>> listConverter = new JsonConverter<>();
+
+        // when
+        Map<String, TestClass> converted = listConverter.fromString(parameterize(Map.class, String.class, TestClass.class), toConvert, null);
+
+        // then
+        assertThat(converted)
+                .hasSize(2)
+                .containsExactly(
+                        entry("one", new TestClass(1, "test-1")),
+                        entry("two", new TestClass(2, "test-2"))
+                );
     }
 
     @Test
@@ -99,7 +159,7 @@ class JsonConverterTest {
                 "}";
 
         // then
-        assertThatThrownBy(() -> typeConverter.fromString(TestClass.class, toConvert, emptyMap()))
+        assertThatThrownBy(() -> typeConverter.fromString(TestClass.class, toConvert, null))
                 .isExactlyInstanceOf(IllegalStateException.class)
                 .hasCauseInstanceOf(IOException.class);
     }
@@ -113,7 +173,7 @@ class JsonConverterTest {
                 "}";
 
         // then
-        assertThatThrownBy(() -> typeConverter.fromString(TestClass.class, toConvert, emptyMap()))
+        assertThatThrownBy(() -> typeConverter.fromString(TestClass.class, toConvert, null))
                 .isExactlyInstanceOf(IllegalStateException.class)
                 .hasCauseInstanceOf(IOException.class);
     }
@@ -121,7 +181,7 @@ class JsonConverterTest {
     @Test
     void shouldReturnNullWhenFromStringAndValueIsNull() {
         // when
-        TestClass converted = typeConverter.fromString(TestClass.class, null, emptyMap());
+        TestClass converted = typeConverter.fromString(TestClass.class, null, null);
 
         // then
         assertThat(converted).isNull();
@@ -130,7 +190,7 @@ class JsonConverterTest {
     @Test
     void shouldThrowExceptionWhenTypeIsNullAndFromString() {
         // then
-        assertThatThrownBy(() -> typeConverter.fromString(null, null, emptyMap()))
+        assertThatThrownBy(() -> typeConverter.fromString(null, null, null))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -143,7 +203,7 @@ class JsonConverterTest {
         toConvert.string = "test";
 
         // when
-        String converted = typeConverter.toString(TestClass.class, toConvert, emptyMap());
+        String converted = typeConverter.toString(TestClass.class, toConvert, null);
 
         // then
         assertThat(converted).isEqualTo("" +
@@ -156,7 +216,7 @@ class JsonConverterTest {
     @Test
     void shouldReturnNullWhenToStringAndValueIsNull() {
         // when
-        String converted = typeConverter.toString(TestClass.class, null, emptyMap());
+        String converted = typeConverter.toString(TestClass.class, null, null);
 
         // then
         assertThat(converted).isNull();
@@ -165,19 +225,21 @@ class JsonConverterTest {
     @Test
     void shouldThrowExceptionWhenTypeIsNullAndToString() {
         // then
-        assertThatThrownBy(() -> typeConverter.toString(null, null, emptyMap()))
+        assertThatThrownBy(() -> typeConverter.toString(null, null, null))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
 
     private static Stream<Arguments> checkApplicable() {
         return Stream.of(
-                Arguments.of(false, emptyMap(), false),
-                Arguments.of(false, singletonMap(CONVERTER, JSON), true),
-                Arguments.of(false, singletonMap(CONVERTER, "jaxB"), false),
-                Arguments.of(true, emptyMap(), true),
-                Arguments.of(true, singletonMap(CONVERTER, JSON), true),
-                Arguments.of(true, singletonMap(CONVERTER, "jaxB"), true)
+                Arguments.of(Integer.class, false, null, false),
+                Arguments.of(Integer.class, false, singletonMap(CONVERTER, JSON), true),
+                Arguments.of(Integer.class, false, singletonMap(CONVERTER, "jaxB"), false),
+                Arguments.of(parameterize(List.class, Integer.class), false, singletonMap(CONVERTER, JSON), true),
+                Arguments.of(parameterize(Map.class, String.class, Integer.class), false, singletonMap(CONVERTER, JSON), true),
+                Arguments.of(Integer.class, true, null, true),
+                Arguments.of(Integer.class, true, singletonMap(CONVERTER, JSON), true),
+                Arguments.of(Integer.class, true, singletonMap(CONVERTER, "jaxB"), true)
         );
     }
 
@@ -185,20 +247,48 @@ class JsonConverterTest {
         private Integer integer;
         private String string;
 
-        public Integer getInteger() {
-            return integer;
+        public TestClass() {
         }
 
-        public String getString() {
-            return string;
+        public TestClass(Integer integer, String string) {
+            this.integer = integer;
+            this.string = string;
+        }
+
+        public Integer getInteger() {
+            return integer;
         }
 
         public void setInteger(Integer integer) {
             this.integer = integer;
         }
 
+        public String getString() {
+            return string;
+        }
+
         public void setString(String string) {
             this.string = string;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            TestClass testClass = (TestClass) o;
+
+            return Objects.equals(getInteger(), testClass.getInteger()) &&
+                    Objects.equals(getString(), testClass.getString());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getInteger(), getString());
         }
     }
 }

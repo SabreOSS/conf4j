@@ -25,9 +25,11 @@
 package com.sabre.oss.conf4j.json.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.sabre.oss.conf4j.converter.TypeConverter;
 
 import java.io.IOException;
@@ -89,8 +91,8 @@ public class JsonConverter<T> implements TypeConverter<T> {
         }
 
         try {
-            @SuppressWarnings("unchecked")
-            ObjectReader objectReader = objectMapper.readerFor((Class<T>) type);
+            JavaType javaType = TypeFactory.defaultInstance().constructType(type);
+            ObjectReader objectReader = objectMapper.readerFor(javaType);
             return objectReader.readValue(value);
         } catch (IOException e) {
             // should never happen
