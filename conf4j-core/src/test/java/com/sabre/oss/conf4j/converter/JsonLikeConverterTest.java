@@ -74,7 +74,7 @@ public class JsonLikeConverterTest {
     }
 
     @Test
-    public void shouldProperlyIndicateSupportedTypes() throws NoSuchFieldException {
+    public void shouldProperlyIndicateSupportedTypes() {
         // when / then
         assertThat(typeConverter.isApplicable(SUPPORTED_LIST_TYPE, null)).isTrue();
         assertThat(typeConverter.isApplicable(SUPPORTED_MAP_TYPE, null)).isTrue();
@@ -83,7 +83,7 @@ public class JsonLikeConverterTest {
     }
 
     @Test
-    public void shouldProperlyConvertToJsonStringFromListAndBack() throws NoSuchFieldException {
+    public void shouldProperlyConvertToJsonStringFromListAndBack() {
         // given
         boolean compact = false;
         Type type = SUPPORTED_LIST_TYPE;
@@ -102,7 +102,7 @@ public class JsonLikeConverterTest {
     }
 
     @Test
-    public void shouldProperlyConvertToCompactJsonStringFromListAndBack() throws NoSuchFieldException {
+    public void shouldProperlyConvertToCompactJsonStringFromListAndBack() {
         // given
         boolean compact = true;
         Type type = SUPPORTED_LIST_TYPE;
@@ -122,7 +122,7 @@ public class JsonLikeConverterTest {
     }
 
     @Test
-    public void shouldProperlyConvertToJsonStringFromMapAndBack() throws NoSuchFieldException {
+    public void shouldProperlyConvertToJsonStringFromMapAndBack() {
         // given
         boolean compact = false;
         Type type = SUPPORTED_MAP_TYPE;
@@ -142,7 +142,7 @@ public class JsonLikeConverterTest {
     }
 
     @Test
-    public void shouldProperlyConvertToCompactJsonStringFromMapAndBack() throws NoSuchFieldException {
+    public void shouldProperlyConvertToCompactJsonStringFromMapAndBack() {
         // given
         boolean compact = true;
         Type type = SUPPORTED_MAP_TYPE;
@@ -174,7 +174,7 @@ public class JsonLikeConverterTest {
         convertComplexStructureToStringAndBack(true);
     }
 
-    private void convertComplexStructureToStringAndBack(boolean compact) throws NoSuchFieldException {
+    private void convertComplexStructureToStringAndBack(boolean compact) {
         // given
         typeConverter = createConverter(compact);
         Map<List<String>, Map<String, List<String>>> in = of(

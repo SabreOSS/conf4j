@@ -71,7 +71,7 @@ public class PropertiesConfigurationSourceTest {
     }
 
     @Test
-    public void shouldLoadPropertiesFromFile() throws IOException {
+    public void shouldLoadPropertiesFromFile() {
         // when
         PropertiesConfigurationSource source = new PropertiesConfigurationSource(file.getAbsolutePath());
 
