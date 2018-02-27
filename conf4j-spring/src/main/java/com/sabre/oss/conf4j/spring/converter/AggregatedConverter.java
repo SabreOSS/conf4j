@@ -36,10 +36,13 @@ import java.util.Map;
 import static com.sabre.oss.conf4j.converter.DefaultTypeConverters.*;
 
 /**
- * Aggregates all {@link TypeConverter}s available in the context
- * and converters provided by {@link DefaultTypeConverters#getDefaultBaseConverters()}.
- * They are composed using {@link DefaultTypeConverters#createCompositeConverter(List, List)}
- * and {@code AggregatedConverter} delegates to it.
+ * This constructs a composite {@link TypeConverter} from:
+ * <ul>
+ * <li>Converters registered in the spring context.</li>
+ * <li>Default converters provided by {@link DefaultTypeConverters#getDefaultBaseConverters()}</li>
+ * <li>Decorating converter factories registered in the spring context.</li>
+ * <li>Decorating converter factories provided {@link DefaultTypeConverters#getDefaultDelegatingConverterFactories()}.</li>
+ * </ul>
  */
 public class AggregatedConverter implements TypeConverter<Object> {
     private TypeConverter<Object> converter;

@@ -123,7 +123,7 @@ public class UrlConverterTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenConvertingFromStringAndTypeIsNull() throws MalformedURLException {
+    public void shouldThrowExceptionWhenConvertingFromStringAndTypeIsNull() {
         // given
         String urlInString = "http://www.example.com/docs/resource1.html";
 
