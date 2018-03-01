@@ -34,7 +34,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.ByteArrayInputStream;
 import java.util.stream.Stream;
 
-import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -60,7 +59,7 @@ class YamlConfigurationSourceTest {
     @MethodSource("existingProperties")
     void shouldReferToProperProperty(String propertyName, String expectedValue) {
         // when
-        OptionalValue<String> propertyValue = configurationSource.getValue(propertyName, emptyMap());
+        OptionalValue<String> propertyValue = configurationSource.getValue(propertyName, null);
 
         // then
         assertThat(propertyValue.isPresent()).isTrue();
@@ -73,7 +72,7 @@ class YamlConfigurationSourceTest {
         String propertyName = "not existing";
 
         // when
-        OptionalValue<String> propertyValue = configurationSource.getValue(propertyName, emptyMap());
+        OptionalValue<String> propertyValue = configurationSource.getValue(propertyName, null);
 
         // then
         assertThat(propertyValue.isAbsent()).isTrue();

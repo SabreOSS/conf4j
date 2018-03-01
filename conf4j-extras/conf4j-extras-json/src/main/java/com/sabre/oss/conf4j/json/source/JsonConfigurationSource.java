@@ -32,18 +32,13 @@ import com.sabre.oss.conf4j.source.MapIterable;
 import com.sabre.oss.conf4j.source.OptionalValue;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
+import static com.sabre.oss.conf4j.json.source.NormalizationUtils.normalizeToMap;
 import static com.sabre.oss.conf4j.source.OptionalValue.absent;
 import static com.sabre.oss.conf4j.source.OptionalValue.present;
 import static java.lang.String.format;
-import static java.util.Collections.singletonMap;
 import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * Configuration source which supports JSON. It flattens the JSON structure to key-value properties.
@@ -118,21 +113,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  * </pre>
  */
 public class JsonConfigurationSource implements IterableConfigurationSource {
-    /**
-     * Property name used when JSON does not represent map.
-     * <p>
-     * For example:
-     * <pre class="code">
-     * some string
-     * </pre>
-     * is transformed into:
-     * <pre class="code">
-     * document=some string
-     * </pre>
-     */
-    public static final String DEFAULT_PROPERTY = "document";
     private final ObjectMapper objectMapper = new ObjectMapper();
-
     private final Map<String, String> properties;
 
     /**
@@ -149,8 +130,8 @@ public class JsonConfigurationSource implements IterableConfigurationSource {
 
         try {
             ObjectReader objectReader = objectMapper.readerFor(Object.class);
-            Object object = objectReader.readValue(inputStream);
-            this.properties = createProperties(object);
+            Object jsonContent = objectReader.readValue(inputStream);
+            this.properties = normalizeToMap(jsonContent);
         } catch (IOException e) {
             throw new UncheckedIOException("Unable to process JSON.", e);
         } finally {
@@ -176,15 +157,15 @@ public class JsonConfigurationSource implements IterableConfigurationSource {
 
         try {
             ObjectReader objectReader = objectMapper.readerFor(Object.class);
-            Object object = objectReader.readValue(reader);
-            this.properties = createProperties(object);
+            Object jsonContent = objectReader.readValue(reader);
+            this.properties = normalizeToMap(jsonContent);
         } catch (IOException e) {
-            throw new UncheckedIOException("Unable to process YAML.", e);
+            throw new UncheckedIOException("Unable to process JSON.", e);
         } finally {
             try {
                 reader.close();
             } catch (IOException e) {
-                throw new UncheckedIOException("Unable to close inputStream.", e);
+                throw new UncheckedIOException("Unable to close reader.", e);
             }
         }
     }
@@ -201,8 +182,8 @@ public class JsonConfigurationSource implements IterableConfigurationSource {
 
         try {
             ObjectReader objectReader = objectMapper.readerFor(Object.class);
-            Object object = objectReader.readValue(file);
-            this.properties = createProperties(object);
+            Object jsonContent = objectReader.readValue(file);
+            this.properties = normalizeToMap(jsonContent);
         } catch (IOException e) {
             throw new UncheckedIOException(format("Unable to process '%s'.", file), e);
         }
@@ -224,61 +205,5 @@ public class JsonConfigurationSource implements IterableConfigurationSource {
     @Override
     public Iterable<ConfigurationEntry> getAllConfigurationEntries() {
         return new MapIterable(properties);
-    }
-
-    private Map<String, String> createProperties(Object object) {
-        Map<String, String> result = new LinkedHashMap<>();
-        buildFlattenedMap(result, createMap(object), null);
-        return result;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Map<String, Object> createMap(Object object) {
-        Map<String, Object> result = new LinkedHashMap<>();
-        if (!(object instanceof Map)) {
-            result.put(DEFAULT_PROPERTY, object);
-            return result;
-        }
-
-        Map<Object, Object> map = (Map<Object, Object>) object;
-        map.forEach((key, value) -> {
-            if (value instanceof Map) {
-                value = createMap(value);
-            }
-
-            String mapKey = key instanceof Number
-                    ? keyIndex(((Number) key).intValue())
-                    : key.toString();
-
-            result.put(mapKey, value);
-        });
-        return result;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void buildFlattenedMap(Map<String, String> result, Map<String, Object> source, String path) {
-        source.forEach((key, value) -> {
-            if (isNotEmpty(path)) {
-                key = (key.charAt(0) == '[') ? (path + key) : (path + '.' + key);
-            }
-            if (value instanceof String) {
-                result.put(key, (String) value);
-            } else if (value instanceof Map) {
-                Map<String, Object> map = (Map<String, Object>) value;
-                buildFlattenedMap(result, map, key);
-            } else if (value instanceof Collection) {
-                Collection<Object> collection = (Collection<Object>) value;
-                int idx = 0;
-                for (Object object : collection) {
-                    buildFlattenedMap(result, singletonMap(keyIndex(idx++), object), key);
-                }
-            } else {
-                result.put(key, Objects.toString(value, EMPTY));
-            }
-        });
-    }
-
-    private String keyIndex(int idx) {
-        return "[" + idx + ']';
     }
 }

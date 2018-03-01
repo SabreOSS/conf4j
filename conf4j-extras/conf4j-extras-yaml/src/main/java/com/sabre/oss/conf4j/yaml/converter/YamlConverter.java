@@ -24,13 +24,23 @@
 
 package com.sabre.oss.conf4j.yaml.converter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.sabre.oss.conf4j.converter.TypeConverter;
-import org.yaml.snakeyaml.Yaml;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature.MINIMIZE_QUOTES;
+import static com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature.WRITE_DOC_START_MARKER;
 import static com.sabre.oss.conf4j.yaml.converter.Yaml.CONVERTER;
 import static com.sabre.oss.conf4j.yaml.converter.Yaml.YAML;
 import static java.util.Objects.requireNonNull;
@@ -41,6 +51,8 @@ import static java.util.Objects.requireNonNull;
  * @see com.sabre.oss.conf4j.yaml.converter.Yaml
  */
 public class YamlConverter<T> implements TypeConverter<T> {
+    private final ObjectMapper objectMapper = new ObjectMapper(
+            new YAMLFactory().enable(MINIMIZE_QUOTES).disable(WRITE_DOC_START_MARKER));
     private final boolean ignoreConverterAttribute;
 
     /**
@@ -83,8 +95,14 @@ public class YamlConverter<T> implements TypeConverter<T> {
             return null;
         }
 
-        Yaml yaml = new Yaml();
-        return yaml.loadAs(value, (Class<T>) type);
+        try {
+            JavaType javaType = TypeFactory.defaultInstance().constructType(type);
+            ObjectReader objectReader = objectMapper.readerFor(javaType);
+            return objectReader.readValue(value);
+        } catch (IOException e) {
+            // should never happen
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override
@@ -95,7 +113,11 @@ public class YamlConverter<T> implements TypeConverter<T> {
             return null;
         }
 
-        Yaml yaml = new Yaml();
-        return yaml.dumpAsMap(value);
+        try {
+            ObjectWriter objectWriter = objectMapper.writer();
+            return objectWriter.writeValueAsString(value);
+        } catch (JsonProcessingException e) {
+            throw new UncheckedIOException("Unable to process JSON.", e);
+        }
     }
 }
