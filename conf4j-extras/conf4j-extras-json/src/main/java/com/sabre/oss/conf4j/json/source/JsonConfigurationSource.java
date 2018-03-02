@@ -25,20 +25,8 @@
 package com.sabre.oss.conf4j.json.source;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.sabre.oss.conf4j.source.ConfigurationEntry;
-import com.sabre.oss.conf4j.source.IterableConfigurationSource;
-import com.sabre.oss.conf4j.source.MapIterable;
-import com.sabre.oss.conf4j.source.OptionalValue;
 
 import java.io.*;
-import java.util.Map;
-
-import static com.sabre.oss.conf4j.json.source.NormalizationUtils.normalizeToMap;
-import static com.sabre.oss.conf4j.source.OptionalValue.absent;
-import static com.sabre.oss.conf4j.source.OptionalValue.present;
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 /**
  * Configuration source which supports JSON. It flattens the JSON structure to key-value properties.
@@ -112,10 +100,7 @@ import static java.util.Objects.requireNonNull;
  * months.both=February
  * </pre>
  */
-public class JsonConfigurationSource implements IterableConfigurationSource {
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private final Map<String, String> properties;
-
+public class JsonConfigurationSource extends AbstractJacksonConfigurationSource {
     /**
      * Constructs value source from {@link InputStream}.
      * <p>
@@ -126,48 +111,20 @@ public class JsonConfigurationSource implements IterableConfigurationSource {
      * @throws UncheckedIOException when {@link IOException} is thrown during processing.
      */
     public JsonConfigurationSource(InputStream inputStream) {
-        requireNonNull(inputStream, "inputStream cannot be null");
-
-        try {
-            ObjectReader objectReader = objectMapper.readerFor(Object.class);
-            Object jsonContent = objectReader.readValue(inputStream);
-            this.properties = normalizeToMap(jsonContent);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to process JSON.", e);
-        } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                throw new UncheckedIOException("Unable to close inputStream.", e);
-            }
-        }
+        super(new ObjectMapper(), inputStream);
     }
 
     /**
      * Constructs value source from {@link Reader}.
      * <p>
-     * <em>Note:</em> JSON is loaded and processed in the constructor and {@code inputStream} is closed
+     * <em>Note:</em> JSON is loaded and processed in the constructor and {@code reader} is closed
      * at the end of processing.
      *
      * @param reader reader which provides JSON source.
      * @throws UncheckedIOException when {@link IOException} is thrown during processing.
      */
     public JsonConfigurationSource(Reader reader) {
-        requireNonNull(reader, "reader cannot be null");
-
-        try {
-            ObjectReader objectReader = objectMapper.readerFor(Object.class);
-            Object jsonContent = objectReader.readValue(reader);
-            this.properties = normalizeToMap(jsonContent);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to process JSON.", e);
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                throw new UncheckedIOException("Unable to close reader.", e);
-            }
-        }
+        super(new ObjectMapper(), reader);
     }
 
     /**
@@ -178,32 +135,6 @@ public class JsonConfigurationSource implements IterableConfigurationSource {
      * @throws UncheckedIOException     when {@link IOException} is thrown during processing.
      */
     public JsonConfigurationSource(File file) {
-        requireNonNull(file, "file cannot be null");
-
-        try {
-            ObjectReader objectReader = objectMapper.readerFor(Object.class);
-            Object jsonContent = objectReader.readValue(file);
-            this.properties = normalizeToMap(jsonContent);
-        } catch (IOException e) {
-            throw new UncheckedIOException(format("Unable to process '%s'.", file), e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
-        return properties.containsKey(key)
-                ? present(properties.get(key))
-                : absent();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Iterable<ConfigurationEntry> getAllConfigurationEntries() {
-        return new MapIterable(properties);
+        super(new ObjectMapper(), file);
     }
 }

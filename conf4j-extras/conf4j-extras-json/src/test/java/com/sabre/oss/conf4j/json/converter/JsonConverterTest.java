@@ -25,7 +25,6 @@
 package com.sabre.oss.conf4j.json.converter;
 
 import com.sabre.oss.conf4j.converter.TypeConverter;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -45,12 +44,7 @@ import static org.apache.commons.lang3.reflect.TypeUtils.parameterize;
 import static org.assertj.core.api.Assertions.*;
 
 class JsonConverterTest {
-    private TypeConverter<TestClass> typeConverter;
-
-    @BeforeEach
-    void setUp() {
-        typeConverter = new JsonConverter<>();
-    }
+    private TypeConverter<TestClass> typeConverter = new JsonConverter<>();
 
     @ParameterizedTest
     @MethodSource("checkApplicable")

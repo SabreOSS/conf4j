@@ -33,7 +33,7 @@ import static java.util.Collections.singletonMap;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
-public final class NormalizationUtils {
+final class FlattenerUtils {
     /**
      * Property name used when source does not represent map.
      * <p>
@@ -46,14 +46,14 @@ public final class NormalizationUtils {
      * document=some string
      * </pre>
      */
-    public static final String DEFAULT_PROPERTY = "document";
+    static final String DEFAULT_PROPERTY = "document";
 
-    private NormalizationUtils() {
+    private FlattenerUtils() {
     }
 
     /**
      * Builds a normalized map from a given {@code source}. If the {@code source} is not a {@link Map},
-     * {@link NormalizationUtils#DEFAULT_PROPERTY} will be used as a key.
+     * {@link FlattenerUtils#DEFAULT_PROPERTY} will be used as a key.
      * <p>
      * Hierarchical objects are exposed by nested paths separated by a dot.
      * <p>
@@ -99,7 +99,7 @@ public final class NormalizationUtils {
      * @param source source.
      * @return normalized map build from the source.
      */
-    public static Map<String, String> normalizeToMap(Object source) {
+    static Map<String, String> toFlatMap(Object source) {
         Map<String, String> result = new LinkedHashMap<>();
         buildFlattenedMap(result, buildMap(source), null);
         return result;
@@ -146,6 +146,7 @@ public final class NormalizationUtils {
                     buildFlattenedMap(result, singletonMap(keyIndex(idx++), object), key);
                 }
             } else {
+                // todo
                 result.put(key, Objects.toString(value, EMPTY));
             }
         });

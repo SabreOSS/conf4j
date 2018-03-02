@@ -25,23 +25,13 @@
 package com.sabre.oss.conf4j.yaml.source;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.sabre.oss.conf4j.source.ConfigurationEntry;
-import com.sabre.oss.conf4j.source.IterableConfigurationSource;
-import com.sabre.oss.conf4j.source.MapIterable;
-import com.sabre.oss.conf4j.source.OptionalValue;
+import com.sabre.oss.conf4j.json.source.AbstractJacksonConfigurationSource;
 
 import java.io.*;
-import java.util.Map;
 
 import static com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature.MINIMIZE_QUOTES;
 import static com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature.WRITE_DOC_START_MARKER;
-import static com.sabre.oss.conf4j.json.source.NormalizationUtils.normalizeToMap;
-import static com.sabre.oss.conf4j.source.OptionalValue.absent;
-import static com.sabre.oss.conf4j.source.OptionalValue.present;
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 /**
  * Configuration source which supports YAML. It flattens the YAML structure to key-value properties.
@@ -86,10 +76,7 @@ import static java.util.Objects.requireNonNull;
  * continents[6]=Australia
  * </pre>
  */
-public class YamlConfigurationSource implements IterableConfigurationSource {
-    private final ObjectMapper objectMapper = new ObjectMapper(
-            new YAMLFactory().enable(MINIMIZE_QUOTES).disable(WRITE_DOC_START_MARKER));
-    private final Map<String, String> properties;
+public class YamlConfigurationSource extends AbstractJacksonConfigurationSource {
 
     /**
      * Constructs value source from {@link InputStream}.
@@ -101,48 +88,20 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
      * @throws UncheckedIOException when {@link IOException} is thrown during processing.
      */
     public YamlConfigurationSource(InputStream inputStream) {
-        requireNonNull(inputStream, "inputStream cannot be null");
-
-        try {
-            ObjectReader objectReader = objectMapper.readerFor(Object.class);
-            Object yamlContent = objectReader.readValue(inputStream);
-            this.properties = normalizeToMap(yamlContent);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to process YAML.", e);
-        } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                throw new UncheckedIOException("Unable to close inputStream.", e);
-            }
-        }
+        super(createObjectMaper(), inputStream);
     }
 
     /**
      * Constructs value source from {@link Reader}.
      * <p>
-     * <em>Note:</em> YAML is loaded and processed in the constructor and {@code inputStream} is closed
+     * <em>Note:</em> YAML is loaded and processed in the constructor and {@code reader} is closed
      * at the end of processing.
      *
      * @param reader reader which provides YAML source.
      * @throws UncheckedIOException when {@link IOException} is thrown during processing.
      */
     public YamlConfigurationSource(Reader reader) {
-        requireNonNull(reader, "reader cannot be null");
-
-        try {
-            ObjectReader objectReader = objectMapper.readerFor(Object.class);
-            Object yamlContent = objectReader.readValue(reader);
-            this.properties = normalizeToMap(yamlContent);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to process YAML.", e);
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                throw new UncheckedIOException("Unable to close reader.", e);
-            }
-        }
+        super(createObjectMaper(), reader);
     }
 
     /**
@@ -153,32 +112,14 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
      * @throws UncheckedIOException     when {@link IOException} is thrown during processing.
      */
     public YamlConfigurationSource(File file) {
-        requireNonNull(file, "file cannot be null");
-
-        try {
-            ObjectReader objectReader = objectMapper.readerFor(Object.class);
-            Object yamlContent = objectReader.readValue(file);
-            this.properties = normalizeToMap(yamlContent);
-        } catch (IOException e) {
-            throw new UncheckedIOException(format("Unable to process '%s'.", file), e);
-        }
+        super(createObjectMaper(), file);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
-        return properties.containsKey(key)
-                ? present(properties.get(key))
-                : absent();
-    }
+    private static ObjectMapper createObjectMaper() {
+        YAMLFactory yamlFactory = new YAMLFactory()
+                .enable(MINIMIZE_QUOTES)
+                .disable(WRITE_DOC_START_MARKER);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Iterable<ConfigurationEntry> getAllConfigurationEntries() {
-        return new MapIterable(properties);
+        return new ObjectMapper(yamlFactory);
     }
 }
