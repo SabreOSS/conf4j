@@ -30,15 +30,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.yaml.snakeyaml.error.YAMLException;
 
-import java.util.Map;
+import java.lang.reflect.Type;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.sabre.oss.conf4j.yaml.converter.Yaml.CONVERTER;
 import static com.sabre.oss.conf4j.yaml.converter.Yaml.YAML;
-import static java.util.Collections.emptyMap;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
+import static org.apache.commons.lang3.reflect.TypeUtils.parameterize;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -52,12 +53,12 @@ class YamlConverterTest {
 
     @ParameterizedTest
     @MethodSource("checkApplicable")
-    void shouldCheckIfApplicable(boolean ignoreConverterAttribute, Map<String, String> attributes, boolean expected) {
+    void shouldCheckIfApplicable(Type type, boolean ignoreConverterAttribute, Map<String, String> attributes, boolean expected) {
         // given
         TypeConverter<TestClass> typeConverter = new YamlConverter<>(ignoreConverterAttribute);
 
         // when
-        boolean result = typeConverter.isApplicable(Integer.class, attributes);
+        boolean result = typeConverter.isApplicable(type, attributes);
 
         // then
         assertThat(result).isEqualTo(expected);
@@ -66,7 +67,7 @@ class YamlConverterTest {
     @Test
     void shouldThrowExceptionWhenTypeIsNullAndIsApplicable() {
         // then
-        assertThatThrownBy(() -> typeConverter.isApplicable(null, emptyMap()))
+        assertThatThrownBy(() -> typeConverter.isApplicable(null, null))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -75,22 +76,65 @@ class YamlConverterTest {
     void shouldConvertFromString() {
         // given
         String toConvert = "" +
-                "integer: 10\n" +
-                "string: test\n";
+                "integer: 1\n" +
+                "string: test-1\n";
 
         // when
-        TestClass converted = typeConverter.fromString(TestClass.class, toConvert, emptyMap());
+        TestClass converted = typeConverter.fromString(TestClass.class, toConvert, null);
 
         // then
-        assertThat(converted).isNotNull();
-        assertThat(converted.integer).isEqualTo(10);
-        assertThat(converted.string).isEqualTo("test");
+        assertThat(converted).isEqualTo(new TestClass(1, "test-1"));
+    }
+
+    @Test
+    void shouldConvertCollectionFromString() {
+        // given
+        String toConvert = "" +
+                "- integer: 1\n" +
+                "  string: test-1\n" +
+                "- integer: 2\n" +
+                "  string: test-2\n";
+        TypeConverter<List<TestClass>> typeConverter = new YamlConverter<>();
+
+        // when
+        Collection<TestClass> converted =
+                typeConverter.fromString(parameterize(Collection.class, TestClass.class), toConvert, null);
+
+        // then
+        assertThat(converted)
+                .hasSize(2)
+                .containsSequence(
+                        new TestClass(1, "test-1"),
+                        new TestClass(2, "test-2"));
+    }
+
+    @Test
+    void shouldConvertMapFromString() {
+        // given
+        String toConvert = "" +
+                "first:\n" +
+                "  integer: 1\n" +
+                "  string: test-1\n" +
+                "second:\n" +
+                "  integer: 2\n" +
+                "  string: test-2\n";
+        TypeConverter<Map<String, TestClass>> typeConverter = new YamlConverter<>();
+
+        // when
+        Map<String, TestClass> converted =
+                typeConverter.fromString(parameterize(Map.class, String.class, TestClass.class), toConvert, null);
+
+        // then
+        assertThat(converted)
+                .hasSize(2)
+                .containsEntry("first", new TestClass(1, "test-1"))
+                .containsEntry("second", new TestClass(2, "test-2"));
     }
 
     @Test
     void shouldReturnNullWhenFromStringAndValueIsNull() {
         // when
-        TestClass converted = typeConverter.fromString(TestClass.class, null, emptyMap());
+        TestClass converted = typeConverter.fromString(TestClass.class, null, null);
 
         // then
         assertThat(converted).isNull();
@@ -100,18 +144,17 @@ class YamlConverterTest {
     void shouldThrowExceptionWhenImproperYamlFormat() {
         // given
         String toConvert = "" +
-                "<integer>10</integer>" +
-                "<string>test</string>";
+                "<integer>1</integer>" +
+                "<string>test-1</string>";
 
         // then
-        assertThatThrownBy(() -> typeConverter.fromString(TestClass.class, toConvert, emptyMap()))
-                .isInstanceOf(YAMLException.class);
+        assertThatThrownBy(() -> typeConverter.fromString(TestClass.class, toConvert, null));
     }
 
     @Test
     void shouldThrowExceptionWhenTypeIsNullAndFromString() {
         // then
-        assertThatThrownBy(() -> typeConverter.fromString(null, null, emptyMap()))
+        assertThatThrownBy(() -> typeConverter.fromString(null, null, null))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
@@ -119,23 +162,64 @@ class YamlConverterTest {
     @Test
     void shouldConvertToString() {
         // given
-        TestClass toConvert = new TestClass();
-        toConvert.integer = 10;
-        toConvert.string = "test";
+        TestClass toConvert = new TestClass(1, "test-1");
 
         // when
-        String converted = typeConverter.toString(TestClass.class, toConvert, emptyMap());
+        String converted = typeConverter.toString(TestClass.class, toConvert, null);
 
         // then
         assertThat(converted).isEqualTo("" +
-                "integer: 10\n" +
-                "string: test\n");
+                "integer: 1\n" +
+                "string: test-1\n");
+    }
+
+    @Test
+    void shouldConvertCollectionToString() {
+        // given
+        List<TestClass> toConvert = asList(
+                new TestClass(1, "test-1"),
+                new TestClass(2, "test-2")
+        );
+        TypeConverter<List<TestClass>> typeConverter = new YamlConverter<>();
+
+        // when
+        String converted =
+                typeConverter.toString(parameterize(Collection.class, TestClass.class), toConvert, null);
+
+        // then
+        assertThat(converted).isEqualTo("" +
+                "- integer: 1\n" +
+                "  string: test-1\n" +
+                "- integer: 2\n" +
+                "  string: test-2\n");
+    }
+
+    @Test
+    void shouldConvertMapToString() {
+        // given
+        Map<String, TestClass> toConvert = new HashMap<>();
+        toConvert.put("first", new TestClass(1, "test-1"));
+        toConvert.put("second", new TestClass(2, "test-2"));
+        TypeConverter<Map<String, TestClass>> typeConverter = new YamlConverter<>();
+
+        // when
+        String converted =
+                typeConverter.toString(parameterize(Map.class, String.class, TestClass.class), toConvert, null);
+
+        // then
+        assertThat(converted).isEqualTo("" +
+                "first:\n" +
+                "  integer: 1\n" +
+                "  string: test-1\n" +
+                "second:\n" +
+                "  integer: 2\n" +
+                "  string: test-2\n");
     }
 
     @Test
     void shouldReturnNullWhenToStringAndValueIsNull() {
         // when
-        String converted = typeConverter.toString(TestClass.class, null, emptyMap());
+        String converted = typeConverter.toString(TestClass.class, null, null);
 
         // then
         assertThat(converted).isNull();
@@ -144,25 +228,37 @@ class YamlConverterTest {
     @Test
     void shouldThrowExceptionWhenTypeIsNullAndToString() {
         // then
-        assertThatThrownBy(() -> typeConverter.toString(null, null, emptyMap()))
+        assertThatThrownBy(() -> typeConverter.toString(null, null, null))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("type cannot be null");
     }
 
     private static Stream<Arguments> checkApplicable() {
         return Stream.of(
-                Arguments.of(false, emptyMap(), false),
-                Arguments.of(false, singletonMap(CONVERTER, YAML), true),
-                Arguments.of(false, singletonMap(CONVERTER, "jaxB"), false),
-                Arguments.of(true, emptyMap(), true),
-                Arguments.of(true, singletonMap(CONVERTER, YAML), true),
-                Arguments.of(true, singletonMap(CONVERTER, "jaxB"), true)
+                Arguments.of(Integer.class, false, null, false),
+                Arguments.of(Integer.class, false, singletonMap(CONVERTER, YAML), true),
+                Arguments.of(Integer.class, false, singletonMap(CONVERTER, "jaxB"), false),
+                Arguments.of(parameterize(List.class, Integer.class), false, singletonMap(CONVERTER, YAML), true),
+                Arguments.of(parameterize(Map.class, String.class, Integer.class), false, singletonMap(CONVERTER, YAML), true),
+                Arguments.of(Integer.class, true, null, true),
+                Arguments.of(Integer.class, true, singletonMap(CONVERTER, YAML), true),
+                Arguments.of(Integer.class, true, singletonMap(CONVERTER, "jaxB"), true),
+                Arguments.of(parameterize(List.class, Integer.class), true, singletonMap(CONVERTER, YAML), true),
+                Arguments.of(parameterize(Map.class, String.class, Integer.class), true, singletonMap(CONVERTER, YAML), true)
         );
     }
 
     public static class TestClass {
         private Integer integer;
         private String string;
+
+        TestClass() {
+        }
+
+        TestClass(Integer integer, String string) {
+            this.integer = integer;
+            this.string = string;
+        }
 
         public Integer getInteger() {
             return integer;
@@ -172,12 +268,22 @@ class YamlConverterTest {
             return string;
         }
 
-        public void setInteger(Integer integer) {
-            this.integer = integer;
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            TestClass testClass = (TestClass) o;
+            return Objects.equals(integer, testClass.integer) &&
+                    Objects.equals(string, testClass.string);
         }
 
-        public void setString(String string) {
-            this.string = string;
+        @Override
+        public int hashCode() {
+            return Objects.hash(integer, string);
         }
     }
 }

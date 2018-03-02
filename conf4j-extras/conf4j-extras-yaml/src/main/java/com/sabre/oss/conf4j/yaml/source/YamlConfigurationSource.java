@@ -24,26 +24,14 @@
 
 package com.sabre.oss.conf4j.yaml.source;
 
-import com.sabre.oss.conf4j.source.ConfigurationEntry;
-import com.sabre.oss.conf4j.source.IterableConfigurationSource;
-import com.sabre.oss.conf4j.source.MapIterable;
-import com.sabre.oss.conf4j.source.OptionalValue;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.reader.UnicodeReader;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.sabre.oss.conf4j.json.source.AbstractJacksonConfigurationSource;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
 
-import static com.sabre.oss.conf4j.source.OptionalValue.absent;
-import static com.sabre.oss.conf4j.source.OptionalValue.present;
-import static java.lang.String.format;
-import static java.util.Collections.singletonMap;
-import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature.MINIMIZE_QUOTES;
+import static com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature.WRITE_DOC_START_MARKER;
 
 /**
  * Configuration source which supports YAML. It flattens the YAML structure to key-value properties.
@@ -88,22 +76,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  * continents[6]=Australia
  * </pre>
  */
-public class YamlConfigurationSource implements IterableConfigurationSource {
-    /**
-     * Property name used when YAML does not represent map.
-     * <p>
-     * For example:
-     * <pre class="code">
-     * some string
-     * </pre>
-     * is transformed into:
-     * <pre class="code">
-     * document=some string
-     * </pre>
-     */
-    public static final String DEFAULT_PROPERTY = "document";
-
-    private final Map<String, String> properties;
+public class YamlConfigurationSource extends AbstractJacksonConfigurationSource {
 
     /**
      * Constructs value source from {@link InputStream}.
@@ -115,33 +88,20 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
      * @throws UncheckedIOException when {@link IOException} is thrown during processing.
      */
     public YamlConfigurationSource(InputStream inputStream) {
-        requireNonNull(inputStream, "inputStream cannot be null");
-
-        try (Reader reader = new UnicodeReader(inputStream)) {
-            this.properties = createProperties(reader);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to process YAML.", e);
-        }
+        super(createObjectMaper(), inputStream);
     }
 
     /**
      * Constructs value source from {@link Reader}.
      * <p>
-     * <em>Note:</em> YAML is loaded and processed in the constructor and {@code inputStream} is closed
+     * <em>Note:</em> YAML is loaded and processed in the constructor and {@code reader} is closed
      * at the end of processing.
      *
      * @param reader reader which provides YAML source.
      * @throws UncheckedIOException when {@link IOException} is thrown during processing.
      */
     public YamlConfigurationSource(Reader reader) {
-        requireNonNull(reader, "reader cannot be null");
-
-        try {
-            this.properties = createProperties(reader);
-            reader.close();
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to process YAML.", e);
-        }
+        super(createObjectMaper(), reader);
     }
 
     /**
@@ -152,88 +112,14 @@ public class YamlConfigurationSource implements IterableConfigurationSource {
      * @throws UncheckedIOException     when {@link IOException} is thrown during processing.
      */
     public YamlConfigurationSource(File file) {
-        requireNonNull(file, "file cannot be null");
-
-        try (Reader reader = new FileReader(file)) {
-            this.properties = createProperties(reader);
-        } catch (IOException e) {
-            throw new UncheckedIOException(format("Unable to process '%s'.", file), e);
-        }
+        super(createObjectMaper(), file);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public OptionalValue<String> getValue(String key, Map<String, String> attributes) {
-        return properties.containsKey(key)
-                ? present(properties.get(key))
-                : absent();
-    }
+    private static ObjectMapper createObjectMaper() {
+        YAMLFactory yamlFactory = new YAMLFactory()
+                .enable(MINIMIZE_QUOTES)
+                .disable(WRITE_DOC_START_MARKER);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Iterable<ConfigurationEntry> getAllConfigurationEntries() {
-        return new MapIterable(properties);
-    }
-
-    private Map<String, String> createProperties(Reader reader) {
-        Yaml yaml = new Yaml();
-        Object yamlContent = yaml.load(reader);
-        Map<String, String> result = new LinkedHashMap<>();
-        buildFlattenedMap(result, createMap(yamlContent), null);
-        return result;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Map<String, Object> createMap(Object object) {
-        Map<String, Object> result = new LinkedHashMap<>();
-        if (!(object instanceof Map)) {
-            result.put(DEFAULT_PROPERTY, object);
-            return result;
-        }
-
-        Map<Object, Object> map = (Map<Object, Object>) object;
-        map.forEach((key, value) -> {
-            if (value instanceof Map) {
-                value = createMap(value);
-            }
-
-            String mapKey = key instanceof Number
-                    ? keyIndex(((Number) key).intValue())
-                    : key.toString();
-
-            result.put(mapKey, value);
-        });
-        return result;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void buildFlattenedMap(Map<String, String> result, Map<String, Object> source, String path) {
-        source.forEach((key, value) -> {
-            if (isNotEmpty(path)) {
-                key = (key.charAt(0) == '[') ? (path + key) : (path + '.' + key);
-            }
-            if (value instanceof String) {
-                result.put(key, (String) value);
-            } else if (value instanceof Map) {
-                Map<String, Object> map = (Map<String, Object>) value;
-                buildFlattenedMap(result, map, key);
-            } else if (value instanceof Collection) {
-                Collection<Object> collection = (Collection<Object>) value;
-                int idx = 0;
-                for (Object object : collection) {
-                    buildFlattenedMap(result, singletonMap(keyIndex(idx++), object), key);
-                }
-            } else {
-                result.put(key, Objects.toString(value, EMPTY));
-            }
-        });
-    }
-
-    private String keyIndex(int idx) {
-        return "[" + idx + ']';
+        return new ObjectMapper(yamlFactory);
     }
 }
