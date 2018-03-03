@@ -22,7 +22,7 @@
   SOFTWARE.
  -->
 
-## _conf4j_ - Type-safe Configuration Library for Java
+## _Conf4j_ - Type-safe Configuration Library for Java
 
 [![Build Status](https://travis-ci.org/SabreOSS/conf4j.svg?branch=master)](https://travis-ci.org/SabreOSS/conf4j)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.sabre.oss.conf4j/conf4j-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.sabre.oss.conf4j/conf4j-api)
