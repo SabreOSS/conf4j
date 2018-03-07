@@ -34,7 +34,7 @@ contributors to follow so that we can have a chance of keeping on top of things.
 * If you're planning to implement a bigger feature it makes sense to discuss your changes first.
   Please create an issue and explain the intended change.
   This way you can make sure you're not wasting your time on something that isn't considered to be in
-  _con4j_ scope.
+  _conf4j_ scope.
 * Submit a ticket for your issue, assuming one does not already exist.
   * Clearly describe the issue including steps to reproduce when it is a bug.
   * Make sure you fill in the earliest version that you know has the issue.

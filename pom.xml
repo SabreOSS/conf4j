@@ -69,6 +69,12 @@
             <organization>Sabre GLBL Inc.</organization>
             <organizationUrl>http://www.sabre.com</organizationUrl>
         </developer>
+        <developer>
+            <name>Kamil Sobolewski</name>
+            <email>Kamil Sobolewski at sabre.com</email>
+            <organization>Sabre GLBL Inc.</organization>
+            <organizationUrl>http://www.sabre.com</organizationUrl>
+        </developer>
     </developers>
 
     <modules>
