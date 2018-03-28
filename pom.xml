@@ -71,7 +71,7 @@
         </developer>
         <developer>
             <name>Kamil Sobolewski</name>
-            <email>Kamil Sobolewski at sabre.com</email>
+            <email>Kamil.Sobolewski at sabre.com</email>
             <organization>Sabre GLBL Inc.</organization>
             <organizationUrl>http://www.sabre.com</organizationUrl>
         </developer>
@@ -119,6 +119,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <jackson.version>2.9.4</jackson.version>
+        <jaxb.version>2.3.0</jaxb.version>
         <spring.boot.version>1.5.10.RELEASE</spring.boot.version>
         <spring.version>4.3.14.RELEASE</spring.version>
         <slf4j.version>1.7.25</slf4j.version>
@@ -156,7 +157,25 @@
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
-                <version>2.3.0</version>
+                <version>${jaxb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>javax.activation-api</artifactId>
+                <version>1.2.0</version>
             </dependency>
 
             <dependency>
