@@ -28,4 +28,3 @@ script: chmod +x ./.travis/build.sh && ./.travis/build.sh
 jdk:
   - oraclejdk8
   - oraclejdk9
-  - oraclejdk10
