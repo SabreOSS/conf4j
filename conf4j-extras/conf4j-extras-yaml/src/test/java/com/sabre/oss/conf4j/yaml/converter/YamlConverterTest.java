@@ -55,7 +55,7 @@ class YamlConverterTest {
     @MethodSource("checkApplicable")
     void shouldCheckIfApplicable(Type type, boolean ignoreConverterAttribute, Map<String, String> attributes, boolean expected) {
         // given
-        TypeConverter<TestClass> typeConverter = new YamlConverter<>(ignoreConverterAttribute);
+        typeConverter = new YamlConverter<>(ignoreConverterAttribute);
 
         // when
         boolean result = typeConverter.isApplicable(type, attributes);
@@ -94,6 +94,7 @@ class YamlConverterTest {
                 "  string: test-1\n" +
                 "- integer: 2\n" +
                 "  string: test-2\n";
+
         TypeConverter<List<TestClass>> typeConverter = new YamlConverter<>();
 
         // when

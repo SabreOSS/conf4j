@@ -165,12 +165,12 @@ public class JsonLikeConverterTest {
     }
 
     @Test
-    public void shouldProperlyConvertToJsonStringFromComplexStructureAndBack() throws NoSuchFieldException {
+    public void shouldProperlyConvertToJsonStringFromComplexStructureAndBack() {
         convertComplexStructureToStringAndBack(false);
     }
 
     @Test
-    public void shouldProperlyConvertToCompactJsonStringFromComplexStructureAndBack() throws NoSuchFieldException {
+    public void shouldProperlyConvertToCompactJsonStringFromComplexStructureAndBack() {
         convertComplexStructureToStringAndBack(true);
     }
 

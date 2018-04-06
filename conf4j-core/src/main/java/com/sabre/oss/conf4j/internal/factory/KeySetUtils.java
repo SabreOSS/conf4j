@@ -42,8 +42,7 @@ public final class KeySetUtils {
         requireNonNull(keyGenerator, "keyGenerator cannot be null");
         requireNonNull(keys, "keys cannot be null");
 
-        Set<String> keySet = new LinkedHashSet<>();
-        keySet.addAll(keyGenerator.computeKeys(keys));
+        Set<String> keySet = new LinkedHashSet<>(keyGenerator.computeKeys(keys));
         if (fallbackKeyPrefixGenerator != null) {
             keySet.addAll(fallbackKeyPrefixGenerator.computeKeys(keys));
         }

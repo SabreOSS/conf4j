@@ -41,9 +41,10 @@ public class ConfigurationTypeInvalidConfigurationTest {
 
     @Test
     public void shouldReportErrorWhenInvalidConfigurationIsRegisteredManually() {
-        assertThrows(BeanDefinitionValidationException.class, () -> {
-            new AnnotationConfigApplicationContext(RegisterManually.class).close();
-        }, "not recognized as configuration type");
+        assertThrows(BeanDefinitionValidationException.class,
+                () -> new AnnotationConfigApplicationContext(RegisterManually.class).close(),
+                "not recognized as configuration type"
+        );
     }
 
     @Configuration
@@ -55,11 +56,9 @@ public class ConfigurationTypeInvalidConfigurationTest {
     @Test
     public void shouldNotReportErrorWhenInvalidConfigurationIsDiscovered() {
         try (ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(Discovered.class)) {
-            try {
-                context.getBean(InvalidConfiguration.class);
-            } catch (NoSuchBeanDefinitionException expected) {
-                // this is expected - bean definition should be removed
-            }
+            context.getBean(InvalidConfiguration.class);
+        } catch (NoSuchBeanDefinitionException expected) {
+            // this is expected - bean definition should be removed
         }
     }
 

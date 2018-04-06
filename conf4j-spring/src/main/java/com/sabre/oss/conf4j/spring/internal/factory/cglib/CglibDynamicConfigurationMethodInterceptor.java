@@ -35,18 +35,11 @@ import com.sabre.oss.conf4j.source.OptionalValue;
 import org.springframework.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.sabre.oss.conf4j.internal.Constants.COLLECTION_SIZE_SUFFIX;
 import static com.sabre.oss.conf4j.internal.utils.PropertyUtils.getPropertyName;
 
 class CglibDynamicConfigurationMethodInterceptor extends AbstractCglibConfigurationMethodInterceptor {
-    /**
-     * Holds property metadata.
-     */
-    private final Map<String, PropertyMetadata> valuePropertiesMetadata = new HashMap<>();
-
     private final DynamicConfiguration dynamicConfiguration = new DefaultDynamicConfiguration();
 
     CglibDynamicConfigurationMethodInterceptor(ConfigurationModel configurationModel) {
@@ -97,10 +90,6 @@ class CglibDynamicConfigurationMethodInterceptor extends AbstractCglibConfigurat
         PropertyMetadata metadata = getPropertyMetadata(propertyName);
         OptionalValue<?> configurationValue = configurationValueProvider.getConfigurationValue(typeConverter, configurationSource, metadata);
         return configurationValue.isPresent() ? configurationValue.get() : getValueProperty(propertyName);
-    }
-
-    void setPropertyMetadata(PropertyMetadata propertyMetadata) {
-        valuePropertiesMetadata.put(propertyMetadata.getPropertyName(), propertyMetadata);
     }
 
     private Object invokeDynamicConfigurationMethod(Method method, Object[] args) {

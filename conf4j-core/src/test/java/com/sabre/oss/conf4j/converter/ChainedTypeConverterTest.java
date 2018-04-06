@@ -64,15 +64,15 @@ public class ChainedTypeConverterTest {
 
     @Test
     public void shouldThrowNPEWhenNullConvertersChainIsProvided() {
-        assertThrows(NullPointerException.class, () -> {
-            new ChainedTypeConverter((TypeConverter<?>[]) null);
-        });
+        assertThrows(NullPointerException.class,
+                () -> new ChainedTypeConverter((TypeConverter<?>[]) null)
+        );
     }
 
     @Test
     public void shouldThrowIAEWhenThereIsNullConverterInTheChain() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new ChainedTypeConverter(Arrays.asList(new StringConverter(), null));
-        });
+        assertThrows(IllegalArgumentException.class,
+                () -> new ChainedTypeConverter(Arrays.asList(new StringConverter(), null))
+        );
     }
 }

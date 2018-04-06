@@ -40,6 +40,7 @@ import javax.xml.validation.SchemaFactory;
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayDeque;
@@ -70,11 +71,10 @@ public class JaxbConverter<T> implements TypeConverter<T> {
     private final ConcurrentMap<Class<T>, JaxbPool> jaxbPoolMap = new ConcurrentHashMap<>();
 
     @Override
-    @SuppressWarnings("unchecked")
     public boolean isApplicable(Type type, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
 
-        return type instanceof Class && ((Class<?>) type).getAnnotation(XmlRootElement.class) != null;
+        return type instanceof Class && ((AnnotatedElement) type).getAnnotation(XmlRootElement.class) != null;
     }
 
     @Override
@@ -141,6 +141,8 @@ public class JaxbConverter<T> implements TypeConverter<T> {
             try {
                 this.context = JAXBContext.newInstance(clazz);
                 this.schema = readXsdSchema(clazz);
+            } catch (RuntimeException e) {
+                throw e;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -242,7 +244,9 @@ public class JaxbConverter<T> implements TypeConverter<T> {
                     marshaller.setProperty(JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
                     marshaller.setSchema(schema);
                     return marshaller;
-                } catch (JAXBException e) {
+                } catch (RuntimeException e) {
+                    throw e;
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }

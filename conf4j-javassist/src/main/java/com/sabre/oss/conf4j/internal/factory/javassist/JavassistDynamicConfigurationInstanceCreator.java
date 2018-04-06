@@ -87,8 +87,8 @@ public class JavassistDynamicConfigurationInstanceCreator extends AbstractJavass
 
         @Override
         protected void addPropertyMetadata(String property) {
-            String metaPropertyName = property + METADATA_SUFFIX;
             try {
+                String metaPropertyName = property + METADATA_SUFFIX;
                 CtField ctField = addField(getPropertyValidJavaName(metaPropertyName), PropertyMetadata.class);
                 addSetter(createSetterName(metaPropertyName), ctField, true);
             } catch (CannotCompileException | NotFoundException e) {

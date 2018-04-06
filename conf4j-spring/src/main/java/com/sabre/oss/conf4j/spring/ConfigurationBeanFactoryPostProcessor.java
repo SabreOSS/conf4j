@@ -95,7 +95,7 @@ public class ConfigurationBeanFactoryPostProcessor implements BeanDefinitionRegi
         return order;
     }
 
-    public void setOrder() {
+    public void setOrder(int order) {
         this.order = order;
     }
 

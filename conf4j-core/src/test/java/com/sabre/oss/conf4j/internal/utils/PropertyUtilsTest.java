@@ -73,65 +73,47 @@ public class PropertyUtilsTest {
 
     @Test
     public void getPropertyShouldThrowNoSuchMethodExceptionWhenPropertyNotFound() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            getProperty(new Bean(), "unknownProperty");
-        });
+        assertThrows(IllegalArgumentException.class, () -> getProperty(new Bean(), "unknownProperty"));
     }
 
     @Test
     public void getPropertyShouldThrowNoSuchMethodExceptionWhenPropertyIsCapitalized() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            getProperty(new Bean(), "BeanValue");
-        });
+        assertThrows(IllegalArgumentException.class, () -> getProperty(new Bean(), "BeanValue"));
     }
 
     @Test
     public void getPropertyShouldThrowNullPointerExceptionWhenNullBean() {
-        assertThrows(NullPointerException.class, () -> {
-            getProperty(null, "intValue");
-        });
+        assertThrows(NullPointerException.class, () -> getProperty(null, "intValue"));
     }
 
     @Test
     public void getPropertyShouldThrowNullPointerExceptionWhenNullPropertyName() {
-        assertThrows(NullPointerException.class, () -> {
-            getProperty(new Bean(), null);
-        });
+        assertThrows(NullPointerException.class, () -> getProperty(new Bean(), null));
     }
 
     @Test
     public void setPropertyShouldThrowExceptionWhenPropertyTypeMismatch() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            setProperty(new Bean(), "beanValue", "invalid-type");
-        });
+        assertThrows(IllegalArgumentException.class, () -> setProperty(new Bean(), "beanValue", "invalid-type"));
     }
 
     @Test
     public void setPropertyShouldThrowNoSuchMethodExceptionWhenPropertyNotFound() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            setProperty(new Bean(), "unknownProperty", null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> setProperty(new Bean(), "unknownProperty", null));
     }
 
     @Test
     public void setPropertyShouldThrowNoSuchMethodExceptionWhenPropertyIsCapitalized() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            setProperty(new Bean(), "BeanValue", null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> setProperty(new Bean(), "BeanValue", null));
     }
 
     @Test
     public void setPropertyShouldThrowNullPointerExceptionWhenNullBean() {
-        assertThrows(NullPointerException.class, () -> {
-            setProperty(null, "intValue", 1);
-        });
+        assertThrows(NullPointerException.class, () -> setProperty(null, "intValue", 1));
     }
 
     @Test
     public void setPropertyShouldThrowNullPointerExceptionWhenNullPropertyName() {
-        assertThrows(NullPointerException.class, () -> {
-            setProperty(new Bean(), null, null);
-        });
+        assertThrows(NullPointerException.class, () -> setProperty(new Bean(), null, null));
     }
 
     @Test
@@ -145,16 +127,12 @@ public class PropertyUtilsTest {
 
     @Test
     public void getPropertyNameShouldThrowNPEWhenMethodIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            getPropertyName(null);
-        });
+        assertThrows(NullPointerException.class, () -> getPropertyName(null));
     }
 
     @Test
     public void getPropertyNameShouldThrowIAEWhenMethodIsNotGetterNorSetter() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            getPropertyName(getMethod(Bean.class, "equals"));
-        });
+        assertThrows(IllegalArgumentException.class, () -> getPropertyName(getMethod(Bean.class, "equals")));
     }
 
     private static Method getMethod(Class<?> clazz, String methodName) {

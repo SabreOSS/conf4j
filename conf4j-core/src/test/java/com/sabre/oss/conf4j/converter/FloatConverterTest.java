@@ -148,7 +148,7 @@ public class FloatConverterTest {
         Float fromConversion = converter.fromString(Float.class, floatInString, emptyMap());
 
         // then
-        assertThat(fromConversion).isEqualTo((float) 12.345);
+        assertThat(fromConversion).isEqualTo(12.345f);
     }
 
     @Test
@@ -162,7 +162,7 @@ public class FloatConverterTest {
         Float fromConversion = converter.fromString(Float.class, floatInString, attributes);
 
         // then
-        assertThat(fromConversion).isEqualTo((float) 12.35);
+        assertThat(fromConversion).isEqualTo(12.35f);
     }
 
     @Test
@@ -179,7 +179,7 @@ public class FloatConverterTest {
         Float fromConversion = converter.fromString(Float.class, floatInString, attributes);
 
         // then
-        assertThat(fromConversion).isEqualTo((float) 12.35);
+        assertThat(fromConversion).isEqualTo(12.35f);
     }
 
     @Test

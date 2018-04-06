@@ -74,11 +74,12 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
 
     @Test
     public void shouldThrowExceptionWhenClassContainsIncompatibleAbstractMethods() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            factory.createConfiguration(ConfigurationWithIncompatibleAbstractMethod.class, source);
-        }, "public abstract java.lang.String com.sabre.oss.conf4j.factory.model.ConfigurationWithIncompatibleAbstractMethod.convertSomeValue(java.lang.String) " +
-                "is an abstract method but it is not a valid configuration property. Configuration property method must be abstract, public or protected, " +
-                "without parameters and its name starts with get or is (if return type is boolean). The return type cannot be void.");
+        assertThrows(IllegalArgumentException.class,
+                () -> factory.createConfiguration(ConfigurationWithIncompatibleAbstractMethod.class, source),
+                "public abstract java.lang.String com.sabre.oss.conf4j.factory.model.ConfigurationWithIncompatibleAbstractMethod.convertSomeValue(java.lang.String) " +
+                        "is an abstract method but it is not a valid configuration property. Configuration property method must be abstract, public or protected, " +
+                        "without parameters and its name starts with get or is (if return type is boolean). The return type cannot be void."
+        );
     }
 
     @Test
@@ -557,9 +558,11 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
 
     @Test
     public void shouldPreventAbstractConfigurationInstantiation() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            factory.createConfiguration(AnAbstractConfiguration.class, source);
-        }, format("Configuration type %s is marked as abstract configuration and creating an configuration instance is forbidden.", AnAbstractConfiguration.class.getName()));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> factory.createConfiguration(AnAbstractConfiguration.class, source),
+                format("Configuration type %s is marked as abstract configuration and creating an configuration instance is forbidden.", AnAbstractConfiguration.class.getName())
+        );
     }
 
     @AbstractConfiguration
@@ -570,9 +573,9 @@ public abstract class AbstractConfigurationFactoryTest<F extends AbstractConfigu
 
     @Test
     public void shouldDetectCycles() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            factory.createConfiguration(CycleConfiguration.class, source);
-        }, "Cycle between configurations detected");
+        assertThrows(IllegalArgumentException.class,
+                () -> factory.createConfiguration(CycleConfiguration.class, source),
+                "Cycle between configurations detected");
     }
 
     @Key

@@ -300,10 +300,11 @@ public class AttributesExtractorTest {
 
     @Test
     public void shouldFailIfNotAllAttributesAreAnnotated() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            getMetaAttributes(NotAllAttributesAreAnnotatedUsage.class);
-        }, "All @com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$NotAllAttributesAreAnnotated(annotated=annotatedValue, notAnnotated=notAnnotatedValue) " +
-                "annotations attributes must be annotated with @com.sabre.oss.conf4j.annotation.Meta.");
+        assertThrows(IllegalArgumentException.class, () ->
+                        getMetaAttributes(NotAllAttributesAreAnnotatedUsage.class),
+                "All @com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$NotAllAttributesAreAnnotated(annotated=annotatedValue, notAnnotated=notAnnotatedValue) " +
+                        "annotations attributes must be annotated with @com.sabre.oss.conf4j.annotation.Meta."
+        );
     }
 
     @Retention(RUNTIME)
@@ -323,11 +324,12 @@ public class AttributesExtractorTest {
 
     @Test
     public void shouldFailIfMoreThanAttributeIsDefined() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            getMetaAttributes(TooManyAttributesUsage.class);
-        }, "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$TooManyAttributes(attribute=attribute, anotherAttribute=anotherAttribute) " +
-                "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and define more than one attribute: " +
-                "anotherAttribute, attribute ");
+        assertThrows(IllegalArgumentException.class, () ->
+                        getMetaAttributes(TooManyAttributesUsage.class),
+                "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$TooManyAttributes(attribute=attribute, anotherAttribute=anotherAttribute) " +
+                        "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and define more than one attribute: " +
+                        "anotherAttribute, attribute "
+        );
     }
 
     @Meta(name = "annotated")
@@ -347,11 +349,12 @@ public class AttributesExtractorTest {
 
     @Test
     public void shouldFailIfInvalidAttributeType() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            getMetaAttributes(InvalidAttributeTypeUsage.class);
-        }, "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$InvalidAttributeType(attribute=[1, 2]) " +
-                "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and its attribute 'attribute' " +
-                "type is [Ljava.lang.String;. Only scalar, simple types are supported.");
+        assertThrows(IllegalArgumentException.class,
+                () -> getMetaAttributes(InvalidAttributeTypeUsage.class),
+                "@com.sabre.oss.conf4j.internal.model.provider.annotation.AttributesExtractorTest$InvalidAttributeType(attribute=[1, 2]) " +
+                        "annotation is meta-annotated with @com.sabre.oss.conf4j.annotation.Meta and its attribute 'attribute' " +
+                        "type is [Ljava.lang.String;. Only scalar, simple types are supported."
+        );
     }
 
     @Meta(name = "annotated")
