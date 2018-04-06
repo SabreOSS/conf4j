@@ -31,7 +31,7 @@
     <xs:element name="XmlRootConfiguration01" type="XmlRootConfiguration01Type"/>
     <xs:complexType name="XmlRootConfiguration01Type">
         <xs:sequence>
-            <xs:element name="ConfigurationName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ConfigurationName" type="xs:string"/>
             <xs:element name="XmlSubConfiguration" type="XmlSubConfigurationType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
@@ -39,7 +39,7 @@
     <xs:element name="XmlRootConfiguration02" type="XmlRootConfiguration02Type"/>
     <xs:complexType name="XmlRootConfiguration02Type">
         <xs:sequence>
-            <xs:element name="ConfigurationName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ConfigurationName" type="xs:string"/>
             <xs:element name="XmlSubConfiguration" type="XmlSubConfigurationType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>

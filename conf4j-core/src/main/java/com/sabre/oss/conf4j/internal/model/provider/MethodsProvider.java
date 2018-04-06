@@ -31,10 +31,9 @@ import static java.util.stream.Collectors.toList;
 
 public class MethodsProvider {
     public Collection<Method> getAllDeclaredMethods(Class<?> configurationType) {
-        Set<MethodWrapper> methods = new LinkedHashSet<>();
 
         Class<?> type = configurationType;
-        methods.addAll(addMethods(type.getMethods()));
+        Set<MethodWrapper> methods = new LinkedHashSet<>(addMethods(type.getMethods()));
         if (type.getSuperclass() != null) {
             do {
                 methods.addAll(addMethods(type.getDeclaredMethods()));
@@ -69,12 +68,7 @@ public class MethodsProvider {
 
     private boolean isMethodAnOverride(Map<MethodWrapper, MethodWrapper> methodWrappers, MethodWrapper wrapper) {
         MethodWrapper oldWrapper = methodWrappers.get(wrapper);
-        if (oldWrapper != null) {
-            if (oldWrapper.getMethod().getReturnType().isAssignableFrom(wrapper.getMethod().getReturnType())) {
-                return true;
-            }
-        }
-        return false;
+        return oldWrapper != null && oldWrapper.getMethod().getReturnType().isAssignableFrom(wrapper.getMethod().getReturnType());
     }
 
     static class MethodWrapper {

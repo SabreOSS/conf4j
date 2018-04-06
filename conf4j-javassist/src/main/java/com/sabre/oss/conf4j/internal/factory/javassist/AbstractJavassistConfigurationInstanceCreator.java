@@ -139,6 +139,8 @@ abstract class AbstractJavassistConfigurationInstanceCreator implements Configur
                     String body = "return this." + field.getName() + ';';
                     CtMethod method = CtNewMethod.make(returnType, createGetterName(propertyName), EMPTY, EMPTY, body, ctClass);
                     ctClass.addMethod(method);
+                } catch (RuntimeException e) {
+                    throw e;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -213,6 +215,8 @@ abstract class AbstractJavassistConfigurationInstanceCreator implements Configur
                 }
 
                 return ctField;
+            } catch (RuntimeException e) {
+                throw e;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

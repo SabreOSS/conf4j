@@ -234,9 +234,10 @@ public class ConventionConfigurationModelProviderTest {
 
     @Test
     public void shouldDetectDisallowedAnnotations() {
-        assertThrows(Exception.class, () -> {
-            provider.getConfigurationModel(InvalidAnnotatedConfiguration.class);
-        }, "InvalidAnnotatedConfiguration.getValue() method is annotated with disallowed annotation(s): @IgnoreKey.");
+        assertThrows(Exception.class,
+                () -> provider.getConfigurationModel(InvalidAnnotatedConfiguration.class),
+                "InvalidAnnotatedConfiguration.getValue() method is annotated with disallowed annotation(s): @IgnoreKey."
+        );
     }
 
     public interface InvalidAnnotatedConfiguration {

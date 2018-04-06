@@ -152,6 +152,7 @@ public class AnnotationMetadataExtractor implements MetadataExtractor {
         return prefixes == null ? emptyList() : unmodifiableList(asList(prefixes));
     }
 
+    @Override
     public List<String> getPrefixes(Class<?> configurationType, Method method) {
         Key keyAnnotation = findAnnotation(method, Key.class);
         IgnoreKey ignoreKeyAnnotation = findAnnotation(method, IgnoreKey.class);

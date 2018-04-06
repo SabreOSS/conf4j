@@ -66,9 +66,10 @@ public class CharacterConverterTest {
     public void shouldThrowExceptionWhenReadingIllegalValuesFromString() {
         String stringValue = "longer then just on character string";
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            converter.fromString(Character.class, stringValue, null);
-        }, "Unable to convert to a Character: " + stringValue);
+        assertThrows(IllegalArgumentException.class,
+                () -> converter.fromString(Character.class, stringValue, null),
+                "Unable to convert to a Character: " + stringValue
+        );
     }
 
     @Test
@@ -123,9 +124,10 @@ public class CharacterConverterTest {
     public void shouldEscapedString() {
         String invalidEncodedCharacter = "\\u001";
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            converter.fromString(Character.class, invalidEncodedCharacter, null);
-        }, "Unable to convert to a Character: " + invalidEncodedCharacter);
+        assertThrows(IllegalArgumentException.class,
+                () -> converter.fromString(Character.class, invalidEncodedCharacter, null),
+                "Unable to convert to a Character: " + invalidEncodedCharacter
+        );
     }
 
     @Test

@@ -44,7 +44,7 @@ import static org.apache.commons.text.StringEscapeUtils.UNESCAPE_JAVA;
  * {@code JsonLikeConverter} is a {@link TypeConverter} that is able to parse and generate JSON-like representation
  * of structured JSON types (JSON Arrays and JSON Objects). For support of value types (e.g. strings,
  * numbers, booleans etc.) {@link #innerTypeConverter} has to be registered.
- * <p>
+ *
  * <b>NOTE:</b> JSON must not contain whitespaces.
  * <p>
  * Due to limitations of the JSON format to directly represent Java {@link Map}s as JSON Objects (as JSON Object's property names
@@ -61,19 +61,19 @@ import static org.apache.commons.text.StringEscapeUtils.UNESCAPE_JAVA;
  * <p>
  * The above example can be converted into a compacted JSON-like format:
  * <pre>{\@null:value1,[key2part1,key2part2]:[\@empty],{key3:[item3,item4]}:[value3.1,value3.2]}</pre>
- *
+ * <p>
  * For purposes of compact mode, two new literals were introduced: <b>{@code \@null}</b> for representing
  * null value (the same function to <b>{@code null}</b> literal in standard JSON format) and <b>{@code \@empty}</b> for representing
  * an empty string, but the latter should only be used in one case: to express JSON Array with only one (empty) element
  * (<b>{@code [\@empty]}</b>). It should be noted here, that <b>{@code []}</b> means empty list but <b>{@code [,]}</b>
  * is a two-element list with empty elements.
- *
+ * <p>
  * In contrast to JSON special characters escapes, in compact mode, double-quote must not be escaped. The characters
  * must be: ','(comma), ':'(colon), '}'(right curly brace) and ']'(right square bracket).
- *
+ * <p>
  * {@code JsonLikeConverter} supports {@value FORMAT} meta-attribute which can be used to override
  * {@link #defaultCompactMode} in {@link #fromString(Type, String, Map)} and {@link #toString(Type, Object, Map)}.
- *
+ * <p>
  * When {@value FORMAT} meta-attribute value is:
  * <ul>
  * <li>{@value COMPACT} - compact format is used.</li>
@@ -107,7 +107,6 @@ public class JsonLikeConverter implements TypeConverter<Object> {
      */
     private final boolean defaultCompactMode;
 
-    @SuppressWarnings("unchecked")
     public JsonLikeConverter(TypeConverter<?> innerTypeConverter) {
         this(innerTypeConverter, true);
     }
@@ -141,7 +140,6 @@ public class JsonLikeConverter implements TypeConverter<Object> {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Object fromString(Type type, String value, Map<String, String> attributes) {
         requireNonNull(type, "type cannot be null");
@@ -197,7 +195,6 @@ public class JsonLikeConverter implements TypeConverter<Object> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private int doListFromString(ParameterizedType type, CharSequence value, ObjectBuilder builder, boolean compact) {
         Type itemType = type.getActualTypeArguments()[0];
 
@@ -244,7 +241,6 @@ public class JsonLikeConverter implements TypeConverter<Object> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private int doMapFromString(ParameterizedType type, CharSequence value, ObjectBuilder builder, boolean compact) {
         Type keyType = type.getActualTypeArguments()[0];
         Type valueType = type.getActualTypeArguments()[1];
@@ -370,7 +366,6 @@ public class JsonLikeConverter implements TypeConverter<Object> {
         return 0;
     }
 
-    @SuppressWarnings("unchecked")
     private Appendable listToString(ParameterizedType type, List<Object> value, Appendable out, boolean compact) throws IOException {
         if (value == null) {
             return compact

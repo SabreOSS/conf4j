@@ -49,7 +49,7 @@ public class JavassistDynamicConfigurationFactoryTest extends AbstractDynamicCon
         assertThat(config.getSomeProperty()).isEqualTo("defaultValue");
         PropertyMetadata metaData = getFieldValue(config, "someProperty" + METADATA_SUFFIX);
         assertThat(metaData.getKeySet()).containsSequence("keyPrefix.someProperty");
-        TypeConverter<?> typeConverter = this.<TypeConverter<?>>getFieldValue(config, "typeConverter");
+        TypeConverter<?> typeConverter = this.getFieldValue(config, "typeConverter");
         assertThat(typeConverter).isNotNull();
     }
 
@@ -87,6 +87,8 @@ public class JavassistDynamicConfigurationFactoryTest extends AbstractDynamicCon
             @SuppressWarnings("unchecked")
             T value = (T) declaredField.get(object);
             return value;
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

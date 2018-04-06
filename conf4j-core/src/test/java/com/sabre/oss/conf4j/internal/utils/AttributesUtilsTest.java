@@ -64,9 +64,9 @@ public class AttributesUtilsTest {
 
     @Test
     public void shouldBeImmutable() {
-        assertThrows(UnsupportedOperationException.class, () -> {
-            attributes(MapUtils.of("key", "value")).put("anything", "value");
-        });
+        assertThrows(UnsupportedOperationException.class,
+                () -> attributes(MapUtils.of("key", "value")).put("anything", "value")
+        );
     }
 
     @Test

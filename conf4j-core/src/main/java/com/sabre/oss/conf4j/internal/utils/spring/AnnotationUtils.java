@@ -26,7 +26,6 @@ package com.sabre.oss.conf4j.internal.utils.spring;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -130,7 +129,7 @@ public abstract class AnnotationUtils {
         requireNonNull(annotationType, "Annotation type must not be null");
         requireNonNull(clazz, "Class must not be null");
         boolean declaredLocally = false;
-        for (Annotation annotation : Arrays.asList(clazz.getDeclaredAnnotations())) {
+        for (Annotation annotation : clazz.getDeclaredAnnotations()) {
             if (annotation.annotationType().equals(annotationType)) {
                 declaredLocally = true;
                 break;
