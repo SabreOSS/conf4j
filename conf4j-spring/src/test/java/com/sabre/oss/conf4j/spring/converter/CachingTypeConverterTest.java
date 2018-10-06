@@ -31,11 +31,12 @@ import com.sabre.oss.conf4j.converter.TypeConverter;
 import com.sabre.oss.conf4j.spring.Conf4jSpringConstants;
 import com.sabre.oss.conf4j.spring.annotation.ConfigurationType;
 import com.sabre.oss.conf4j.spring.annotation.EnableConf4j;
-import name.falgout.jeffrey.testing.junit5.MockitoExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -60,7 +61,7 @@ public class CachingTypeConverterTest {
 
     @BeforeEach
     public void setUp() {
-        when(mockCacheManager.getCache("cacheRegion")).thenReturn(mockCache);
+        Mockito.lenient().when(mockCacheManager.getCache("cacheRegion")).thenReturn(mockCache);
         converter.setTypeConverter(mockConverter);
         converter.setCacheName("cacheRegion");
         converter.setCacheManager(mockCacheManager);
@@ -68,7 +69,7 @@ public class CachingTypeConverterTest {
 
     @Test
     public void shouldDelegateToIsApplicableWithoutCaching() {
-        when(mockConverter.isApplicable(Long.class, null)).thenReturn(true);
+        Mockito.lenient().when(mockConverter.isApplicable(Long.class, null)).thenReturn(true);
         when(mockConverter.isApplicable(Object.class, null)).thenReturn(false);
 
         converter.afterPropertiesSet();
@@ -85,7 +86,7 @@ public class CachingTypeConverterTest {
     @Test
     public void shouldDelegateToToStringToWithoutCaching() {
 
-        when(mockConverter.toString(Long.class, 10L, null)).thenReturn("10");
+        Mockito.lenient().when(mockConverter.toString(Long.class, 10L, null)).thenReturn("10");
         when(mockConverter.toString(Long.class, 20L, null)).thenReturn("20");
 
         converter.afterPropertiesSet();
@@ -104,7 +105,7 @@ public class CachingTypeConverterTest {
         converter.setCacheManager(new ConcurrentMapCacheManager());
 
 
-        when(mockConverter.fromString(Long.class, "10", null)).thenReturn(10L);
+        Mockito.lenient().when(mockConverter.fromString(Long.class, "10", null)).thenReturn(10L);
         when(mockConverter.fromString(Long.class, "20", null)).thenReturn(20L);
 
         converter.afterPropertiesSet();

@@ -164,7 +164,7 @@ abstract class AbstractJavassistConfigurationInstanceCreator implements Configur
         @SuppressWarnings("unchecked")
         protected <T> Class<T> generateClass(ClassLoader classLoader) {
             try {
-                return ctClass.toClass(classLoader, getClass().getProtectionDomain());
+                return (Class<T>) ctClass.toClass(classLoader, getClass().getProtectionDomain());
             } catch (CannotCompileException e) {
                 throw new RuntimeException(e);
             }

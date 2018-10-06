@@ -31,12 +31,13 @@ import com.sabre.oss.conf4j.processor.ConfigurationValue;
 import com.sabre.oss.conf4j.processor.ConfigurationValueProcessor;
 import com.sabre.oss.conf4j.source.OptionalValue;
 import com.sabre.oss.conf4j.source.TestConfigurationSource;
-import name.falgout.jeffrey.testing.junit5.MockitoExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
@@ -120,7 +121,7 @@ public class DefaultConfigurationValueProviderTest {
     @Test
     public void shouldReturnFromFallbackKeyPrefix() {
         // given
-        when(source.getValue("fallbackKeyPrefix.key", null)).thenReturn(present("value"));
+        Mockito.lenient().when(source.getValue("fallbackKeyPrefix.key", null)).thenReturn(present("value"));
 
         // when
         OptionalValue<String> result = provider.getConfigurationValue(typeConverter, source, metadata(getKeySet(), defaultValue, notEncrypted));
@@ -132,7 +133,7 @@ public class DefaultConfigurationValueProviderTest {
     @Test
     public void shouldNotReturnFallbackKeyPrefixValueWhenFallbackKeyPrefixIsEmpty() {
         // given
-        when(source.getValue(".key", null)).thenReturn(present("value"));
+        Mockito.lenient().when(source.getValue(".key", null)).thenReturn(present("value"));
         fallbackKeyPrefixGenerator = emptyKeyGenerator();
 
         // when
@@ -157,7 +158,7 @@ public class DefaultConfigurationValueProviderTest {
     @Test
     public void shouldNotReturnFallbackKeyValueWhenFallbackKeyIsEmpty() {
         // given
-        when(source.getValue("", null)).thenReturn(present("value"));
+        Mockito.lenient().when(source.getValue("", null)).thenReturn(present("value"));
         fallbackKey = null;
 
         // when
