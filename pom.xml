@@ -34,7 +34,7 @@
     <packaging>pom</packaging>
 
     <name>conf4j</name>
-    <description>conf4j is a library that simplify configuration access via object to configuration mapping
+    <description>conf4j is a library that simplifies configuration access via object-to-configuration mapping
     </description>
     <url>https://github.com/SabreOSS/conf4j</url>
     <inceptionYear>2017</inceptionYear>
@@ -51,6 +51,12 @@
     </licenses>
 
     <developers>
+      <developer>
+            <name>Lukasz Zmudzinski</name>
+            <email>Lukasz.Zmudzinski at sabre.com</email>
+            <organization>Sabre GLBL Inc.</organization>
+            <organizationUrl>http://www.sabre.com</organizationUrl>
+        </developer>
         <developer>
             <name>Grzegorz Trybala</name>
             <email>Grzegorz.Trybala at sabre.com</email>
