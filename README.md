@@ -90,6 +90,6 @@ See [CONTRIBUTING](CONTRIBUTING.md) document for more details.
 
 ## License
 
-Copyright 2017-2018 Sabre GLBL Inc.
+Copyright 2017-2024 Sabre GLBL Inc.
 
 Code is under the [MIT license](LICENSE).
