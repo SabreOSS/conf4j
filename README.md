@@ -26,6 +26,7 @@
 
 [![Build Status](https://travis-ci.org/SabreOSS/conf4j.svg?branch=master)](https://travis-ci.org/SabreOSS/conf4j)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.sabre.oss.conf4j/conf4j-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.sabre.oss.conf4j/conf4j-api)
+[![libs.tech recommends](https://libs.tech/project/98171786/badge.svg)](https://libs.tech/project/98171786/conf4j)
 
 __conf4j__ is a library which allows accessing configuration data in object-oriented, type-safe manner.
 
